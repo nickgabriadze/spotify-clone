@@ -1,0 +1,9 @@
+:root {
+  --div-bg-color: #121212;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  background-color: black;
+}
