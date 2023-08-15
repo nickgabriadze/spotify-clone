@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Gotham Bold';
+  src: url("/Spotify-Font/GothamBold.ttf");
+}
+
 :root {
   --div-bg-color: #121212;
 }
@@ -6,4 +11,6 @@
   box-sizing: border-box;
   margin: 0;
   background-color: black;
+  color: #1DB954;
+  font-family: 'Gotham Bold';
 }
