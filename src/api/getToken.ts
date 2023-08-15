@@ -1,8 +1,9 @@
-import AxiosInstance from "axios";
+
+import axios from "axios";
 import queryString from "query-string";
 
 export const fetchAccessToken = async () => {
-  return await AxiosInstance.post(
+  return await axios.post(
     "https://accounts.spotify.com/api/token",
     queryString.stringify({
       grant_type: "client_credentials",

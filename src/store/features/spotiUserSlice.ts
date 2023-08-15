@@ -4,7 +4,8 @@ import fetchAccessToken from "../../api/getToken";
 interface TokenData {
   access_token: string;
   token_type: "Bearer";
-  expires_in: 3600;
+  expires_in: number;
+ 
 }
 
 export const fetchTokenAsync = createAsyncThunk(
@@ -16,12 +17,15 @@ export const fetchTokenAsync = createAsyncThunk(
   }
 );
 
+
 interface SpotiUser {
-  spotiToken: {
-    access_token: string;
-    token_type: "Bearer";
-    expires_in: number;
-  };
+  spotiToken:{
+    access_token: string,
+    token_type: "Bearer",
+    expires_in: number,
+    issued_at: number
+  }
+  
 }
 
 const initialState: SpotiUser = {
@@ -29,6 +33,7 @@ const initialState: SpotiUser = {
     access_token: "",
     token_type: "Bearer",
     expires_in: 0,
+    issued_at: 0
   },
 };
 
@@ -42,16 +47,21 @@ const spotiUserSlice = createSlice({
       (
         state,
         action: {
-          payload: {
-            access_token: string;
-            token_type: "Bearer";
-            expires_in: 3600;
-          };
+          payload: TokenData
         }
       ) => {
+
+        const currentTime = new Date().getTime() / 1000;
+        sessionStorage.setItem("issued_at", currentTime.toString())
+       
         return {
           ...state,
-          spotiToken: action.payload,
+          spotiToken: {
+            access_token: action.payload.access_token,
+            token_type: "Bearer",
+            expires_in: 3600,
+            issued_at: currentTime
+          },
         };
       }
     );
@@ -63,7 +73,9 @@ const spotiUserSlice = createSlice({
         spotiToken: {
             access_token: 'pending',
             token_type: "Bearer",
-            expires_in: 0
+            expires_in: 0,
+            issued_at: 0
+           
           },
       };
     }),
@@ -74,7 +86,8 @@ const spotiUserSlice = createSlice({
           spotiToken: {
             access_token: 'access revoked',
             token_type: "Bearer",
-            expires_in: 0
+            expires_in: 0,
+            issued_at: 0
           },
         };
       });
