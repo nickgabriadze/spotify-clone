@@ -1,10 +1,12 @@
 import { Action, ThunkAction, configureStore } from "@reduxjs/toolkit";
 import spotiUserSlice from "./features/spotiUserSlice";
+import navigationSlice from "./features/navigationSlice";
 
 
 export const SpotiStore = configureStore({
     reducer: {
-        spotiUserReducer: spotiUserSlice
+        spotiUserReducer: spotiUserSlice,
+        navigationReducer: navigationSlice
     }
 })
 
