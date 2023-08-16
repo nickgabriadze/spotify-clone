@@ -1,0 +1,33 @@
+:root {
+  --search-bar-size: 350px;
+}
+
+.search-bar-wrapper {
+  background-color: #242424;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+    
+  padding: 15px;
+  border-radius: 25px;
+  width: var(--search-bar-size);
+}
+
+.search-bar-wrapper:hover {
+  -webkit-box-shadow: 0 0 0 1px #494949;
+  box-shadow: 0 0 0 1px #494949;
+}
+
+input {
+  border: none;
+  outline: transparent;
+  background-color: inherit;
+  width: var(--search-bar-size);
+  font-family: "Gotham Medium";
+  color: white;
+}
+
+img{
+    margin-top: -8px;
+    margin-bottom: -8px;
+}

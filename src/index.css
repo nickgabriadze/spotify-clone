@@ -3,6 +3,13 @@
   src: url("/Spotify-Font/GothamBold.ttf");
 }
 
+@font-face {
+  font-family: 'Gotham Medium';
+  src: url("/Spotify-Font/GothamMedium.ttf");
+
+  
+}
+
 :root {
   --div-bg-color: #121212;
 }

@@ -1,11 +1,11 @@
 import { useState } from "react";
-import HomeFilledSVG from "./icons/home-filled.svg";
-import HomeUnfilledSVG from "./icons/home-unfilled.svg";
-import SearchFilledSVG from "./icons/search-filled.svg";
-import SearchUnfilledSVG from "./icons/search-unfilled.svg";
+import HomeFilled from "./icons/home-filled.svg";
+import HomeUnfilled from "./icons/home-unfilled.svg";
+import SearchFilled from "./icons/search-filled.svg";
+import SearchUnfilled from "./icons/search-unfilled.svg";
 import navigationStyle from "./navigation.module.css";
-import SearchUnfilledGreySVG from "./icons/search-unfilled-grey.svg";
-import HomeUnfilledGreySVG from "./icons/home-unfilled-grey.svg";
+import SearchUnfilledGrey from "./icons/search-unfilled-grey.svg";
+import HomeUnfilledGrey from "./icons/home-unfilled-grey.svg";
 import { useAppDispatch } from "../../store/hooks";
 import { setNavTo } from "../../store/features/navigationSlice";
 
@@ -35,10 +35,10 @@ export function Navigation() {
         <img
           src={
             nav
-              ? HomeFilledSVG
+              ? HomeFilled
               : navHover === "home"
-              ? HomeUnfilledSVG
-              : HomeUnfilledGreySVG
+              ? HomeUnfilled
+              : HomeUnfilledGrey
           }
           width={28}
           height={28}
@@ -60,10 +60,10 @@ export function Navigation() {
         <img
           src={
             !nav
-              ? SearchFilledSVG
+              ? SearchFilled
               : navHover === "search"
-              ? SearchUnfilledSVG
-              : SearchUnfilledGreySVG
+              ? SearchUnfilled
+              : SearchUnfilledGrey
           }
           width={28}
           height={28}

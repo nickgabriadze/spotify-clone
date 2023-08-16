@@ -1,11 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
+import Navigation from "../../components/navigation/navigation";
 
 interface Navigation {
   navTo: string;
+  searchQuery: string;
 }
 
 const initialState: Navigation = {
   navTo: "home",
+  searchQuery: "",
 };
 
 const navigationSlice = createSlice({
@@ -15,7 +18,9 @@ const navigationSlice = createSlice({
     setNavTo: (
       state,
       action: {
-        payload: Navigation;
+        payload: {
+          navTo: string;
+        };
       }
     ) => {
       return {
@@ -23,8 +28,22 @@ const navigationSlice = createSlice({
         navTo: action.payload.navTo,
       };
     },
+
+    setSearchQuery: (
+      state,
+      action: {
+        payload: {
+          searchQuery: string;
+        };
+      }
+    ) => {
+      return {
+        ...state,
+        searchQuery: action.payload.searchQuery,
+      };
+    },
   },
 });
 
-export const { setNavTo } = navigationSlice.actions;
+export const { setNavTo, setSearchQuery } = navigationSlice.actions;
 export default navigationSlice.reducer;
