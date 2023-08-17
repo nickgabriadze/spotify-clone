@@ -1,3 +1,4 @@
+
 export function GenreCard({
   genre,
   colorHex,
@@ -15,18 +16,17 @@ export function GenreCard({
         padding: "10px",
         borderRadius: "10px",
         fontSize: "1.5rem",
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        
-        
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
       }}
     >
-      <h1>{genre
-        .split("-")
-        .map((letter) => letter[0].toUpperCase().concat(letter.slice(1)))
-        .join(" ")}</h1>
-
+      <h1>
+        {genre
+          .split("-")
+          .map((letter) => letter[0].toUpperCase().concat(letter.slice(1)))
+          .join(" ")}
+      </h1>
     </div>
   );
 }
