@@ -87,7 +87,7 @@ export function Genres() {
   }, [accessToken]);
 
   if(genresError){
-    return <h1>There is an error</h1>
+    return <h1 style={{color: '#A93226'}}>There is an error, try again later!</h1>
   }
  
   return (
@@ -97,11 +97,11 @@ export function Genres() {
         {genres.slice(0, 50).map((eachGenre, i) => {
             if(genresLoading){
                 return <GenreCardSkeleton  key={i}/>
-            }else{
+            }
+             else {
                 return <GenreCard
                 key={i}
                 genre={eachGenre}
-                
                 colorHex={colors[i].hex}
               />
             }

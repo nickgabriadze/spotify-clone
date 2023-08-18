@@ -3,6 +3,9 @@ import axios from "axios";
 import queryString from "query-string";
 
 export const fetchAccessToken = async () => {
+
+
+
   return await axios.post(
     "https://accounts.spotify.com/api/token",
     queryString.stringify({

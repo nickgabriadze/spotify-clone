@@ -37,7 +37,6 @@ export function SearchBar() {
       ></img>
       <input
         placeholder="What do you want to listen to?"
-        defaultValue={searchQuery}
         value={searchQuery}
         onChange={(e) =>
           dispatchSearch(

@@ -5,6 +5,8 @@ import appStyle from "./app.module.css";
 import Search from "./components/search/search";
 import Navigation from "./components/navigation/navigation";
 
+
+
 export function App() {
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -12,7 +14,6 @@ export function App() {
   }, [dispatch]);
 
   const homeOrSearch = useAppSelector((state) => state.navigationReducer.navTo);
-
 
 
   return (
