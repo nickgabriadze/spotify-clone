@@ -36,6 +36,7 @@ export function SearchBar() {
         height={24}
       ></img>
       <input
+        name="Search song field"
         placeholder="What do you want to listen to?"
         value={searchQuery}
         onChange={(e) =>

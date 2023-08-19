@@ -4,7 +4,8 @@ import { useAppDispatch, useAppSelector } from "./store/hooks";
 import appStyle from "./app.module.css";
 import Search from "./components/search/search";
 import Navigation from "./components/navigation/navigation";
-import axiosInstance from "./axios";
+
+
 
 export function App() {
   const dispatch = useAppDispatch();
@@ -14,27 +15,21 @@ export function App() {
 
   const homeOrSearch = useAppSelector((state) => state.navigationReducer.navTo);
 
-  if (!window.location.hash.includes("#")) {
-    axiosInstance
-      .get("http://localhost:3001/authenticate")
-      .then((res) => (window.location.href = res.data));
-  } else {
-    const text = window.location.hash
-      .split("#")[1]
-      .split("&")
-      .map((each) => {
-        const split = each.split("=");
-       
-        const key = split[0];
-        const value = split[1];
-        const obj =JSON.parse(`{"${key}":"${value}"}`)
-       
-        return obj
-        
-      });
-    console.log(text);
+  const access = useAppSelector((state) => state.spotiUserReducer.spotiToken);
+
+ 
+  if ((access.accessToken === "pending") || (access.accessToken === "")) {
+    return (
+      <img
+        className={appStyle["loading-anim"]}
+        src={"/spotify_web.png"}
+        width={100}
+        height={100}
+      ></img>
+    );
   }
 
+  
   return (
     <div className={appStyle["application-wrapper"]}>
       <Navigation />

@@ -1,5 +1,6 @@
 import axios from "axios";
-import fetchAccessToken from "./api/getToken";
+import { updateAccessTokenASync } from "./store/features/spotiUserSlice";
+import { SpotiStore } from "./store/store";
 
 const axiosInstance = axios.create({
   baseURL: "https://api.spotify.com/v1", // Spotify API base URL
@@ -11,10 +12,11 @@ axiosInstance.interceptors.request.use(async (config) => {
   const issued_at = Number(sessionStorage.getItem("issued_at"));
 
   if (currentTime - issued_at > 3600) {
-    const requestAccessToken = await fetchAccessToken();
-    const accessTokenData = requestAccessToken.data;
+    SpotiStore.dispatch(updateAccessTokenASync());
 
-    config.headers.Authorization = `Bearer ${accessTokenData.access_token}`;
+    const accessToken = sessionStorage.getItem("accessToken");
+
+    config.headers.Authorization = `Bearer ${accessToken}`;
     return config;
   } else {
     return config;

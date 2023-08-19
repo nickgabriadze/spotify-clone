@@ -62,7 +62,7 @@ export function Genres() {
   };
 
   const accessToken = useAppSelector(
-    (state) => state.spotiUserReducer.spotiToken.access_token
+    (state) => state.spotiUserReducer.spotiToken.accessToken
   );
   const [genresLoading, setGenresLoading] = useState<boolean>(true);
   const [genres, setGenres] = useState<string[]>(Array.from({length: 50}));
@@ -75,6 +75,7 @@ export function Genres() {
         const req = await getGenres(accessToken);
         const data = req.data;
         setGenres(data.genres);
+      
       }catch(err){
         setGenresError(err)
       } finally {

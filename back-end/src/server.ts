@@ -1,4 +1,4 @@
-import express from "express";
+import express, { query } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import queryString from "query-string";
@@ -66,8 +66,7 @@ app.get("/callback", async (req, res) => {
       );
 
       const acccess = response.data;
-      console.log(acccess);
-      // You can now send the accessToken to your frontend
+
       res.redirect(
         "http://localhost:5173/#" +
           queryString.stringify({
@@ -82,6 +81,32 @@ app.get("/callback", async (req, res) => {
       res.status(500).send("Error occurred");
     }
   }
+});
+
+app.get("/refresh_token", async (req, res) => {
+  const refresh_token = req.query.q;
+  const authOptions = {
+    url: "https://accounts.spotify.com/api/token",
+    headers: {
+      Authorization:
+        "Basic " +
+        Buffer.from(CLIENT_ID + ":" + CLIENT_SECRET).toString("base64"),
+    },
+    method: "POST",
+    json: true,
+    data: queryString.stringify({
+      grant_type: "refresh_token",
+      refresh_token: refresh_token,
+    }),
+  };
+
+  
+
+  axios(authOptions)
+    .then((result) => {
+      res.send(result.data.access_token);
+    })
+    .catch((err) => res.send(err));
 });
 
 app.listen(3001, () => {

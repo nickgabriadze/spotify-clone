@@ -1,5 +1,27 @@
-.application-wrapper{
-    display: flex;
-    margin: 8px;
-    gap: 8px;
+.application-wrapper {
+  display: flex;
+  margin: 8px;
+  gap: 8px;
+}
+
+.loading-anim {
+  position: absolute;
+  top: 45%;
+  left: 45%;
+  transform: translate(-50%, -50%);
+  animation: loading 2s alternate-reverse infinite;
+}
+
+@keyframes loading {
+from {
+    filter: brightness(30%);
+    transform: rotate(0deg);
+  }
+
+  to {
+    filter: brightness(100%);
+    transform: rotate(360deg);
+  }
+
+  
 }
