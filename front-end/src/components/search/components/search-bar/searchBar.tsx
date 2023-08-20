@@ -4,12 +4,13 @@ import SearchUnfilled from "../../../navigation/icons/search-unfilled.svg";
 import closeSearch from "../../../navigation/icons/close-search.svg";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import { setSearchQuery } from "../../../../store/features/navigationSlice";
+import {
+  setSearchQuery,
+  setTyping,
+} from "../../../../store/features/navigationSlice";
 
 export function SearchBar() {
-  const searchQuery = useAppSelector(
-    (state) => state.navigationReducer.searchQuery
-  );
+  const searchStuff = useAppSelector((state) => state.navigationReducer);
   const dispatchSearch = useAppDispatch();
   const [onElementFocus, setOnElementFocus] = useState<boolean>(false);
 
@@ -36,9 +37,29 @@ export function SearchBar() {
         height={24}
       ></img>
       <input
+        onKeyDown={() => {
+          if(searchStuff.typing === false){
+          dispatchSearch(
+            setTyping({
+              typing: true,
+            })
+          );
+          }
+        }}
+        onKeyUp={() => {
+          if(searchStuff.typing){
+       
+            dispatchSearch(
+              setTyping({
+                typing: false,
+              })
+            );
+        
+        }
+        }}
         name="Search song field"
         placeholder="What do you want to listen to?"
-        value={searchQuery}
+        value={searchStuff.searchQuery}
         onChange={(e) =>
           dispatchSearch(
             setSearchQuery({
@@ -47,7 +68,7 @@ export function SearchBar() {
           )
         }
       ></input>
-      {searchQuery.length === 0 ? (
+      {searchStuff.searchQuery.length === 0 ? (
         ""
       ) : (
         <img

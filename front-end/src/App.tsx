@@ -1,24 +1,35 @@
 import { useEffect } from "react";
-import { fetchTokenAsync } from "./store/features/spotiUserSlice";
+import { fetchTokenAsync, setToken } from "./store/features/spotiUserSlice";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import appStyle from "./app.module.css";
 import Search from "./components/search/search";
 import Navigation from "./components/navigation/navigation";
 
 
-
 export function App() {
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     dispatch(fetchTokenAsync());
   }, [dispatch]);
+
+
+
+  const accessTokenFromInternal = String(sessionStorage.getItem("accessToken"));
+  useEffect(() => {
+    dispatch(
+      setToken({
+        accessToken: accessTokenFromInternal,
+      })
+    );
+  }, [accessTokenFromInternal, dispatch]);
 
   const homeOrSearch = useAppSelector((state) => state.navigationReducer.navTo);
 
   const access = useAppSelector((state) => state.spotiUserReducer.spotiToken);
 
- 
-  if ((access.accessToken === "pending") || (access.accessToken === "")) {
+  if (access.refresh_token === "pending" || access.refresh_token === "") {
+    
     return (
       <img
         className={appStyle["loading-anim"]}
@@ -29,7 +40,6 @@ export function App() {
     );
   }
 
-  
   return (
     <div className={appStyle["application-wrapper"]}>
       <Navigation />

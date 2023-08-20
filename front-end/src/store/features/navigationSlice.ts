@@ -4,11 +4,13 @@ import Navigation from "../../components/navigation/navigation";
 interface Navigation {
   navTo: string;
   searchQuery: string;
+  typing: boolean;
 }
 
 const initialState: Navigation = {
   navTo: "home",
   searchQuery: "",
+  typing: false,
 };
 
 const navigationSlice = createSlice({
@@ -29,6 +31,20 @@ const navigationSlice = createSlice({
       };
     },
 
+    setTyping: (
+      state,
+      action: {
+        payload: {
+          typing: boolean;
+        };
+      }
+    ) => {
+      return {
+        ...state,
+        typing: action.payload.typing,
+      };
+    },
+
     setSearchQuery: (
       state,
       action: {
@@ -45,5 +61,5 @@ const navigationSlice = createSlice({
   },
 });
 
-export const { setNavTo, setSearchQuery } = navigationSlice.actions;
+export const { setNavTo, setSearchQuery, setTyping } = navigationSlice.actions;
 export default navigationSlice.reducer;

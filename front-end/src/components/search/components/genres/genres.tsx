@@ -4,6 +4,7 @@ import genresStyle from "./genres.module.css";
 import getGenres from "../../../../api/getGenres";
 import GenreCard from "../../reuseables/genreCard";
 import GenreCardSkeleton from "../../../../skeletons/genreCardSkeleton";
+import { SpotiError } from "../../../Error";
 
 export function Genres() {
   const colors: {
@@ -65,19 +66,19 @@ export function Genres() {
     (state) => state.spotiUserReducer.spotiToken.accessToken
   );
   const [genresLoading, setGenresLoading] = useState<boolean>(true);
-  const [genres, setGenres] = useState<string[]>(Array.from({length: 50}));
-  const [genresError, setGenresError] = useState<string | unknown>("")
+  const [genres, setGenres] = useState<string[]>(Array.from({ length: 50 }));
+  const [genresError, setGenresError] = useState<string | unknown>("");
   useEffect(() => {
     const controller = new AbortController();
 
     const fetchGenres = async () => {
       try {
         const req = await getGenres(accessToken);
+
         const data = req.data;
         setGenres(data.genres);
-      
-      }catch(err){
-        setGenresError(err)
+      } catch (err) {
+        setGenresError(err);
       } finally {
         setGenresLoading(false);
       }
@@ -87,25 +88,24 @@ export function Genres() {
     return () => controller.abort();
   }, [accessToken]);
 
-  if(genresError){
-    return <h1 style={{color: '#A93226'}}>There is an error, try again later!</h1>
+  if (genresError) {
+    return <SpotiError />
   }
- 
+
+
+
   return (
     <section className={genresStyle["genres-wrapper"]}>
       <h1>Browse all</h1>
       <div className={genresStyle["genre-card-grid"]}>
         {genres.slice(0, 50).map((eachGenre, i) => {
-            if(genresLoading){
-                return <GenreCardSkeleton  key={i}/>
-            }
-             else {
-                return <GenreCard
-                key={i}
-                genre={eachGenre}
-                colorHex={colors[i].hex}
-              />
-            }
+          if (genresLoading) {
+            return <GenreCardSkeleton key={i} />;
+          } else {
+            return (
+              <GenreCard key={i} genre={eachGenre} colorHex={colors[i].hex} />
+            );
+          }
         })}
       </div>
     </section>

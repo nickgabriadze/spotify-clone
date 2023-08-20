@@ -7,7 +7,7 @@ export async function searchAll(query:string, accessToken: string) {
 
     const allTypes= ["album", "artist", "playlist", "track", "show", "episode", "audiobook"].join("%2C")
 
-    return axiosInstance.get(`/search?q=${searchStr}&type=${allTypes}&limit=50`, {
+    return axiosInstance.get(`/search?q=${searchStr}&type=${allTypes}&limit=10`, {
         headers:{
             Authorization: `Bearer ${accessToken}`
         }
