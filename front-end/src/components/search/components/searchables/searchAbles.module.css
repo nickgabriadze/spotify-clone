@@ -1,6 +1,7 @@
 .search-options {
     display: flex;
     gap: 10px;
+   
 }
 
 .search-options p {

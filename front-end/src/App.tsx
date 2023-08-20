@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "./store/hooks";
 import appStyle from "./app.module.css";
 import Search from "./components/search/search";
 import Navigation from "./components/navigation/navigation";
-
+import Player from "./components/player/player";
 
 export function App() {
   const dispatch = useAppDispatch();
@@ -12,8 +12,6 @@ export function App() {
   useEffect(() => {
     dispatch(fetchTokenAsync());
   }, [dispatch]);
-
-
 
   const accessTokenFromInternal = String(sessionStorage.getItem("accessToken"));
   useEffect(() => {
@@ -29,7 +27,6 @@ export function App() {
   const access = useAppSelector((state) => state.spotiUserReducer.spotiToken);
 
   if (access.refresh_token === "pending" || access.refresh_token === "") {
-    
     return (
       <img
         className={appStyle["loading-anim"]}
@@ -42,8 +39,14 @@ export function App() {
 
   return (
     <div className={appStyle["application-wrapper"]}>
-      <Navigation />
-      {homeOrSearch === "search" ? <Search /> : ""}
+      <div className={appStyle['nav']}>
+        <Navigation />
+      </div>
+      <div className={appStyle['users-stuff']}></div>
+      <div className={appStyle['search-home']}>{homeOrSearch === "search" ? <Search /> : ""}</div>
+      <div className={appStyle['player']}>
+        <Player />
+      </div>
     </div>
   );
 }

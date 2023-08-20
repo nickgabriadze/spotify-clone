@@ -1,12 +1,18 @@
 
 .search-box{
     background-color: #121212;
-  
     border-radius: 8px;
     padding: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+   
     gap: 1rem;
-    width: 100%;
-}
+   
+ }
+
+ .search-related-stuff {
+    height: 100%;
+    overflow-y: scroll;
+ }
+
+

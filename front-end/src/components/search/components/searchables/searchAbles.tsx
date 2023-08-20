@@ -5,7 +5,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
 import searchAblesStyle from "./searchAbles.module.css";
 
-export function SearchAbles() {
+export function Searchables() {
   const searchOptions: Option[] = [
     "All",
     "Artists",
@@ -49,4 +49,4 @@ export function SearchAbles() {
   );
 }
 
-export default SearchAbles;
+export default Searchables;

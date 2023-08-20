@@ -1,0 +1,88 @@
+button {
+    background-color: transparent;
+    outline: transparent;
+    border: none;
+    cursor: pointer;
+}
+.player-wrapper{
+ 
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.currently-playing-info{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.song-info{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.song-info .song-name {
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Gotham Light', sans-serif;
+    cursor: pointer;
+}
+
+.song-info .artists-name{
+    color: #939393;
+    font-family: 'Gotham Medium', sans-serif;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.song-info a:hover{
+    color: white;
+    text-decoration: underline;
+}
+
+
+
+/* playback */
+
+.playback-control {
+    display: flex;
+    flex-direction: column;
+    
+    gap: 8px;
+ 
+}
+
+.actual-controls{
+    display: flex;
+    gap: 5px;
+   
+    justify-content: center;
+    align-items: center;
+}
+
+
+.duration{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 400px;
+}
+.duration p{
+    color:#939393;
+    font-size: 12px;
+    font-family: 'Gotham Light', sans-serif;
+    font-weight: bold;
+}
+
+.duration-track{
+    background-color: white;
+}
+.duration-track:hover{
+    cursor: pointer;
+    background-color:#1dd760 ;
+}

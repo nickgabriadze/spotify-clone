@@ -1,22 +1,20 @@
-.genres-wrapper h1{
-    color: white;
-    font-size: 1.5rem;
+.genres-wrapper h1 {
+  color: white;
+  font-size: 1.5rem;
 }
 
-.genres-wrapper{
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    height: 70vh;
-    overflow-y: scroll;
-    padding: 15px;
+.genres-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 15px;
+ 
+  height: 60%;
+}
+
+.genre-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 30px;
   
-}
-
-.genre-card-grid{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 30px;
-    
-    
 }
