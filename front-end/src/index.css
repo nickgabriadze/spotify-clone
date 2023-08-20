@@ -5,10 +5,14 @@
 
 @font-face {
   font-family: 'Gotham Medium';
-  src: url("/Spotify-Font/GothamMedium.ttf");
-
-  
+  src: url("/Spotify-Font/GothamMedium.ttf");  
 }
+
+@font-face{
+  font-family: 'Gotham Light';
+  src: url("/Spotify-Font/GothamLight.ttf");
+}
+
 
 :root {
   --div-bg-color: #121212;
@@ -18,8 +22,36 @@
   box-sizing: border-box;
   margin: 0;
   font-family: 'Gotham Bold';
+  
 }
 
+html{
+  scroll-behavior: smooth;
+}
 body{
   background-color: black;
+
+}
+
+::-webkit-scrollbar {
+  cursor: pointer; width: 10px;
+   
+}
+
+
+::-webkit-scrollbar-track {
+  background: none;
+  
+}
+
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  padding: 10px;
+    
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+  
 }

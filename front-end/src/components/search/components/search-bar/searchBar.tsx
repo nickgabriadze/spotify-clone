@@ -41,7 +41,7 @@ export function SearchBar() {
           if(searchStuff.typing === false){
           dispatchSearch(
             setTyping({
-              typing: true,
+              typing: true
             })
           );
           }
@@ -51,10 +51,9 @@ export function SearchBar() {
        
             dispatchSearch(
               setTyping({
-                typing: false,
+                typing: false
               })
             );
-        
         }
         }}
         name="Search song field"

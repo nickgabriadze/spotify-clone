@@ -1,0 +1,24 @@
+.search-options {
+    display: flex;
+    gap: 10px;
+}
+
+.search-options p {
+    color: white;
+    font-family: 'Gotham Light', sans-serif;
+    font-size: 14px;
+    
+    font-weight: bold;
+}
+
+.each-option{
+    background-color: #232323;
+    border-radius: 15px;
+    padding: 10px;
+    cursor:  pointer;
+    transition: all 500ms ease-in-out;
+}
+
+.each-option:hover{
+    filter: contrast(90%);
+}
