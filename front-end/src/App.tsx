@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchTokenAsync, setToken } from "./store/features/spotiUserSlice";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import appStyle from "./app.module.css";
@@ -26,6 +26,23 @@ export function App() {
 
   const access = useAppSelector((state) => state.spotiUserReducer.spotiToken);
 
+
+  const [windowInnerHeight, setWindowInnerHeight] = useState<number>(window.innerHeight);
+
+  useEffect(() => {
+    
+    const updateWindowDimensions = () => {
+      const newHeight = window.innerHeight;
+      setWindowInnerHeight(newHeight);
+     
+    };
+
+    window.addEventListener("resize", updateWindowDimensions);
+
+    return () => window.removeEventListener("resize", updateWindowDimensions) 
+
+  }, []);
+
   if (access.refresh_token === "pending" || access.refresh_token === "") {
     return (
       <img
@@ -37,13 +54,18 @@ export function App() {
     );
   }
 
+  
+
   return (
     <div className={appStyle["application-wrapper"]}>
       <div className={appStyle['nav']}>
         <Navigation />
       </div>
       <div className={appStyle['users-stuff']}></div>
-      <div className={appStyle['search-home']}>{homeOrSearch === "search" ? <Search /> : ""}</div>
+      <div className={appStyle['search-home']}
+      
+      
+      >{homeOrSearch === "search" ? <Search height={windowInnerHeight} /> : ""}</div>
       <div className={appStyle['player']}>
         <Player />
       </div>
