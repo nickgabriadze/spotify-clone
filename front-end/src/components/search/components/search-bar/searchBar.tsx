@@ -40,7 +40,7 @@ export function SearchBar() {
     fetchMyData();
   }, [access.accessToken]);
 
-  console.log(userData);
+ 
 
   
 

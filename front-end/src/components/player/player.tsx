@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import playerStyle from "./player.module.css";
 import { useAppSelector } from "../../store/hooks";
-import { getCurrentlyPlaying } from "../../api/getCurrentlyPlaying";
-import SpotiError from "../Error";
+import { getCurrentlyPlaying } from "../../api/player/getCurrentlyPlaying";
 import { CurrentlyPlaying } from "../../types/currentlyPlaying";
 import Heart from "./icons/heart.svg";
 import Play from "./icons/play.svg";
@@ -13,29 +12,35 @@ import Shuffle from "./icons/shuffle.svg";
 import SkipNext from "./icons/skip-next.svg";
 import SkipPrevious from "./icons/skip-previous.svg";
 import Repeat from "./icons/repeat.svg";
-import { getDevices } from "../../api/getDevices";
+import { getDevices } from "../../api/player/getDevices";
 import { Devices } from "../../types/device";
 import millisecondsToMmSs from "./msConverter";
 import VolumeUp from "./icons/volume.svg";
 import VolumeOff from "./icons/volume-off.svg";
+import setPlaybackVolume from "../../api/player/setPlaybackVolume";
 
 export function Player() {
   const [currentlyPlaying, setCurrentlyPlaying] = useState<CurrentlyPlaying>();
   const [currentLoading, setCurrentLoading] = useState<boolean>(true);
+  const [noDataAvailable, setNoDataAvailable] = useState(false);
   const [devices, setDevices] = useState<Devices>();
   const [error, setError] = useState<string | unknown>();
   const access = useAppSelector((state) => state.spotiUserReducer.spotiToken);
-
+  const [actions, setActions] = useState<string[]>([])
   useEffect(() => {
     const fetchCurrent = async () => {
       try {
         const devices = await getDevices(access.accessToken);
         const devicesData = devices.data;
-        console.log(devicesData);
+
         setDevices(devicesData);
         const req = await getCurrentlyPlaying(access.accessToken);
         const data = req.data;
-        setCurrentlyPlaying(data);
+        if (req.status === 204) {
+          setNoDataAvailable(true);
+        } else {
+          setCurrentlyPlaying(data);
+        }
       } catch (err) {
         setError(err);
       } finally {
@@ -43,26 +48,27 @@ export function Player() {
       }
     };
 
+    if(actions.length > 50){
+      setActions([])
+    }
+
     fetchCurrent();
-  }, [access]);
+  }, [access, actions.length]);
 
   const [sliderVolume, setSliderVolume] = useState<number>(
-    Number(devices?.devices.filter((each) => each.is_active)[0].volume_percent)
+    Number(
+      devices?.devices?.filter((each) => each.is_active)[0]?.volume_percent
+    )
   );
 
-  useEffect(() => {
-    setSliderVolume(
-      Number(
-        devices?.devices.filter((each) => each.is_active)[0].volume_percent
-      )
-    );
-  }, [sliderVolume, devices]);
+  if (noDataAvailable) {
+    document.title = "Spotify Clone";
+    return <div></div>;
+  } else {
+    document.title = String(currentlyPlaying?.item?.name)
+      .concat(" • ")
+      .concat(String(currentlyPlaying?.item.artists[0].name));
 
-  if (currentLoading) {
-    return <SpotiError />;
-  }
-
-  if (currentlyPlaying) {
     return (
       <section className={playerStyle["player-wrapper"]}>
         <div className={playerStyle["currently-playing-info"]}>
@@ -120,9 +126,11 @@ export function Player() {
                   (Number(currentlyPlaying?.progress_ms) /
                     Number(currentlyPlaying?.item?.duration_ms)) *
                   100
-                }%, #4d4d4d ${(Number(currentlyPlaying?.progress_ms) /
-                Number(currentlyPlaying?.item?.duration_ms)) *
-              100}%)`,
+                }%, #4d4d4d ${
+                  (Number(currentlyPlaying?.progress_ms) /
+                    Number(currentlyPlaying?.item?.duration_ms)) *
+                  100
+                }%)`,
               }}
               type="range"
               value={
@@ -142,6 +150,13 @@ export function Player() {
           <img src={Queue} width={22} alt="Song Queue icon"></img>
           <img src={DevicesSVG} width={22} alt="Devices icon"></img>
           <img
+          onClick={async () => {
+            setActions((prev) => [...prev, "Volume On/Off"])
+            await setPlaybackVolume(
+              Number(devices?.devices.filter((each) => each.is_active)[0].volume_percent) > 0 ? 0 : 100,
+              access.accessToken
+            );
+          }}
             src={
               Number(
                 devices?.devices.filter((each) => each.is_active)[0]
@@ -156,9 +171,16 @@ export function Player() {
           <input
             className={playerStyle["volume-rocker"]}
             style={{
-              background: `linear-gradient(to right, #1ed760 ${sliderVolume}%)`,
+              background: `linear-gradient(to right, #1ed760 ${ devices?.devices?.filter((each) => each.is_active)[0]?.volume_percent}%, #4d4d4d ${ devices?.devices?.filter((each) => each.is_active)[0]?.volume_percent}%)`,
             }}
-            onChange={(e) => setSliderVolume(Number(e.target.value) + 1)}
+            onChange={async (e) => {
+              setSliderVolume(Number(e.target.value));
+               await setPlaybackVolume(
+                Number(e.target.value),
+                access.accessToken
+              );
+              setActions((prev) => [...prev, "Volume Up"])
+            }}
             type="range"
             value={sliderVolume}
             max={100}
@@ -167,8 +189,6 @@ export function Player() {
         </div>
       </section>
     );
-  } else {
-    return <h1>loading...</h1>;
   }
 }
 

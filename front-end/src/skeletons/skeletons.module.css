@@ -6,6 +6,64 @@
   animation: genre-brightness 3s linear infinite;
 }
 
+
+/* artist */
+.artists-wrapper{
+    cursor: pointer;
+    height: 260px;
+    border-radius: 8px;
+    background-color: #181818;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 5px;
+    gap: 5px;
+}
+
+.artist-img-skeleton {
+    border-radius: 100%;
+    width: 160px;
+    height: 160px;
+    background-color: #3e3c3c69;
+    margin-bottom: 20px;
+    animation: artist-brightness 3s linear infinite;
+}
+
+.artist-info-holder{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-right: 60px;
+    
+}
+
+.artist-name-skeleton {
+    width: 80px;
+    height: 12px;
+    background-color: #3e3c3c69;
+    animation: artist-brightness 3s linear infinite;
+}
+
+.artist-type-skeleton{
+    width: 50px;
+    height: 10px;
+    background-color: #3e3c3c69;
+    animation: artist-brightness 3s linear infinite;
+}
+
+@keyframes artist-brightness {
+    0%{
+        background-color: #3e3c3c69;
+    }
+    50%{
+        background-color: rgb(93, 91, 91);
+    }
+    100%{
+        background-color: #3e3c3c69;
+    }
+}
+
 @keyframes genre-brightness {
     0%{
         background-color: #202020;

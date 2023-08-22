@@ -1,9 +1,9 @@
-import axiosInstance from "../axios";
+import axiosInstance from "../../axios";
 
 export async function getDevices(accessToken: string) {
 
 
-    return axiosInstance.get("/me/player/devices", {
+    return await axiosInstance.get("/me/player/devices", {
         headers: {
             Authorization: `Bearer ${accessToken}`
         }

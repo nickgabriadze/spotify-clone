@@ -52,7 +52,7 @@ export function App() {
         height={100}
       ></img>
     );
-  }
+  }else{
 
   
 
@@ -71,6 +71,7 @@ export function App() {
       </div>
     </div>
   );
+  }
 }
 
 export default App;

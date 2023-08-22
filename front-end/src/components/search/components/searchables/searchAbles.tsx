@@ -21,6 +21,13 @@ export function Searchables() {
     <div className={searchAblesStyle["search-options"]}>
       {searchOptions.map((option, i) => (
         <div
+        onClick={() => {
+          searchDispatch(
+            setSearchOption({
+              option: option,
+            })
+          );
+        }}
           style={
             searchStuff.searchOption === option
               ? { backgroundColor: "white" }
@@ -33,13 +40,7 @@ export function Searchables() {
             style={
               searchStuff.searchOption === option ? { color: "black" } : {}
             }
-            onClick={() => {
-              searchDispatch(
-                setSearchOption({
-                  option: option,
-                })
-              );
-            }}
+          
           >
             {option}
           </p>

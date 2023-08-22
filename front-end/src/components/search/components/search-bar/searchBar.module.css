@@ -9,6 +9,7 @@
   justify-content: space-between;
   margin-right: 10px;
   margin-left: 10px;
+  flex-wrap: wrap;
 }
 
 .search-bar-wrapper {

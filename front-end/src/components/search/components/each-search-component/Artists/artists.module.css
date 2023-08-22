@@ -1,0 +1,64 @@
+.artists-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 30px;
+  padding: 10px;
+}
+
+.each-artist {
+  background-color: #181818;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 30px;
+  transition: all 300ms linear;
+}
+
+.each-artist .artist-img {
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.artist-img img {
+  border-radius: 100%;
+  object-fit: contain;
+}
+
+.no-artist-img {
+  background-color: #302f2f;
+  padding: 30px;
+}
+
+.each-artist:hover {
+  background-color: #302f2f;
+}
+
+.each-artist a {
+  font-size: clamp(12px, 2.5vw, 0.9rem);
+  word-break: break-all;
+
+  max-width: 150px;
+}
+.each-artist a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.each-artist p {
+  align-items: flex-end;
+  color: #6a6a6a;
+  font-size: 12px;
+  font-family: "Gotham Medium";
+}
+
+.artist-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: -15px;
+  gap: 10px;
+  margin-top: 20px;
+}
