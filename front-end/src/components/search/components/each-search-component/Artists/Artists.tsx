@@ -63,7 +63,11 @@ export function ArtistsRes({ artistsName }: { artistsName: string }) {
               </div>
 
               <div className={artistsStyle["artist-info"]}>
-                <a>{each.name}</a>
+                <a>
+                  {each.name.length > 21
+                    ? each.name.slice(0, 22).concat("...")
+                    : each.name}
+                </a>
                 <p>{each.type[0].toUpperCase().concat(each.type.slice(1))}</p>
               </div>
             </div>
