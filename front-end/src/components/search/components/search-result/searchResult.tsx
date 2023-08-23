@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { SpotiError } from "../../../Error";
 import searchResultStyle from "./searchResult.module.css";
 import { ArtistsRes } from "../each-search-component/Artists/Artists";
+import PlaylistsRes from "../each-search-component/Playlists/Playlists";
 
 export function SearchResult() {
 
@@ -16,6 +17,10 @@ export function SearchResult() {
 
   if(searchStuff.searchOption === 'Artists'){
     return <ArtistsRes artistsName={searchStuff.searchQuery} />
+  }
+
+  if(searchStuff.searchOption === 'Playlists'){
+    return <PlaylistsRes playlistName={searchStuff.searchQuery} />
   }
 
   return (

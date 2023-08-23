@@ -6,6 +6,7 @@ import SpotiError from "../../../../Error";
 import artistsStyle from "./artists.module.css";
 import { useState, useEffect } from "react";
 import NoArtistImage from "../icons/no-artist-pic.webp";
+
 export function ArtistsRes({ artistsName }: { artistsName: string }) {
   const [artistsData, setArtistsData] = useState<Artists>();
   const [artistsLoading, setArtistsLoading] = useState<boolean>(true);

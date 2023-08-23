@@ -1,0 +1,49 @@
+.playlists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 30px;
+  padding: 10px;
+}
+
+.playlist-card {
+  background-color: #181818;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 30px;
+  border-radius: 8px;
+  cursor: pointer;
+   padding: 0 15px 0 15px;
+  transition: all 300ms linear;
+  
+}
+
+.playlist-img img {
+  object-fit: cover;
+  border-radius: 5px;
+  margin-top: 15px;
+}
+
+.playlist-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-bottom: 20px;
+  gap: 20px;
+}
+
+.playlist-details a {
+  font-size: 16px;
+  color: white;
+}
+
+.playlist-details a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.playlist-details p {
+  color: #a7a7a7;
+  font-size: 14px;
+  font-family: "Gotham Medium";
+}

@@ -19,7 +19,7 @@ const initialState: Navigation = {
   navTo: "search",
   searchQuery: "",
   typing: false,
-  searchOption: "All",
+  searchOption: "Playlists",
 };
 
 const navigationSlice = createSlice({

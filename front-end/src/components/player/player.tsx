@@ -22,7 +22,7 @@ import setPlaybackVolume from "../../api/player/setPlaybackVolume";
 export function Player() {
   const [currentlyPlaying, setCurrentlyPlaying] = useState<CurrentlyPlaying>();
   const [currentLoading, setCurrentLoading] = useState<boolean>(true);
-  const [noDataAvailable, setNoDataAvailable] = useState(false);
+  const [noDataAvailable, setNoDataAvailable] = useState(true);
   const [devices, setDevices] = useState<Devices>();
   const [error, setError] = useState<string | unknown>();
   const access = useAppSelector((state) => state.spotiUserReducer.spotiToken);
@@ -40,6 +40,7 @@ export function Player() {
           setNoDataAvailable(true);
         } else {
           setCurrentlyPlaying(data);
+          setNoDataAvailable(false)
         }
       } catch (err) {
         setError(err);
@@ -57,7 +58,7 @@ export function Player() {
 
   const [sliderVolume, setSliderVolume] = useState<number>(
     Number(
-      devices?.devices?.filter((each) => each.is_active)[0]?.volume_percent
+     noDataAvailable ?  0 : devices?.devices?.filter((each) => each.is_active)[0]?.volume_percent 
     )
   );
 
