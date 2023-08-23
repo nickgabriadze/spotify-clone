@@ -1,10 +1,9 @@
-import { searchAll } from "../../../../api/search/searchAll";
+
 import { useAppSelector } from "../../../../store/hooks";
-import { useEffect, useState } from "react";
-import { SpotiError } from "../../../Error";
 import searchResultStyle from "./searchResult.module.css";
 import { ArtistsRes } from "../each-search-component/Artists/Artists";
 import PlaylistsRes from "../each-search-component/Playlists/Playlists";
+import AlbumsRes from "../each-search-component/Albums/Albums";
 
 export function SearchResult() {
 
@@ -21,6 +20,10 @@ export function SearchResult() {
 
   if(searchStuff.searchOption === 'Playlists'){
     return <PlaylistsRes playlistName={searchStuff.searchQuery} />
+  }
+
+  if(searchStuff.searchOption === "Albums"){
+    return <AlbumsRes albumName={searchStuff.searchQuery} />
   }
 
   return (

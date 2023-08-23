@@ -95,7 +95,7 @@ export function Genres() {
       <h1>Browse all</h1>
       <div className={genresStyle["genre-card-grid"]}>
         {genres.slice(0, 50).map((eachGenre, i) => {
-          if (genresLoading || genresError) {
+          if ((genresLoading || genresError)) {
             return <GenreCardSkeleton key={i} />;
           } else {
             return (
