@@ -21,6 +21,11 @@ button {
 }
 
 
+.currently-playing-info-album-img img {
+ object-fit: contain;
+ 
+}
+
 .song-info {
   display: flex;
   flex-direction: column;

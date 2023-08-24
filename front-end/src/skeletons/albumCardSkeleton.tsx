@@ -1,6 +1,6 @@
 import skeletonStyle from "./skeletons.module.css";
 
-export function AlbumCard() {
+export function AlbumCardSkeleton() {
   return (
     <div className={skeletonStyle["album-wrapper"]}>
       <div className={skeletonStyle["album-img-skeleton"]}></div>
@@ -15,4 +15,4 @@ export function AlbumCard() {
   );
 }
 
-export default AlbumCard;
+export default AlbumCardSkeleton;

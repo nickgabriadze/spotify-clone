@@ -1,6 +1,6 @@
 import skeletonStyle from "./skeletons.module.css";
 
-export function PlaylistCard() {
+export function PlaylistCardSkeleton() {
   return (
     <div className={skeletonStyle["playlist-wrapper"]}>
       <div className={skeletonStyle["playlist-img-skeleton"]}></div>
@@ -11,3 +11,6 @@ export function PlaylistCard() {
     </div>
   );
 }
+
+
+export default PlaylistCardSkeleton

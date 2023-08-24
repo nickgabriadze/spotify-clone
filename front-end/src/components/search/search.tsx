@@ -10,7 +10,7 @@ export function Search({height}: {height: number}) {
 
   return (
     <section className={searchStyle["search-box"]}
-    style={{height:`calc(${height}px - 100px)`}}
+    style={{height:`calc(${height}px - 101px)`}}
     >
       <SearchBar />
       {searchStuff.searchQuery.trim().length > 0 ? <Searchables /> : ""}

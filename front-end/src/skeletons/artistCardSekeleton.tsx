@@ -1,6 +1,6 @@
 import skeletonStyle from "./skeletons.module.css"
 
-export function ArtistCard() { 
+export function ArtistCardSkeleton() { 
 
 
     return <div className={skeletonStyle['artists-wrapper']}>
@@ -14,4 +14,4 @@ export function ArtistCard() {
 }
 
 
-export default ArtistCard
+export default ArtistCardSkeleton

@@ -18,6 +18,7 @@ import millisecondsToMmSs from "./msConverter";
 import VolumeUp from "./icons/volume.svg";
 import VolumeOff from "./icons/volume-off.svg";
 import setPlaybackVolume from "../../api/player/setPlaybackVolume";
+import setPlayerPosition from "../../api/player/setPlayerPosition";
 
 export function Player() {
   const [currentlyPlaying, setCurrentlyPlaying] = useState<CurrentlyPlaying>();
@@ -26,7 +27,7 @@ export function Player() {
   const [devices, setDevices] = useState<Devices>();
   const [error, setError] = useState<string | unknown>();
   const access = useAppSelector((state) => state.spotiUserReducer.spotiToken);
-  const [actions, setActions] = useState<string[]>([])
+  const [actions, setActions] = useState<string[]>([]);
   useEffect(() => {
     const fetchCurrent = async () => {
       try {
@@ -40,7 +41,7 @@ export function Player() {
           setNoDataAvailable(true);
         } else {
           setCurrentlyPlaying(data);
-          setNoDataAvailable(false)
+          setNoDataAvailable(false);
         }
       } catch (err) {
         setError(err);
@@ -49,8 +50,8 @@ export function Player() {
       }
     };
 
-    if(actions.length > 50){
-      setActions([])
+    if (actions.length > 50) {
+      setActions([]);
     }
 
     fetchCurrent();
@@ -58,7 +59,9 @@ export function Player() {
 
   const [sliderVolume, setSliderVolume] = useState<number>(
     Number(
-     noDataAvailable ?  0 : devices?.devices?.filter((each) => each.is_active)[0]?.volume_percent 
+      noDataAvailable
+        ? 0
+        : devices?.devices?.filter((each) => each.is_active)[0]?.volume_percent
     )
   );
 
@@ -73,13 +76,15 @@ export function Player() {
     return (
       <section className={playerStyle["player-wrapper"]}>
         <div className={playerStyle["currently-playing-info"]}>
-          <img
-            alt="Album picture"
-            draggable={false}
-            src={currentlyPlaying?.item?.album?.images[2].url}
-            height={70}
-            width={70}
-          ></img>
+          <div className={playerStyle["currently-playing-info-album-img"]}>
+            <img
+              alt="Album picture"
+              draggable={false}
+              src={currentlyPlaying?.item?.album?.images[0]?.url}
+              height={70}
+              width={60}
+            ></img>
+          </div>
           <div className={playerStyle["song-info"]}>
             <a className={playerStyle["song-name"]}>
               {currentlyPlaying?.item?.name}
@@ -133,13 +138,19 @@ export function Player() {
                   100
                 }%)`,
               }}
-              type="range"
-              value={
-                (Number(currentlyPlaying?.progress_ms) /
-                  Number(currentlyPlaying?.item?.duration_ms)) *
-                100
+              onChange={async (e) =>
+                {
+                  
+                await setPlayerPosition(
+                  Number(e.target.value),
+                  access.accessToken
+                )
+                setActions((prev) => [...prev, "Seek To Pos"]);
+                }
               }
-              max={100}
+              type="range"
+              value={Number(currentlyPlaying?.progress_ms)}
+              max={currentlyPlaying?.item?.duration_ms}
               min={0}
             />
             <p>
@@ -151,13 +162,18 @@ export function Player() {
           <img src={Queue} width={22} alt="Song Queue icon"></img>
           <img src={DevicesSVG} width={22} alt="Devices icon"></img>
           <img
-          onClick={async () => {
-            setActions((prev) => [...prev, "Volume On/Off"])
-            await setPlaybackVolume(
-              Number(devices?.devices.filter((each) => each.is_active)[0].volume_percent) > 0 ? 0 : 100,
-              access.accessToken
-            );
-          }}
+            onClick={async () => {
+              setActions((prev) => [...prev, "Volume On/Off"]);
+              await setPlaybackVolume(
+                Number(
+                  devices?.devices.filter((each) => each.is_active)[0]
+                    .volume_percent
+                ) > 0
+                  ? 0
+                  : 100,
+                access.accessToken
+              );
+            }}
             src={
               Number(
                 devices?.devices.filter((each) => each.is_active)[0]
@@ -172,15 +188,21 @@ export function Player() {
           <input
             className={playerStyle["volume-rocker"]}
             style={{
-              background: `linear-gradient(to right, #1ed760 ${ devices?.devices?.filter((each) => each.is_active)[0]?.volume_percent}%, #4d4d4d ${ devices?.devices?.filter((each) => each.is_active)[0]?.volume_percent}%)`,
+              background: `linear-gradient(to right, #1ed760 ${
+                devices?.devices?.filter((each) => each.is_active)[0]
+                  ?.volume_percent
+              }%, #4d4d4d ${
+                devices?.devices?.filter((each) => each.is_active)[0]
+                  ?.volume_percent
+              }%)`,
             }}
             onChange={async (e) => {
               setSliderVolume(Number(e.target.value));
-               await setPlaybackVolume(
+              await setPlaybackVolume(
                 Number(e.target.value),
                 access.accessToken
               );
-              setActions((prev) => [...prev, "Volume Up"])
+              setActions((prev) => [...prev, "Volume Up"]);
             }}
             type="range"
             value={sliderVolume}
