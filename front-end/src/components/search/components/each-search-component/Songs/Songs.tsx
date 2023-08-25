@@ -1,6 +1,6 @@
 import Duration from "../icons/duration.svg";
 import songsStyle from "./songs.module.css";
-import { useState, useEffect, useRef, useLayoutEffect } from "react";
+import { useState, useEffect } from "react";
 import { Tracks } from "../../../../../types/track";
 import { useAppSelector } from "../../../../../store/hooks";
 import getTracks from "../../../../../api/search/getTracks";
