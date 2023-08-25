@@ -8,6 +8,8 @@ import searchStyle from "./search.module.css";
 export function Search({height}: {height: number}) {
   const searchStuff = useAppSelector((state) => state.navigationReducer);
 
+
+
   return (
     <section className={searchStyle["search-box"]}
     style={{height:`calc(${height}px - 101px)`}}
