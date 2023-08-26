@@ -1,15 +1,12 @@
-import axiosInstance from "../../axios"
+import axiosInstance from "../../axios";
 
-export async function getTracks(searchStr:string, accessToken: string){
-
-
-    const query = searchStr.split(" ").join("%20");
-
-    return axiosInstance.get(`/search?q=${query}&type=track&limit=30`, {
-        headers: {
-            Authorization: `Bearer ${accessToken}`
-        }
-    })
+export async function getTracks(apiUrl: string, accessToken: string) {
+   
+  return axiosInstance.get(apiUrl, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
 }
 
 export default getTracks;

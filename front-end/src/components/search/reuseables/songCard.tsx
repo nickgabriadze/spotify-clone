@@ -15,7 +15,7 @@ export function SongCard({ n, eachTrack }: { n: number; eachTrack: Track }) {
         <div className={songsStyle["img-title-artists"]}>
           <div className={songsStyle["album-img"]}>
             <img
-              src={eachTrack.album.images[0].url}
+              src={eachTrack.album.images[0]?.url}
              width={50}
               height={50}
               draggable={false}
