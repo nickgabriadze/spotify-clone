@@ -1,13 +1,16 @@
 import { Track } from "../../../types/track";
 import songsStyle from "../components/each-search-component/Songs/songs.module.css";
 import millisecondsToMmSs from "../../player/msConverter";
-export function SongCard({ n, eachTrack }: { n: number; eachTrack: Track }) {
+import React, { LegacyRef } from "react";
+export function SongCard({innerRef, n, eachTrack }: {innerRef:LegacyRef<HTMLDivElement> | undefined, n: number; eachTrack: Track }) {
 
 
 
 
   return (
-    <div className={songsStyle["track-wrapper"]}>
+    <div className={songsStyle["track-wrapper"]}
+    ref={innerRef}
+    >
       <div className={songsStyle["general-info"]}>
         <div
       
@@ -24,7 +27,7 @@ export function SongCard({ n, eachTrack }: { n: number; eachTrack: Track }) {
           </div>
 
           <div className={songsStyle["title-artists"]}>
-            <a>{eachTrack.name}</a>
+            <a>{eachTrack.name.length > 25 ? eachTrack.name.slice(0, 25).concat("...") : eachTrack.name}</a>
             <p>{eachTrack.artists.map((each) => each.name).join(", ")}</p>
           </div>
         </div>
@@ -41,4 +44,4 @@ export function SongCard({ n, eachTrack }: { n: number; eachTrack: Track }) {
   );
 }
 
-export default SongCard;
+export default React.forwardRef((props) => <SongCard  {...props} />) as typeof SongCard;

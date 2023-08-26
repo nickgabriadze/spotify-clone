@@ -6,7 +6,7 @@ import PlaylistsRes from "../each-search-component/Playlists/Playlists";
 import AlbumsRes from "../each-search-component/Albums/Albums";
 import SongsRes from "../each-search-component/Songs/Songs";
 
-export function SearchResult({scrolledToTheBottom}: {scrolledToTheBottom: boolean}) {
+export function SearchResult() {
 
   const searchStuff = useAppSelector((state) => state.navigationReducer);
  
@@ -26,7 +26,7 @@ export function SearchResult({scrolledToTheBottom}: {scrolledToTheBottom: boolea
   }
 
   if(searchStuff.searchOption === 'Songs'){
-    return <SongsRes songName={searchStuff.searchQuery} scrolledToTheBottom={scrolledToTheBottom}/>
+    return <SongsRes songName={searchStuff.searchQuery} />
   }
 
   return (

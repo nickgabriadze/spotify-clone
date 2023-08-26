@@ -42,19 +42,20 @@ export function App() {
     return () => window.removeEventListener("resize", updateWindowDimensions) 
 
   }, []);
-
+  
   if (access.refresh_token === "pending" || access.refresh_token === "") {
+  
     return (
+     
       <img
         className={appStyle["loading-anim"]}
         src={"/spotify_web.png"}
         width={100}
         height={100}
       ></img>
+
     );
   }else{
-
-  
 
   return (
     <div className={appStyle["application-wrapper"]}>
