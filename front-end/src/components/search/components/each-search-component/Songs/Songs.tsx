@@ -5,15 +5,10 @@ import { Track, Tracks } from "../../../../../types/track";
 import { useAppSelector } from "../../../../../store/hooks";
 import getTracks from "../../../../../api/search/getTracks";
 import { SongCard } from "../../../reuseables/songCard";
-export function SongsRes({
-  songName,
-  
-}: {
-  songName: string;
- 
-}) {
+import SongCardSkeleton from "../../../../../skeletons/songCardSkeleton";
+export function SongsRes({ songName }: { songName: string }) {
   const [tracksData, setTracksData] = useState<{
-    data: Track[];
+    data: Array<Track | typeof SongCardSkeleton>;
     next: string | null;
   }>({
     next: null,
@@ -22,13 +17,11 @@ export function SongsRes({
   const [tracksLoading, setTracksLoading] = useState<boolean>(true);
   const [tracksError, setTracksError] = useState<string | unknown>();
   const query = songName.split(" ").join("%20");
-  const observing = useRef< null | IntersectionObserver>(null)
+  const observing = useRef<null | IntersectionObserver>(null);
 
   const accessToken = useAppSelector(
     (state) => state.spotiUserReducer.spotiToken.accessToken
   );
-
-
 
   useEffect(() => {
     setTracksData({
@@ -37,52 +30,30 @@ export function SongsRes({
     });
   }, [songName]);
 
-
-  useEffect(() =>{
+  useEffect(() => {
     const fetchTracks = async () => {
+      setTracksData((prev) => {
+        return {
+          ...prev,
+          data: [...prev.data, ...Array(30).fill(SongCardSkeleton)],
+          next: prev.next,
+        };
+      });
       try {
         setTracksLoading(true);
         const req = await getTracks(
-         `/search?q=${query}&type=track&limit=30`,
-         accessToken
-
-        );
-        const data: Tracks = req.data.tracks;
-  
-        setTracksData((prev) => {
-          return {
-            ...prev,
-            data: [...prev.data, ...data.items],
-            next: data.next,
-          };
-        });
-      } catch (err) {
-        setTracksError(err);
-      } finally {
-        setTracksLoading(false);
-      }
-    };
-    
-    fetchTracks();
-  }, [accessToken, query])
-
-
-  const lastSong = useCallback((node: HTMLDivElement | null) => {
-    const fetchTracks = async () => {
-      try {
-        setTracksLoading(true);
-        const req = await getTracks(
-          tracksData.next
-            ? tracksData.next
-            : `/search?q=${query}&type=track&limit=30`,
+          `/search?q=${query}&type=track&limit=30`,
           accessToken
         );
         const data: Tracks = req.data.tracks;
-  
+
         setTracksData((prev) => {
           return {
             ...prev,
-            data: [...prev.data, ...data.items],
+            data: [
+              ...prev.data.filter((e) => typeof e !== typeof SongCardSkeleton),
+              ...data.items,
+            ],
             next: data.next,
           };
         });
@@ -92,23 +63,58 @@ export function SongsRes({
         setTracksLoading(false);
       }
     };
-  
 
-    if(!node) return;
-    if(tracksLoading) return;
-    if(observing.current) observing.current?.disconnect();
-    observing.current = new IntersectionObserver((e) => {
-      if(e[0].isIntersecting){
-        console.log(e)
-        fetchTracks()
-      }
-   
-    });
-    observing.current?.observe(node)
-      
- }, [accessToken, query, tracksData.next, tracksLoading]);
+    fetchTracks();
+  }, [accessToken, query]);
 
-  console.log(tracksData.data.length);
+  const lastSong = useCallback(
+    (node: HTMLDivElement | null) => {
+      const fetchTracks = async () => {
+        try {
+          setTracksData((prev) => {
+            return {
+              ...prev,
+              data: [...prev.data, ...Array(30).fill(SongCardSkeleton)],
+              next: prev.next,
+            };
+          });
+          setTracksLoading(true);
+          const req = await getTracks(
+            tracksData.next
+              ? tracksData.next
+              : `/search?q=${query}&type=track&limit=30`,
+            accessToken
+          );
+          const data: Tracks = req.data.tracks;
+
+          setTracksData((prev) => {
+            return {
+              ...prev,
+              data: [...prev.data.filter((e) => typeof e !== typeof SongCardSkeleton), ...data.items],
+              next: data.next,
+            };
+          });
+        } catch (err) {
+          setTracksError(err);
+        } finally {
+          setTracksLoading(false);
+        }
+      };
+
+      if (!node) return;
+      if (tracksLoading) return;
+      if (observing.current) observing.current?.disconnect();
+      observing.current = new IntersectionObserver((e) => {
+        if (e[0].isIntersecting) {
+       
+          fetchTracks();
+        }
+      });
+      observing.current?.observe(node);
+    },
+    [accessToken, query, tracksData.next, tracksLoading]
+  );
+
   return (
     <section className={songsStyle["tracks-wrapper"]}>
       <div className={songsStyle["navigation-wrapper"]}>
@@ -132,13 +138,21 @@ export function SongsRes({
       </div>
 
       <div>
-        {tracksData.data.map((eachTrack, i) => (
-        <SongCard innerRef={i === tracksData.data.length - 1? lastSong: null}
-        n={i+1}
-        eachTrack={eachTrack}
-        />
-        ))}
-        </div>
+        {tracksData.data.map((eachTrack, i) => {
+          if (typeof eachTrack === typeof SongCardSkeleton) {
+            return <SongCardSkeleton key={i} />;
+          } else {
+            return (
+              
+              <SongCard
+                innerRef={i === tracksData.data.length - 1 ? lastSong : null}
+                n={i + 1}
+                eachTrack={typeof eachTrack === "object" ? eachTrack : null}
+              />
+            );
+          }
+        })}
+      </div>
     </section>
   );
 }

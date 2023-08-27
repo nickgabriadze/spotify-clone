@@ -3,9 +3,7 @@ export function GenreCardSkeleton(){
 
 
 
-    return <div 
-    
-    className={skeletonsStyle['genre-skeleton']}></div>
+    return <div className={skeletonsStyle['genre-skeleton']}></div>
 }
 
 export default GenreCardSkeleton
