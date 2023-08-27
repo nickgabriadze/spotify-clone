@@ -25,7 +25,7 @@ export function DeviceController({
       <img
         src={
           Number(
-            devices?.devices.filter((each) => each.is_active)[0].volume_percent
+            devices?.devices.filter((each) => each.is_active)[0]?.volume_percent
           ) > 0
             ? VolumeUp
             : VolumeOff
