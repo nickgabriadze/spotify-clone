@@ -1,18 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 import Navigation from "../../components/navigation/navigation";
+import { CurrentlyPlaying } from "../../types/currentlyPlaying";
 
-export type Option =  | "All"
-| "Artists"
-| "Albums"
-| "Songs"
-| "Playlists"
-| "Podcasts & Shows";
+export type Option =
+  | "All"
+  | "Artists"
+  | "Albums"
+  | "Songs"
+  | "Playlists"
+  | "Podcasts & Shows";
 
 interface Navigation {
   navTo: string;
   searchQuery: string;
   typing: boolean;
-  searchOption:Option
+  searchOption: Option;
+  currentlyPlayingSong: string
 }
 
 const initialState: Navigation = {
@@ -20,6 +23,7 @@ const initialState: Navigation = {
   searchQuery: "",
   typing: false,
   searchOption: "Songs",
+  currentlyPlayingSong: "None",
 };
 
 const navigationSlice = createSlice({
@@ -34,12 +38,10 @@ const navigationSlice = createSlice({
         };
       }
     ) => {
-
       return {
         ...state,
-        searchOption: action.payload.option
-      }
-
+        searchOption: action.payload.option,
+      };
     },
     setNavTo: (
       state,
@@ -82,8 +84,23 @@ const navigationSlice = createSlice({
         searchQuery: action.payload.searchQuery,
       };
     },
+
+    setCurrentlyPlayingSong: (
+      state,
+      action: {
+        payload: {
+          currentlyPlayingSong: string;
+        };
+      }
+    ) => {
+      return {
+        ...state,
+        currentlyPlayingSong: action.payload.currentlyPlayingSong,
+      };
+    },
   },
 });
 
-export const { setNavTo, setSearchQuery, setTyping, setSearchOption } = navigationSlice.actions;
+export const { setNavTo, setSearchQuery, setTyping, setSearchOption, setCurrentlyPlayingSong } =
+  navigationSlice.actions;
 export default navigationSlice.reducer;

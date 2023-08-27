@@ -145,8 +145,9 @@ export function SongsRes({ songName }: { songName: string }) {
             return (
               
               <SongCard
-                innerRef={i === tracksData.data.length - 1 ? lastSong : null}
+                ref={i === tracksData.data.length - 1 ? lastSong : null}
                 n={i + 1}
+                key={i}
                 eachTrack={typeof eachTrack === "object" ? eachTrack : null}
               />
             );

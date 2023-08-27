@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import playerStyle from "./player.module.css";
-import { useAppSelector } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { getCurrentlyPlaying } from "../../api/player/getCurrentlyPlaying";
 import { CurrentlyPlaying } from "../../types/currentlyPlaying";
 import { getDevices } from "../../api/player/getDevices";
@@ -8,6 +8,7 @@ import { Devices } from "../../types/device";
 import SongDetails from "./playerComponents/SongsDetails";
 import DeviceController from "./playerComponents/DeviceController";
 import StreamController from "./playerComponents/StreamController";
+import { setCurrentlyPlayingSong } from "../../store/features/navigationSlice";
 
 export function Player() {
   const [currentlyPlaying, setCurrentlyPlaying] = useState<CurrentlyPlaying>();
@@ -17,6 +18,8 @@ export function Player() {
   const [error, setError] = useState<string | unknown>();
   const access = useAppSelector((state) => state.spotiUserReducer.spotiToken);
   const [actions, setActions] = useState<string[]>([]);
+  const dispatch = useAppDispatch();
+ 
 
   useEffect(() => {
     const fetchCurrent = async () => {
@@ -32,6 +35,11 @@ export function Player() {
         } else {
           setCurrentlyPlaying(data);
           setNoDataAvailable(false);
+          
+          dispatch(setCurrentlyPlayingSong({
+            currentlyPlayingSong: data.item.id
+          }))
+       
         }
       } catch (err) {
         setError(err);
@@ -45,7 +53,9 @@ export function Player() {
     }
 
     fetchCurrent();
-  }, [access, actions.length]);
+  }, [access, actions.length, dispatch ]);
+
+
 
   if (noDataAvailable) {
     document.title = "Spotify Clone";
@@ -57,9 +67,9 @@ export function Player() {
 
     return (
       <section className={playerStyle["player-wrapper"]}>
-        <SongDetails currentlyPlaying={currentlyPlaying} />
-        <StreamController currentlyPlaying={currentlyPlaying}/>
-        <DeviceController devices={devices} />
+        <SongDetails currentlyPlaying={noDataAvailable ? undefined: currentlyPlaying} />
+        <StreamController currentlyPlaying={noDataAvailable ? undefined: currentlyPlaying}/>
+        <DeviceController devices={noDataAvailable ? undefined: devices} />
       </section>
     );
   }

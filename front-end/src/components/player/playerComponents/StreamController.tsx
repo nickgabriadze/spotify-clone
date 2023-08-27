@@ -7,17 +7,22 @@ import SkipNext from "../icons/skip-next.svg";
 import SkipPrevious from "../icons/skip-previous.svg";
 import Repeat from "../icons/repeat.svg";
 import { CurrentlyPlaying } from "../../../types/currentlyPlaying";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function StreamController({currentlyPlaying}: {currentlyPlaying: CurrentlyPlaying | undefined}){
     const [pos, setPos] = useState<number>(
-        Number(
+       
             (Number(currentlyPlaying?.progress_ms) /
-            Number(currentlyPlaying?.item?.duration_ms)) *
-          100
-        )
+            Number(currentlyPlaying?.item?.duration_ms)) * 100
+        
       );
 
+      useEffect(() => {
+            setPos((Number(currentlyPlaying?.progress_ms) /
+            Number(currentlyPlaying?.item?.duration_ms)) * 100)
+
+      }, [currentlyPlaying?.progress_ms, currentlyPlaying?.item?.duration_ms])
+    
     return (
         <div className={playerStyle["playback-control"]}>
         <div className={playerStyle["actual-controls"]}>

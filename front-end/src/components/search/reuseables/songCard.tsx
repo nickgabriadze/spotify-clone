@@ -1,20 +1,27 @@
 import { Track } from "../../../types/track";
 import songsStyle from "../components/each-search-component/Songs/songs.module.css";
 import millisecondsToMmSs from "../../player/msConverter";
-import React, { LegacyRef } from "react";
-export function SongCard({innerRef, n, eachTrack }: {innerRef:LegacyRef<HTMLDivElement> | undefined, n: number; eachTrack: Track | null }) {
+import { LegacyRef, forwardRef } from "react";
+import Equaliser from "../../player/icons/device-picker-equaliser-animation.946e7243.webp"
+import { useAppSelector } from "../../../store/hooks";
 
+export const SongCard =  forwardRef(function SongCard(props:{
+  eachTrack: Track | null,
+  n: number
+}, ref:LegacyRef<HTMLDivElement>) {
 
+  const {n, eachTrack} = props;
+  const songID = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong);
 
 
   return (
     <div className={songsStyle["track-wrapper"]}
-    ref={innerRef}
+    ref={ref}
     >
       <div className={songsStyle["general-info"]}>
-        <div
+        
       
-        >{n}</div>
+        {eachTrack?.id === songID? <div style={{width: '15px', marginLeft: '-5px'}}> <img src={Equaliser} width={20} height={30} ></img></div> : <div>{n}</div>}
         <div className={songsStyle["img-title-artists"]}>
           <div className={songsStyle["album-img"]}>
             <img
@@ -42,6 +49,5 @@ export function SongCard({innerRef, n, eachTrack }: {innerRef:LegacyRef<HTMLDivE
       </div>
     </div>
   );
-}
+})
 
-export default React.forwardRef((props) => <SongCard  {...props} />) as typeof SongCard;
