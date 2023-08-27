@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import playerStyle from "./player.module.css";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { getCurrentlyPlaying } from "../../api/player/getCurrentlyPlaying";
@@ -20,6 +20,35 @@ export function Player() {
   const [actions, setActions] = useState<string[]>([]);
   const dispatch = useAppDispatch();
  
+  const fetchCurrentData = useCallback( async () => {
+    try {
+      const devices = await getDevices(access.accessToken);
+      const devicesData = devices.data;
+
+      setDevices(devicesData);
+      const req = await getCurrentlyPlaying(access.accessToken);
+      const data = req.data;
+      if (req.status === 204) {
+        setNoDataAvailable(true);
+      } else {
+        setCurrentlyPlaying(data);
+        setNoDataAvailable(false);
+        
+        dispatch(setCurrentlyPlayingSong({
+          currentlyPlayingSong: data.item.id
+        }))
+     
+      }
+    } catch (err) {
+      setError(err);
+    } finally {
+      setCurrentLoading(false);
+    }
+  }, [access.accessToken, dispatch]);
+
+  useEffect(() => {
+    fetchCurrentData();
+  }, [fetchCurrentData])
 
   useEffect(() => {
     const fetchCurrent = async () => {
@@ -51,9 +80,18 @@ export function Player() {
     if (actions.length > 50) {
       setActions([]);
     }
+    
 
-    fetchCurrent();
+    
+
+    
+    const fetcher = setInterval(() => fetchCurrent(), 3000);
+
+    return () => clearInterval(fetcher)
+  
+
   }, [access, actions.length, dispatch ]);
+
 
 
 
@@ -63,7 +101,7 @@ export function Player() {
   } else {
     document.title = String(currentlyPlaying?.item?.name)
       .concat(" • ")
-      .concat(String(currentlyPlaying?.item.artists[0].name));
+      .concat(String(currentlyPlaying?.item?.artists[0].name));
 
     return (
       <section className={playerStyle["player-wrapper"]}>
