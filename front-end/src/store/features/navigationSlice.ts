@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import Navigation from "../../components/navigation/navigation";
-import { CurrentlyPlaying } from "../../types/currentlyPlaying";
 
 export type Option =
   | "All"
@@ -15,7 +14,8 @@ interface Navigation {
   searchQuery: string;
   typing: boolean;
   searchOption: Option;
-  currentlyPlayingSong: string
+  currentlyPlayingSong: string;
+  userControlActions: string[];
 }
 
 const initialState: Navigation = {
@@ -24,6 +24,7 @@ const initialState: Navigation = {
   typing: false,
   searchOption: "Songs",
   currentlyPlayingSong: "None",
+  userControlActions: [],
 };
 
 const navigationSlice = createSlice({
@@ -98,9 +99,39 @@ const navigationSlice = createSlice({
         currentlyPlayingSong: action.payload.currentlyPlayingSong,
       };
     },
+
+    setUserControlActions: (
+      state,
+      action: {
+        payload: {
+          userAction: string | "Nullify";
+        };
+      }
+    ) => {
+      if (action.payload.userAction === "Nullify") {
+        return {
+          ...state,
+          userControlActions: [],
+        };
+      } else {
+        return {
+          ...state,
+          userControlActions: [
+            ...state.userControlActions,
+            action.payload.userAction,
+          ],
+        };
+      }
+    },
   },
 });
 
-export const { setNavTo, setSearchQuery, setTyping, setSearchOption, setCurrentlyPlayingSong } =
-  navigationSlice.actions;
+export const {
+  setNavTo,
+  setSearchQuery,
+  setTyping,
+  setSearchOption,
+  setCurrentlyPlayingSong,
+  setUserControlActions,
+} = navigationSlice.actions;
 export default navigationSlice.reducer;

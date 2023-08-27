@@ -8,10 +8,16 @@ import SkipPrevious from "../icons/skip-previous.svg";
 import Repeat from "../icons/repeat.svg";
 import { CurrentlyPlaying } from "../../../types/currentlyPlaying";
 import { useEffect, useState } from "react";
+import PlayNext from "../../../api/player/playNext";
+import PlayPrevious from "../../../api/player/playPrevious";
+import { useAppDispatch } from "../../../store/hooks";
+import { setUserControlActions } from "../../../store/features/navigationSlice";
 
 export function StreamController({
   currentlyPlaying,
+  accessToken,
 }: {
+  accessToken: string;
   currentlyPlaying: CurrentlyPlaying | undefined;
 }) {
   const [pos, setPos] = useState<number>(
@@ -19,6 +25,8 @@ export function StreamController({
       Number(currentlyPlaying?.item?.duration_ms)) *
       100
   );
+
+  const dispatch = useAppDispatch();
 
   const [duration, setDuration] = useState<number>(
     Number(currentlyPlaying?.progress_ms)
@@ -56,7 +64,16 @@ export function StreamController({
         <button style={{ marginBottom: "9px" }}>
           <img alt="Shuffle" src={Shuffle} width={20}></img>
         </button>
-        <button>
+        <button
+          onClick={async () => {
+            await PlayPrevious(accessToken);
+            dispatch(
+              setUserControlActions({
+                userAction: "Play Previous Song",
+              })
+            );
+          }}
+        >
           <img alt="Skip Previous" src={SkipPrevious} width={30}></img>
         </button>
         <button>
@@ -66,7 +83,16 @@ export function StreamController({
             width={40}
           ></img>
         </button>
-        <button>
+        <button
+          onClick={async () => {
+            await PlayNext(accessToken);
+            dispatch(
+              setUserControlActions({
+                userAction: "Play Next Song",
+              })
+            );
+          }}
+        >
           <img alt="Skip Next" src={SkipNext} width={30}></img>
         </button>
         <button style={{ marginBottom: "9px" }}>

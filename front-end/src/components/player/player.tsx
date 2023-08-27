@@ -8,7 +8,7 @@ import { Devices } from "../../types/device";
 import SongDetails from "./playerComponents/SongsDetails";
 import DeviceController from "./playerComponents/DeviceController";
 import StreamController from "./playerComponents/StreamController";
-import { setCurrentlyPlayingSong } from "../../store/features/navigationSlice";
+import { setCurrentlyPlayingSong, setUserControlActions } from "../../store/features/navigationSlice";
 
 export function Player() {
   const [currentlyPlaying, setCurrentlyPlaying] = useState<CurrentlyPlaying>();
@@ -17,11 +17,14 @@ export function Player() {
   const [devices, setDevices] = useState<Devices>();
   const [error, setError] = useState<string | unknown>();
   const access = useAppSelector((state) => state.spotiUserReducer.spotiToken);
-  const [actions, setActions] = useState<string[]>([]);
   const dispatch = useAppDispatch();
- 
+  const userActions = useAppSelector(state => state.navigationReducer.userControlActions);
+
+
+
   const fetchCurrentData = useCallback( async () => {
     try {
+      
       const devices = await getDevices(access.accessToken);
       const devicesData = devices.data;
 
@@ -48,7 +51,16 @@ export function Player() {
 
   useEffect(() => {
     fetchCurrentData();
-  }, [fetchCurrentData])
+    if (userActions.length > 50) {
+      dispatch(setUserControlActions({
+        userAction: 'Nullify'
+      }))
+    }else{
+      fetchCurrentData();
+     
+    }
+    
+  }, [fetchCurrentData, dispatch,userActions.length])
 
   useEffect(() => {
     const fetchCurrent = async () => {
@@ -77,12 +89,10 @@ export function Player() {
       }
     };
 
-    if (actions.length > 50) {
-      setActions([]);
-    }
+ 
     
 
-    
+  
 
     
     const fetcher = setInterval(() => fetchCurrent(), 3000);
@@ -90,7 +100,7 @@ export function Player() {
     return () => clearInterval(fetcher)
   
 
-  }, [access, actions.length, dispatch ]);
+  }, [access, dispatch]);
 
 
 
@@ -106,7 +116,7 @@ export function Player() {
     return (
       <section className={playerStyle["player-wrapper"]}>
         <SongDetails currentlyPlaying={noDataAvailable ? undefined: currentlyPlaying} />
-        <StreamController currentlyPlaying={noDataAvailable ? undefined: currentlyPlaying}/>
+        <StreamController accessToken={access.accessToken} currentlyPlaying={noDataAvailable ? undefined: currentlyPlaying}/>
         <DeviceController devices={noDataAvailable ? undefined: devices} />
       </section>
     );
