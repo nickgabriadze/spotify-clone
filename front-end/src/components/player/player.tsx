@@ -3,18 +3,11 @@ import playerStyle from "./player.module.css";
 import { useAppSelector } from "../../store/hooks";
 import { getCurrentlyPlaying } from "../../api/player/getCurrentlyPlaying";
 import { CurrentlyPlaying } from "../../types/currentlyPlaying";
-import Play from "./icons/play.svg";
-import Pause from "./icons/pause.svg";
-import Shuffle from "./icons/shuffle.svg";
-import SkipNext from "./icons/skip-next.svg";
-import SkipPrevious from "./icons/skip-previous.svg";
-import Repeat from "./icons/repeat.svg";
 import { getDevices } from "../../api/player/getDevices";
 import { Devices } from "../../types/device";
-import millisecondsToMmSs from "./msConverter";
-import setPlayerPosition from "../../api/player/setPlayerPosition";
 import SongDetails from "./playerComponents/SongsDetails";
 import DeviceController from "./playerComponents/DeviceController";
+import StreamController from "./playerComponents/StreamController";
 
 export function Player() {
   const [currentlyPlaying, setCurrentlyPlaying] = useState<CurrentlyPlaying>();
@@ -65,61 +58,7 @@ export function Player() {
     return (
       <section className={playerStyle["player-wrapper"]}>
         <SongDetails currentlyPlaying={currentlyPlaying} />
-        <div className={playerStyle["playback-control"]}>
-          <div className={playerStyle["actual-controls"]}>
-            <button style={{ marginBottom: "9px" }}>
-              <img alt="Shuffle" src={Shuffle} width={20}></img>
-            </button>
-            <button>
-              <img alt="Skip Previous" src={SkipPrevious} width={30}></img>
-            </button>
-            <button>
-              <img
-                alt="Play/Pause"
-                src={currentlyPlaying?.is_playing ? Pause : Play}
-                width={40}
-              ></img>
-            </button>
-            <button>
-              <img alt="Skip Next" src={SkipNext} width={30}></img>
-            </button>
-            <button style={{ marginBottom: "9px" }}>
-              <img alt="Repeat" src={Repeat} width={20}></img>
-            </button>
-          </div>
-
-          <div className={playerStyle["duration"]}>
-            <p>{millisecondsToMmSs(Number(currentlyPlaying?.progress_ms))}</p>
-
-            <input
-              style={{
-                background: `linear-gradient(to right, #1ed760 ${
-                  (Number(currentlyPlaying?.progress_ms) /
-                    Number(currentlyPlaying?.item?.duration_ms)) *
-                  100
-                }%, #4d4d4d ${
-                  (Number(currentlyPlaying?.progress_ms) /
-                    Number(currentlyPlaying?.item?.duration_ms)) *
-                  100
-                }%)`,
-              }}
-              onChange={async (e) => {
-                await setPlayerPosition(
-                  Number(e.target.value),
-                  access.accessToken
-                );
-                setActions((prev) => [...prev, "Seek To Pos"]);
-              }}
-              type="range"
-              value={Number(currentlyPlaying?.progress_ms)}
-              max={currentlyPlaying?.item?.duration_ms}
-              min={0}
-            />
-            <p>
-              {millisecondsToMmSs(Number(currentlyPlaying?.item?.duration_ms))}
-            </p>
-          </div>
-        </div>
+        <StreamController currentlyPlaying={currentlyPlaying}/>
         <DeviceController devices={devices} />
       </section>
     );
