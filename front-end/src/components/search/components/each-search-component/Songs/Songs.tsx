@@ -148,6 +148,7 @@ export function SongsRes({ songName }: { songName: string }) {
                 ref={i === tracksData.data.length - 1 ? lastSong : null}
                 n={i + 1}
                 key={i}
+                accessToken={accessToken}
                 eachTrack={typeof eachTrack === "object" ? eachTrack : null}
               />
             );

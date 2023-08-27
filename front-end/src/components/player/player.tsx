@@ -109,15 +109,20 @@ export function Player() {
     document.title = "Spotify Clone";
     return <div></div>;
   } else {
-    document.title = String(currentlyPlaying?.item?.name)
+    document.title = currentlyPlaying?.item?.name?  String(currentlyPlaying?.item?.name)
       .concat(" • ")
-      .concat(String(currentlyPlaying?.item?.artists[0].name));
+      .concat(String(currentlyPlaying?.item?.artists[0].name)) : 'Spotify Clone';
 
     return (
-      <section className={playerStyle["player-wrapper"]}>
+      <section className={playerStyle["player"]}>
+        <div className={playerStyle['player-wrapper']}>
         <SongDetails currentlyPlaying={noDataAvailable ? undefined: currentlyPlaying} />
         <StreamController accessToken={access.accessToken} currentlyPlaying={noDataAvailable ? undefined: currentlyPlaying}/>
         <DeviceController devices={noDataAvailable ? undefined: devices} />
+        </div>
+        <div className={playerStyle['which-device']}>
+            <h5>Listening on {devices?.devices.filter((each) => each.is_active)[0].name}</h5>
+        </div>
       </section>
     );
   }

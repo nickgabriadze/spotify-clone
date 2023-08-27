@@ -12,6 +12,9 @@ import PlayNext from "../../../api/player/playNext";
 import PlayPrevious from "../../../api/player/playPrevious";
 import { useAppDispatch } from "../../../store/hooks";
 import { setUserControlActions } from "../../../store/features/navigationSlice";
+import PauseStreaming from "../../../api/player/pauseStreaming";
+import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
+import SeekToPosition from "../../../api/player/seekToPosition";
 
 export function StreamController({
   currentlyPlaying,
@@ -76,7 +79,21 @@ export function StreamController({
         >
           <img alt="Skip Previous" src={SkipPrevious} width={30}></img>
         </button>
-        <button>
+        <button
+        onClick={async () => {
+          if(currentlyPlaying?.is_playing){
+            await PauseStreaming(accessToken);
+            dispatch(setUserControlActions({
+              userAction: 'Pause Streaming'
+            }))
+          }else{
+            await PlayResumeStreaming(accessToken);
+            dispatch(setUserControlActions({
+              userAction: 'Resume Streaming'
+            }))
+          }
+        }}
+        >
           <img
             alt="Play/Pause"
             src={currentlyPlaying?.is_playing ? Pause : Play}
@@ -107,7 +124,13 @@ export function StreamController({
           style={{
             background: `linear-gradient(to right, #1ed760 ${pos}%, #4d4d4d ${pos}%)`,
           }}
-          onChange={(e) => setPos(Number(e.target.value))}
+
+          onChange={async (e) => {setPos(Number(e.target.value));
+            await SeekToPosition(accessToken, Math.round(Number(currentlyPlaying?.item?.duration_ms) * Number(e.target.value) / 100));
+            dispatch(setUserControlActions({
+              userAction: 'Seek To Position'
+            }))
+          }}
           type="range"
           value={pos}
           max={100}

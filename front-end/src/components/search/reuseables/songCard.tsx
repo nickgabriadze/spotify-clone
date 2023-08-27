@@ -1,27 +1,41 @@
 import { Track } from "../../../types/track";
 import songsStyle from "../components/each-search-component/Songs/songs.module.css";
 import millisecondsToMmSs from "../../player/msConverter";
-import { LegacyRef, forwardRef } from "react";
+import { LegacyRef, forwardRef, useState } from "react";
 import Equaliser from "../../player/icons/device-picker-equaliser-animation.946e7243.webp"
-import { useAppSelector } from "../../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
+import { setUserControlActions } from "../../../store/features/navigationSlice";
+import Play from "../../player/icons/play.svg";
 
 export const SongCard =  forwardRef(function SongCard(props:{
   eachTrack: Track | null,
-  n: number
+  n: number,
+  accessToken: string
 }, ref:LegacyRef<HTMLDivElement>) {
 
-  const {n, eachTrack} = props;
+  const {n, eachTrack, accessToken} = props;
   const songID = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong);
-
+  const dispatch = useAppDispatch();
+  const [hoveringOver, setHoveringOver] = useState<boolean>(false)
 
   return (
     <div className={songsStyle["track-wrapper"]}
+    onDoubleClick={async () => {
+      await PlayResumeStreaming(accessToken, undefined, [String(eachTrack?.uri)])
+      dispatch(setUserControlActions({
+        userAction: 'Play Track'
+      }))
+    }}
+
+    onMouseOver={() => setHoveringOver(true)}
+    onMouseOut={() => setHoveringOver(false)}
     ref={ref}
     >
       <div className={songsStyle["general-info"]}>
         
       
-        {eachTrack?.id === songID? <div style={{width: '15px', marginLeft: '-5px'}}> <img src={Equaliser} width={20} height={30} ></img></div> : <div>{n}</div>}
+        {eachTrack?.id === songID? <div style={{width: '15px', marginLeft: '-5px'}}> <img src={Equaliser} width={20} height={30} ></img></div> : <div>{hoveringOver ? <img src={Play} width={30} height={30}></img>:n}</div>}
         <div className={songsStyle["img-title-artists"]}>
           <div className={songsStyle["album-img"]}>
             <img

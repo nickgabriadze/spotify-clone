@@ -116,6 +116,12 @@ button {
     cursor: pointer;
 }
 
+.devices-volume button{
+  outline: none;
+  border: none;
+  margin-bottom: 3px;
+
+}
 
 
 .duration > input[type="range"] {
@@ -167,4 +173,39 @@ button {
     outline: none;
     border: none;
     border-radius: 5px; 
+}
+
+.player{
+  display: flex;
+  flex-direction: column;
+}
+.which-device{
+  background-color: #1ed760;
+  height:24px;
+  border-radius: 5px;
+  color:black;
+  text-align: right;
+
+  
+}
+.which-device h5{
+  font-family: 'Gotham Light', sans-serif;
+  padding: 5px; 
+  margin-right: 120px;
+}
+
+.devices-triangle{
+  display: flex;
+  flex-direction: column;
+}
+.devices-triangle > div {
+  
+    width: 10px;
+    height: 10px;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 20px solid #1ed760; 
+    position: absolute;
+    margin-top: 25px;
+    
 }
