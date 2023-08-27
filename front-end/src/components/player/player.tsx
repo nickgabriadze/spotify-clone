@@ -3,10 +3,7 @@ import playerStyle from "./player.module.css";
 import { useAppSelector } from "../../store/hooks";
 import { getCurrentlyPlaying } from "../../api/player/getCurrentlyPlaying";
 import { CurrentlyPlaying } from "../../types/currentlyPlaying";
-import Heart from "./icons/heart.svg";
 import Play from "./icons/play.svg";
-import Queue from "./icons/queue.svg";
-import DevicesSVG from "./icons/devices.svg";
 import Pause from "./icons/pause.svg";
 import Shuffle from "./icons/shuffle.svg";
 import SkipNext from "./icons/skip-next.svg";
@@ -15,10 +12,9 @@ import Repeat from "./icons/repeat.svg";
 import { getDevices } from "../../api/player/getDevices";
 import { Devices } from "../../types/device";
 import millisecondsToMmSs from "./msConverter";
-import VolumeUp from "./icons/volume.svg";
-import VolumeOff from "./icons/volume-off.svg";
-import setPlaybackVolume from "../../api/player/setPlaybackVolume";
 import setPlayerPosition from "../../api/player/setPlayerPosition";
+import SongDetails from "./playerComponents/SongsDetails";
+import DeviceController from "./playerComponents/DeviceController";
 
 export function Player() {
   const [currentlyPlaying, setCurrentlyPlaying] = useState<CurrentlyPlaying>();
@@ -28,6 +24,7 @@ export function Player() {
   const [error, setError] = useState<string | unknown>();
   const access = useAppSelector((state) => state.spotiUserReducer.spotiToken);
   const [actions, setActions] = useState<string[]>([]);
+
   useEffect(() => {
     const fetchCurrent = async () => {
       try {
@@ -57,14 +54,6 @@ export function Player() {
     fetchCurrent();
   }, [access, actions.length]);
 
-  const [sliderVolume, setSliderVolume] = useState<number>(
-    Number(
-      noDataAvailable
-        ? 0
-        : devices?.devices?.filter((each) => each.is_active)[0]?.volume_percent
-    )
-  );
-
   if (noDataAvailable) {
     document.title = "Spotify Clone";
     return <div></div>;
@@ -75,31 +64,7 @@ export function Player() {
 
     return (
       <section className={playerStyle["player-wrapper"]}>
-        <div className={playerStyle["currently-playing-info"]}>
-          <div className={playerStyle["currently-playing-info-album-img"]}>
-            <img
-              alt="Album picture"
-              draggable={false}
-              src={currentlyPlaying?.item?.album?.images[0]?.url}
-              height={70}
-              width={60}
-            ></img>
-          </div>
-          <div className={playerStyle["song-info"]}>
-            <a className={playerStyle["song-name"]}>
-              {currentlyPlaying?.item?.name}
-            </a>
-            <div>
-              {currentlyPlaying?.item?.artists.map((each, i) => (
-                <a key={each.id} className={playerStyle["artists-name"]}>
-                  {each.name}
-                  {i === currentlyPlaying.item.artists.length - 1 ? "" : ", "}
-                </a>
-              ))}
-            </div>
-          </div>
-          <img src={Heart} width={20} height={18} alt="heart icon"></img>
-        </div>
+        <SongDetails currentlyPlaying={currentlyPlaying} />
         <div className={playerStyle["playback-control"]}>
           <div className={playerStyle["actual-controls"]}>
             <button style={{ marginBottom: "9px" }}>
@@ -138,16 +103,13 @@ export function Player() {
                   100
                 }%)`,
               }}
-              onChange={async (e) =>
-                {
-                  
+              onChange={async (e) => {
                 await setPlayerPosition(
                   Number(e.target.value),
                   access.accessToken
-                )
+                );
                 setActions((prev) => [...prev, "Seek To Pos"]);
-                }
-              }
+              }}
               type="range"
               value={Number(currentlyPlaying?.progress_ms)}
               max={currentlyPlaying?.item?.duration_ms}
@@ -158,58 +120,7 @@ export function Player() {
             </p>
           </div>
         </div>
-        <div className={playerStyle["devices-volume"]}>
-          <img src={Queue} width={22} alt="Song Queue icon"></img>
-          <img src={DevicesSVG} width={22} alt="Devices icon"></img>
-          <img
-            onClick={async () => {
-              setActions((prev) => [...prev, "Volume On/Off"]);
-              await setPlaybackVolume(
-                Number(
-                  devices?.devices.filter((each) => each.is_active)[0]
-                    .volume_percent
-                ) > 0
-                  ? 0
-                  : 100,
-                access.accessToken
-              );
-            }}
-            src={
-              Number(
-                devices?.devices.filter((each) => each.is_active)[0]
-                  .volume_percent
-              ) > 0
-                ? VolumeUp
-                : VolumeOff
-            }
-            alt="Volume icon"
-            width={22}
-          ></img>
-          <input
-            className={playerStyle["volume-rocker"]}
-            style={{
-              background: `linear-gradient(to right, #1ed760 ${
-                devices?.devices?.filter((each) => each.is_active)[0]
-                  ?.volume_percent
-              }%, #4d4d4d ${
-                devices?.devices?.filter((each) => each.is_active)[0]
-                  ?.volume_percent
-              }%)`,
-            }}
-            onChange={async (e) => {
-              setSliderVolume(Number(e.target.value));
-              await setPlaybackVolume(
-                Number(e.target.value),
-                access.accessToken
-              );
-              setActions((prev) => [...prev, "Volume Up"]);
-            }}
-            type="range"
-            value={sliderVolume}
-            max={100}
-            min={0}
-          />
-        </div>
+        <DeviceController devices={devices} />
       </section>
     );
   }
