@@ -14,6 +14,7 @@ import {
 import getMe from "../../../../api/getMe";
 import { Me } from "../../../../types/me";
 import SpotiError from "../../../Error";
+import Searchables from "../searchables/searchables";
 
 export function SearchBar() {
   const searchStuff = useAppSelector((state) => state.navigationReducer);
@@ -47,7 +48,16 @@ export function SearchBar() {
   return (
     <div className={searchBarStyle["search-bar"]}>
       <div className={searchBarStyle["search-with-nav"]}>
-        <div className={searchBarStyle["left-right-nav"]}>
+        <div className={searchBarStyle['navigation-with-search']}>
+      <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '5px',
+        marginLeft: '-6px'
+      }}
+      >
+      <div className={searchBarStyle["left-right-nav"]}>
           <button>
             <img src={Left} height={32}></img>
           </button>
@@ -56,8 +66,7 @@ export function SearchBar() {
           </button>
         </div>
 
-        <div
-          className={searchBarStyle["search-bar-wrapper"]}
+        <div className={searchBarStyle["search-bar-wrapper"]}
           style={
             onElementFocus
               ? {
@@ -127,6 +136,7 @@ export function SearchBar() {
         </div>
       </div>
 
+        
       <div className={searchBarStyle["install-profile"]}>
         <a href="https://www.spotify.com/us/download/windows/" target="_blank">
           {" "}
@@ -138,6 +148,10 @@ export function SearchBar() {
           <img src={userData?.images[0].url} width={32} height={32}></img>
         )}
       </div>
+        </div>
+        {searchStuff.searchQuery.trim().length > 0 ? <Searchables /> : ""}
+      </div>
+
     </div>
   );
 }

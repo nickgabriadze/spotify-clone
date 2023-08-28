@@ -21,18 +21,26 @@
   border-radius: 25px;
   width: var(--search-bar-size);
 }
-
-.left-right-nav, .search-with-nav{
+ .search-with-nav{
   display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
   
+
 }
 
-
+.navigation-with-search{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
 .left-right-nav button img {
   background-color: black;
   border-radius: 100%;
   padding: 3px;
+  
 }
 .install-profile{
   display: flex;

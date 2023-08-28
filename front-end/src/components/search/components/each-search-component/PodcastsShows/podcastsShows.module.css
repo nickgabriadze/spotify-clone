@@ -1,32 +1,71 @@
-.episodes-wrapper{
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+.episodes-wrapper {
+  display: flex;
+  flex-direction: column;
+ 
 }
 
 .episodes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px;
+}
+.episode-card {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  border-bottom: 2px solid #262626;
+
+  width: 80%;
+  padding: 20px;
+  padding-bottom: 40px;
+  cursor: pointer;
+}
+
+.episode-card:hover{
+    background-color: #302f2f;
+    border-radius: 5px;
+}
+
+
+
+.episode-img img {
+  width: 112px;
+  height: 112px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.episode-desc{
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    padding: 20px;
+    justify-content: space-between;
+    gap: 20px;
 }
-.episode-card{
+
+.episode-name{
+    color: white;
+}
+
+.actual-desc p, .date-duration-details p{
+    color: #a4a4a4;
+    font-family: 'Gotham Light', sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+}
+
+.date-duration-details {
     display: flex;
-    align-items: center;
     gap: 10px;
-    border-bottom: 2px solid #262626;
-    
-    width: 60%;
-    padding: 20px;
-    padding-bottom: 40px;
 }
+.explicit {
+    background-color: #a4a4a4;
+    color: black;
+    padding: 4px;
+    padding-right: 6px;
+    padding-left: 6px;
+    font-size: 10px;
 
-
-
-.episode-img img{
-width: 112px;
-height: 112px;
-object-fit: cover;
-border-radius: 5px;
+    border-radius: 2px;
+    font-family: 'Gotham Light', sans-serif;
 }
-

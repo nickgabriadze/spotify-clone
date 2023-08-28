@@ -46,7 +46,7 @@ export function PodcastsShows({
   return (
     <section>
       <div className={podcastsShowsStyle["episodes-wrapper"]}>
-        <div style={{fontSize: '1.2rem', color: 'white'}}>Episodes</div>
+        <div style={{fontSize: '1.3rem', color: 'white', paddingLeft: '10px'}}>Episodes</div>
         <div className={podcastsShowsStyle['episodes-list']}>
           {showsEpisodes?.episodes.items.map((eachEpisode, i) => (
             <EpisodeCard eachEpisode={eachEpisode} key={i} />
