@@ -5,12 +5,14 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import Play from "../components/each-search-component/Playlists/icons/play.svg";
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
 import { setUserControlActions } from "../../../store/features/navigationSlice";
+import Pause from "../components/each-search-component/Playlists/icons/pause.svg";
+import PauseStreaming from "../../../api/player/pauseStreaming";
 
 export function AlbumCard({ eachAlbum }: { eachAlbum: Album }) {
   const [hoveringOver, setHoveringOver] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
-
+  const currentlyPlaying = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong);
   return (
     <div className={albumsStyle["album-card"]}
     onMouseOver={() => setHoveringOver(true)}
@@ -21,13 +23,45 @@ export function AlbumCard({ eachAlbum }: { eachAlbum: Album }) {
 
       {hoveringOver && (
         <button 
-        onClick={async () => {await PlayResumeStreaming(accessToken, eachAlbum.uri);
-        dispatch(setUserControlActions({
-          userAction: 'Play Album'
-        }))
+      
+        className={albumsStyle["album-hover-button"]}
+        onClick={async () => {
+          if (currentlyPlaying.albumID === eachAlbum.id) {
+            if (!currentlyPlaying.isPlaying) {
+              await PlayResumeStreaming(accessToken);
+              dispatch(
+                setUserControlActions({
+                  userAction: "Play Album",
+                })
+              );
+            } else {
+              await PauseStreaming(accessToken);
+              dispatch(
+                setUserControlActions({
+                  userAction: "Pause Album",
+                })
+              );
+            }
+          } else {
+            await PlayResumeStreaming(accessToken, eachAlbum.uri);
+            dispatch(
+              setUserControlActions({
+                userAction: "Play Album",
+              })
+            );
+          }
         }}
-        className={albumsStyle["album-hover-button"]}>
-          <img src={Play} width={20} height={20}></img>
+        >
+        {currentlyPlaying.albumID === eachAlbum.id &&
+          currentlyPlaying.isPlaying ? (
+           <div>
+            <img src={Pause} width={30} height={30}></img>
+            </div>
+          ) : (
+            <div>
+            <img src={Play} width={50} height={50}></img>
+            </div>
+          )}
         </button>
       )}
       <div className={albumsStyle["album-details"]}>

@@ -15,7 +15,7 @@ export const SongCard =  forwardRef(function SongCard(props:{
 }, ref:LegacyRef<HTMLDivElement>) {
 
   const {n, eachTrack, accessToken} = props;
-  const songID = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong);
+  const songID = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong.songID);
   const dispatch = useAppDispatch();
   const [hoveringOver, setHoveringOver] = useState<boolean>(false)
 

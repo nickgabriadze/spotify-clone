@@ -5,12 +5,21 @@ import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
 import Play from "../components/each-search-component/Playlists/icons/play.svg";
+import Pause from "../components/each-search-component/Playlists/icons/pause.svg";
 import { setUserControlActions } from "../../../store/features/navigationSlice";
+import PauseStreaming from "../../../api/player/pauseStreaming";
 
 export function ArtistCard({ eachArtist }: { eachArtist: Artist }) {
   const [hoveringOver, setHoveringOver] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
+  const currentlyPlaying = useAppSelector(
+    (state) => state.navigationReducer.currentlyPlayingSong
+  );
+
+  const accessToken = useAppSelector(
+    (state) => state.spotiUserReducer.spotiToken.accessToken
+  );
+
   return (
     <div
       className={artistsStyle["each-artist"]}
@@ -38,14 +47,45 @@ export function ArtistCard({ eachArtist }: { eachArtist: Artist }) {
       </div>
 
       {hoveringOver && (
-        <button 
-        onClick={async () => {await PlayResumeStreaming(accessToken ,eachArtist.uri);
-        dispatch(setUserControlActions({
-          userAction: 'Play Playlist'
-        }))
-        }}
-        className={artistsStyle["artist-hover-button"]}>
-          <img src={Play} width={20} height={20}></img>
+        <button
+          onClick={async () => {
+            if (currentlyPlaying.artistID === eachArtist.id) {
+              if (!currentlyPlaying.isPlaying) {
+                await PlayResumeStreaming(accessToken);
+                dispatch(
+                  setUserControlActions({
+                    userAction: "Play Artist",
+                  })
+                );
+              } else {
+                await PauseStreaming(accessToken);
+                dispatch(
+                  setUserControlActions({
+                    userAction: "Pause Artist",
+                  })
+                );
+              }
+            } else {
+              await PlayResumeStreaming(accessToken, eachArtist.uri);
+              dispatch(
+                setUserControlActions({
+                  userAction: "Play Artist",
+                })
+              );
+            }
+          }}
+          className={artistsStyle["artist-hover-button"]}
+        >
+          {currentlyPlaying.artistID === eachArtist.id &&
+          currentlyPlaying.isPlaying ? (
+            <div>
+              <img src={Pause} width={30} height={30}></img>
+            </div>
+          ) : (
+            <div>
+              <img src={Play} width={50} height={50}></img>
+            </div>
+          )}
         </button>
       )}
       <div className={artistsStyle["artist-info"]}>

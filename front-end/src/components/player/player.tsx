@@ -38,9 +38,13 @@ export function Player() {
         setNoDataAvailable(false);
         
         dispatch(setCurrentlyPlayingSong({
-          currentlyPlayingSong: data.item.id
+          currentlyPlayingSong: {
+            artistID: data.item.artists[0].id,
+            albumID: data.item.album.id,
+            songID: data.item.id,
+            isPlaying: data.is_playing
+          }
         }))
-     
       }
     } catch (err) {
       setError(err);
@@ -78,7 +82,12 @@ export function Player() {
           setNoDataAvailable(false);
           
           dispatch(setCurrentlyPlayingSong({
-            currentlyPlayingSong: data.item.id
+            currentlyPlayingSong: {
+              artistID: data.item.artists[0].id,
+              albumID: data.item.album.id,
+              songID: data.item.id,
+              isPlaying: data.is_playing
+            }
           }))
        
         }
@@ -101,7 +110,6 @@ export function Player() {
   
 
   }, [access, dispatch]);
-
 
 
 

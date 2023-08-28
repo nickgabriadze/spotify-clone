@@ -10,7 +10,9 @@ import { setUserControlActions } from "../../../store/features/navigationSlice";
 export function PlaylistCard({ eachPlaylist }: { eachPlaylist: Playlist }) {
   const [hoveringOver, setHoveringOver] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
+  const accessToken = useAppSelector(
+    (state) => state.spotiUserReducer.spotiToken.accessToken
+  );
 
   return (
     <div
@@ -30,13 +32,17 @@ export function PlaylistCard({ eachPlaylist }: { eachPlaylist: Playlist }) {
         ></img>
       </div>
       {hoveringOver && (
-        <button 
-        onClick={async () => {await PlayResumeStreaming(accessToken,eachPlaylist.uri);
-        dispatch(setUserControlActions({
-          userAction: 'Play Playlist'
-        }))
-        }}
-        className={playlistsStyle["playlist-hover-button"]}>
+        <button
+          onClick={async () => {
+            await PlayResumeStreaming(accessToken, eachPlaylist.uri);
+            dispatch(
+              setUserControlActions({
+                userAction: "Play Playlist",
+              })
+            );
+          }}
+          className={playlistsStyle["playlist-hover-button"]}
+        >
           <img src={Play} width={20} height={20}></img>
         </button>
       )}

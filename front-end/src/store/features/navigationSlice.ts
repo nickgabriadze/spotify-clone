@@ -14,7 +14,12 @@ interface Navigation {
   searchQuery: string;
   typing: boolean;
   searchOption: Option;
-  currentlyPlayingSong: string;
+  currentlyPlayingSong: {
+    artistID: string,
+    songID: string,
+    albumID: string,
+    isPlaying: boolean | null
+  };
   userControlActions: string[];
 }
 
@@ -23,7 +28,12 @@ const initialState: Navigation = {
   searchQuery: "",
   typing: false,
   searchOption: "Playlists",
-  currentlyPlayingSong: "None",
+  currentlyPlayingSong: {
+    artistID: "None",
+    songID: "None",
+    albumID: "None",
+    isPlaying: null
+  },
   userControlActions: [],
 };
 
@@ -90,7 +100,12 @@ const navigationSlice = createSlice({
       state,
       action: {
         payload: {
-          currentlyPlayingSong: string;
+          currentlyPlayingSong: {
+            artistID: string;
+            songID: string,
+            albumID: string,
+            isPlaying: boolean | null
+          };
         };
       }
     ) => {
