@@ -9,7 +9,7 @@ import SongDetails from "./playerComponents/SongsDetails";
 import DeviceController from "./playerComponents/DeviceController";
 import StreamController from "./playerComponents/StreamController";
 import { setCurrentlyPlayingSong, setUserControlActions } from "../../store/features/navigationSlice";
-
+import GraphEQ from "./icons/graphicEq.svg"
 export function Player() {
   const [currentlyPlaying, setCurrentlyPlaying] = useState<CurrentlyPlaying>();
   const [currentLoading, setCurrentLoading] = useState<boolean>(true);
@@ -121,7 +121,7 @@ export function Player() {
         <DeviceController devices={noDataAvailable ? undefined: devices} />
         </div>
         <div className={playerStyle['which-device']}>
-            <h5>Listening on {devices?.devices.filter((each) => each.is_active)[0].name}</h5>
+            <img src={GraphEQ} width={25} height={25}></img><h5>Listening on {devices?.devices.filter((each) => each.is_active)[0].name}</h5>
         </div>
       </section>
     );

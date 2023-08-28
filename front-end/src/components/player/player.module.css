@@ -186,12 +186,15 @@ button {
   color:black;
   text-align: right;
 
-  
+  display: flex;
+  align-items: center;
+  justify-content: right;
 }
+
 .which-device h5{
   font-family: 'Gotham Light', sans-serif;
   padding: 5px; 
-  margin-right: 120px;
+  margin-right: 100px;
 }
 
 .devices-triangle{

@@ -108,3 +108,13 @@
     font-family: 'Gotham Light', sans-serif;
     font-weight: 600;
 }
+
+.song-hover-over img{
+    width: 30px;
+    height: 30px;
+    background-color: #1ed760;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

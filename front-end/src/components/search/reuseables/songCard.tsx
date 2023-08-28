@@ -6,7 +6,7 @@ import Equaliser from "../../player/icons/device-picker-equaliser-animation.946e
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
 import { setUserControlActions } from "../../../store/features/navigationSlice";
-import Play from "../../player/icons/play.svg";
+import Play from "../components/each-search-component/Songs/icons/play.svg"
 
 export const SongCard =  forwardRef(function SongCard(props:{
   eachTrack: Track | null,
@@ -35,7 +35,9 @@ export const SongCard =  forwardRef(function SongCard(props:{
       <div className={songsStyle["general-info"]}>
         
       
-        {eachTrack?.id === songID? <div style={{width: '15px', marginLeft: '-5px'}}> <img src={Equaliser} width={20} height={30} ></img></div> : <div>{hoveringOver ? <img src={Play} width={30} height={30}></img>:n}</div>}
+        {eachTrack?.id === songID? <div style={{width: '15px', marginLeft: '-5px'}}> <img src={Equaliser} width={20} height={30} ></img></div> : <div>{hoveringOver ? <div
+        className={songsStyle['song-hover-over']}
+        ><img src={Play} width={30} height={30}></img></div>:n}</div>}
         <div className={songsStyle["img-title-artists"]}>
           <div className={songsStyle["album-img"]}>
             <img

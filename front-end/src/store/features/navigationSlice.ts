@@ -22,7 +22,7 @@ const initialState: Navigation = {
   navTo: "search",
   searchQuery: "",
   typing: false,
-  searchOption: "Songs",
+  searchOption: "Playlists",
   currentlyPlayingSong: "None",
   userControlActions: [],
 };
