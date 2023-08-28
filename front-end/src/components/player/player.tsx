@@ -24,7 +24,7 @@ export function Player() {
 
   const fetchCurrentData = useCallback( async () => {
     try {
-      
+      setCurrentLoading(true)
       const devices = await getDevices(access.accessToken);
       const devicesData = devices.data;
 
@@ -66,9 +66,11 @@ export function Player() {
     
   }, [fetchCurrentData, dispatch,userActions.length])
 
+  
   useEffect(() => {
     const fetchCurrent = async () => {
       try {
+       
         const devices = await getDevices(access.accessToken);
         const devicesData = devices.data;
 
@@ -93,15 +95,8 @@ export function Player() {
         }
       } catch (err) {
         setError(err);
-      } finally {
-        setCurrentLoading(false);
-      }
+      } 
     };
-
- 
-    
-
-  
 
     
     const fetcher = setInterval(() => fetchCurrent(), 3000);
@@ -124,7 +119,7 @@ export function Player() {
     return (
       <section className={playerStyle["player"]}>
         <div className={playerStyle['player-wrapper']}>
-        <SongDetails currentlyPlaying={noDataAvailable ? undefined: currentlyPlaying} />
+        <SongDetails  currentlyPlaying={noDataAvailable ? undefined: currentlyPlaying} />
         <StreamController accessToken={access.accessToken} currentlyPlaying={noDataAvailable ? undefined: currentlyPlaying}/>
         <DeviceController devices={noDataAvailable ? undefined: devices} />
         </div>

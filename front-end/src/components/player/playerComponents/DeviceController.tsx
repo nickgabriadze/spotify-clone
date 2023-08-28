@@ -69,7 +69,7 @@ export function DeviceController({
           }))
         }}
         type="range"
-        value={sliderVolume}
+        value={String(sliderVolume)}
         max={100}
         min={0}
       />

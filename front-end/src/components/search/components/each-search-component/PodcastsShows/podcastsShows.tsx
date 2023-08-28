@@ -24,8 +24,6 @@ export function PodcastsShows({
         const req = await getShowsPodcasts(accessToken, podcastShowName);
         const data = req.data;
 
-        console.log(data);
-
         setShowsEpisodes((prev) => {
           return {
             ...prev,
@@ -41,8 +39,7 @@ export function PodcastsShows({
     fetchEpisodes();
   }, [podcastShowName, accessToken]);
 
-  console.log(showsEpisodes?.episodes);
-
+  
   return (
     <section>
       <div className={podcastsShowsStyle["episodes-wrapper"]}>

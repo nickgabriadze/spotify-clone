@@ -132,7 +132,7 @@ export function StreamController({
             }))
           }}
           type="range"
-          value={pos}
+          value={String(pos)}
           max={100}
           min={0}
         />
