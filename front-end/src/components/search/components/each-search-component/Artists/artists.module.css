@@ -15,6 +15,7 @@
   cursor: pointer;
   padding: 20px;
   transition: all 300ms linear;
+  position: relative;
 }
 
 .each-artist .artist-img {
@@ -22,6 +23,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  
+}
+
+.artist-img{
+  z-index: 1;
 }
 .artist-img img {
   border-radius: 100%;
@@ -58,8 +64,29 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-
   gap: 10px;
   margin-top: 20px;
   padding-bottom: 10px;
+  z-index: 1;
 }
+
+
+.artist-hover-button{
+  position: absolute;
+    z-index: 2;
+  margin-left: 80px;
+  margin-top: 100px;
+   
+  }
+
+.artist-hover-button img {
+    width: 50px;
+    height: 50px;
+    background-color: #1ed760;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+  }
+  

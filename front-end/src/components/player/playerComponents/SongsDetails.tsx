@@ -4,7 +4,6 @@ import Heart from "../icons/heart.svg";
 
 export function SongDetails({currentlyPlaying}: {currentlyPlaying: CurrentlyPlaying | undefined}){
 
-   
   
 return (  <div className={playerStyle["currently-playing-info"]}>
 <div className={playerStyle["currently-playing-info-album-img"]}>

@@ -14,6 +14,7 @@
   border-radius: 8px;
   cursor: pointer;
   gap: 30px;
+  position: relative;
   transition: all 300ms linear;
 }
 
@@ -23,12 +24,14 @@
 
 .album-img {
   padding: 0 15px 0 15px;
+  z-index: 1;
 }
 
 .album-img img {
   object-fit: cover;
   border-radius: 5px;
   margin-top: 15px;
+ 
 }
 
 .album-details {
@@ -37,6 +40,7 @@
   align-items: flex-start;
   gap: 15px;
   padding: 0px 15px 30px 15px;
+  z-index: 1;
 }
 
 .album-details a {
@@ -55,3 +59,24 @@
   font-size: 12px;
   font-family: "Gotham Medium";
 }
+
+
+.album-hover-button{
+  position: absolute;
+    z-index: 2;
+  margin-left: 110px;
+  margin-top: 10px;
+   
+  }
+
+  .album-hover-button img {
+    width: 50px;
+    height: 50px;
+    background-color: #1ed760;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+  }
+  
