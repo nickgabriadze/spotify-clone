@@ -1,0 +1,32 @@
+.episodes-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.episodes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 20px;
+}
+.episode-card{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 2px solid #262626;
+    
+    width: 60%;
+    padding: 20px;
+    padding-bottom: 40px;
+}
+
+
+
+.episode-img img{
+width: 112px;
+height: 112px;
+object-fit: cover;
+border-radius: 5px;
+}
+

@@ -13,14 +13,15 @@ export function PlaylistCard({ eachPlaylist }: { eachPlaylist: Playlist }) {
   const accessToken = useAppSelector(
     (state) => state.spotiUserReducer.spotiToken.accessToken
   );
-
+    console.log(eachPlaylist)
   return (
     <div
       className={playlistsStyle["playlist-card"]}
       onMouseOver={() => setHoveringOver(true)}
       onMouseOut={() => setHoveringOver(false)}
     >
-      <div className={playlistsStyle["playlist-img"]}>
+      <div className={playlistsStyle["playlist-img"]}
+      >
         <img
           src={
             eachPlaylist.images[0]?.url

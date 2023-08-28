@@ -27,7 +27,7 @@ const initialState: Navigation = {
   navTo: "search",
   searchQuery: "",
   typing: false,
-  searchOption: "Playlists",
+  searchOption: "Podcasts & Shows",
   currentlyPlayingSong: {
     artistID: "None",
     songID: "None",

@@ -5,6 +5,7 @@ import { ArtistsRes } from "../each-search-component/Artists/Artists";
 import PlaylistsRes from "../each-search-component/Playlists/Playlists";
 import AlbumsRes from "../each-search-component/Albums/Albums";
 import SongsRes from "../each-search-component/Songs/Songs";
+import PodcastsShows from "../each-search-component/PodcastsShows/podcastsShows";
 
 export function SearchResult() {
 
@@ -28,6 +29,11 @@ export function SearchResult() {
   if(searchStuff.searchOption === 'Songs'){
     return <SongsRes songName={searchStuff.searchQuery} />
   }
+
+  if(searchStuff.searchOption === 'Podcasts & Shows'){
+    return <PodcastsShows podcastShowName={searchStuff.searchQuery} />
+  }
+
 
   return (
     <section className={searchResultStyle["searched-results-box"]}></section>
