@@ -6,6 +6,7 @@ import {Episodes} from "../../../../../types/episode";
 import EpisodeCard from "../../../reuseables/episodeCard";
 import podcastsShowsStyle from "./podcastsShows.module.css";
 import ShowPodcastCard from "../../../reuseables/showPodcastCard.tsx";
+import PlaylistCardSkeleton from "../../../../../skeletons/playlistCardSekeleton.tsx";
 
 export function PodcastsShows({
                                   podcastShowName,
@@ -19,9 +20,12 @@ export function PodcastsShows({
         shows: Shows;
         episodes: Episodes;
     }>();
+    const [showsEpisodesLoading, setShowsEpisodesLoading] = useState<boolean>(true)
+
     useEffect(() => {
         const fetchEpisodes = async () => {
             try {
+                setShowsEpisodesLoading(true)
                 const req = await getShowsPodcasts(accessToken, podcastShowName);
                 const data = req.data;
 
@@ -34,6 +38,8 @@ export function PodcastsShows({
                 });
             } catch (err) {
                 console.log(err);
+            } finally {
+                setShowsEpisodesLoading(false)
             }
         };
 
@@ -43,14 +49,16 @@ export function PodcastsShows({
 
     return (
         <section style={{
-            marginTop:'20px'
+            marginTop: '20px'
         }}>
             <div className={podcastsShowsStyle['podcasts-wrapper']}>
                 <div style={{fontSize: '1.3rem', color: 'white', paddingLeft: '10px'}}>Podcasts & Shows</div>
                 <div className={podcastsShowsStyle['podcasts-list']}>
                     {
-                        showsEpisodes?.shows.items.slice(0, 5).map((eachShow, i) =>
-                            <ShowPodcastCard eachShowPodcast={eachShow} key={i}/>)
+                        showsEpisodes?.shows.items.slice(0, 5).map((eachShow, i) => {
+                            return showsEpisodesLoading ? <PlaylistCardSkeleton
+                                key={i}/> : <ShowPodcastCard eachShowPodcast={eachShow} key={i}/>
+                        })
                     }
                 </div>
             </div>
