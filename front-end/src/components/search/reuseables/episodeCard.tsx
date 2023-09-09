@@ -26,12 +26,14 @@ export function EpisodeCard({eachEpisode}: { eachEpisode: Episode }) {
 
     const releasedThisYear: boolean = currentYear === episodeDate.getFullYear();
 
-    console.log(eachEpisode)
+
 
     return <div className={episodesStyle['episode-card']}>
 
         <div className={episodesStyle['episode-img']}>
-            <img src={eachEpisode?.images[0]?.url}></img>
+            <img src={eachEpisode?.images[0]?.url}
+            alt={"Episode image"}
+            ></img>
         </div>
 
         <div className={episodesStyle['episode-desc']}>

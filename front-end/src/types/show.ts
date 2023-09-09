@@ -2,7 +2,7 @@ import { Image } from "./album"
 
 export interface Shows {
     href: string,
-    items: [],
+    items: Show[],
     limit: number,
     next: string,
     offset: number,
