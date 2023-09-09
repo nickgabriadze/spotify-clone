@@ -128,7 +128,7 @@ export function Player() {
         <div className={playerStyle['which-device']}>
             <img
                 alt={"Small Graphical Eq icon"}
-                src={GraphEQ} width={25} height={25}></img><h5>Listening on {devices?.devices.filter((each) => each.is_active)[0].name}</h5>
+                src={GraphEQ} width={25} height={25}></img><h5>Listening on {devices?.devices.filter((each) => each.is_active)[0]?.name}</h5>
         </div>
       </section>
     );
