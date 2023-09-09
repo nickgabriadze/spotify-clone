@@ -54,17 +54,18 @@ export function Player() {
   }, [access.accessToken, dispatch]);
 
   useEffect(() => {
-    fetchCurrentData();
-    if (userActions.length > 50) {
-      dispatch(setUserControlActions({
-        userAction: 'Nullify'
-      }))
-    }else{
-      fetchCurrentData();
-     
-    }
-    
-  }, [fetchCurrentData, dispatch,userActions.length])
+        fetchCurrentData();
+        if (userActions.length > 50) {
+          dispatch(setUserControlActions({
+            userAction: 'Nullify'
+          }))
+        } else {
+          fetchCurrentData();
+
+        }
+
+      },
+      [fetchCurrentData, dispatch, userActions.length])
 
   
   useEffect(() => {
@@ -114,7 +115,7 @@ export function Player() {
   } else {
     document.title = currentlyPlaying?.item?.name?  String(currentlyPlaying?.item?.name)
       .concat(" • ")
-      .concat(String(currentlyPlaying?.item?.artists[0].name)) : 'Spotify Clone';
+      .concat(String(currentlyPlaying?.item?.artists.map((each) => each.name).join(", "))) : 'Spotify Clone';
 
     return (
       <section className={playerStyle["player"]}>
