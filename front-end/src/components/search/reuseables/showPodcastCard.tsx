@@ -4,7 +4,7 @@ import NoPlaylistImage from "../components/each-search-component/icons/no-playli
 
 
 export function ShowPodcastCard({eachShowPodcast}: {eachShowPodcast:Show}) {
-    console.log(eachShowPodcast)
+
     return (
         <div
             className={podcastsShowsStyle["showPodcast-card"]}

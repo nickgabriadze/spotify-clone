@@ -35,6 +35,7 @@ export function SearchResult() {
   }
 
 
+  /* For all things combined */
   return (
     <section className={searchResultStyle["searched-results-box"]}></section>
   );
