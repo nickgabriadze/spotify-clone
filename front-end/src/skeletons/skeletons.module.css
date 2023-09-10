@@ -1,103 +1,108 @@
+:root {
+    --default-background-color: #3e3c3c69;
+
+}
+
 /* genre */
 .genre-skeleton {
-  cursor: pointer;
-  height: 200px;
-  border-radius: 10px;
-  background-color: #242424;
-  animation: brightness-animation 3s linear infinite;
+    cursor: pointer;
+    height: 200px;
+    border-radius: 10px;
+    background-color: #242424;
+    animation: brightness-animation 3s linear infinite;
 }
 
 /* artist */
 .artists-wrapper {
-  cursor: pointer;
-  height: 250px;
-  border-radius: 8px;
-  background-color: #181818;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 5px;
-  gap: 5px;
+    cursor: pointer;
+    height: 250px;
+    border-radius: 8px;
+    background-color: #181818;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 5px;
+    gap: 5px;
 }
 
 .artist-img-skeleton {
-  border-radius: 100%;
-  width: 150px;
-  height: 150px;
-  background-color: #3e3c3c69;
-  margin-bottom: 20px;
-  animation: brightness-animation 3s linear infinite;
+    border-radius: 100%;
+    width: 150px;
+    height: 150px;
+    background-color: var(--default-background-color);
+    margin-bottom: 20px;
+    animation: brightness-animation 3s linear infinite;
 }
 
 .artist-info-holder {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-right: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-right: 60px;
 }
 
 .artist-name-skeleton {
-  width: 80px;
-  height: 12px;
-  background-color: #3e3c3c69;
-  animation: brightness-animation 3s linear infinite;
+    width: 80px;
+    height: 12px;
+    background-color: var(--default-background-color);
+    animation: brightness-animation 3s linear infinite;
 }
 
 .artist-type-skeleton {
-  width: 50px;
-  height: 10px;
-  background-color: #3e3c3c69;
-  animation: brightness-animation 3s linear infinite;
+    width: 50px;
+    height: 10px;
+    background-color: var(--default-background-color);
+    animation: brightness-animation 3s linear infinite;
 }
 
 /* playlist */
 
 .playlist-wrapper {
-  cursor: pointer;
-  height: fit-content;
-  width: 100%;
-  border-radius: 8px;
-  background-color: #181818;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 20px;
-  gap: 5px;
-  
+    cursor: pointer;
+    height: fit-content;
+    width: 100%;
+    border-radius: 8px;
+    background-color: #181818;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px;
+    gap: 5px;
+
 }
 
 .playlist-img-skeleton {
-  border-radius: 5px;
-  width: 150px;
-  height: 150px;
-  background-color: #3e3c3c69;
-  margin-bottom: 25px;
-  margin-top:-5px;
-  animation: brightness-animation 3s linear infinite;
+    border-radius: 5px;
+    width: 150px;
+    height: 150px;
+    background-color: var(--default-background-color);
+    margin-bottom: 25px;
+    margin-top: -5px;
+    animation: brightness-animation 3s linear infinite;
 }
 
 .playlist-info-holder {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-right: 70px;
-  padding-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-right: 70px;
+    padding-bottom: 10px;
 }
 
 .playlist-name-skeleton {
-  width: 80px;
-  height: 12px;
-  background-color: #3e3c3c69;
-  animation: brightness-animation 3s linear infinite;
+    width: 80px;
+    height: 12px;
+    background-color: var(--default-background-color);
+    animation: brightness-animation 3s linear infinite;
 }
 
 .playlist-type-skeleton {
-  width: 50px;
-  height: 10px;
-  background-color: #3e3c3c69;
-  animation: brightness-animation 3s linear infinite;
+    width: 50px;
+    height: 10px;
+    background-color: var(--default-background-color);
+    animation: brightness-animation 3s linear infinite;
 }
 
 
@@ -114,153 +119,234 @@
     flex-direction: column;
     padding: 5px;
     gap: 5px;
-    
-  }
-  
-  .album-img-skeleton {
+
+}
+
+.album-img-skeleton {
     border-radius: 5px;
     width: 150px;
     height: 150px;
-    background-color: #3e3c3c69;
+    background-color: var(--default-background-color);
     margin-bottom: 20px;
     margin-top: 10px;
     animation: brightness-animation 3s linear infinite;
-  }
+}
 
-  .album-info-holder {
+.album-info-holder {
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin-right: 60px;
     padding-bottom: 10px;
-  }
-  
-  .album-name-skeleton {
+}
+
+.album-name-skeleton {
     width: 80px;
     height: 12px;
-    background-color: #3e3c3c69;
+    background-color: var(--default-background-color);
     animation: brightness-animation 3s linear infinite;
-  }
-  
-  .album-type-skeleton {
+}
+
+.album-type-skeleton {
     width: 50px;
     height: 10px;
-    background-color: #3e3c3c69;
+    background-color: var(--default-background-color);
     animation: brightness-animation 3s linear infinite;
-  }
+}
 
-  .album-details-skeleton {
+.album-details-skeleton {
     display: flex;
     gap: 10px;
-  }
+}
 
-  .album-release-year-skeleton{
+.album-release-year-skeleton {
     width: 30px;
     height: 10px;
-    background-color: #3e3c3c69;
+    background-color: var(--default-background-color);
     animation: brightness-animation 3s linear infinite;
-  }
+}
 
 
-  /* track */
+/* track */
 
-  .track-wrapper{
+.track-wrapper {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     padding-left: 5px;
     margin-bottom: 10px;
-  }
+}
 
-  .track-nth-skeleton{
+.track-nth-skeleton {
     width: 20px;
     height: 20px;
     border-radius: 3px;
-    background-color: #3e3c3c69;
+    background-color: var(--default-background-color);
     animation: brightness-animation 3s linear infinite;
-  }
+}
 
-  .track-info-skeleton{
+.track-info-skeleton {
     display: flex;
     gap: 20px;
     align-items: center;
-  }
+}
 
-  .track-name-artists{
+.track-name-artists {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     gap: 10px;
-  }
+}
 
-  .track-img-skeleton{
+.track-img-skeleton {
     width: 50px;
     height: 50px;
-    background-color: #3e3c3c69;
+    background-color: var(--default-background-color);
     animation: brightness-animation 3s linear infinite;
-    
-  }
 
-  .track-name-skeleton{
+}
+
+.track-name-skeleton {
     width: 100px;
     height: 10px;
-    background-color:#3e3c3c69;
+    background-color: var(--default-background-color);
     animation: brightness-animation 3s linear infinite;
-  }
+}
 
-  .track-artists-skeleton{
+.track-artists-skeleton {
     width: 60px;
     height: 10px;
     background-color: #3e3c3c69;
     animation: brightness-animation 3s linear infinite;
-  }
+}
 
-  .track-album-skeleton{
+.track-album-skeleton {
     width: 120px;
     height: 10px;
-    background-color: #3e3c3c69;
+    background-color: var(--default-background-color);
     margin-right: 75px;
     animation: brightness-animation 3s linear infinite;
-  }
+}
 
-  .track-duration-skeleton{
+.track-duration-skeleton {
     display: flex;
     gap: 5px;
     align-items: center;
-  }
+}
 
-.track-minutes-skeleton, .track-seconds-skeleton{
+.track-minutes-skeleton, .track-seconds-skeleton {
     width: 10px;
     height: 12px;
-    background-color: #3e3c3c69;
+    background-color: var(--default-background-color);
     animation: brightness-animation 3s linear infinite;
-  }
-  
-  .track-two-dots{
+}
+
+.track-two-dots {
     display: flex;
     flex-direction: column;
     gap: 2px
-  }
+}
 
-  .track-two-dots div {
+.track-two-dots div {
     height: 4px;
     width: 4px;
-    background-color: #3e3c3c69;
+    background-color: var(--default-background-color);
     border-radius: 10px;
     animation: brightness-animation 3s linear infinite;
 
-  }
+}
+
+
+/* episode */
+
+.episode-skeleton-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding: 20px 20px 40px;
+    border-bottom: 2px solid #262626;
+    width: 80%;
+}
+
+.episode-img-skeleton {
+    width: 112px;
+    height: 112px;
+    border-radius: 5px;
+    background-color: var(--default-background-color);
+    animation: brightness-animation 3s linear infinite;
+
+}
+
+.episode-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.episode-title-skeleton {
+    width: 250px;
+    height: 15px;
+    background-color: var(--default-background-color);
+    animation: brightness-animation 3s linear infinite;
+}
+
+.episode-description-skeleton {
+    width: 300px;
+    height: 8px;
+    background-color: var(--default-background-color);
+    animation: brightness-animation 3s linear infinite;
+}
+
+.episode-smaller-details-skeleton {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+
+.episode-explicit-skeleton {
+    width: 20px;
+    height: 20px;
+    padding: 4px 6px;
+    border-radius: 5px;
+    background-color: var(--default-background-color);
+    animation: brightness-animation 3s linear infinite;
+}
+
+.episode-date-skeleton {
+    width: 40px;
+    height: 8px;
+    background-color: var(--default-background-color);
+    animation: brightness-animation 3s linear infinite;
+
+}
+.episode-small-dot-skeleton{
+    width: 5px;
+    height: 5px;
+    border-radius: 100%;
+    background-color: var(--default-background-color);
+    animation: brightness-animation 3s linear infinite;
+
+
+}
+.episode-duration-skeleton{
+    width: 90px;
+    height: 8px;
+    background-color: var(--default-background-color);
+    animation: brightness-animation 3s linear infinite;
+}
 
 @keyframes brightness-animation {
-  0% {
-    background-color: #3e3c3c69;
-  }
-  50% {
-    background-color: rgb(93, 91, 91);
-  }
-  100% {
-    background-color: #3e3c3c69;
-  }
+    0% {
+        background-color: var(--default-background-color);
+    }
+    50% {
+        background-color: rgb(93, 91, 91);
+    }
+    100% {
+        background-color: #3e3c3c69;
+    }
 }
 

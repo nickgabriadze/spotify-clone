@@ -7,10 +7,9 @@ import EpisodeCard from "../../../reuseables/episodeCard";
 import podcastsShowsStyle from "./podcastsShows.module.css";
 import ShowPodcastCard from "../../../reuseables/showPodcastCard.tsx";
 import PlaylistCardSkeleton from "../../../../../skeletons/playlistCardSekeleton.tsx";
+import EpisodeCardSkeleton from "../../../../../skeletons/episodeCardSkeleton.tsx";
 
-export function PodcastsShows({
-                                  podcastShowName,
-                              }: {
+export function PodcastsShows({podcastShowName}: {
     podcastShowName: string;
 }) {
     const accessToken = useAppSelector(
@@ -24,8 +23,9 @@ export function PodcastsShows({
 
     useEffect(() => {
         const fetchEpisodes = async () => {
+            setShowsEpisodesLoading(true)
             try {
-                setShowsEpisodesLoading(true)
+
                 const req = await getShowsPodcasts(accessToken, podcastShowName);
                 const data = req.data;
 
@@ -54,10 +54,11 @@ export function PodcastsShows({
             <div className={podcastsShowsStyle['podcasts-wrapper']}>
                 <div style={{fontSize: '1.3rem', color: 'white', paddingLeft: '10px'}}>Podcasts & Shows</div>
                 <div className={podcastsShowsStyle['podcasts-list']}>
-                    {
+                    {showsEpisodesLoading ?
+                        Array.from({length: 5}).map((_, i) => <PlaylistCardSkeleton
+                            key={i}/>) :
                         showsEpisodes?.shows.items.slice(0, 5).map((eachShow, i) => {
-                            return showsEpisodesLoading ? <PlaylistCardSkeleton
-                                key={i}/> : <ShowPodcastCard eachShowPodcast={eachShow} key={i}/>
+                            return <ShowPodcastCard eachShowPodcast={eachShow} key={i}/>
                         })
                     }
                 </div>
@@ -66,7 +67,10 @@ export function PodcastsShows({
                 <div style={{fontSize: '1.3rem', color: 'white', paddingLeft: '10px'}}>Episodes</div>
                 <div className={podcastsShowsStyle['episodes-list']}>
 
-                    {showsEpisodes?.episodes.items.map((eachEpisode, i) => (
+                    {
+                        showsEpisodesLoading ?
+                            Array.from({length: 30}).map((_, i) => <EpisodeCardSkeleton key={i} />) :
+                        showsEpisodes?.episodes.items.map((eachEpisode, i) => (
                         <EpisodeCard eachEpisode={eachEpisode} key={i}/>
                     ))}
                 </div>

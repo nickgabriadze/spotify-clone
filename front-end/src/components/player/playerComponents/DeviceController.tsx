@@ -34,7 +34,8 @@ export function DeviceController({
         await setPlaybackVolume(Number(
           devices?.devices.filter((each) => each.is_active)[0]?.volume_percent
         ) > 0 ? 0 : sliderVolume, accessToken);
-          
+
+
         dispatch(setUserControlActions({
           userAction: 'Volume On/Off'
         }))
