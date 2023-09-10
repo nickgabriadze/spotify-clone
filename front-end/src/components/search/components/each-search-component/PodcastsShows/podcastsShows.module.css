@@ -7,10 +7,14 @@
     display: flex;
     gap: 25px;
     padding: 20px;
-    justify-content: space-evenly;
+
     width: 100%;
+    overflow-x: scroll;
 }
 
+.podcasts-list::-webkit-scrollbar {
+    display: none;
+}
 .episodes-wrapper {
     display: flex;
     flex-direction: column;

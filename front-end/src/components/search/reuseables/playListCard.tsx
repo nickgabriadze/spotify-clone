@@ -23,6 +23,7 @@ export function PlaylistCard({ eachPlaylist }: { eachPlaylist: Playlist }) {
       <div className={playlistsStyle["playlist-img"]}
       >
         <img
+            alt={'Playlist image'}
           src={
             eachPlaylist.images[0]?.url
               ? eachPlaylist.images[0]?.url
@@ -44,7 +45,7 @@ export function PlaylistCard({ eachPlaylist }: { eachPlaylist: Playlist }) {
           }}
           className={playlistsStyle["playlist-hover-button"]}
         >
-          <img src={Play} width={20} height={20}></img>
+          <img alt={"Play image"} src={Play} width={20} height={20}></img>
         </button>
       )}
       <div className={playlistsStyle["playlist-details"]}>

@@ -1,79 +1,79 @@
 .playlists-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 30px;
-  padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 30px;
+    padding: 10px;
 
 }
 
 .playlist-card {
-  background-color: #181818;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 300ms linear;
-  position: relative;
+    background-color: #181818;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 300ms linear;
+    position: relative;
 
 }
 
 .playlist-img {
-  padding: 0 15px 0 15px;
-  z-index: 1;
+    padding: 0 15px 0 15px;
+    z-index: 1;
 }
 
 .playlist-img img {
-  object-fit: cover;
-  border-radius: 5px;
-  margin-top: 15px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-top: 15px;
 }
 
 .playlist-details {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 15px;
-  padding: 0px 15px 30px 15px;
-  z-index: 1
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 0 15px 30px 15px;
+    z-index: 1
 }
 
 .playlist-card:hover {
-  background-color: #302f2f;
+    background-color: #302f2f;
 }
 
 .playlist-details a {
-  font-size: 14px;
-  color: white;
+    font-size: 14px;
+    color: white;
 }
 
 .playlist-details a:hover {
-  text-decoration: underline;
-  cursor: pointer;
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .playlist-details p {
-  align-items: flex-end;
-  color: #a7a7a7;
-  font-size: 12px;
-  font-family: "Gotham Medium";
+    align-items: flex-end;
+    color: #a7a7a7;
+    font-size: 12px;
+    font-family: "Gotham Medium", sans-serif;
 }
 
-.playlist-hover-button{
-position: absolute;
-  z-index: 2;
-margin-left: 110px;
-margin-top: 125px;
- 
+.playlist-hover-button {
+    position: absolute;
+    z-index: 2;
+    margin-left: 110px;
+    margin-top: 125px;
+
 }
 
 .playlist-hover-button img {
-  width: 50px;
-  height: 50px;
-  background-color: #1ed760;
-  border-radius: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  
+    width: 50px;
+    height: 50px;
+    background-color: #1ed760;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }

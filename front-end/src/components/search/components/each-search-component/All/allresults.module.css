@@ -1,0 +1,76 @@
+.top-result-wrapper{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+
+      & h2 {
+        color: white;
+    }
+
+    .track-hover-button{
+        position: absolute;
+        top: 230px;
+        left: 280px;
+
+        & img {
+            width: 50px;
+            height: 50px;
+            background-color: #1ed760;
+            border-radius: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+    }
+}
+
+
+.top-track-box{
+    display: flex;
+
+    flex-direction: column;
+    gap: 30px;
+
+    background-color: #181818;
+    width: 350px;
+    border-radius: 6px;
+    padding: 25px 25px 25px 25px;
+    transition: all 300ms linear;
+    &:hover{
+        background-color:#302f2f;
+        cursor: pointer;
+    }
+    .track-name{
+        font-size: 30px;
+        color: white;
+    }
+
+    .track-artist-type{
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        align-items: center;
+        margin-top: -15px;
+        & a:hover{
+            text-decoration: underline;
+        }
+        & p{
+            font-size: smaller;
+            color: white;
+            background-color: #131313;
+            border-radius: 20px;
+            padding: 10px;
+        }
+        & a{
+            font-size: smaller;
+            color: white;
+            font-family: "Gotham Light", sans-serif;
+            font-weight: 600;
+
+        }
+    }
+
+}

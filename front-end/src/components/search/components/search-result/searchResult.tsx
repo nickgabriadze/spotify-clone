@@ -1,11 +1,11 @@
 
 import { useAppSelector } from "../../../../store/hooks";
-import searchResultStyle from "./searchResult.module.css";
 import { ArtistsRes } from "../each-search-component/Artists/Artists";
 import PlaylistsRes from "../each-search-component/Playlists/Playlists";
 import AlbumsRes from "../each-search-component/Albums/Albums";
 import SongsRes from "../each-search-component/Songs/Songs";
 import PodcastsShows from "../each-search-component/PodcastsShows/podcastsShows";
+import AllResults from "../each-search-component/All/All.tsx";
 
 export function SearchResult() {
 
@@ -37,7 +37,7 @@ export function SearchResult() {
 
   /* For all things combined */
   return (
-    <section className={searchResultStyle["searched-results-box"]}></section>
+   <AllResults searchQuery={searchStuff.searchQuery}/>
   );
 }
 
