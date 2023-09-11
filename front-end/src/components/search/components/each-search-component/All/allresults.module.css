@@ -121,7 +121,7 @@
         justify-content: space-between;
         width: 100%;
         padding: 10px;
-
+        align-items: center;
         .song-img-details{
             display: flex;
             gap: 15px;
@@ -130,13 +130,14 @@
             color: white;
             font-family: "Gotham Light", sans-serif;
 
-            font-size: 16px;
+            font-size: 14px;
 
             .song-details{
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
                 gap: 8px;
+
                 
                 & a:hover{
                     text-decoration: underline;
@@ -144,9 +145,21 @@
                 }
             }
 
+
+            .interactive-album-img{
+                position: relative;
+
+                .play-button{
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                }
+            }
             .song-artists{
                 display: flex;
                 gap: 5px;
+
+
                 & a:hover {
                     text-decoration: underline;
                     cursor: pointer;
@@ -167,6 +180,14 @@
             font-size: 14px;
 
         }
+
+        .song-duration-heart{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px
+        }
+
     }
 
 

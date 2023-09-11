@@ -7,6 +7,7 @@ import {useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../../../../store/hooks.ts";
 import Pause from "../../Playlists/icons/pause.svg";
 import PauseStreaming from "../../../../../../api/player/pauseStreaming.ts";
+import episodesStyle from "../../PodcastsShows/podcastsShows.module.css";
 
 export function TopResult({topSong, accessToken}: { topSong: Track | undefined, accessToken: string }) {
     const [hoveringOver, setHoveringOver] = useState<boolean>(false);
@@ -23,6 +24,8 @@ export function TopResult({topSong, accessToken}: { topSong: Track | undefined, 
             <div
                 className={allResultsStyle['track-name']}>{Number(topSong?.name.length) > 19 ? topSong?.name.slice(0, 19).concat('...') : topSong?.name}</div>
             <div className={allResultsStyle['track-artist-type']}>
+                {topSong?.explicit ? <div className={episodesStyle['explicit']} style={{fontSize: '8px'}}>E</div> : ''}
+
                 <a>{topSong?.artists[0].name}</a>
                 <p>{topSong?.type === 'track' ? 'Song' : topSong?.type}</p>
             </div>
