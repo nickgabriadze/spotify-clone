@@ -10,6 +10,7 @@
   margin-right: 10px;
   margin-left: 10px;
   flex-wrap: wrap;
+
 }
 
 .search-bar-wrapper {
@@ -26,7 +27,7 @@
   flex-direction: column;
   gap: 10px;
   width: 100%;
-  
+   flex-wrap:wrap;
 
 }
 
@@ -34,6 +35,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap:wrap;
 }
 
 .left-right-nav button img {
@@ -83,7 +85,7 @@ input {
   outline: transparent;
   background-color: inherit;
   width: var(--search-bar-size);
-  font-family: "Gotham Medium";
+  font-family: "Gotham Medium", sans-serif;
   color: white;
 }
 

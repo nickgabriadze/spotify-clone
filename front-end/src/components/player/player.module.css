@@ -1,125 +1,128 @@
 button {
-  background-color: transparent;
-  outline: transparent;
-  border: none;
-  cursor: pointer;
+    background-color: transparent;
+    outline: transparent;
+    border: none;
+    cursor: pointer;
 }
+
 .player-wrapper {
-  width: 100%;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
 }
 
 
 .currently-playing-info {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  max-width: 400px;
-  overflow: hidden;
-  min-width: 250px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    max-width: 400px;
+    overflow: hidden;
+    min-width: 250px;
 }
 
 
 .currently-playing-info-album-img img {
- object-fit: contain;
- 
+    object-fit: contain;
+
 }
 
 .song-info {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .song-info .song-name {
-  color: white;
-  font-size: 12px;
-  font-weight: 600;
-  font-family: "Gotham Light", sans-serif;
-  cursor: pointer;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: "Gotham Light", sans-serif;
+    cursor: pointer;
 }
 
 .song-info .artists-name {
-  color: #939393;
-  font-family: "Gotham Medium", sans-serif;
-  font-size: 10px;
-  cursor: pointer;
+    color: #939393;
+    font-family: "Gotham Medium", sans-serif;
+    font-size: 10px;
+    cursor: pointer;
 }
 
 .song-info a:hover {
-  color: white;
-  text-decoration: underline;
+    color: white;
+    text-decoration: underline;
 }
 
 /* playback */
 
 .playback-control {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 
-  gap: 12px;
+    gap: 12px;
 }
 
 .actual-controls {
-  display: flex;
-  gap: 5px;
+    display: flex;
+    gap: 5px;
 
-  justify-content: center;
-  align-items: center;
+    justify-content: center;
+    align-items: center;
 }
 
 .duration {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 400px;
 }
+
 .duration p {
-  color: #939393;
-  font-size: 12px;
-  font-family: "Gotham Light", sans-serif;
-  font-weight: bold;
+    color: #939393;
+    font-size: 12px;
+    font-family: "Gotham Light", sans-serif;
+    font-weight: bold;
 }
 
 .duration-trackbar {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .duration-trackbar img {
-  margin-left: -3px;
+    margin-left: -3px;
 }
 
 .duration-track {
-  background-color: white;
-}
-.duration-trackbar:hover {
-  cursor: pointer;
+    background-color: white;
 }
 
+.duration-trackbar:hover {
+    cursor: pointer;
+}
 
 
 /* devices and other controls */
-.devices-volume{
+.devices-volume {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 10px;
-  
+
 }
+
 .devices-volume img {
     cursor: pointer;
 }
 
-.devices-volume button{
-  outline: none;
-  border: none;
-  margin-bottom: 3px;
+.devices-volume button {
+    outline: none;
+    border: none;
+    margin-bottom: 3px;
 
 }
 
@@ -128,10 +131,10 @@ button {
     -webkit-appearance: none;
     appearance: none;
     width: 100%;
-    height: 4px; 
+    height: 4px;
     outline: none;
     border: none;
-    border-radius: 5px; 
+    border-radius: 5px;
 }
 
 .duration > input[type="range"]::-webkit-slider-thumb {
@@ -151,16 +154,15 @@ button {
     appearance: none;
     opacity: 0;
     width: 12px;
-    height: 12px; 
+    height: 12px;
     background: #ffffff;
-    border: 1px solid #cccccc; 
+    border: 1px solid #cccccc;
     border-radius: 50%;
     cursor: pointer;
 }
 
 .volume-rocker::-webkit-slider-thumb:hover,
-.duration > input[type="range"]::-webkit-slider-thumb:hover
-{
+.duration > input[type="range"]::-webkit-slider-thumb:hover {
     opacity: 1
 }
 
@@ -169,46 +171,48 @@ button {
     appearance: none;
     width: 100%;
     height: 4px;
-   
+
     outline: none;
     border: none;
-    border-radius: 5px; 
+    border-radius: 5px;
 }
 
-.player{
-  display: flex;
-  flex-direction: column;
-}
-.which-device{
-  background-color: #1ed760;
-  height:24px;
-  border-radius: 5px;
-  color:black;
-  text-align: right;
-
-  display: flex;
-  align-items: center;
-  justify-content: right;
+.player {
+    display: flex;
+    flex-direction: column;
 }
 
-.which-device h5{
-  font-family: 'Gotham Light', sans-serif;
-  padding: 5px; 
-  margin-right: 100px;
+.which-device {
+    background-color: #1ed760;
+    height: 24px;
+    border-radius: 5px;
+    color: black;
+    text-align: right;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: right;
 }
 
-.devices-triangle{
-  display: flex;
-  flex-direction: column;
+.which-device h5 {
+    font-family: 'Gotham Light', sans-serif;
+    padding: 5px;
+    margin-right: 100px;
 }
+
+.devices-triangle {
+    display: flex;
+    flex-direction: column;
+}
+
 .devices-triangle > div {
-  
+
     width: 10px;
     height: 10px;
     border-left: 12px solid transparent;
     border-right: 12px solid transparent;
-    border-bottom: 20px solid #1ed760; 
+    border-bottom: 20px solid #1ed760;
     position: absolute;
     margin-top: 25px;
-    
+
 }

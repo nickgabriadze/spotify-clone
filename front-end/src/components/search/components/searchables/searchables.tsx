@@ -3,7 +3,7 @@ import {
   setSearchOption,
 } from "../../../../store/features/navigationSlice";
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import searchAblesStyle from "./searchAbles.module.css";
+import searchAblesStyle from "./searchables.module.css";
 
 export function Searchables() {
   const searchOptions: Option[] = [
