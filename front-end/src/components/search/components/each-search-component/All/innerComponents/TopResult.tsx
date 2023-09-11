@@ -4,18 +4,22 @@ import PlayResumeStreaming from "../../../../../../api/player/playResumeStreamin
 import {setUserControlActions} from "../../../../../../store/features/navigationSlice.ts";
 import Play from "../../Playlists/icons/play.svg";
 import {useState} from "react";
-import {useAppDispatch} from "../../../../../../store/hooks.ts";
+import {useAppDispatch, useAppSelector} from "../../../../../../store/hooks.ts";
+import Pause from "../../Playlists/icons/pause.svg";
+import PauseStreaming from "../../../../../../api/player/pauseStreaming.ts";
 
 export function TopResult({topSong, accessToken}: { topSong: Track | undefined, accessToken: string }) {
     const [hoveringOver, setHoveringOver] = useState<boolean>(false);
     const dispatch = useAppDispatch();
+    const currentlyPlaying = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong);
+    console.log(currentlyPlaying.songID === String(topSong?.id) && currentlyPlaying.isPlaying);
 
     return <div className={allResultsStyle['top-result-wrapper']}
                 onMouseOver={() => setHoveringOver(true)}
-                onMouseOut={() => setHoveringOver(false)}
-    >
+                onMouseOut={() => setHoveringOver(false)}>
         <h2>Top Result</h2>
-        <div className={allResultsStyle['top-track-box']}>
+        <div className={allResultsStyle['top-track-box']}
+        >
             <div><img src={topSong?.album.images[0]?.url} width={92} alt={"Track image"} height={92}></img></div>
             <div
                 className={allResultsStyle['track-name']}>{Number(topSong?.name.length) > 19 ? topSong?.name.slice(0, 19).concat('...') : topSong?.name}</div>
@@ -27,19 +31,42 @@ export function TopResult({topSong, accessToken}: { topSong: Track | undefined, 
         </div>
 
         {hoveringOver && (
+
             <button
                 onClick={async () => {
-                    await PlayResumeStreaming(accessToken, undefined, [String(topSong?.uri)]);
-                    dispatch(
-                        setUserControlActions({
-                            userAction: "Play Track",
-                        })
-                    );
+                    if (!(currentlyPlaying.songID === String(topSong?.id))) {
+                        await PlayResumeStreaming(accessToken, undefined, [String(topSong?.uri)]);
+                        dispatch(
+                            setUserControlActions({
+                                userAction: "Play Track",
+                            })
+                        );
+                    } else if (currentlyPlaying.isPlaying && currentlyPlaying.songID === String(topSong?.id)) {
+                        await PauseStreaming(accessToken);
+                        dispatch(
+                            setUserControlActions({
+                                userAction: "Pause Track",
+                            })
+                        );
+                    } else if (!(currentlyPlaying.isPlaying) && currentlyPlaying.songID === String(topSong?.id)) {
+                        await PlayResumeStreaming(accessToken);
+                        dispatch(
+                            setUserControlActions({
+                                userAction: "Resume Track",
+                            })
+                        );
+                    }
                 }}
                 className={allResultsStyle["track-hover-button"]}
             >
-                <img alt={'Play button image'} src={Play} width={20} height={20}></img>
-            </button>)}
+                {currentlyPlaying.songID === String(topSong?.id) && currentlyPlaying.isPlaying ?
+                    <div><img src={Pause} width={30} height={30} alt={'Pause Button Image'}></img></div>
+                    :
+                    <div><img src={Play} width={50} height={50} alt={'Play Button Image'}></img></div>
+                }
+            </button>)
+        }
+
     </div>
 
 }
