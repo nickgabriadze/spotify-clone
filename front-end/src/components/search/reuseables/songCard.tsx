@@ -35,9 +35,9 @@ export const SongCard =  forwardRef(function SongCard(props:{
       <div className={songsStyle["general-info"]}>
         
       
-        {eachTrack?.id === songID? <div style={{width: '15px', marginLeft: '-5px'}}> <img src={Equaliser} width={20} height={30} ></img></div> : <div>{hoveringOver ? <div
+        {eachTrack?.id === songID? <div style={{width: '15px', marginLeft: '-5px'}}> <img alt={'Equaliser icon'} src={Equaliser} width={20} height={30} ></img></div> : <div>{hoveringOver ? <div
         className={songsStyle['song-hover-over']}
-        ><img src={Play} width={30} height={30}></img></div>:n}</div>}
+        ><img alt={'Play song'} src={Play} width={30} height={30}></img></div>:n}</div>}
         <div className={songsStyle["img-title-artists"]}>
           <div className={songsStyle["album-img"]}>
             <img

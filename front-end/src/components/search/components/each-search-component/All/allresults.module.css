@@ -1,22 +1,34 @@
-.top-result-wrapper{
+.all-wrapper {
     padding: 10px;
+}
+
+.first-row {
+    display: flex;
+    gap: 10px;
+}
+
+
+/* Top Result */
+
+.top-result-wrapper {
+
     display: flex;
     flex-direction: column;
     gap: 20px;
     width: fit-content;
     position: relative;
 
-      & h2 {
+    & h2 {
         color: white;
     }
 
-    .track-hover-button{
+    .track-hover-button {
         position: absolute;
-        top: 230px;
+        top: 220px;
         left: 280px;
+        z-index: 3;
 
-
-        & div{
+        & div {
             width: 50px;
             height: 50px;
             background-color: #1ed760;
@@ -29,43 +41,49 @@
 }
 
 
-.top-track-box{
+.top-track-box {
     display: flex;
 
     flex-direction: column;
     gap: 30px;
 
     background-color: #181818;
-    width: 350px;
+    width: 360px;
     border-radius: 6px;
     padding: 25px 25px 25px 25px;
     transition: all 300ms linear;
-    &:hover{
-        background-color:#302f2f;
+
+    &:hover {
+        background-color: #302f2f;
         cursor: pointer;
     }
-    .track-name{
-        font-size: 30px;
+
+    .track-name {
+        font-size: 27px;
         color: white;
+        width: 250px;
     }
 
-    .track-artist-type{
+    .track-artist-type {
         display: flex;
         flex-direction: row;
         gap: 10px;
         align-items: center;
         margin-top: -15px;
-        & a:hover{
+
+        & a:hover {
             text-decoration: underline;
         }
-        & p{
+
+        & p {
             font-size: smaller;
             color: white;
             background-color: #131313;
             border-radius: 20px;
             padding: 10px;
         }
-        & a{
+
+        & a {
             font-size: smaller;
             color: white;
             font-family: "Gotham Light", sans-serif;
@@ -73,5 +91,83 @@
 
         }
     }
+}
+
+
+/* Songs */
+
+.top-songs-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    align-items: flex-start;
+    gap: 20px;
+
+    & h2 {
+        color: white;
+    }
+
+    .top-songs-box{
+        display: flex;
+        flex-direction: column;
+        
+        width: 100%;
+        align-items: center;
+
+    }
+    .top-song{
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        padding: 10px;
+
+        .song-img-details{
+            display: flex;
+            gap: 15px;
+
+            align-items: center;
+            color: white;
+            font-family: "Gotham Light", sans-serif;
+
+            font-size: 16px;
+
+            .song-details{
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                gap: 8px;
+                
+                & a:hover{
+                    text-decoration: underline;
+                    cursor: pointer;
+                }
+            }
+
+            .song-artists{
+                display: flex;
+                gap: 5px;
+                & a:hover {
+                    text-decoration: underline;
+                    cursor: pointer;
+                }
+                & a{
+                    color: #b3b3b3;
+                    font-weight: bold;
+                    font-size: 14px;
+                    font-family: "Gotham Light", sans-serif;
+                }
+            }
+        }
+
+        .duration{
+            color: #a7a7a7;
+            font-family: "Gotham Light", sans-serif;
+            font-weight: bold;
+            font-size: 14px;
+
+        }
+    }
+
 
 }

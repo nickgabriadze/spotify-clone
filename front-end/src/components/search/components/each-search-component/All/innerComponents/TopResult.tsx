@@ -12,7 +12,6 @@ export function TopResult({topSong, accessToken}: { topSong: Track | undefined, 
     const [hoveringOver, setHoveringOver] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const currentlyPlaying = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong);
-    console.log(currentlyPlaying.songID === String(topSong?.id) && currentlyPlaying.isPlaying);
 
     return <div className={allResultsStyle['top-result-wrapper']}
                 onMouseOver={() => setHoveringOver(true)}
