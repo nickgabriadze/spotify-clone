@@ -1,4 +1,5 @@
 import { Image } from "./album"
+import {Show} from "./show.ts";
 
 export interface Episodes {
     href: string,
@@ -9,6 +10,8 @@ export interface Episodes {
     previous: string | null,
     total: number
 }
+
+
 
 export interface Episode {
     audio_preview_url: string,
@@ -24,15 +27,18 @@ export interface Episode {
     images: Image[],
     is_externally_hosted: boolean,
     is_playable: boolean,
-    langauge: string,
+    language: string,
     languages: string[],
     name: string,
     release_date: string,
     release_day_precision: string,
     resume_point: {
         fully_played: boolean,
-        resiume_position_ms: number
+        resume_position_ms: number
     },
     type: string,
     uri: string
+}
+export interface EpisodeWithShow extends Episode{
+    show: Show
 }

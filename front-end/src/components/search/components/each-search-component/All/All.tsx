@@ -12,11 +12,16 @@ import AlbumCard from "../../../reuseables/albumCard.tsx";
 import PlaylistCard from "../../../reuseables/playListCard.tsx";
 import PlaylistCardSkeleton from "../../../../../skeletons/playlistCardSekeleton.tsx";
 import ShowPodcastCard from "../../../reuseables/showPodcastCard.tsx";
+import {EpisodeWithShow} from "../../../../../types/episode.ts";
+import getEpisodes from "../../../../../api/search/getEpisodes.ts";
+import TopEpisodeCard from "../../../reuseables/topEpisodeCard.tsx";
 
 export function AllResults({searchQuery}: { searchQuery: string }) {
     const spotiUserToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
     const [allResultsData, setAllResultsData] = useState<AllSearch>();
     const [resultsLoading, setResultsLoading] = useState<boolean>(true);
+    const [episodesData, setEpisodesData] = useState<{ episodes: EpisodeWithShow[] }>({episodes: []});
+    const [episodeDataLoading, setEpisodeDataLoading] = useState<boolean>(true)
     useEffect
     (() => {
         const fetchAll = async () => {
@@ -35,6 +40,27 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
 
         fetchAll()
     }, [spotiUserToken, searchQuery]);
+
+   useEffect(()=>{
+
+       const fetchEpisodeDetails = async () => {
+           try {
+               setEpisodeDataLoading(true)
+               const episodeIds = allResultsData?.episodes?.items?.map((each) => String(each.id)).join(",")
+               const episodesData = await getEpisodes(spotiUserToken, String(episodeIds))
+               const data = episodesData.data;
+               console.log(data)
+               setEpisodesData(data);
+
+           }catch(e){
+               console.log(e)
+           }finally {
+               setEpisodeDataLoading(false)
+           }
+       }
+    fetchEpisodeDetails()
+
+   },[spotiUserToken, searchQuery]);
 
     return <div className={allResultsStyle['all-wrapper']}>
         <div className={allResultsStyle['first-row']}>
@@ -75,6 +101,15 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
                 {resultsLoading ? Array.from({length: 5}).map((_, i) => <PlaylistCardSkeleton
                     key={i}/>) : allResultsData?.shows.items.slice(0, 5).map((eachShowPodcast, i) => <ShowPodcastCard
                     eachShowPodcast={eachShowPodcast} key={i}/>)}
+            </div>
+        </div>
+
+        <div className={allResultsStyle['top-episodes-wrapper']}>
+            <h2>Episodes</h2>
+            <div className={allResultsStyle['top-episodes']}>
+                {episodeDataLoading ? Array.from({length: 5}).map((_, i) => <div></div> ):
+                episodesData.episodes.map((eachEpisode, i) => <TopEpisodeCard eachEpisode={eachEpisode} key={i} />)
+                }
             </div>
         </div>
     </div>

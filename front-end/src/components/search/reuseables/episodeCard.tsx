@@ -5,27 +5,21 @@ import {millisecondsToHhMmSs} from "../../player/msConverter";
 
 export function EpisodeCard({eachEpisode}: { eachEpisode: Episode }) {
     const months = [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
-    ];
-    const episodeDate: Date = new Date(String(eachEpisode?.release_date));
-
-    const currentYear: number = new Date().getFullYear();
-    const month: string = months[episodeDate.getMonth()]
-    const date: number = episodeDate.getDate();
-
-    const releasedThisYear: boolean = currentYear === episodeDate.getFullYear();
-
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec',
+        ], episodeDate: Date = new Date(String(eachEpisode?.release_date)), currentYear: number = new Date().getFullYear(),
+        month: string = months[episodeDate.getMonth()], date: number = episodeDate.getDate(),
+        releasedThisYear: boolean = currentYear === episodeDate.getFullYear();
 
 
     return <div className={episodesStyle['episode-card']}>
