@@ -10,18 +10,24 @@ import {useAppDispatch, useAppSelector} from "../../../../../../store/hooks.ts";
 import Pause from "../icons/pause.svg"
 import Play from "../icons/play.svg";
 import episodesStyle from "../../PodcastsShows/podcastsShows.module.css";
+import TopSongCardSkeleton from "../../../../../../skeletons/topSongCardSkeleton.tsx";
 
-export function Songs({firstFour}: { firstFour: Track[] | undefined }) {
+export function Songs({firstFour, resultsLoading}: { firstFour: Track[] | undefined, resultsLoading:boolean}) {
     const [hoveringOver, setHoveringOver] = useState<string>('none');
     const currentlyPlaying = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong);
     const accessToken = useAppSelector(state => state.spotiUserReducer.spotiToken.accessToken);
     const dispatch = useAppDispatch();
 
+
+
+
+
     return <div className={allResultsStyle['top-songs-wrapper']}>
         <h2>Songs</h2>
         <div className={allResultsStyle['top-songs-box']}>
-            {firstFour?.map((eachTrack, i) =>
-                <div key={i} className={allResultsStyle['top-song']}
+            {firstFour?.map((eachTrack, i) => {
+                if(resultsLoading){
+               return (<div key={i} className={allResultsStyle['top-song']}
                      onClick={async () => {
 
                          if (!(currentlyPlaying.songID === String(eachTrack?.id))) {
@@ -60,7 +66,7 @@ export function Songs({firstFour}: { firstFour: Track[] | undefined }) {
                             {eachTrack.id === hoveringOver &&
                                 <div>{(currentlyPlaying.songID === String(eachTrack?.id) && currentlyPlaying.isPlaying) ?
                                     <img style={{padding: '5px'}} className={allResultsStyle['play-button']} width={40}
-                                        alt={'Pause Button'} height={40} src={Pause}></img>
+                                         alt={'Pause Button'} height={40} src={Pause}></img>
                                     :
                                     <img className={allResultsStyle['play-button']} width={40} height={40}
                                          alt={'Play Button'} src={Play}></img>
@@ -71,7 +77,8 @@ export function Songs({firstFour}: { firstFour: Track[] | undefined }) {
                         <div className={allResultsStyle['song-details']}>
                             <a>{eachTrack?.name[0].toUpperCase().concat(eachTrack?.name.slice(1,))}</a>
                             <div className={allResultsStyle['song-artists']}>
-                                {eachTrack?.explicit ? <div className={episodesStyle['explicit']} style={{fontSize: '8px'}}>E</div> : ''}
+                                {eachTrack?.explicit ?
+                                    <div className={episodesStyle['explicit']} style={{fontSize: '8px'}}>E</div> : ''}
                                 {eachTrack.artists.map((artist, i) =>
                                     <a>{i === eachTrack.artists.length - 1 ? artist.name : `${artist.name}, `}</a>)}
                             </div>
@@ -83,7 +90,12 @@ export function Songs({firstFour}: { firstFour: Track[] | undefined }) {
                         <div
                             className={allResultsStyle['duration']}>{millisecondsToHhMmSs(Number(eachTrack?.duration_ms))}</div>
                     </div>
-                </div>)}
+                </div>)
+            }
+                else{
+                    return <TopSongCardSkeleton key={i}/>
+                }
+            })}
 
         </div>
     </div>

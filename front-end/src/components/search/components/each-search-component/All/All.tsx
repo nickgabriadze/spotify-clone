@@ -5,6 +5,7 @@ import {AllSearch} from "../../../../../types/allSearch.ts";
 import TopResult from "./innerComponents/TopResult.tsx";
 import allResultsStyle from "./allresults.module.css";
 import Songs from "./innerComponents/Songs.tsx";
+
 export function AllResults({searchQuery}: { searchQuery: string }) {
     const spotiUserToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
     const [allResultsData, setAllResultsData] = useState<AllSearch>();
@@ -30,8 +31,9 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
 
     return <div className={allResultsStyle['all-wrapper']}>
         <div className={allResultsStyle['first-row']}>
-        <TopResult topSong={allResultsData?.tracks?.items[0]} accessToken={spotiUserToken} resultsLoading={resultsLoading}/>
-            <Songs firstFour={allResultsData?.tracks?.items?.slice(0, 4)}/>
+            <TopResult topSong={allResultsData?.tracks?.items[0]} accessToken={spotiUserToken}
+                       resultsLoading={resultsLoading}/>
+            <Songs firstFour={allResultsData?.tracks?.items?.slice(0, 4)} resultsLoading={resultsLoading}/>
         </div>
     </div>
 }
