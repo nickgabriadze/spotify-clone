@@ -8,11 +8,16 @@ import {useAppDispatch, useAppSelector} from "../../../../../../store/hooks.ts";
 import Pause from "../../Playlists/icons/pause.svg";
 import PauseStreaming from "../../../../../../api/player/pauseStreaming.ts";
 import episodesStyle from "../../PodcastsShows/podcastsShows.module.css";
+import TopResultCardSkeleton from "../../../../../../skeletons/topResultCardSkeleton.tsx";
 
-export function TopResult({topSong, accessToken}: { topSong: Track | undefined, accessToken: string }) {
+export function TopResult({topSong, accessToken, resultsLoading}: { topSong: Track | undefined, accessToken: string, resultsLoading: boolean }) {
     const [hoveringOver, setHoveringOver] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const currentlyPlaying = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong);
+
+    if(resultsLoading){
+        return <TopResultCardSkeleton />
+    }
 
     return <div className={allResultsStyle['top-result-wrapper']}
                 onMouseOver={() => setHoveringOver(true)}

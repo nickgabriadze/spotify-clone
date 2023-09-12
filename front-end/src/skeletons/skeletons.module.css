@@ -338,6 +338,68 @@
     animation: brightness-animation 3s linear infinite;
 }
 
+/* top result */
+.top-res-skeleton-wrapper{
+    display: flex;
+    flex-direction: column;
+    width: 550px;
+    & h2 {
+        color: white;
+    }
+    gap: 20px;
+
+}
+
+.top-res-inner-wrapper {
+    display: flex;
+    flex-direction: column;
+    background-color: #181818;
+    padding: 25px 25px 25px 25px;
+    gap: 30px;
+    .top-res-image-skeleton{
+        width: 92px;
+        height: 92px;
+        background-color: var(--default-background-color);
+        animation: brightness-animation 3s linear infinite;
+
+    }
+
+    .top-res-track-name-skeleton {
+        width: 160px;
+        height: 15px;
+        background-color: var(--default-background-color);
+        animation: brightness-animation 3s linear infinite;
+    }
+
+    .top-res-track-artists-skeleton {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+
+        .top-res-explicit-skeleton {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            background-color: var(--default-background-color);
+            animation: brightness-animation 3s linear infinite;
+        }
+        .top-res-artist-skeleton{
+            width: 80px;
+            height: 10px;
+            background-color: var(--default-background-color);
+            animation: brightness-animation 3s linear infinite;
+        }
+        .top-res-type-skeleton {
+            width: 50px;
+            height: 20px;
+            border-radius: 10px;
+            background-color: var(--default-background-color);
+            animation: brightness-animation 3s linear infinite;
+        }
+    }
+}
+
+
 @keyframes brightness-animation {
     0% {
         background-color: var(--default-background-color);
