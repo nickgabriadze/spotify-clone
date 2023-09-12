@@ -1,7 +1,12 @@
 .all-wrapper {
     padding: 10px;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+
 }
+
 
 .first-row {
     display: flex;
@@ -191,6 +196,29 @@
         }
 
     }
+}
 
+/* Other tops */
+.top-artists-wrapper, .top-albums-wrapper, .top-playlists-wrapper, .top-podcasts-wrapper {
+    display: flex;
+    width: 100%;
+    gap: 20px;
+    flex-direction: column;
 
+    & h2 {
+        color: white
+    }
+
+    .top-artists, .top-albums, .top-playlists, .top-podcasts {
+        display: grid;
+        gap: 25px;
+
+        grid-template-columns: repeat(5, 1fr);
+        width: calc(100% - 5px);
+        overflow-x: scroll;
+    }
+
+    .top-artists::-webkit-scrollbar{
+        display: none;
+    }
 }

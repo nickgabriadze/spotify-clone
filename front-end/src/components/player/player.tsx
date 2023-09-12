@@ -23,6 +23,7 @@ export function Player() {
 
 
     const fetchCurrentData = useCallback(async () => {
+
         try {
             setCurrentLoading(true)
             const devices = await getDevices(access.accessToken);
