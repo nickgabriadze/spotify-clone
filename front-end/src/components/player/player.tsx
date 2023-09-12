@@ -88,44 +88,6 @@ export function Player() {
         [fetchCurrentData, dispatch, userActions.length])
 
 
-    useEffect(() => {
-        const fetchCurrent = async () => {
-            try {
-
-                const devices = await getDevices(access.accessToken);
-                const devicesData = devices.data;
-
-                setDevices(devicesData);
-                const req = await getCurrentlyPlaying(access.accessToken);
-                const data = req.data;
-                if (req.status === 204) {
-                    setNoDataAvailable(true);
-                } else {
-                    setCurrentlyPlaying(data);
-                    setNoDataAvailable(false);
-
-                    dispatch(setCurrentlyPlayingSong({
-                        currentlyPlayingSong: {
-                            artistID: data.item.artists[0].id,
-                            albumID: data.item.album.id,
-                            songID: data.item.id,
-                            isPlaying: data.is_playing
-                        }
-                    }))
-
-                }
-            } catch (err) {
-                setError(err);
-            }
-        };
-
-
-        const fetcher = setInterval(() => fetchCurrent(), 3000);
-
-        return () => clearInterval(fetcher)
-
-
-    }, [access, dispatch]);
 
 
     if (noDataAvailable) {

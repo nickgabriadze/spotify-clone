@@ -52,6 +52,12 @@ export function StreamController({
 
         setDuration((prev) => prev + 1000);
       }, 1000);
+
+      if(duration >= Number(currentlyPlaying?.item?.duration_ms)){
+          dispatch(setUserControlActions({
+              userAction: 'Retrieve New One'
+          }))
+      }
       return () => clearInterval(timerInterval);
     }
   }, [
