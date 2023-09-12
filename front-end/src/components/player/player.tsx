@@ -33,9 +33,9 @@ export function Player() {
             const data = req.data;
             if (req.status === 204) {
                 setNoDataAvailable(true);
-               const prevData = window.localStorage.getItem('previousSong')
-                if(prevData) {
-                    const currentlyPlayingSong:{
+                const prevData = window.localStorage.getItem('previousSong')
+                if (prevData) {
+                    const currentlyPlayingSong: {
                         artistID: string,
                         songID: string,
                         albumID: string,
@@ -83,11 +83,46 @@ export function Player() {
                 fetchCurrentData();
 
             }
-
         },
         [fetchCurrentData, dispatch, userActions.length])
 
 
+    useEffect(() => {
+            const fetchCurrent = async () => {
+                try {
+
+                    const devices = await getDevices(access.accessToken);
+                    const devicesData = devices.data;
+
+                    setDevices(devicesData);
+                    const req = await getCurrentlyPlaying(access.accessToken);
+                    const data = req.data;
+                    if (req.status === 204) {
+                        setNoDataAvailable(true);
+                    } else {
+                        setCurrentlyPlaying(data);
+                        setNoDataAvailable(false);
+
+                        dispatch(setCurrentlyPlayingSong({
+                            currentlyPlayingSong: {
+                                artistID: data.item.artists[0].id,
+                                albumID: data.item.album.id,
+                                songID: data.item.id,
+                                isPlaying: data.is_playing
+                            }
+                        }))
+
+                    }
+                } catch (err) {
+                    setError(err);
+                }
+            };
+
+
+            const fetcher = setInterval(() => fetchCurrent(), 3000);
+
+            return () => clearInterval(fetcher)
+        }, [access, dispatch])
 
 
     if (noDataAvailable) {
@@ -101,9 +136,9 @@ export function Player() {
         return (
             <section className={playerStyle["player"]}>
                 <div className={playerStyle['player-wrapper']}>
-                    <SongDetails currentlyPlaying={noDataAvailable ? undefined : currentlyPlaying}/>
+                    <SongDetails currentlyPlaying={currentlyPlaying}/>
                     <StreamController accessToken={access.accessToken}
-                                      currentlyPlaying={noDataAvailable ? undefined : currentlyPlaying}/>
+                                      currentlyPlaying={currentlyPlaying}/>
                     <DeviceController devices={noDataAvailable ? undefined : devices}/>
                 </div>
                 <div className={playerStyle['which-device']}>
