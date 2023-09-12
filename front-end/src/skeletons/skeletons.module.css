@@ -342,7 +342,7 @@
 .top-res-skeleton-wrapper{
     display: flex;
     flex-direction: column;
-    width: 550px;
+    width: 40%;
     & h2 {
         color: white;
     }
@@ -399,6 +399,67 @@
     }
 }
 
+
+/* top songs */
+
+.top-song-skeleton-wrapper{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    .top-song-details-skeleton{
+        display: flex;
+        gap: 10px;
+        align-items: center;
+
+        .top-song-image-skeleton{
+            width: 40px;
+            height: 40px;
+            background-color: var(--default-background-color);
+            animation: brightness-animation 3s linear infinite;
+        }
+
+        .top-song-title-artist-skeleton{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 10px;
+           .top-song-title-skeleton{
+                width: 150px;
+                height: 10px;
+                background-color: var(--default-background-color);
+                animation: brightness-animation 3s linear infinite;
+            }
+
+          .top-song-explicit-artists {
+                display:flex;
+                gap: 10px;
+              align-items: center;
+                :nth-child(1){
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 2px;
+                    background-color: var(--default-background-color);
+                    animation: brightness-animation 3s linear infinite;
+                }
+                :nth-child(2){
+                    width: 70px;
+                    height: 5px;
+                    background-color: var(--default-background-color);
+                    animation: brightness-animation 3s linear infinite;
+                }
+            }
+        }
+    }
+    .top-song-duration-skeleton{
+        width: 30px;
+        height: 10px;
+        border-radius: 2px;
+        background-color: var(--default-background-color);
+        animation: brightness-animation 3s linear infinite;
+    }
+}
 
 @keyframes brightness-animation {
     0% {
