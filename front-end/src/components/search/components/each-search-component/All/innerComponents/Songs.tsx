@@ -11,6 +11,7 @@ import Pause from "../icons/pause.svg"
 import Play from "../icons/play.svg";
 import episodesStyle from "../../PodcastsShows/podcastsShows.module.css";
 import TopSongCardSkeleton from "../../../../../../skeletons/topSongCardSkeleton.tsx";
+import NoTrackPicture from "../../icons/no-track-pic.svg";
 
 export function Songs({firstFour, resultsLoading}: { firstFour: Track[] | undefined, resultsLoading: boolean }) {
     const [hoveringOver, setHoveringOver] = useState<string>('none');
@@ -62,8 +63,25 @@ export function Songs({firstFour, resultsLoading}: { firstFour: Track[] | undefi
                          onMouseOver={() => setHoveringOver(eachTrack.id)}>
                         <div className={allResultsStyle['song-img-details']}>
                             <div className={allResultsStyle['interactive-album-img']}>
-                                <img alt={'Album image'} src={eachTrack?.album.images[0]?.url} width={40}
-                                     height={40}></img>
+                                {eachTrack?.album.images[0]?.url ?  <img
+                                        src={eachTrack?.album.images[0]?.url}
+                                        width={40}
+                                        height={40}
+                                        draggable={false}
+                                        alt="Album Picture"
+                                    ></img>:
+                                    <img
+                                        style={{
+                                            backgroundColor: '#181818',
+                                            padding: '5px',
+                                            borderRadius: '5px',
+                                            filter: 'brightness(30%)'
+                                        }}
+                                        src={NoTrackPicture}
+                                        width={40}
+                                        height={40}
+                                        draggable={false}
+                                        alt="Album Picture"></img>}
                                 {eachTrack.id === hoveringOver &&
                                     <div>{(currentlyPlaying.songID === String(eachTrack?.id) && currentlyPlaying.isPlaying) ?
                                         <img style={{padding: '5px'}} className={allResultsStyle['play-button']}

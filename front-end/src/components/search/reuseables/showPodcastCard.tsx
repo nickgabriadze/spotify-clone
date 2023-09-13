@@ -1,9 +1,8 @@
 import {Show} from "../../../types/show.ts";
 import podcastsShowsStyle from "../components/each-search-component/PodcastsShows/podcastsShows.module.css";
-import NoPlaylistImage from "../components/each-search-component/icons/no-playlist-pic.webp";
+import NoPodcastPic from "../components/each-search-component/icons/no-podcast-pic.svg"
 
-
-export function ShowPodcastCard({eachShowPodcast}: {eachShowPodcast:Show}) {
+export function ShowPodcastCard({eachShowPodcast}: { eachShowPodcast: Show }) {
 
     return (
         <div
@@ -11,16 +10,30 @@ export function ShowPodcastCard({eachShowPodcast}: {eachShowPodcast:Show}) {
         >
             <div className={podcastsShowsStyle["showPodcast-img"]}
             >
-                <img
-                    alt={"Podcast/Show image"}
-                    src={
-                        eachShowPodcast.images[0]?.url
-                            ? eachShowPodcast.images[0]?.url
-                            : NoPlaylistImage
-                    }
-                    height={160}
-                    width={160}
-                ></img>
+                {eachShowPodcast.images[0]?.url ?
+                    <img
+                        alt={"Podcast/Show image"}
+                        src={
+                            eachShowPodcast.images[0]?.url
+                        }
+                        height={160}
+                        width={160}
+                    ></img>
+                    :
+                    <img
+                        style={{
+                            padding: '10px',
+                            backgroundColor: '#302f2f',
+                            borderRadius: '5px',
+                        }}
+                        alt={"Podcast/Show image"}
+                        src={
+                            NoPodcastPic
+                        }
+                        height={160}
+                        width={160}
+                    ></img>
+                }
             </div>
             <div className={podcastsShowsStyle["showPodcast-details"]}>
                 <a>

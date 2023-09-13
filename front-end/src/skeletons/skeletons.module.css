@@ -461,15 +461,85 @@
     }
 }
 
+.top-episode-skeleton-wrapper{
+    display: flex;
+    flex-direction: column;
+    background-color: #181818;
+    align-items: center;
+    padding-bottom: 35px;
+    gap: 15px;
+    border-radius: 8px;
+
+    .top-episode-image-skeleton-wrapper{
+        position: relative;
+        .top-episode-image-skeleton{
+            z-index: 1;
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border-radius: 5px;
+            margin: 20px 20px 10px 20px;
+            animation: brightness-animation 3s linear infinite;
+            background-color: var(--default-background-color);
+        }
+        .top-episode-small-image-skeleton{
+            position: absolute;
+            width: 35px;
+            height: 35px;
+
+            left: 10px;
+            bottom: 0;
+            border-radius: 3px;
+            animation: brightness-animation 2s ease-in-out infinite;
+            background-color: var(--default-background-color);
+            z-index:2;
+
+        }
+    }
+
+    .top-episode-title-skeleton{
+        width: 75%;
+        height: 15px;
+        border-radius: 4px;
+        animation: brightness-animation 3s ease-in-out infinite;
+        background-color: var(--default-background-color);
+    }
+
+    .top-episode-info-skeleton{
+        display: flex;
+        gap:10px;
+        align-items: center;
+        width: 75%;
+        justify-content: space-evenly;
+        .top-episode-explicit-skeleton{
+            width: 20px;
+            height: 15px;
+            border-radius: 3px;
+            animation: brightness-animation 3s ease-in-out infinite;
+            background-color: var(--default-background-color);
+        }
+        .top-episode-date-time-skeleton{
+            width: 100%;
+            height: 10px;
+            border-radius: 3px;
+            animation: brightness-animation 3s ease-in-out infinite;
+            background-color: var(--default-background-color);
+        }
+    }
+}
+
+
 @keyframes brightness-animation {
     0% {
         background-color: var(--default-background-color);
     }
     50% {
         background-color: rgb(93, 91, 91);
+
     }
     100% {
         background-color: #3e3c3c69;
+
     }
 }
 

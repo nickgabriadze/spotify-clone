@@ -8,7 +8,7 @@ import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
 import {setUserControlActions} from "../../../store/features/navigationSlice";
 import Play from "../components/each-search-component/Songs/icons/play.svg"
 import episodesStyle from "../components/each-search-component/PodcastsShows/podcastsShows.module.css";
-
+import NoTrackPicture from "../components/each-search-component/icons/no-track-pic.svg"
 export const SongCard = forwardRef(function SongCard(props: {
     eachTrack: Track | null,
     n: number,
@@ -44,13 +44,24 @@ export const SongCard = forwardRef(function SongCard(props: {
                     ><img alt={'Play song'} src={Play} width={30} height={30}></img></div> : n}</div>}
                 <div className={songsStyle["img-title-artists"]}>
                     <div className={songsStyle["album-img"]}>
-                        <img
+                        {eachTrack?.album.images[0]?.url ?  <img
                             src={eachTrack?.album.images[0]?.url}
                             width={50}
                             height={50}
                             draggable={false}
                             alt="Album Picture"
-                        ></img>
+                        ></img>:
+                            <img
+                                style={{
+                                    backgroundColor: '#181818',
+                                    padding: '5px',
+                                    borderRadius: '5px'
+                                }}
+                                src={NoTrackPicture}
+                                  width={40}
+                                  height={40}
+                                  draggable={false}
+                                  alt="Album Picture"></img>}
                     </div>
 
                     <div className={songsStyle["title-artists"]}>

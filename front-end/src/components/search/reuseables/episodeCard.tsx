@@ -2,6 +2,7 @@ import episodesStyle from "../components/each-search-component/PodcastsShows/pod
 
 import {Episode} from "../../../types/episode";
 import {millisecondsToHhMmSs} from "../../player/msConverter";
+import NoPodcastPic from "../components/each-search-component/icons/no-podcast-pic.svg";
 
 export function EpisodeCard({eachEpisode}: { eachEpisode: Episode }) {
     const months = [
@@ -25,9 +26,26 @@ export function EpisodeCard({eachEpisode}: { eachEpisode: Episode }) {
     return <div className={episodesStyle['episode-card']}>
 
         <div className={episodesStyle['episode-img']}>
-            <img src={eachEpisode?.images[0]?.url}
-            alt={"Episode image"}
-            ></img>
+            {eachEpisode.images[0]?.url ?
+                <img src={eachEpisode?.images[0]?.url}
+                     alt={"Episode image"}
+                ></img>
+                :
+                <img
+                    style={{
+                        padding: '10px',
+                        backgroundColor: '#302f2f',
+                        borderRadius: '5px',
+                    }}
+                    alt={"Podcast/Show image"}
+                    src={
+                        NoPodcastPic
+                    }
+                    height={160}
+                    width={160}
+                ></img>
+            }
+
         </div>
 
         <div className={episodesStyle['episode-desc']}>

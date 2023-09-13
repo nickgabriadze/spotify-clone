@@ -21,6 +21,10 @@
 .playlist-img {
     padding: 0 15px 0 15px;
     z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 .playlist-img img {

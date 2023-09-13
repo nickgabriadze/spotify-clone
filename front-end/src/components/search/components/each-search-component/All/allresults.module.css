@@ -229,7 +229,6 @@
 .top-episode-wrapper{
     display: flex;
     flex-direction: column;
-
     background-color: #181818;
     position: relative;
     border-radius: 8px;

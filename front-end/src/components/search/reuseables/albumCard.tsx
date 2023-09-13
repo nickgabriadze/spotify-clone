@@ -7,7 +7,7 @@ import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
 import { setUserControlActions } from "../../../store/features/navigationSlice";
 import Pause from "../components/each-search-component/Playlists/icons/pause.svg";
 import PauseStreaming from "../../../api/player/pauseStreaming";
-
+import NoAlbumPicture from "../components/each-search-component/icons/no-album-pic.svg"
 export function AlbumCard({ eachAlbum }: { eachAlbum: Album }) {
   const [hoveringOver, setHoveringOver] = useState<boolean>(false);
   const dispatch = useAppDispatch();
@@ -18,7 +18,25 @@ export function AlbumCard({ eachAlbum }: { eachAlbum: Album }) {
     onMouseOver={() => setHoveringOver(true)}
     onMouseOut={() => setHoveringOver(false)}>
       <div className={albumsStyle["album-img"]}>
-        <img src={eachAlbum.images[0]?.url} height={160} width={160}></img>
+          {eachAlbum?.images[0]?.url ?  <img
+                  src={eachAlbum?.images[0]?.url}
+                  width={160}
+                  height={160}
+                  draggable={false}
+                  alt="Album Picture"
+              ></img>:
+              <img
+                  style={{
+                      backgroundColor: '#302f2f',
+                      padding: '5px',
+                      borderRadius: '5px',
+
+                  }}
+                  src={NoAlbumPicture}
+                  width={160}
+                  height={160}
+                  draggable={false}
+                  alt="Album Picture"></img>}
       </div>
 
       {hoveringOver && (
@@ -55,11 +73,11 @@ export function AlbumCard({ eachAlbum }: { eachAlbum: Album }) {
         {currentlyPlaying.albumID === eachAlbum.id &&
           currentlyPlaying.isPlaying ? (
            <div>
-            <img src={Pause} width={30} height={30}></img>
+            <img alt={"Pause icon"} src={Pause} width={30} height={30}></img>
             </div>
           ) : (
             <div>
-            <img src={Play} width={50} height={50}></img>
+            <img alt={"Play icon"} src={Play} width={50} height={50}></img>
             </div>
           )}
         </button>
