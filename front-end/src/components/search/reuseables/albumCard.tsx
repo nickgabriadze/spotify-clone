@@ -18,7 +18,7 @@ export function AlbumCard({ eachAlbum }: { eachAlbum: Album }) {
     onMouseOver={() => setHoveringOver(true)}
     onMouseOut={() => setHoveringOver(false)}>
       <div className={albumsStyle["album-img"]}>
-          {!eachAlbum?.images[0]?.url ?  <img
+          {eachAlbum?.images[0]?.url ?  <img
                   src={eachAlbum?.images[0]?.url}
                   width={160}
                   height={160}
