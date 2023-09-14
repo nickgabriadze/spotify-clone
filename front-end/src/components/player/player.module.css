@@ -38,7 +38,7 @@ button {
     background-color: #3e3c3c69;
 }
 
-.song-name-skeleton{
+.song-name-skeleton {
     width: 120px;
     height: 10px;
     animation: brightness-animation 3s ease-in-out infinite;
@@ -46,7 +46,7 @@ button {
     border-radius: 3px;
 }
 
-.artists-name-skeleton{
+.artists-name-skeleton {
     width: 60px;
     height: 8px;
     animation: brightness-animation 3s ease-in-out infinite;
@@ -99,11 +99,9 @@ button {
 }
 
 
-
 .song-name-box::-webkit-scrollbar {
     display: none;
 }
-
 
 
 .song-info .artists-name {
@@ -113,7 +111,7 @@ button {
     cursor: pointer;
 }
 
-.artists-name{
+.artists-name {
     white-space: nowrap;
     position: relative;
 }
@@ -271,9 +269,18 @@ button {
 .devices-triangle {
     display: flex;
     flex-direction: column;
+    position: relative;
+
+    & button {
+        outline: none;
+        border: none;
+        background-color: transparent;
+
+    }
+
 }
 
-.devices-triangle > div {
+.devices-triangle > .triangle {
 
     width: 10px;
     height: 10px;
@@ -282,5 +289,93 @@ button {
     border-bottom: 20px solid #1ed760;
     position: absolute;
     margin-top: 25px;
+    z-index: 1
+}
 
+.devices-popup {
+    position: absolute;
+    z-index: 999;
+    background-color: #282828;
+    width: 280px;
+    height: 350px;
+    left: -129px;
+    bottom: 40px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+
+    .available-devices-triangle-indicator{
+        width: 0;
+        height: 0;
+        border-left: 12px solid transparent;
+        border-right: 12px solid transparent;
+        border-top: 12px solid #282828;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        bottom: -12px;
+        left: 128px;
+        z-index: 999
+    }
+}
+
+.listening-on {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 10px;
+}
+
+.actual-device {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: white;
+
+
+    & h4 {
+        color: #1ed760;
+        font-family: "Gotham Light", sans-serif;
+    }
+}
+
+.available-devices {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+
+    & h4 {
+        color: white;
+        font-family: "Gotham Light", sans-serif;
+        font-weight: bold;
+    }
+
+    .other-devices {
+
+        overflow-y: scroll;
+        height: 200px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+        & div {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            cursor: pointer;
+            width: 100%;
+            height: 50px;
+            padding: 10px;
+        }
+
+        & div:hover{
+            background-color: #302f2f;
+            border-radius: 10px;
+        }
+
+    }
 }

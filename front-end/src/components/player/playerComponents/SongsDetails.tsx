@@ -11,7 +11,6 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
     const [artistNameHover, setArtistNameHover] = useState(false)
     const songNameRef = useRef<HTMLAnchorElement>(null)
     const artistNameRef = useRef<HTMLDivElement>(null)
-
     useEffect(() => {
         if (songNameHover) {
 
@@ -54,7 +53,7 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
         </div>
         <div className={playerStyle["song-info"]}
              style={Number(songNameRef?.current?.offsetWidth) > 200 ? {width: 'fit-content'} : {
-                 width: '100px'
+                 width: '125px'
              }}
         >
             <div className={playerStyle['song-name-box']}

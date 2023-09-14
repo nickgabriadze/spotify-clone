@@ -2,7 +2,7 @@ import {Track} from "../../../types/track";
 import songsStyle from "../components/each-search-component/Songs/songs.module.css";
 import millisecondsToMmSs from "../../player/msConverter";
 import {LegacyRef, forwardRef, useState} from "react";
-import Equaliser from "../../player/icons/device-picker-equaliser-animation.946e7243.webp"
+import Equaliser from "../../player/icons/device-picker-equaliser.webp"
 import {useAppDispatch, useAppSelector} from "../../../store/hooks";
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
 import {setUserControlActions} from "../../../store/features/navigationSlice";
