@@ -3,6 +3,7 @@ import playerStyle from "../player.module.css"
 import Heart from "../icons/heart.svg";
 import {useEffect, useRef, useState} from "react";
 import './animation.css'
+
 export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPlaying | undefined }) {
 
 
@@ -12,7 +13,7 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
     const artistNameRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        if(songNameHover) {
+        if (songNameHover) {
 
             if (Number(songNameRef?.current?.offsetWidth) > 200) {
                 songNameRef?.current?.classList.add('song-name-animation');
@@ -20,11 +21,11 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
                 songNameRef?.current?.classList.remove('song-name-animation');
 
             }
-        }else{
-                songNameRef?.current?.classList.remove('song-name-animation');
+        } else {
+            songNameRef?.current?.classList.remove('song-name-animation');
         }
 
-        if(artistNameHover) {
+        if (artistNameHover) {
 
             if (Number(artistNameRef?.current?.children.length) > 2) {
                 artistNameRef?.current?.classList.add('song-name-animation');
@@ -32,10 +33,9 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
                 artistNameRef?.current?.classList.remove('song-name-animation');
 
             }
-        }else{
+        } else {
             artistNameRef?.current?.classList.remove('song-name-animation');
         }
-
 
 
     }, [artistNameRef.current, songNameRef.current, currentlyPlaying?.item?.id, songNameHover, artistNameHover])
@@ -52,37 +52,51 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
                 <div className={playerStyle["currently-playing-info-album-img-skeleton"]}></div>
             }
         </div>
-        <div className={playerStyle["song-info"]}>
+        <div className={playerStyle["song-info"]}
+             style={Number(songNameRef?.current?.offsetWidth) > 200 ? {width: 'fit-content'} : {
+                 width: '100px'
+             }}
+        >
             <div className={playerStyle['song-name-box']}
-            onMouseOver={() => setSongNameHover(true)}
+
+                 onMouseOver={() => setSongNameHover(true)}
                  onMouseOut={() => setSongNameHover(false)}
             >
-                <a className={playerStyle["song-name"]}
-                    ref={songNameRef}
+                {currentlyPlaying?.item?.name ? <a className={playerStyle["song-name"]}
+                                                   ref={songNameRef}
 
-                >{currentlyPlaying?.item?.name}</a>
+                    >{currentlyPlaying?.item?.name}</a> :
+                    <div className={playerStyle['song-name-skeleton']}>
+
+                    </div>
+                }
             </div>
             <div className={playerStyle['song-name-box']}
                  onMouseOver={() => setArtistNameHover(true)}
                  onMouseOut={() => setArtistNameHover(false)}
             >
-                <div  ref={artistNameRef}
-                style={{
-                    width: '200px',
-                    position: 'relative'
-                }}
-                >
-                {currentlyPlaying?.item?.artists.map((each, i) => (
-                    <a key={each.id} className={playerStyle["artists-name"]}
+                {Number(currentlyPlaying?.item?.artists.length) > 0 ?
+                    <div ref={artistNameRef}
+                         style={{
+                             width: '200px',
+                             position: 'relative'
+                         }}
                     >
-                        {each.name}
-                        {i === currentlyPlaying.item.artists.length - 1 ? "" : ", "}
-                    </a>
-                ))}
-                </div>
+                        {currentlyPlaying?.item?.artists.map((each, i) => (
+                            <a key={each.id} className={playerStyle["artists-name"]}
+                            >
+                                {each.name}
+                                {i === currentlyPlaying.item.artists.length - 1 ? "" : ", "}
+                            </a>
+                        ))}
+                    </div> :
+
+                    <div className={playerStyle['artists-name-skeleton']}></div>
+                }
+
             </div>
         </div>
-        <img src={Heart} width={20} height={18} alt="heart icon"></img>
+        {currentlyPlaying?.item?.name && <img src={Heart} width={20} height={18} alt="heart icon"></img>}
     </div>)
 
 }

@@ -137,7 +137,7 @@ export function Player() {
         return (
             <section className={playerStyle["player"]}>
                 <div className={playerStyle['player-wrapper']}>
-                    <SongDetails currentlyPlaying={currentlyPlaying}/>
+                    <SongDetails detailsLoading={currentLoading} currentlyPlaying={currentlyPlaying}/>
                     <StreamController accessToken={access.accessToken}
                                       currentlyPlaying={currentlyPlaying}/>
                     <DeviceController devices={noDataAvailable ? undefined : devices}/>
