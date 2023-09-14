@@ -97,6 +97,11 @@ button {
     cursor: pointer;
 }
 
+.artists-name{
+    white-space: nowrap;
+    position: relative;
+}
+
 .song-info a:hover {
     color: white;
     text-decoration: underline;

@@ -6,15 +6,15 @@
 @keyframes moving-text-animation {
 
     0%{
-        left: -100%;
-    }
-
-    25%{
         left: 0;
     }
 
+    25%{
+        left: -50%;
+    }
+
     50%{
-        left: 100%
+        left: -80%
     }
 
     100%{

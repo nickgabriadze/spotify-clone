@@ -63,7 +63,7 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
 
     }, [spotiUserToken, searchQuery, resultsLoading]);
 
-    console.log(episodesData.episodes)
+
 
     return <div className={allResultsStyle['all-wrapper']}>
         <div className={allResultsStyle['first-row']}>
@@ -119,7 +119,7 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
             <div className={allResultsStyle['top-episodes-wrapper']}>
                 <h2>Episodes</h2>
                 <div className={allResultsStyle['top-episodes']}>
-                    {episodeDataLoading ? Array.from({length: 5}).map((_, i) => <TopEpisodeCardSkeleton key={i}/>) :
+                    {episodeDataLoading || resultsLoading ? Array.from({length: 5}).map((_, i) => <TopEpisodeCardSkeleton key={i}/>) :
                         episodesData.episodes.map((eachEpisode, i) => <TopEpisodeCard eachEpisode={eachEpisode}
                                                                                       key={i}/>)
                     }
