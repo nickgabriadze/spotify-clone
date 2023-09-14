@@ -42,28 +42,28 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
         fetchAll()
     }, [spotiUserToken, searchQuery]);
 
-   useEffect(()=>{
+    useEffect(() => {
 
-       const fetchEpisodeDetails = async () => {
-           try {
-               setEpisodeDataLoading(true)
-               const episodeIds = allResultsData?.episodes?.items?.map((each) => String(each.id)).join(",")
-               const episodesData = await getEpisodes(spotiUserToken, String(episodeIds))
-               const data = episodesData.data;
-               console.log(data)
-               setEpisodesData(data);
+        const fetchEpisodeDetails = async () => {
+            try {
+                setEpisodeDataLoading(true)
+                const episodeIds = allResultsData?.episodes?.items?.map((each) => String(each.id)).join(",")
+                const episodesData = await getEpisodes(spotiUserToken, String(episodeIds))
+                const data = episodesData.data;
+                console.log(data)
+                setEpisodesData(data);
 
-           }catch(e){
-               console.log(e)
-           }finally {
-               setEpisodeDataLoading(false)
-           }
-       }
-    fetchEpisodeDetails()
+            } catch (e) {
+                console.log(e)
+            } finally {
+                setEpisodeDataLoading(false)
+            }
+        }
+        fetchEpisodeDetails()
 
-   },[spotiUserToken, searchQuery, resultsLoading]);
+    }, [spotiUserToken, searchQuery, resultsLoading]);
 
-   console.log(  episodesData.episodes)
+    console.log(episodesData.episodes)
 
     return <div className={allResultsStyle['all-wrapper']}>
         <div className={allResultsStyle['first-row']}>
@@ -71,50 +71,61 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
                        resultsLoading={resultsLoading}/>
             <Songs firstFour={allResultsData?.tracks?.items?.slice(0, 4)} resultsLoading={resultsLoading}/>
         </div>
-        <div className={allResultsStyle['top-artists-wrapper']}>
-            <h2>Artists</h2>
-            <div className={allResultsStyle['top-artists']}>
-                {resultsLoading ? Array.from({length: 5}).map((_, i) => <ArtistCardSekeleton
-                    key={i}/>) : allResultsData?.artists.items.slice(0, 5).map((eachArtist, i) => <ArtistCard
-                    eachArtist={eachArtist} key={i}/>)}
-            </div>
-        </div>
+        {Number(allResultsData?.artists?.items?.length) > 0 &&
+            <div className={allResultsStyle['top-artists-wrapper']}>
+                <h2>Artists</h2>
+                <div className={allResultsStyle['top-artists']}>
+                    {resultsLoading ? Array.from({length: 5}).map((_, i) => <ArtistCardSekeleton
+                        key={i}/>) : allResultsData?.artists.items.slice(0, 5).map((eachArtist, i) => <ArtistCard
+                        eachArtist={eachArtist} key={i}/>)}
+                </div>
+            </div>}
 
-        <div className={allResultsStyle['top-albums-wrapper']}>
-            <h2>Albums</h2>
-            <div className={allResultsStyle['top-albums']}>
-                {resultsLoading ? Array.from({length: 5}).map((_, i) => <AlbumCardSkeleton
-                    key={i}/>) : allResultsData?.albums.items.slice(0, 5).map((eachAlbum, i) => <AlbumCard
-                    eachAlbum={eachAlbum} key={i}/>)}
+        {Number(allResultsData?.albums.items.length) > 0 &&
+            <div className={allResultsStyle['top-albums-wrapper']}>
+                <h2>Albums</h2>
+                <div className={allResultsStyle['top-albums']}>
+                    {resultsLoading ? Array.from({length: 5}).map((_, i) => <AlbumCardSkeleton
+                        key={i}/>) : allResultsData?.albums.items.slice(0, 5).map((eachAlbum, i) => <AlbumCard
+                        eachAlbum={eachAlbum} key={i}/>)}
+                </div>
             </div>
-        </div>
+        }
 
-        <div className={allResultsStyle['top-playlists-wrapper']}>
-            <h2>Playlists</h2>
-            <div className={allResultsStyle['top-playlists']}>
-                {resultsLoading ? Array.from({length: 5}).map((_, i) => <PlaylistCardSkeleton
-                    key={i}/>) : allResultsData?.playlists.items.slice(0, 5).map((eachPlaylist, i) => <PlaylistCard
-                    eachPlaylist={eachPlaylist} key={i}/>)}
+        {Number(allResultsData?.playlists.items.length) > 0 &&
+            <div className={allResultsStyle['top-playlists-wrapper']}>
+                <h2>Playlists</h2>
+                <div className={allResultsStyle['top-playlists']}>
+                    {resultsLoading ? Array.from({length: 5}).map((_, i) => <PlaylistCardSkeleton
+                        key={i}/>) : allResultsData?.playlists.items.slice(0, 5).map((eachPlaylist, i) => <PlaylistCard
+                        eachPlaylist={eachPlaylist} key={i}/>)}
+                </div>
             </div>
-        </div>
+        }
 
-        <div className={allResultsStyle['top-podcasts-wrapper']}>
-            <h2>Podcasts</h2>
-            <div className={allResultsStyle['top-podcasts']}>
-                {resultsLoading ? Array.from({length: 5}).map((_, i) => <PlaylistCardSkeleton
-                    key={i}/>) : allResultsData?.shows.items.slice(0, 5).map((eachShowPodcast, i) => <ShowPodcastCard
-                    eachShowPodcast={eachShowPodcast} key={i}/>)}
-            </div>
-        </div>
+        {Number(allResultsData?.shows.items.length) > 0 &&
+            <div className={allResultsStyle['top-podcasts-wrapper']}>
+                <h2>Podcasts</h2>
+                <div className={allResultsStyle['top-podcasts']}>
+                    {resultsLoading ? Array.from({length: 5}).map((_, i) => <PlaylistCardSkeleton
+                        key={i}/>) : allResultsData?.shows.items.slice(0, 5).map((eachShowPodcast, i) =>
+                        <ShowPodcastCard
+                            eachShowPodcast={eachShowPodcast} key={i}/>)}
+                </div>
+            </div>}
 
-        <div className={allResultsStyle['top-episodes-wrapper']}>
-            <h2>Episodes</h2>
-            <div className={allResultsStyle['top-episodes']}>
-                {episodeDataLoading ? Array.from({length: 5}).map((_, i) => <TopEpisodeCardSkeleton key={i}/> ):
-                episodesData.episodes.map((eachEpisode, i) => <TopEpisodeCard eachEpisode={eachEpisode} key={i} />)
-                }
+        {
+            Number(episodesData.episodes.length) > 0 &&
+            <div className={allResultsStyle['top-episodes-wrapper']}>
+                <h2>Episodes</h2>
+                <div className={allResultsStyle['top-episodes']}>
+                    {episodeDataLoading ? Array.from({length: 5}).map((_, i) => <TopEpisodeCardSkeleton key={i}/>) :
+                        episodesData.episodes.map((eachEpisode, i) => <TopEpisodeCard eachEpisode={eachEpisode}
+                                                                                      key={i}/>)
+                    }
+                </div>
             </div>
-        </div>
+        }
     </div>
 }
 
