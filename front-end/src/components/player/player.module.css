@@ -30,10 +30,35 @@ button {
 
 }
 
+.currently-playing-info-album-img-skeleton {
+    width: 60px;
+    height: 55px;
+    border-radius: 3px;
+    animation: brightness-animation 3s ease-in-out infinite;
+    background-color: #3e3c3c69;
+}
+
+
+@keyframes brightness-animation {
+    0% {
+        background-color: var(--default-background-color);
+    }
+    50% {
+        background-color: rgb(93, 91, 91);
+
+    }
+    100% {
+        background-color: #3e3c3c69;
+
+    }
+}
+
+
 .song-info {
     display: flex;
     flex-direction: column;
     gap: 10px;
+
 }
 
 .song-info .song-name {
@@ -42,7 +67,28 @@ button {
     font-weight: 600;
     font-family: "Gotham Light", sans-serif;
     cursor: pointer;
+
 }
+
+.song-name-box {
+    overflow: hidden;
+    width: 200px;
+
+}
+
+.song-name {
+    white-space: nowrap;
+    position: relative;
+
+}
+
+
+
+.song-name-box::-webkit-scrollbar {
+    display: none;
+}
+
+
 
 .song-info .artists-name {
     color: #939393;

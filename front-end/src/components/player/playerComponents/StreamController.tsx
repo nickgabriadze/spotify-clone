@@ -142,7 +142,7 @@ export function StreamController({
           max={100}
           min={0}
         />
-        <p>{millisecondsToMmSs(Number(currentlyPlaying?.item?.duration_ms))}</p>
+        <p>{currentlyPlaying?.item?.duration_ms ? millisecondsToMmSs(Number(currentlyPlaying?.item?.duration_ms)) : '--:--'}</p>
       </div>
     </div>
   );

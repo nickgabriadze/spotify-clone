@@ -1,0 +1,27 @@
+
+.song-name-animation{
+    animation: moving-text-animation 20s linear infinite;
+}
+
+@keyframes moving-text-animation {
+
+    0%{
+        left: -100%;
+    }
+
+    25%{
+        left: 0;
+    }
+
+    50%{
+        left: 100%
+    }
+
+    100%{
+        left:-100%;
+    }
+
+
+
+
+}
