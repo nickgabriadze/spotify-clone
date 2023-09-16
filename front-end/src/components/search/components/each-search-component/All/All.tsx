@@ -6,7 +6,7 @@ import TopResult from "./innerComponents/TopResult.tsx";
 import allResultsStyle from "./allresults.module.css";
 import Songs from "./innerComponents/Songs.tsx";
 import ArtistCard from "../../../reuseables/artistCard.tsx";
-import ArtistCardSekeleton from "../../../../../skeletons/artistCardSekeleton.tsx";
+import ArtistCardSkeleton from "../../../../../skeletons/artistCardSkeleton.tsx";
 import AlbumCardSkeleton from "../../../../../skeletons/albumCardSkeleton.tsx";
 import AlbumCard from "../../../reuseables/albumCard.tsx";
 import PlaylistCard from "../../../reuseables/playListCard.tsx";
@@ -50,7 +50,6 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
                 const episodeIds = allResultsData?.episodes?.items?.map((each) => String(each.id)).join(",")
                 const episodesData = await getEpisodes(spotiUserToken, String(episodeIds))
                 const data = episodesData.data;
-
                 setEpisodesData(data);
 
             } catch (e) {
@@ -75,7 +74,7 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
             <div className={allResultsStyle['top-artists-wrapper']}>
                 <h2>Artists</h2>
                 <div className={allResultsStyle['top-artists']}>
-                    {resultsLoading ? Array.from({length: 5}).map((_, i) => <ArtistCardSekeleton
+                    {resultsLoading ? Array.from({length: 5}).map((_, i) => <ArtistCardSkeleton
                         key={i}/>) : allResultsData?.artists.items.slice(0, 5).map((eachArtist, i) => <ArtistCard
                         eachArtist={eachArtist} key={i}/>)}
                 </div>

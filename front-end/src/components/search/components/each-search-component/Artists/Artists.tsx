@@ -1,5 +1,5 @@
 import getArtists from "../../../../../api/search/getArtists";
-import ArtistCardSkeleton from "../../../../../skeletons/artistCardSekeleton";
+import ArtistCardSkeleton from "../../../../../skeletons/artistCardSkeleton.tsx";
 import { useAppSelector } from "../../../../../store/hooks";
 import { Artists } from "../../../../../types/artist";
 import SpotiError from "../../../../Error";
