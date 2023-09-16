@@ -138,14 +138,14 @@
             font-family: "Gotham Light", sans-serif;
 
             font-size: 14px;
-
+            width: 60%;
             .song-details{
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
                 gap: 8px;
 
-                
+
                 & a:hover{
                     text-decoration: underline;
                     cursor: pointer;
@@ -166,7 +166,13 @@
                 display: flex;
                 gap: 5px;
 
+                .song-artists-box{
+                    display: flex;
+                    white-space: nowrap;
+                    gap: 4px;
+                    overflow-x: hidden;
 
+                    }
                 & a:hover {
                     text-decoration: underline;
                     cursor: pointer;

@@ -95,13 +95,16 @@ export function Songs({firstFour, resultsLoading}: { firstFour: Track[] | undefi
                                     </div>}
                             </div>
                             <div className={allResultsStyle['song-details']}>
-                                <a>{eachTrack?.name[0].toUpperCase().concat(eachTrack?.name.slice(1,))}</a>
+                                <a>{eachTrack?.name[0].toUpperCase().concat(eachTrack?.name.slice(1,)).length > 30 ? eachTrack?.name[0].toUpperCase().concat(eachTrack?.name.slice(1,)).slice(0, 30).concat('...') : eachTrack?.name[0].toUpperCase().concat(eachTrack?.name.slice(1,))}</a>
                                 <div className={allResultsStyle['song-artists']}>
                                     {eachTrack?.explicit ?
                                         <div className={episodesStyle['explicit']}
                                              style={{fontSize: '8px'}}>E</div> : ''}
-                                    {eachTrack.artists.map((artist, i) =>
-                                        <a key={i}>{i === eachTrack.artists.length - 1 ? artist.name : `${artist.name}, `}</a>)}
+                                    <div
+                                        className={allResultsStyle['song-artists-box']}
+                                    >{eachTrack.artists.slice(0, 4).map((artist, i) =>
+                                        <a key={i}>{i === eachTrack.artists.slice(0, 4).length - 1 ? artist.name : `${artist.name}, `}</a>)}
+                                    </div>
                                 </div>
                             </div>
                         </div>
