@@ -96,9 +96,9 @@ export function StreamController({
     useEffect(() => {
 
         setRepeatState(String(playbackRepeat))
-        console.log(playbackRepeat)
-    }, [playbackRepeat]);
 
+    }, [playbackRepeat]);
+    console.log(disallows)
     return (
         <div className={playerStyle["playback-control"]}>
             <div className={playerStyle["actual-controls"]}>
@@ -161,13 +161,13 @@ export function StreamController({
                 </button>
                 <button
                     onClick={async () => {
-                        if (disallows?.toggling_repeat_context === true) {
+                        if (disallows?.toggling_repeat_context === true && !disallows.toggling_repeat_track) {
                             await setRepeatMode(accessToken, repeatState === 'track' ? 'off' : 'track');
                             setRepeatState(repeatState === 'track' ? 'off' : 'track')
-                        } else if (disallows?.toggling_repeat_track === true) {
+                        } else if (disallows?.toggling_repeat_track === true && !disallows.toggling_repeat_context) {
                             await setRepeatMode(accessToken, repeatState === 'context' ? 'off' : 'context');
                             setRepeatState(repeatState === 'context' ? 'off' : 'context')
-                        } else {
+                        } else if(!disallows?.toggling_repeat_track && !disallows?.toggling_repeat_context){
                             if (repeatState === 'off') {
                                 await setRepeatMode(accessToken, 'context');
                                 setRepeatState('context')
