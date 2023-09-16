@@ -54,62 +54,60 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
         <div className={playerStyle["song-info"]}
 
         >
-            <div className={playerStyle['song-info-box-with-heart']}
+            <div className={playerStyle['song-info-box-without-heart']}
                  style={Number(songNameRef?.current?.offsetWidth) > 170
                  || Number(artistNameRef?.current?.children.length) > 2
                      ? {boxShadow: `-10px 0 27px -26px #B3B3B3  inset`, width: '200px'} : {width: '100px'}
                  }
             >
-
                 <div
-                    className={playerStyle['song-name-artists-details']}
-                 >
-            <div className={playerStyle['song-name-box']}
+                    className={playerStyle['song-name-artists-details']}>
+                    <div className={playerStyle['song-name-box']}
 
-                 onMouseOver={() => setSongNameHover(true)}
-                 onMouseOut={() => setSongNameHover(false)}
-            >
-                {currentlyPlaying?.item?.name ? <a className={playerStyle["song-name"]}
-                                                   ref={songNameRef}
+                         onMouseOver={() => setSongNameHover(true)}
+                         onMouseOut={() => setSongNameHover(false)}
+                    >
+                        {currentlyPlaying?.item?.name ? <a className={playerStyle["song-name"]}
+                                                           ref={songNameRef}
 
-                    >{currentlyPlaying?.item?.name}</a> :
-                    <div className={playerStyle['song-name-skeleton']}>
+                            >{currentlyPlaying?.item?.name}</a> :
+                            <div className={playerStyle['song-name-skeleton']}>
+
+                            </div>
+                        }
+                    </div>
+                    <div className={playerStyle['song-name-box']}
+                         onMouseOver={() => setArtistNameHover(true)}
+                         onMouseOut={() => setArtistNameHover(false)}
+                    >
+                        {Number(currentlyPlaying?.item?.artists.length) > 0 ?
+                            <div ref={artistNameRef}
+                                 style={{
+                                     width: '200px',
+                                     position: 'relative'
+                                 }}
+                            >
+                                {currentlyPlaying?.item?.artists.map((each, i) => (
+                                    <a key={each.id} className={playerStyle["artists-name"]}
+                                    >
+                                        {each.name}
+                                        {i === currentlyPlaying.item.artists.length - 1 ? "" : ", "}
+                                    </a>
+                                ))}
+                            </div> :
+
+                            <div className={playerStyle['artists-name-skeleton']}></div>
+                        }
 
                     </div>
-                }
-            </div>
-            <div className={playerStyle['song-name-box']}
-                 onMouseOver={() => setArtistNameHover(true)}
-                 onMouseOut={() => setArtistNameHover(false)}
-            >
-                {Number(currentlyPlaying?.item?.artists.length) > 0 ?
-                    <div ref={artistNameRef}
-                         style={{
-                             width: '200px',
-                             position: 'relative'
-                         }}
-                    >
-                        {currentlyPlaying?.item?.artists.map((each, i) => (
-                            <a key={each.id} className={playerStyle["artists-name"]}
-                            >
-                                {each.name}
-                                {i === currentlyPlaying.item.artists.length - 1 ? "" : ", "}
-                            </a>
-                        ))}
-                    </div> :
-
-                    <div className={playerStyle['artists-name-skeleton']}></div>
-                }
-
-            </div>
 
                 </div>
 
-        </div>
-           <div>
-               {currentlyPlaying?.item?.name &&
-                   <img src={Heart}  width={20} height={18} alt="heart icon"></img>}
-           </div>
+            </div>
+            <div>
+                {currentlyPlaying?.item?.name &&
+                    <img src={Heart} width={20} height={18} alt="heart icon"></img>}
+            </div>
         </div>
     </div>)
 

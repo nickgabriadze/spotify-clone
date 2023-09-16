@@ -73,7 +73,7 @@ button {
     width: 180px;
     align-items: center;
 
-    .song-info-box-with-heart {
+    .song-info-box-without-heart {
         display: flex;
         flex-direction: row;
         align-items: center;
