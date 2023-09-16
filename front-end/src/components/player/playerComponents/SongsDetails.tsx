@@ -52,7 +52,8 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
             }
         </div>
         <div className={playerStyle["song-info"]}
-             style={Number(songNameRef?.current?.offsetWidth) > 200 ? {width: 'fit-content'} : {
+             style={Number(songNameRef?.current?.offsetWidth) > 200 ? {width: 'fit-content',
+                 boxShadow: `-10px 1px 30px -11px #313131 inset`} : {
                  width: '125px'
              }}
         >
@@ -95,7 +96,7 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
 
             </div>
         </div>
-        {currentlyPlaying?.item?.name && <img src={Heart} width={20} height={18} alt="heart icon"></img>}
+        {currentlyPlaying?.item?.name && <img src={Heart}  style={{marginTop:'0px'}} width={20} height={18} alt="heart icon"></img>}
     </div>)
 
 }

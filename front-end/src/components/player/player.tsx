@@ -10,6 +10,8 @@ import DeviceController from "./playerComponents/DeviceController";
 import StreamController from "./playerComponents/StreamController";
 import {setCurrentlyPlayingSong, setUserControlActions} from "../../store/features/navigationSlice";
 import GraphEQ from "./icons/graphicEq.svg"
+import getPlaybackState from "../../api/player/getPlaybackState.ts";
+import {PlaybackState} from "../../types/playbackState.ts";
 
 export function Player() {
     const [currentlyPlaying, setCurrentlyPlaying] = useState<CurrentlyPlaying>();
@@ -20,6 +22,7 @@ export function Player() {
     const access = useAppSelector((state) => state.spotiUserReducer.spotiToken);
     const dispatch = useAppDispatch();
     const userActions = useAppSelector(state => state.navigationReducer.userControlActions);
+    const [playbackStateInformation, setPlaybackStateInformation] = useState<PlaybackState>();
 
 
     const fetchCurrentData = useCallback(async () => {
@@ -32,6 +35,10 @@ export function Player() {
             setDevices(devicesData);
             const req = await getCurrentlyPlaying(access.accessToken);
             const data = req.data;
+            const requestPlaybackState = await getPlaybackState(access.accessToken);
+            const playbackStateData = requestPlaybackState.data;
+
+
             if (req.status === 204) {
                 setNoDataAvailable(true);
                 const prevData = window.localStorage.getItem('previousSong')
@@ -50,7 +57,7 @@ export function Player() {
             } else {
                 setCurrentlyPlaying(data);
                 setNoDataAvailable(false);
-
+                setPlaybackStateInformation(playbackStateData)
                 window.localStorage.setItem('previousSong', JSON.stringify({
                     artistID: data.item.artists[0].id,
                     albumID: data.item.album.id,
@@ -98,11 +105,16 @@ export function Player() {
                     setDevices(devicesData);
                     const req = await getCurrentlyPlaying(access.accessToken);
                     const data = req.data;
+                    const requestPlaybackState = await getPlaybackState(access.accessToken);
+                    const playbackStateData = requestPlaybackState.data;
+
+
                     if (req.status === 204) {
                         setNoDataAvailable(true);
                     } else {
                         setCurrentlyPlaying(data);
                         setNoDataAvailable(false);
+                        setPlaybackStateInformation(playbackStateData)
 
                         dispatch(setCurrentlyPlayingSong({
                             currentlyPlayingSong: {
@@ -126,6 +138,7 @@ export function Player() {
         }, [access, dispatch])
 
 
+
     if (noDataAvailable) {
         document.title = "Spotify Clone";
         return <div></div>;
@@ -139,6 +152,9 @@ export function Player() {
                 <div className={playerStyle['player-wrapper']}>
                     <SongDetails currentlyPlaying={currentlyPlaying}/>
                     <StreamController accessToken={access.accessToken}
+                                      disallows={playbackStateInformation?.actions?.disallows}
+                                      playbackShuffle={playbackStateInformation?.shuffle_state}
+                                      playbackRepeat={playbackStateInformation?.repeat_state}
                                       currentlyPlaying={currentlyPlaying}/>
                     <DeviceController devices={noDataAvailable ? undefined : devices}/>
                 </div>

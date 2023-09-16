@@ -50,7 +50,7 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
                 const episodeIds = allResultsData?.episodes?.items?.map((each) => String(each.id)).join(",")
                 const episodesData = await getEpisodes(spotiUserToken, String(episodeIds))
                 const data = episodesData.data;
-                console.log(data)
+
                 setEpisodesData(data);
 
             } catch (e) {
