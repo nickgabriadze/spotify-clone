@@ -14,7 +14,7 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
     useEffect(() => {
         if (songNameHover) {
 
-            if (Number(songNameRef?.current?.offsetWidth) > 200) {
+            if (Number(songNameRef?.current?.offsetWidth) > 170) {
                 songNameRef?.current?.classList.add('song-name-animation');
             } else {
                 songNameRef?.current?.classList.remove('song-name-animation');
@@ -52,13 +52,18 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
             }
         </div>
         <div className={playerStyle["song-info"]}
-             style={Number(songNameRef?.current?.offsetWidth) > 200
-                 ||  Number(artistNameRef?.current?.children.length) > 2
-                 ? {width: 'fit-content',
-                 boxShadow: `-10px 1px 30px -11px #313131 inset`} : {
-                 width: '125px'
-             }}
+
         >
+            <div className={playerStyle['song-info-box-with-heart']}
+                 style={Number(songNameRef?.current?.offsetWidth) > 170
+                 || Number(artistNameRef?.current?.children.length) > 2
+                     ? {boxShadow: `-10px 0 27px -26px #B3B3B3  inset`, width: '200px'} : {width: '100px'}
+                 }
+            >
+
+                <div
+                    className={playerStyle['song-name-artists-details']}
+                 >
             <div className={playerStyle['song-name-box']}
 
                  onMouseOver={() => setSongNameHover(true)}
@@ -97,8 +102,15 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
                 }
 
             </div>
+
+                </div>
+
         </div>
-        {currentlyPlaying?.item?.name && <img src={Heart}  style={{marginTop:'0px'}} width={20} height={18} alt="heart icon"></img>}
+           <div>
+               {currentlyPlaying?.item?.name &&
+                   <img src={Heart}  width={20} height={18} alt="heart icon"></img>}
+           </div>
+        </div>
     </div>)
 
 }

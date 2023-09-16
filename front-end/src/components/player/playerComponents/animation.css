@@ -1,6 +1,6 @@
 
 .song-name-animation{
-    animation: moving-text-animation 20s linear infinite;
+    animation: moving-text-animation 30s linear infinite;
 }
 
 @keyframes moving-text-animation {

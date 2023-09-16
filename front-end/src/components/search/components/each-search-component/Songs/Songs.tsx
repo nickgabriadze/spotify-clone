@@ -15,7 +15,7 @@ export function SongsRes({ songName }: { songName: string }) {
     data: [],
   });
   const [tracksLoading, setTracksLoading] = useState<boolean>(true);
-  const [tracksError, setTracksError] = useState<string | unknown>();
+  const [_tracksError, setTracksError] = useState<string | unknown>();
   const query = songName.split(" ").join("%20");
   const observing = useRef<null | IntersectionObserver>(null);
 
