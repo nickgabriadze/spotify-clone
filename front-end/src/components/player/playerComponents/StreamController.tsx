@@ -96,7 +96,7 @@ export function StreamController({
     useEffect(() => {
 
         setRepeatState(String(playbackRepeat))
-
+        console.log(playbackRepeat)
     }, [playbackRepeat]);
 
     return (
@@ -161,10 +161,10 @@ export function StreamController({
                 </button>
                 <button
                     onClick={async () => {
-                        if (!(disallows?.toggling_repeat_context === true)) {
+                        if (disallows?.toggling_repeat_context === true) {
                             await setRepeatMode(accessToken, repeatState === 'track' ? 'off' : 'track');
                             setRepeatState(repeatState === 'track' ? 'off' : 'track')
-                        } else if (!(disallows?.toggling_repeat_track === true)) {
+                        } else if (disallows?.toggling_repeat_track === true) {
                             await setRepeatMode(accessToken, repeatState === 'context' ? 'off' : 'context');
                             setRepeatState(repeatState === 'context' ? 'off' : 'context')
                         } else {
@@ -174,7 +174,7 @@ export function StreamController({
                             } else if (repeatState === 'context') {
                                 await setRepeatMode(accessToken, 'track');
                                 setRepeatState('track')
-                            } else {
+                            } else if(repeatState === 'track') {
                                 await setRepeatMode(accessToken, 'off');
                                 setRepeatState('off')
                             }
