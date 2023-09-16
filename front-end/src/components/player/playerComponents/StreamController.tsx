@@ -98,7 +98,7 @@ export function StreamController({
         setRepeatState(String(playbackRepeat))
 
     }, [playbackRepeat]);
-    console.log(disallows)
+
     return (
         <div className={playerStyle["playback-control"]}>
             <div className={playerStyle["actual-controls"]}>
