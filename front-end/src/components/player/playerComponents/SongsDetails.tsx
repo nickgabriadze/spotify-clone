@@ -52,7 +52,9 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
             }
         </div>
         <div className={playerStyle["song-info"]}
-             style={Number(songNameRef?.current?.offsetWidth) > 200 ? {width: 'fit-content',
+             style={Number(songNameRef?.current?.offsetWidth) > 200
+                 ||  Number(artistNameRef?.current?.children.length) > 2
+                 ? {width: 'fit-content',
                  boxShadow: `-10px 1px 30px -11px #313131 inset`} : {
                  width: '125px'
              }}
