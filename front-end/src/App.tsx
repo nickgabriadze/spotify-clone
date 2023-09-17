@@ -2,9 +2,9 @@ import {useEffect, useState} from "react";
 import {fetchTokenAsync, setToken} from "./store/features/spotiUserSlice";
 import {useAppDispatch, useAppSelector} from "./store/hooks";
 import appStyle from "./app.module.css";
-import Search from "./components/search/search";
 import Navigation from "./components/navigation/navigation";
 import Player from "./components/player/player";
+import Main from "./components/main/Main.tsx";
 
 export function App() {
     const dispatch = useAppDispatch();
@@ -22,7 +22,6 @@ export function App() {
         );
     }, [accessTokenFromInternal, dispatch]);
 
-    const homeOrSearch = useAppSelector((state) => state.navigationReducer.navTo);
 
     const access = useAppSelector((state) => state.spotiUserReducer.spotiToken);
 
@@ -67,8 +66,7 @@ export function App() {
                 <div className={appStyle['users-stuff']}></div>
                 <div className={appStyle['search-home']}
 
-
-                >{homeOrSearch === "search" ? <Search height={windowInnerHeight}/> : ""}</div>
+                ><Main height={windowInnerHeight}/></div>
                 <div className={appStyle['player']}>
                     <Player/>
                 </div>

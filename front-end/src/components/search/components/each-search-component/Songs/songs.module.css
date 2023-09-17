@@ -1,35 +1,35 @@
 
 .tracks-wrapper {
-  color: #b3b3b3;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding:0 20px 0 0;
-  
+    color: #b3b3b3;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 20px 0 0;
 }
 
 
 .navigation-wrapper {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  font-family: "Gotham Light", sans-serif;
-  font-size: 14px;
-  align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #575555;
-  width: 100%;
-  position: sticky;
-  top: 0;
-  background-color: rgb(31, 30, 30);
-  border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    font-family: "Gotham Light", sans-serif;
+    font-size: 14px;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #575555;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    background-color: rgb(31, 30, 30);
+    border-radius: 10px;
 }
 
 .numbering-title {
-  display: flex;
-  gap: 15px;
+    display: flex;
+    gap: 15px;
 }
-.track-wrapper{
+
+.track-wrapper {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -37,54 +37,55 @@
     padding: 10px;
     cursor: pointer;
     align-items: center;
-    
+
 }
-.track-wrapper:hover{
+
+.track-wrapper:hover {
     background-color: #3b3a3a;
     border-radius: 4px;
 }
 
-.general-info{
+.general-info {
     display: flex;
     gap: 20px;
     align-items: center;
     justify-content: center;
-    
+
 }
 
-.img-title-artists{
+.img-title-artists {
     display: flex;
     gap: 10px;
 
-    justify-content:space-between;
+    justify-content: space-between;
     align-items: center;
 
 }
 
 
-.album-img img{
-  object-fit: cover;
-    
+.album-img img {
+    object-fit: cover;
+
 }
 
-.duration{
+.duration {
     font-size: 14px;
     font-weight: 600;
     font-family: 'Gotham Light', sans-serif;
     width: 40px;
 }
 
-.title-artists{
+.title-artists {
     display: flex;
     flex-direction: column;
     height: 100%;
     justify-content: space-between;
     gap: 10px;
-   
+
 }
 
-.title-artists a{
-   font-size: 14px;
+.title-artists a {
+    font-size: 14px;
     color: white;
     width: 250px;
 }
@@ -96,20 +97,20 @@
     font-weight: 600;
 }
 
-.album-title{
+.album-title {
     display: flex;
     align-items: center;
     font-size: 12px;
     margin-left: -60px;;
 }
 
-.album-title a{
+.album-title a {
     width: 250px;
     font-family: 'Gotham Light', sans-serif;
     font-weight: 600;
 }
 
-.song-hover-over img{
+.song-hover-over img {
     width: 30px;
     height: 30px;
     background-color: #1ed760;

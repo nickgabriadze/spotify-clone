@@ -1,5 +1,4 @@
-
-.search-box{
+.main-container {
     background-color: #121212;
     border-radius: 8px;
     padding: 8px 15px 15px 15px;
@@ -7,15 +6,5 @@
     flex-direction: column;
     width: 100%;
     gap: 1rem;
-    
-   
- }
-
- .search-related-stuff {
-    height: 100%;
     overflow-y: scroll;
-
- }
-
-
-
+}
