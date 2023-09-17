@@ -67,7 +67,7 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
                          onMouseOver={() => setSongNameHover(true)}
                          onMouseOut={() => setSongNameHover(false)}
                     >
-                        {currentlyPlaying?.item?.name ? <a className={playerStyle["song-name"]}
+                        {!currentlyPlaying?.item?.name ? <a className={playerStyle["song-name"]}
                                                            ref={songNameRef}
 
                             >{currentlyPlaying?.item?.name}</a> :

@@ -5,7 +5,7 @@ import {Disallows} from "./currentlyPlaying.ts";
 
 export interface PlaybackState {
     device: Device,
-    repeat_state: string,
+    repeat_state: "off" | "context" | "track",
     shuffle_state: boolean,
     context: null | {
         type: string,

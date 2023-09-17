@@ -36,7 +36,7 @@ button {
 }
 
 .song-name-skeleton {
-    width: 120px;
+    width: 100px;
     height: 10px;
     animation: brightness-animation 3s ease-in-out infinite;
     background-color: #3e3c3c69;
@@ -83,9 +83,6 @@ button {
             display: flex;
             flex-direction: column;
             gap: 15px;
-
-
-
 
         }
     }
