@@ -14,7 +14,7 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
     useEffect(() => {
         if (songNameHover) {
 
-            if (Number(songNameRef?.current?.offsetWidth) > 170) {
+            if (Number(songNameRef?.current?.offsetWidth) > 180) {
                 songNameRef?.current?.classList.add('song-name-animation');
             } else {
                 songNameRef?.current?.classList.remove('song-name-animation');
@@ -55,9 +55,9 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
 
         >
             <div className={playerStyle['song-info-box-without-heart']}
-                 style={Number(songNameRef?.current?.offsetWidth) > 170
+                 style={Number(songNameRef?.current?.offsetWidth) > 180
                  || Number(artistNameRef?.current?.children.length) > 2
-                     ? {boxShadow: `-10px 0 27px -26px #B3B3B3  inset`, width: '200px'} : {width: '100px'}
+                     ? {boxShadow: `-10px 0 27px -26px #B3B3B3  inset`, width: '200px'} : {width: 'fit-content'}
                  }
             >
                 <div

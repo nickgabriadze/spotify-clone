@@ -79,6 +79,7 @@ button {
         align-items: center;
         overflow: hidden;
         border-radius: 4px;
+
         .song-name-artists-details {
             display: flex;
             flex-direction: column;
@@ -95,6 +96,7 @@ button {
     font-weight: 600;
     font-family: "Gotham Light", sans-serif;
     cursor: pointer;
+
 
 }
 
