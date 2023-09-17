@@ -6,7 +6,6 @@ button {
 }
 
 .player-wrapper {
-    width: 100%;
     padding: 10px;
     display: flex;
     justify-content: space-between;
@@ -18,13 +17,11 @@ button {
     display: flex;
     align-items: center;
     gap: 15px;
-
 }
 
 
 .currently-playing-info-album-img img {
     object-fit: contain;
-
 }
 
 .currently-playing-info-album-img-skeleton {
@@ -141,6 +138,7 @@ button {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    padding-top: 5px
 }
 
 .actual-controls {

@@ -8,8 +8,8 @@ export function Main({height}: { height: number }) {
 
 
     return <main className={mainStyle['main-container']}
-                 style={{height: `calc(${height}px - 130px)`}}>{homeOrSearch === "search" ?
-        <Search height={height}/> : ""}
+                 style={{height: `calc(${height}px - 120px)`}}>{homeOrSearch === "search" ?
+        <Search /> : <div></div>}
     </main>
 }
 

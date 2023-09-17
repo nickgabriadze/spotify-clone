@@ -20,7 +20,7 @@
 * {
   box-sizing: border-box;
   margin: 0;
-  font-family: "Gotham Bold";
+  font-family: "Gotham Bold", sans-serif;
 }
 
 html {

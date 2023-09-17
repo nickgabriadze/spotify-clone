@@ -1,37 +1,26 @@
 .application-wrapper {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-rows: 1fr auto;
   margin: 8px;
   gap: 8px;
-  height: 100%;
-  min-height: 100%;
- 
-  grid-template-areas:
-    "a b b b b"
-    "c b b b b"
-    "d d d d d";
+
 }
 
-.nav {
-  grid-area: a;
-  
+.nav-lib-wrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 20%;
+}
+.nav-lib-main-wrapper{
+  display: flex;
+
+  gap: 10px;
+
 }
 
-.users-stuff {
-  grid-area: c;
- 
+.main{
+  width: 80%;
 }
 
-.search-home {
-  grid-area: b;
- 
-}
-
-.player {
-  grid-area: d;
-  
-}
 
 .loading-anim {
   position: absolute;

@@ -5,6 +5,7 @@ import appStyle from "./app.module.css";
 import Navigation from "./components/navigation/navigation";
 import Player from "./components/player/player";
 import Main from "./components/main/Main.tsx";
+import Library from "./components/library/Library.tsx";
 
 export function App() {
     const dispatch = useAppDispatch();
@@ -60,13 +61,13 @@ export function App() {
 
         return (
             <div className={appStyle["application-wrapper"]}>
-                <div className={appStyle['nav']}>
-                    <Navigation/>
-                </div>
-                <div className={appStyle['users-stuff']}></div>
-                <div className={appStyle['search-home']}
-
-                ><Main height={windowInnerHeight}/></div>
+               <div className={appStyle['nav-lib-main-wrapper']}>
+                   <div className={appStyle['nav-lib-wrapper']}>
+                       <div className={appStyle['nav']}><Navigation/></div>
+                       <div className={appStyle['users-stuff']}><Library /></div>
+                   </div>
+                   <div className={appStyle['main']}><Main height={windowInnerHeight}/></div>
+               </div>
                 <div className={appStyle['player']}>
                     <Player/>
                 </div>
