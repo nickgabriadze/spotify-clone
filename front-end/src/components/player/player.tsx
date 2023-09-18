@@ -37,8 +37,6 @@ export function Player() {
             const data = req.data;
             const requestPlaybackState = await getPlaybackState(access.accessToken);
             const playbackStateData = requestPlaybackState.data;
-
-
             if (req.status === 204) {
                 setNoDataAvailable(true);
                 const prevData = window.localStorage.getItem('previousSong')
@@ -129,6 +127,7 @@ export function Player() {
                 } catch (err) {
                     setError(err);
                 }
+
             };
 
 
@@ -136,7 +135,6 @@ export function Player() {
 
             return () => clearInterval(fetcher)
         }, [access, dispatch])
-
 
 
     if (noDataAvailable) {

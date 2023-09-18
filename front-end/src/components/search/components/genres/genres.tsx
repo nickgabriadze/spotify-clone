@@ -75,6 +75,7 @@ export function Genres() {
         const req = await getGenres(accessToken);
 
         const data = req.data;
+
         setGenres(data.genres);
       } catch (err) {
         setGenresError(err);

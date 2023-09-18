@@ -29,12 +29,9 @@ export function PodcastsShows({podcastShowName}: {
                 const req = await getShowsPodcasts(accessToken, podcastShowName);
                 const data = req.data;
 
-                setShowsEpisodes((prev) => {
-                    return {
-                        ...prev,
+                setShowsEpisodes({
                         shows: data.shows,
                         episodes: data.episodes,
-                    };
                 });
             } catch (err) {
                 console.log(err);

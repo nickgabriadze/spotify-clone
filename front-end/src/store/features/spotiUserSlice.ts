@@ -24,6 +24,7 @@ export const updateAccessTokenASync = createAsyncThunk(
     const refreshToken = String(sessionStorage.getItem("refresh_token"));
     const requestAccessToken = await getRefreshedToken(refreshToken);
     sessionStorage.setItem("accessToken", requestAccessToken.data);
+
     return requestAccessToken.data;
   }
 );
@@ -162,7 +163,7 @@ const spotiUserSlice = createSlice({
           issued_at: 0,
         },
       };
-    }),
+    })
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       builder.addCase(fetchTokenAsync.rejected, (state, _) => {
         return {

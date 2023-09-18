@@ -31,7 +31,6 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
                 const requestAll = await searchAll(searchQuery, spotiUserToken);
                 const data = requestAll.data;
                 setAllResultsData(data);
-
             } catch (e) {
                 console.log(e)
             } finally {

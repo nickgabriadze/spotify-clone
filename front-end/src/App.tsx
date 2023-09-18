@@ -14,18 +14,19 @@ export function App() {
         dispatch(fetchTokenAsync());
     }, [dispatch]);
 
-    const accessTokenFromInternal = String(sessionStorage.getItem("accessToken"));
-    useEffect(() => {
+
+    window.addEventListener('sessionStorageChange', () => {
         dispatch(
             setToken({
-                accessToken: accessTokenFromInternal,
+                accessToken:  String(sessionStorage.getItem("accessToken"))
             })
         );
-    }, [accessTokenFromInternal, dispatch]);
+    })
+
+
 
 
     const access = useAppSelector((state) => state.spotiUserReducer.spotiToken);
-
 
     const [windowInnerHeight, setWindowInnerHeight] = useState<number>(window.innerHeight);
 

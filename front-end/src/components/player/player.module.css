@@ -22,6 +22,7 @@ button {
 
 .currently-playing-info-album-img img {
     object-fit: contain;
+    border-radius: 3px;
 }
 
 .currently-playing-info-album-img-skeleton {
@@ -80,7 +81,7 @@ button {
         .song-name-artists-details {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 5px;
 
         }
     }

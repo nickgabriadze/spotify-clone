@@ -12,7 +12,7 @@
     gap: 10px;
     padding: 5px;
     cursor: pointer;
-    & text {
+    & p {
         font-weight: bold;
         font-family: 'Gotham Medium', sans-serif;
         color: #a7a7a7;
@@ -27,7 +27,7 @@
 }
 
 .library-title:hover{
-    & text {
+    & p {
         color: white;
     }
 
