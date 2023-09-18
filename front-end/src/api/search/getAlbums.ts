@@ -1,6 +1,8 @@
 import axiosInstance from "../../axios"
+import {AxiosResponse} from "axios";
+import {Albums} from "../../types/album.ts";
 
-export async function getAlbums(searchStr:string, accessToken: string){
+export async function getAlbums(searchStr:string, accessToken: string):Promise<AxiosResponse<Albums>>{
 
 
     const query = searchStr.split(" ").join("%20");

@@ -1,6 +1,8 @@
 import axiosInstance from "../../axios";
+import {AxiosResponse} from "axios";
+import {Playlists} from "../../types/playlist.ts";
 
-export async function getPlaylists(searchStr: string, accessToken: string) {
+export async function getPlaylists(searchStr: string, accessToken: string):Promise<AxiosResponse<Playlists>> {
 
     const query = searchStr.split(" ").join("%20");
 

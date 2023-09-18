@@ -1,6 +1,8 @@
 import axiosInstance from "../../axios"
+import {AxiosResponse} from "axios";
+import {Artists} from "../../types/artist.ts";
 
-export async function getArtists(searchStr:string, accessToken: string){
+export async function getArtists(searchStr:string, accessToken: string):Promise<AxiosResponse<Artists>>{
 
 
     const query = searchStr.split(" ").join("%20");

@@ -1,7 +1,12 @@
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 
 
-export const fetchAccessToken = async () => {
+export const fetchAccessToken = async (): Promise<AxiosResponse<any> | Awaited<{data: {
+        accessToken: string,
+        expires_in: string,
+        refresh_token: string,
+        token_type: "Bearer"
+    }}>> => {
   if (!window.location.hash.includes("#")) {
     return axios
       .get("http://localhost:3001/authenticate")
@@ -14,14 +19,11 @@ export const fetchAccessToken = async () => {
         const split = each.split("=");
         const key = split[0];
         const value = split[1];
-        const obj = JSON.parse(`{"${key}":"${value}"}`);
-
-        return obj;
+          return JSON.parse(`{"${key}":"${value}"}`);
       }).reduce((acc, obj) => ({ ...acc, ...obj }), {});
 
 
 
-     
     return Promise.resolve({data: access});
   }
   
