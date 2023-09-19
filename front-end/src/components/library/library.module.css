@@ -1,9 +1,10 @@
 .lib-wrapper{
-    height: 100%;
+    height: inherit;
     background-color: #121212;
     width: 100%;
     border-radius: 8px;
     padding: 10px;
+
 }
 .library-title{
     display: flex;
@@ -39,7 +40,9 @@
     display: flex;
     flex-direction: column;
     gap: 25px;
+    height: 100%;
     padding: 20px 10px 10px 5px;
+
 }
 
 .listed-playlist-album{
@@ -61,7 +64,7 @@
     }
 
 
-    .playlist-album-name{
+    .playlist-album-name p{
         font-size: 14px;
         white-space: nowrap;
         overflow: hidden;

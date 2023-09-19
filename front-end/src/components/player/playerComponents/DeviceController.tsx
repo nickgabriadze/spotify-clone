@@ -65,7 +65,7 @@ export function DeviceController({devices,}: {
 
     return (
         <div className={playerStyle["devices-volume"]}>
-            <img src={Queue} width={22} alt="Song Queue icon"></img>
+            <img src={Queue} width={22} style={{marginRight: '3px'}} alt="Song Queue icon"></img>
             <div className={playerStyle['devices-triangle']}
 
 
