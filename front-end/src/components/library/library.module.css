@@ -3,7 +3,6 @@
     background-color: #121212;
     width: 100%;
     border-radius: 8px;
-
     padding: 10px;
 }
 .library-title{
@@ -21,7 +20,7 @@
     }
 
     & img{
-        transition: all 300ms linear;
+        transition: all 50ms linear;
     }
 
 }
@@ -33,5 +32,54 @@
 
     & img {
         filter: brightness(0%) invert(100%);
+    }
+}
+
+.library-stuff {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding: 20px 10px 10px 5px;
+}
+
+.listed-playlist-album{
+    display: flex;
+    gap: 10px;
+    cursor: pointer;
+    width: 100%;
+    & img {
+        border-radius: 4px;
+
+    }
+    .playlist-album-info{
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 10px;
+
+    }
+
+
+    .playlist-album-name{
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: white
+    }
+
+    .type-owner{
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        font-size: 12px;
+        color: #a7a7a7;
+
+        & p {
+            font-family: 'Gotham Light', sans-serif;
+            font-weight: bold;
+
+        }
     }
 }

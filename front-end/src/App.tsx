@@ -62,8 +62,11 @@ export function App() {
 
         return (
             <div className={appStyle["application-wrapper"]}>
-               <div className={appStyle['nav-lib-main-wrapper']}>
-                   <div className={appStyle['nav-lib-wrapper']}>
+               <div className={appStyle['nav-lib-main-wrapper']}
+               >
+                   <div className={appStyle['nav-lib-wrapper']}
+
+                   >
                        <div className={appStyle['nav']}><Navigation/></div>
                        <div className={appStyle['users-stuff']}><Library /></div>
                    </div>
