@@ -26,6 +26,7 @@ export function DeviceController({devices,}: {
         'TV': TVDevice,
         'Smartphone': SmartphoneDevice,
         'Computer': LaptopDevice,
+        'default': DevicesSVG
 
     }
     const [sliderVolume, setSliderVolume] = useState<number>(
@@ -69,10 +70,9 @@ export function DeviceController({devices,}: {
 
 
             ><img
-
-
+                className={playerStyle['choose-devices']}
                 onClick={() => setShowDevices((prev) => !prev)}
-                src={DevicesSVG} width={22} alt="Devices icon"
+                src={deviceImages[String(devices?.devices.filter(each => each.is_active)[0]?.type ? devices?.devices.filter(each => each.is_active)[0]?.type : 'default' )]} width={20} alt="Devices icon"
                 ref={devicesIconRef}
 
             ></img>
