@@ -21,7 +21,7 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
     const spotiUserToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
     const [allResultsData, setAllResultsData] = useState<AllSearch>();
     const [resultsLoading, setResultsLoading] = useState<boolean>(true);
-    const [episodesData, setEpisodesData] = useState<{ episodes: EpisodeWithShow[] }>({episodes: []});
+    const [episodesData, setEpisodesData] = useState<EpisodeWithShow[]>([]);
     const [episodeDataLoading, setEpisodeDataLoading] = useState<boolean>(true)
     useEffect
     (() => {
@@ -48,7 +48,7 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
                 setEpisodeDataLoading(true)
                 const episodeIds = allResultsData?.episodes?.items?.map((each) => String(each.id)).join(",")
                 const episodesData = await getEpisodes(spotiUserToken, String(episodeIds))
-                const data = episodesData.data;
+                const data = episodesData.data.episodes;
                 setEpisodesData(data);
 
             } catch (e) {
@@ -60,7 +60,6 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
         fetchEpisodeDetails()
 
     }, [spotiUserToken, searchQuery, resultsLoading]);
-
 
 
     return <div className={allResultsStyle['all-wrapper']}>
@@ -113,13 +112,14 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
             </div>}
 
         {
-            Number(episodesData.episodes.length) > 0 &&
+            Number(episodesData.length) > 0 &&
             <div className={allResultsStyle['top-episodes-wrapper']}>
                 <h2>Episodes</h2>
                 <div className={allResultsStyle['top-episodes']}>
-                    {episodeDataLoading || resultsLoading ? Array.from({length: 5}).map((_, i) => <TopEpisodeCardSkeleton key={i}/>) :
-                        episodesData.episodes.map((eachEpisode, i) => <TopEpisodeCard eachEpisode={eachEpisode}
-                                                                                      key={i}/>)
+                    {episodeDataLoading || resultsLoading ? Array.from({length: 5}).map((_, i) =>
+                            <TopEpisodeCardSkeleton key={i}/>) :
+                        episodesData.map((eachEpisode, i) => <TopEpisodeCard eachEpisode={eachEpisode}
+                                                                             key={i}/>)
                     }
                 </div>
             </div>
