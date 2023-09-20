@@ -1,10 +1,19 @@
 import axiosInstance from "../../axios.ts";
 import {AxiosResponse} from "axios";
-import {Albums} from "../../types/album.ts";
+import {Album} from "../../types/album.ts";
 
-export async function getSavedAlbums(accessToken: string): Promise<AxiosResponse<Albums>>{
+export async function getSavedAlbums(accessToken: string): Promise<AxiosResponse<
+    {
+        href: string,
+        items: { added_at: string, album: Album }[],
+        limit: number,
+        next: null | string,
+        offset: number,
+        previous: null | string,
+        total: number;
+    }>>{
 
-    return axiosInstance.get('/me/albums', {
+    return await axiosInstance.get('/me/albums', {
         headers: {
             Authorization: `Bearer ${accessToken}`
         }

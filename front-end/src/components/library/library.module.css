@@ -1,9 +1,10 @@
 .lib-wrapper{
-    height: inherit;
+    height: 100%;
     background-color: #121212;
     width: 100%;
     border-radius: 8px;
     padding: 10px;
+
 
 }
 .library-title{
@@ -40,7 +41,9 @@
     display: flex;
     flex-direction: column;
     gap: 25px;
-    height: 100%;
+    height: calc(100% - 100px);
+    overflow-x: hidden;
+    overflow-y: scroll;
     padding: 20px 10px 10px 5px;
 
 }
@@ -50,6 +53,7 @@
     gap: 10px;
     cursor: pointer;
     width: 100%;
+
     & img {
         border-radius: 4px;
 
@@ -73,9 +77,7 @@
     }
 
     .type-owner{
-        display: flex;
-        flex-direction: row;
-        gap: 5px;
+
         font-size: 12px;
         color: #a7a7a7;
 
@@ -83,6 +85,9 @@
             font-family: 'Gotham Light', sans-serif;
             font-weight: bold;
 
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 }

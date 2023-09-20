@@ -5,6 +5,8 @@
     flex-direction: column;
     gap: 50px;
     transition: all 300ms ease-in-out;
+    overflow-y: scroll;
+    height: 100%
 }
 
 

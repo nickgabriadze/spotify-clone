@@ -19,9 +19,9 @@ export function AlbumsRes({ albumName }: { albumName: string }) {
       try {
         setAlbumsLoading(true);
         const req = await getAlbums(albumName, accessToken);
-        const data = req.data;
+        const data = req.data.albums;
 
-        setAlbumsData(data.albums);
+        setAlbumsData(data);
       } catch (err) {
         setAlbumsError(true);
         console.error(err);

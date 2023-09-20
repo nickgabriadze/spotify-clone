@@ -19,8 +19,9 @@ export function ArtistsRes({ artistsName }: { artistsName: string }) {
       try {
         setArtistsLoading(true);
         const req = await getArtists(artistsName, access.accessToken);
-        const data = req.data;
-        setArtistsData(data.artists);
+        const data = req.data.artists;
+        console.log(data)
+        setArtistsData(data);
       } catch (err) {
         setArtistsError(err);
       } finally {

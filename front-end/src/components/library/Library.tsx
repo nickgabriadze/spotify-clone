@@ -9,26 +9,28 @@ import getSavedPlaylists from "../../api/library/getSavedPlaylists.ts";
 
 export function Library() {
     const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
-    const [libData, setLibData] = useState<{albumItems: Album[], playlistItems: Playlist[]}>({
+    const [libData, setLibData] = useState<{albumItems: { added_at: string, album: Album }[], playlistItems: Playlist[]}>({
         albumItems: [],
         playlistItems: []
     })
 
-    const [pTagWidth, setPTagWidth] = useState<number>(150);
 
 
 
     const widthPref = useRef<HTMLParagraphElement>(null);
+    const [pTagWidth, setPTagWidth] = useState<number>(150);
 
     useEffect(() => {
+
         const resize = () => {
-            setPTagWidth(Number(widthPref?.current?.offsetWidth))
+            setPTagWidth(Number(widthPref?.current?.offsetWidth) - 80)
+
         }
         window.addEventListener('resize', resize);
+        resize()
 
         return () => window.removeEventListener('resize', resize)
-
-    }, [widthPref]);
+    }, [widthPref, pTagWidth]);
 
     useEffect(() => {
         const fetchPlaylistsAlbums = async () => {
@@ -52,7 +54,8 @@ export function Library() {
         fetchPlaylistsAlbums()
     }, [accessToken]);
 
-    console.log(pTagWidth-100)
+    console.log(libData.albumItems)
+
 
     return <section className={libraryStyle['lib-wrapper']}
     ref={widthPref}
@@ -63,19 +66,37 @@ export function Library() {
         </div>
 
         {/* Albums and saved playlists */}
+
+
         <div className={libraryStyle['library-stuff']}>
 
+            {/*{libData.albumItems.map(each => each.album).map((eachAlbum, i) =>*/}
+            {/*    <div*/}
+            {/*        className={libraryStyle['listed-playlist-album']}*/}
+            {/*        key={i}>*/}
+            {/*        <img src={eachAlbum.images[0].url} width={50} height={50} alt={"Playlist Image"}></img>*/}
+            {/*        <div className={libraryStyle['playlist-album-info']}>*/}
+            {/*            <div className={libraryStyle['playlist-album-name']}><p style={{width: pTagWidth }}>{eachAlbum.name}</p></div>*/}
+            {/*            <div className={libraryStyle['type-owner']}>*/}
+            {/*                <p style={{width: pTagWidth }}>{eachAlbum.type[0].toUpperCase().concat(eachAlbum.type.slice(1, ))} • {eachAlbum.id}</p>*/}
+
+            {/*            </div>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*)}*/}
+
             {
-                libData.playlistItems.map((eachPlaylist,i) => <div
+                libData.playlistItems.map((eachPlaylist,i) =>
+
+                    <div
                     className={libraryStyle['listed-playlist-album']}
                     key={i}>
                     <img src={eachPlaylist.images[0].url} width={50} height={50} alt={"Playlist Image"}></img>
                     <div className={libraryStyle['playlist-album-info']}>
-                        <div className={libraryStyle['playlist-album-name']}><p style={{width: pTagWidth - 100}}>{eachPlaylist.name}</p></div>
+                        <div className={libraryStyle['playlist-album-name']}><p style={{width: pTagWidth }}>{eachPlaylist.name}</p></div>
                         <div className={libraryStyle['type-owner']}>
-                            <p>{eachPlaylist.type[0].toUpperCase().concat(eachPlaylist.type.slice(1, ))}</p>
-                            •
-                            <p>{eachPlaylist.owner.display_name}</p>
+                            <p style={{width: pTagWidth }}>{eachPlaylist.type[0].toUpperCase().concat(eachPlaylist.type.slice(1, ))} • {eachPlaylist.owner.display_name}</p>
+
                         </div>
                     </div>
                 </div>)

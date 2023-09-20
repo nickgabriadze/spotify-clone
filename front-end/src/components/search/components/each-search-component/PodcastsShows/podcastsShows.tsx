@@ -47,7 +47,9 @@ export function PodcastsShows({podcastShowName}: {
 
     return (
         <section style={{
-            marginTop: '20px'
+            overflowY: 'scroll',
+            height: '100%'
+
         }}>
             <div className={podcastsShowsStyle['podcasts-wrapper']}>
                 <div style={{fontSize: '1.3rem', color: 'white', paddingLeft: '10px'}}>Podcasts & Shows</div>

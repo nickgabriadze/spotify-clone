@@ -19,9 +19,9 @@ export function PlaylistsRes({ playlistName }: { playlistName: string }) {
       try {
         setPlaylistsLoading(true);
         const req = await getPlaylists(playlistName, accessToken);
-        const data = req.data;
+        const data = req.data.playlists;
 
-        setPlaylistsData(data.playlists);
+        setPlaylistsData(data);
       } catch (err) {
         setPlaylistsError(true);
         console.error(err)

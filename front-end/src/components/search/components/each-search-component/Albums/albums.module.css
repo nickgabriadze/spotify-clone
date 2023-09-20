@@ -3,6 +3,8 @@
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 30px;
   padding: 10px;
+  height: 100%;
+  overflow-y: scroll;
 }
 
 .album-card {
@@ -14,7 +16,6 @@
   border-radius: 8px;
   cursor: pointer;
   gap: 30px;
-
   position: relative;
   transition: all 300ms linear;
 }

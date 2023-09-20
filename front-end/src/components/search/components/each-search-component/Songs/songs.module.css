@@ -4,7 +4,9 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    padding: 20px 20px 0 0;
+    padding: 0 20px 0 0;
+    overflow-y: scroll;
+    height: 100%;
 }
 
 
@@ -22,6 +24,7 @@
     top: 0;
     background-color: rgb(31, 30, 30);
     border-radius: 10px;
+
 }
 
 .numbering-title {

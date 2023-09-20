@@ -92,7 +92,8 @@ export function Genres() {
 
 
   return (
-    <section className={genresStyle["genres-wrapper"]}>
+    <section className={genresStyle["genres-wrapper"]}
+    >
       <h1>Browse all</h1>
       <div className={genresStyle["genre-card-grid"]}>
         {genres.slice(0, 50).map((eachGenre, i) => {

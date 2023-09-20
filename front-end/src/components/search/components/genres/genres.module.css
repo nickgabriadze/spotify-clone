@@ -8,8 +8,8 @@
   flex-direction: column;
   gap: 30px;
   padding: 15px;
- 
-  height: 60%;
+  height: calc(100% + 45px);
+  overflow-y: scroll;
 }
 
 .genre-card-grid {
