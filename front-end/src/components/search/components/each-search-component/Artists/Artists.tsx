@@ -20,7 +20,7 @@ export function ArtistsRes({ artistsName }: { artistsName: string }) {
         setArtistsLoading(true);
         const req = await getArtists(artistsName, access.accessToken);
         const data = req.data.artists;
-        console.log(data)
+
         setArtistsData(data);
       } catch (err) {
         setArtistsError(err);

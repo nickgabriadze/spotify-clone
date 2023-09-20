@@ -54,7 +54,6 @@ export function Library() {
         fetchPlaylistsAlbums()
     }, [accessToken]);
 
-    console.log(libData.albumItems)
 
 
     return <section className={libraryStyle['lib-wrapper']}
