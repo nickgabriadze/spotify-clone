@@ -1,9 +1,13 @@
+
 .lib-wrapper{
-    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
     background-color: #121212;
     width: 100%;
+    height: 100%;
     border-radius: 8px;
-    padding: 10px;
+
 
 
 }
@@ -11,7 +15,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 5px;
+    padding: 10px;
     cursor: pointer;
     & p {
         font-weight: bold;
@@ -37,30 +41,41 @@
     }
 }
 
+
+
 .library-stuff {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-    height: calc(100% - 100px);
+    width: 100%;
+    height: 100%;
+    padding: 10px;
     overflow-x: hidden;
     overflow-y: scroll;
-    padding: 20px 10px 10px 5px;
-
 }
+
+.library-stuff::-webkit-scrollbar{
+    display: none;
+    width: 5px;
+}
+.library-stuff:hover::-webkit-scrollbar{
+    display: initial;
+}
+
+
 
 .listed-playlist-album{
     display: flex;
     gap: 10px;
     cursor: pointer;
     width: 100%;
+    padding: 15px 5px 10px 5px;
 
     & img {
         border-radius: 4px;
-
+        object-fit: cover;
     }
     .playlist-album-info{
         display: flex;
         height: 100%;
+        width: 100%;
         flex-direction: column;
         justify-content: space-between;
         gap: 10px;

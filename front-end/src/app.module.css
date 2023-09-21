@@ -1,5 +1,6 @@
 .application-wrapper {
   margin: 8px
+
 }
 
 .nav-lib-wrapper{
@@ -7,19 +8,18 @@
   flex-direction: column;
   gap: 8px;
   width: 20%;
+  height: 100%;
 }
 
 
 .nav-lib-main-wrapper{
   display: flex;
+
   gap: 8px;
-
+  height: 100%;
 }
 
 
-.users-stuff{
-  height:100%;
-}
 .main{
   width: 80%;
 }

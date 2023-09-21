@@ -41,11 +41,11 @@ interface SpotiUser {
 
 const initialState: SpotiUser = {
   spotiToken: {
-    accessToken: "",
+    accessToken: "unavailable",
     token_type: "Bearer",
     expires_in: 0,
     issued_at: 0,
-    refresh_token: "",
+    refresh_token: "unavailable",
   },
 };
 

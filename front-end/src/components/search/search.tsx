@@ -18,7 +18,7 @@ export function Search() {
     }, [searchStuff.searchQuery.trim().length]);
 
     return (
-        <section style={{height: 'calc(100% - 100px)'}}>
+        <section style={{height: 'calc(100% - 86px)'}}>
             <SearchBar/>
             <div style={{ height: '100%'}}>
                 {searchStuff.searchQuery.trim().length > 0 ? (

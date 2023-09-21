@@ -12,29 +12,27 @@ export function App() {
 
     useEffect(() => {
         dispatch(fetchTokenAsync());
-    }, [dispatch]);
+    }, []);
 
 
     window.addEventListener('sessionStorageChange', () => {
         dispatch(
             setToken({
-                accessToken:  String(sessionStorage.getItem("accessToken"))
+                accessToken: String(sessionStorage.getItem("accessToken"))
             })
         );
     })
 
 
-
-
     const access = useAppSelector((state) => state.spotiUserReducer.spotiToken);
 
-    const [windowInnerHeight, setWindowInnerHeight] = useState<number>(window.innerHeight);
+    const [windowInnerHeight, setWindowInnerHeight] = useState<number>(window.innerHeight - 120);
 
     useEffect(() => {
 
         const updateWindowDimensions = () => {
             const newHeight = window.innerHeight;
-            setWindowInnerHeight(newHeight);
+            setWindowInnerHeight(newHeight - 120);
 
         };
 
@@ -45,7 +43,11 @@ export function App() {
     }, []);
 
 
-    if (access.refresh_token === "pending" || access.refresh_token === "") {
+    if (access.refresh_token === 'unavailable'
+        || access.refresh_token === 'pending'
+        ||  access.accessToken === 'pending'
+        || access.accessToken === 'unavailable') {
+
 
         return (
 
@@ -62,22 +64,24 @@ export function App() {
 
         return (
             <div className={appStyle["application-wrapper"]}>
-               <div className={appStyle['nav-lib-main-wrapper']}
-               >
-                   <div className={appStyle['nav-lib-wrapper']}
-
-                   >
-                       <div className={appStyle['nav']}><Navigation/></div>
-                       <div className={appStyle['users-stuff']}><Library /></div>
-                   </div>
-                   <div className={appStyle['main']}><Main height={windowInnerHeight}/></div>
-               </div>
-                <div className={appStyle['player']}>
-                    <Player/>
+                <div className={appStyle['nav-lib-main-wrapper']}
+                >
+                    <div className={appStyle['nav-lib-wrapper']}
+                         style={{height: windowInnerHeight}}
+                    >
+                      <Navigation/>
+                        <Library divHeight={windowInnerHeight - 136}/>
+                    </div>
+                    <div className={appStyle['main']}><Main height={windowInnerHeight}/></div>
                 </div>
+
+                    <Player/>
+
             </div>
         );
     }
+
+
 }
 
 export default App;
