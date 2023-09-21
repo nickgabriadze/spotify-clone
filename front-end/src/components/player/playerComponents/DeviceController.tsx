@@ -101,7 +101,14 @@ export function DeviceController({devices,}: {
                         <div className={playerStyle['other-devices']}>
                             {devices?.devices.filter(each => !each.is_active).map((eachDevice) =>
                                 <div key={eachDevice.id}
-                                     onClick={async () => await switchActiveDevice(accessToken, String(eachDevice?.id), Boolean(currentlyPlayingIsPlaying))}
+
+                                     onClick={async () =>
+                                     {
+                                         await switchActiveDevice(accessToken, String(eachDevice?.id), Boolean(currentlyPlayingIsPlaying))
+                                         dispatch(setUserControlActions({
+                                             userAction: 'Switch Device'
+                                         }))
+                                     }}
                                 >
 
                                     <img
