@@ -70,7 +70,7 @@ export function App() {
                          style={{height: windowInnerHeight}}
                     >
                         <Navigation/>
-                        <Library divHeight={windowInnerHeight - 136}/>
+                        <Library divHeight={windowInnerHeight - 133}/>
                     </div>
                     <div className={appStyle['main']}><Main height={windowInnerHeight}/></div>
                 </div>
