@@ -53,7 +53,7 @@ export function DeviceController({devices,}: {
             if (popupRef.current && !popupRef.current.contains(e.target)
 
             ) {
-                console.log(e.target)
+
                 if (e.target !== devicesIconRef.current) {
                     setShowDevices(false);
                 }
