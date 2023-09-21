@@ -105,9 +105,7 @@ export function DeviceController({devices,}: {
                                      onClick={async () =>
                                      {
                                          await switchActiveDevice(accessToken, String(eachDevice?.id), Boolean(currentlyPlayingIsPlaying))
-                                         dispatch(setUserControlActions({
-                                             userAction: 'Switch Device'
-                                         }))
+
                                      }}
                                 >
 
