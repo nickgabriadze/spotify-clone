@@ -45,7 +45,7 @@ export function App() {
 
     if (access.refresh_token === 'unavailable'
         || access.refresh_token === 'pending'
-        ||  access.accessToken === 'pending'
+        || access.accessToken === 'pending'
         || access.accessToken === 'unavailable') {
 
 
@@ -69,13 +69,13 @@ export function App() {
                     <div className={appStyle['nav-lib-wrapper']}
                          style={{height: windowInnerHeight}}
                     >
-                      <Navigation/>
+                        <Navigation/>
                         <Library divHeight={windowInnerHeight - 136}/>
                     </div>
                     <div className={appStyle['main']}><Main height={windowInnerHeight}/></div>
                 </div>
 
-                    <Player/>
+                <Player/>
 
             </div>
         );
