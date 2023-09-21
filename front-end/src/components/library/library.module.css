@@ -59,7 +59,10 @@
     display: initial;
 }
 
-
+.listed-playlist-album:hover{
+    background-color: #302f2f;
+    border-radius: 4px;
+}
 
 .listed-playlist-album{
     display: flex;
