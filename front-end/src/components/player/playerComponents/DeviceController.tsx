@@ -36,6 +36,11 @@ export function DeviceController({devices,}: {
     );
 
 
+    useEffect(() => {
+        setSliderVolume(Number(devices?.devices?.filter((each) => each.is_active)[0]?.volume_percent));
+    }, [devices?.devices?.filter((each) => each.is_active)[0]?.volume_percent]);
+
+
     const dispatch = useAppDispatch();
     const accessToken = useAppSelector(state => state.spotiUserReducer.spotiToken.accessToken)
     const [showDevices, setShowDevices] = useState<boolean>(false)
