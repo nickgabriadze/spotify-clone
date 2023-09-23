@@ -95,3 +95,9 @@ img{
     margin-top: -8px;
     margin-bottom: -8px;
 }
+
+@media (max-width: 900px) {
+    .install-profile a{
+      display: none;
+    }
+}
