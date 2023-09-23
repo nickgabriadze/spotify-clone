@@ -12,6 +12,7 @@ import {setCurrentlyPlayingSong, setUserControlActions} from "../../store/featur
 import GraphEQ from "./icons/graphicEq.svg"
 import getPlaybackState from "../../api/player/getPlaybackState.ts";
 import {PlaybackState} from "../../types/playbackState.ts";
+import {PlayerSkeleton} from "./playerComponents/player-skeleton.tsx";
 
 export function Player() {
     const [currentlyPlaying, setCurrentlyPlaying] = useState<CurrentlyPlaying>();
@@ -23,7 +24,7 @@ export function Player() {
     const dispatch = useAppDispatch();
     const userActions = useAppSelector(state => state.navigationReducer.userControlActions);
     const [playbackStateInformation, setPlaybackStateInformation] = useState<PlaybackState>();
-
+    console.log(noDataAvailable)
 
     const fetchCurrentData = useCallback(async () => {
 
@@ -139,7 +140,7 @@ export function Player() {
 
     if (noDataAvailable) {
         document.title = "Spotify Clone";
-        return <div></div>;
+        return <PlayerSkeleton />;
     } else {
         document.title = currentlyPlaying?.item?.name ? String(currentlyPlaying?.item?.name)
             .concat(" • ")
