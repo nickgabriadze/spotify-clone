@@ -8,7 +8,7 @@ import SearchUnfilledGrey from "./icons/search-unfilled-grey.svg";
 import HomeUnfilledGrey from "./icons/home-unfilled-grey.svg";
 import {useAppDispatch} from "../../store/hooks";
 import {setNavTo} from "../../store/features/navigationSlice";
-import {Link} from "react-router-dom";
+
 
 export function Navigation() {
     //Home - True, Search - False
@@ -19,7 +19,7 @@ export function Navigation() {
 
     return (
         <section className={navigationStyle["nav-box"]}>
-            <Link to={'/'}
+            <div
                 className={navigationStyle["home-box"]}
                 onMouseEnter={() => setNavHover("home")}
                 onMouseLeave={() => setNavHover("none")}
@@ -45,9 +45,9 @@ export function Navigation() {
 
                     alt={'Home icon'}></img>
                 <h4 style={nav ? {color: "white"} : {}}>Home</h4>
-            </Link>
+            </div>
 
-            <Link to={'/search'}
+            <div
                   className={navigationStyle["search-box"]}
                   onClick={() => {
                       setNav(false)
@@ -73,7 +73,7 @@ export function Navigation() {
 
                 ></img>
                 <h4 style={!nav ? {color: "white"} : {}}>Search</h4>
-            </Link>
+            </div>
         </section>
     );
 }

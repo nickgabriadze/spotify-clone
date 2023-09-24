@@ -1,16 +1,17 @@
 import mainStyle from "./main.module.css";
 import Search from "../search/search.tsx";
-import {Route, Routes} from "react-router-dom";
+import {useAppSelector} from "../../store/hooks.ts";
 
 
 export function Main({height}: { height: number }) {
+    const navOption = useAppSelector((state) => state.navigationReducer.navTo);
 
 
     return (
         <main className={mainStyle['main-container']} style={{height: `${height}px`}}>
-            <Routes>
-                <Route path={'/search'} element={<Search/>}></Route>
-            </Routes>
+
+            {navOption === 'search' ? <Search/> : <div></div>}
+
         </main>
 
 
