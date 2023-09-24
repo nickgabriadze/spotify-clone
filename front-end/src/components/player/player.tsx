@@ -16,20 +16,17 @@ import {PlayerSkeleton} from "./playerComponents/player-skeleton.tsx";
 
 export function Player() {
     const [currentlyPlaying, setCurrentlyPlaying] = useState<CurrentlyPlaying>();
-    const [currentLoading, setCurrentLoading] = useState<boolean>(true);
     const [noDataAvailable, setNoDataAvailable] = useState(true);
     const [devices, setDevices] = useState<Devices>();
-    const [error, setError] = useState<string | unknown>();
     const access = useAppSelector((state) => state.spotiUserReducer.spotiToken);
     const dispatch = useAppDispatch();
     const userActions = useAppSelector(state => state.navigationReducer.userControlActions);
     const [playbackStateInformation, setPlaybackStateInformation] = useState<PlaybackState>();
-    console.log(noDataAvailable)
+
 
     const fetchCurrentData = useCallback(async () => {
 
         try {
-            setCurrentLoading(true)
             const devices = await getDevices(access.accessToken);
             const devicesData = devices.data;
 
@@ -58,10 +55,7 @@ export function Player() {
                 setNoDataAvailable(false);
                 setPlaybackStateInformation(playbackStateData)
                 window.localStorage.setItem('previousSong', JSON.stringify({
-                    artistID: data.item.artists[0].id,
-                    albumID: data.item.album.id,
-                    songID: data.item.id,
-                    isPlaying: data.is_playing
+                   type: data.item.type, id: data.item.id
                 }))
 
                 dispatch(setCurrentlyPlayingSong({
@@ -73,11 +67,8 @@ export function Player() {
                     }
                 }))
             }
-        } catch (err) {
-            setError(err);
-        } finally {
-            setCurrentLoading(false);
-        }
+        }catch(_){}
+
     }, [access.accessToken, dispatch]);
 
     useEffect(() => {
@@ -125,8 +116,7 @@ export function Player() {
                         }))
 
                     }
-                } catch (err) {
-                    setError(err);
+                } catch (_) {
                 }
 
             };
@@ -142,9 +132,9 @@ export function Player() {
         document.title = "Spotify Clone";
         return <PlayerSkeleton />;
     } else {
-        document.title = currentlyPlaying?.item?.name ? String(currentlyPlaying?.item?.name)
+        document.title = String(currentlyPlaying?.item?.name)
             .concat(" • ")
-            .concat(String(currentlyPlaying?.item?.artists.map((each) => each.name).join(", "))) : 'Spotify Clone';
+            .concat(String(currentlyPlaying?.item?.artists.map((each) => each.name).join(", ")));
 
         return (
             <section className={playerStyle["player"]}>
