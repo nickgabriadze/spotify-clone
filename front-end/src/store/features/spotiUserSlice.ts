@@ -22,9 +22,9 @@ export const fetchTokenAsync = createAsyncThunk(
 export const updateAccessTokenASync = createAsyncThunk(
   "spotifyAccessNew/token",
   async (): Promise<TokenData> => {
-    const refreshToken = String(sessionStorage.getItem("refresh_token"));
+    const refreshToken = String(localStorage.getItem("refresh_token"));
     const requestAccessToken = await getRefreshedToken(refreshToken);
-    sessionStorage.setItem("accessToken", requestAccessToken.data);
+    localStorage.setItem("accessToken", requestAccessToken.data);
 
     return requestAccessToken.data;
   }
@@ -43,11 +43,11 @@ interface SpotiUser {
 
 const initialState: SpotiUser = {
   spotiToken: {
-    accessToken: String(sessionStorage.getItem("access_token")),
+    accessToken: localStorage.getItem("access_token") !== undefined ? String(localStorage.getItem("access_token")) : 'unavailable' ,
     token_type: "Bearer",
     expires_in: 3600,
-    issued_at: Number(sessionStorage.getItem("issued_at")),
-    refresh_token:   String( sessionStorage.getItem("refresh_token")),
+    issued_at: Number(localStorage.getItem("issued_at")),
+    refresh_token: localStorage.getItem("refresh_token") !== undefined  ?  String( localStorage.getItem("refresh_token")) : 'unavailable',
   },
 };
 
@@ -82,11 +82,11 @@ const spotiUserSlice = createSlice({
         }
       ) => {
         const currentTime = new Date().getTime() / 1000;
-        sessionStorage.setItem("issued_at", currentTime.toString());
+        localStorage.setItem("issued_at", currentTime.toString());
 
         return {
           ...state,
-          spotiToken: {
+           spotiToken: {
             ...state.spotiToken,
             accessToken: action.payload?.accessToken,
           },
@@ -106,6 +106,7 @@ const spotiUserSlice = createSlice({
           spotiToken: {
             ...state.spotiToken,
             accessToken: "pending",
+            refresh_token: "pending"
           },
         };
       }
@@ -123,6 +124,7 @@ const spotiUserSlice = createSlice({
           spotiToken: {
             ...state.spotiToken,
             accessToken: "access revoked",
+            refresh_token: "access revoked"
           },
         };
       }
@@ -136,10 +138,11 @@ const spotiUserSlice = createSlice({
           payload: TokenData;
         }
       ) => {
+
         const currentTime = new Date().getTime() / 1000;
-        sessionStorage.setItem("issued_at", currentTime.toString());
-        sessionStorage.setItem("refresh_token", action.payload?.refresh_token);
-      sessionStorage.setItem("access_token", action.payload?.accessToken);
+        localStorage.setItem("issued_at", currentTime.toString());
+        localStorage.setItem("refresh_token", action.payload?.refresh_token);
+        localStorage.setItem("access_token", action.payload?.accessToken);
         return {
           ...state,
           spotiToken: {

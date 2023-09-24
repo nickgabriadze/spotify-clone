@@ -8,16 +8,16 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(async (config) => {
   const currentTime = new Date().getTime() / 1000;
 
-  const issued_at = Number(sessionStorage.getItem("issued_at"));
+  const issued_at = Number(localStorage.getItem("issued_at"));
 
   if (currentTime - issued_at > 3600) {
     const fetchAccessToken = await getRefreshedToken(
-      String(sessionStorage.getItem("refresh_token"))
+      String(localStorage.getItem("refresh_token"))
     );
 
-    sessionStorage.setItem("issued_at", (new Date().getTime() / 1000).toString());
-    sessionStorage.setItem("accessToken", `${fetchAccessToken.data}`);
-    window.dispatchEvent(new Event('sessionStorageChange'));
+    localStorage.setItem("issued_at", (new Date().getTime() / 1000).toString());
+    localStorage.setItem("access_token", `${fetchAccessToken.data}`);
+    window.dispatchEvent(new Event('localStorageChange'));
     config.headers.Authorization = `Bearer ${fetchAccessToken.data}`;
 
     return config;

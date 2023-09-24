@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {fetchTokenAsync, setToken} from "./store/features/spotiUserSlice";
-import {useAppDispatch} from "./store/hooks";
+import {useAppDispatch, useAppSelector} from "./store/hooks";
 import appStyle from "./app.module.css";
 import Navigation from "./components/navigation/navigation";
 import Player from "./components/player/player";
@@ -8,20 +8,21 @@ import Main from "./components/main/Main.tsx";
 import Library from "./components/library/Library.tsx";
 
 export function App() {
+    const access = useAppSelector((state) => state.spotiUserReducer.spotiToken);
+
     const dispatch = useAppDispatch();
-
+    console.log(localStorage.getItem('access_token'))
     useEffect(() => {
-            if(!(sessionStorage.getItem('access_token'))) {
-                dispatch(fetchTokenAsync());
-            }
-
+        if (localStorage.getItem('access_token') === undefined) {
+            dispatch(fetchTokenAsync());
+        }
     }, []);
 
 
-    window.addEventListener('sessionStorageChange', () => {
+    window.addEventListener('localStorageChange', () => {
         dispatch(
             setToken({
-                accessToken: String(sessionStorage.getItem("accessToken"))
+                accessToken: String(sessionStorage.getItem("access_token"))
             })
         );
     })
@@ -44,8 +45,14 @@ export function App() {
     }, []);
 
 
-    if (!(sessionStorage.getItem('access_token') && sessionStorage.getItem('refresh_token'))) {
-
+    if ((access.refresh_token === 'unavailable'
+            &&
+            access.refresh_token === 'unavailable')
+        ||
+        (
+            (access.accessToken === 'pending') && (access.refresh_token === 'pending')
+        )
+    ) {
         return (
 
             <img
