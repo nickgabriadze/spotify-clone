@@ -14,6 +14,7 @@ export const fetchTokenAsync = createAsyncThunk(
   async (): Promise<TokenData> => {
     const req = await fetchAccessToken();
     history.replaceState({}, document.title, window.location.pathname);
+
     return req.data;
   }
 );
@@ -29,6 +30,7 @@ export const updateAccessTokenASync = createAsyncThunk(
   }
 );
 
+
 interface SpotiUser {
   spotiToken: {
     accessToken: string;
@@ -41,11 +43,11 @@ interface SpotiUser {
 
 const initialState: SpotiUser = {
   spotiToken: {
-    accessToken: "unavailable",
+    accessToken: String(sessionStorage.getItem("access_token")),
     token_type: "Bearer",
-    expires_in: 0,
-    issued_at: 0,
-    refresh_token: "unavailable",
+    expires_in: 3600,
+    issued_at: Number(sessionStorage.getItem("issued_at")),
+    refresh_token:   String( sessionStorage.getItem("refresh_token")),
   },
 };
 
@@ -137,7 +139,7 @@ const spotiUserSlice = createSlice({
         const currentTime = new Date().getTime() / 1000;
         sessionStorage.setItem("issued_at", currentTime.toString());
         sessionStorage.setItem("refresh_token", action.payload?.refresh_token);
-
+      sessionStorage.setItem("access_token", action.payload?.accessToken);
         return {
           ...state,
           spotiToken: {

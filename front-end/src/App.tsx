@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {fetchTokenAsync, setToken} from "./store/features/spotiUserSlice";
-import {useAppDispatch, useAppSelector} from "./store/hooks";
+import {useAppDispatch} from "./store/hooks";
 import appStyle from "./app.module.css";
 import Navigation from "./components/navigation/navigation";
 import Player from "./components/player/player";
@@ -11,7 +11,10 @@ export function App() {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(fetchTokenAsync());
+            if(!(sessionStorage.getItem('access_token'))) {
+                dispatch(fetchTokenAsync());
+            }
+
     }, []);
 
 
@@ -23,8 +26,6 @@ export function App() {
         );
     })
 
-
-    const access = useAppSelector((state) => state.spotiUserReducer.spotiToken);
 
     const [windowInnerHeight, setWindowInnerHeight] = useState<number>(window.innerHeight - 120);
 
@@ -43,11 +44,7 @@ export function App() {
     }, []);
 
 
-    if (access.refresh_token === 'unavailable'
-        || access.refresh_token === 'pending'
-        || access.accessToken === 'pending'
-        || access.accessToken === 'unavailable') {
-
+    if (!(sessionStorage.getItem('access_token') && sessionStorage.getItem('refresh_token'))) {
 
         return (
 
