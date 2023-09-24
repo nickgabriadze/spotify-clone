@@ -16,6 +16,7 @@ axiosInstance.interceptors.request.use(async (config) => {
     );
 
     localStorage.setItem("issued_at", (new Date().getTime() / 1000).toString());
+
     localStorage.setItem("access_token", `${fetchAccessToken.data}`);
     window.dispatchEvent(new Event('localStorageChange'));
     config.headers.Authorization = `Bearer ${fetchAccessToken.data}`;

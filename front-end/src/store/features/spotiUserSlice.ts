@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import fetchAccessToken from "../../api/getToken";
-import getRefreshedToken from "../../api/getRefreshedToken";
 
 interface TokenData {
   accessToken: string;
@@ -19,16 +18,6 @@ export const fetchTokenAsync = createAsyncThunk(
   }
 );
 
-export const updateAccessTokenASync = createAsyncThunk(
-  "spotifyAccessNew/token",
-  async (): Promise<TokenData> => {
-    const refreshToken = String(localStorage.getItem("refresh_token"));
-    const requestAccessToken = await getRefreshedToken(refreshToken);
-    localStorage.setItem("accessToken", requestAccessToken.data);
-
-    return requestAccessToken.data;
-  }
-);
 
 
 interface SpotiUser {
@@ -43,11 +32,11 @@ interface SpotiUser {
 
 const initialState: SpotiUser = {
   spotiToken: {
-    accessToken: localStorage.getItem("access_token") !== undefined ? String(localStorage.getItem("access_token")) : 'unavailable' ,
+    accessToken:  'unavailable' ,
     token_type: "Bearer",
     expires_in: 3600,
-    issued_at: Number(localStorage.getItem("issued_at")),
-    refresh_token: localStorage.getItem("refresh_token") !== undefined  ?  String( localStorage.getItem("refresh_token")) : 'unavailable',
+    issued_at: 0,
+    refresh_token: 'unavailable',
   },
 };
 
@@ -55,6 +44,23 @@ const spotiUserSlice = createSlice({
   name: "Spoti User Slice",
   initialState,
   reducers: {
+    updateCredentials: (state, action: {
+      payload: {
+        access_token: string,
+        issued_at: number,
+        refresh_token: string
+      }
+    }) => {
+        return {
+          ...state,
+          spotiToken: {
+            ...state.spotiToken,
+            accessToken: action.payload.access_token,
+            refresh_token: action.payload.refresh_token,
+            issued_at: action.payload.issued_at
+          }
+        }
+    },
     setToken: (
       state,
       action: {
@@ -71,64 +77,6 @@ const spotiUserSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(
-      updateAccessTokenASync.fulfilled,
-      (
-        state,
-        action: {
-          payload: {
-            accessToken: string;
-          };
-        }
-      ) => {
-        const currentTime = new Date().getTime() / 1000;
-        localStorage.setItem("issued_at", currentTime.toString());
-
-        return {
-          ...state,
-           spotiToken: {
-            ...state.spotiToken,
-            accessToken: action.payload?.accessToken,
-          },
-        };
-      }
-    );
-
-    builder.addCase(
-      updateAccessTokenASync.pending,
-      (
-        state,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        _
-      ) => {
-        return {
-          ...state,
-          spotiToken: {
-            ...state.spotiToken,
-            accessToken: "pending",
-            refresh_token: "pending"
-          },
-        };
-      }
-    );
-
-    builder.addCase(
-      updateAccessTokenASync.rejected,
-      (
-        state,
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        _
-      ) => {
-        return {
-          ...state,
-          spotiToken: {
-            ...state.spotiToken,
-            accessToken: "access revoked",
-            refresh_token: "access revoked"
-          },
-        };
-      }
-    );
 
     builder.addCase(
       fetchTokenAsync.fulfilled,
@@ -143,6 +91,7 @@ const spotiUserSlice = createSlice({
         localStorage.setItem("issued_at", currentTime.toString());
         localStorage.setItem("refresh_token", action.payload?.refresh_token);
         localStorage.setItem("access_token", action.payload?.accessToken);
+
         return {
           ...state,
           spotiToken: {
@@ -185,6 +134,6 @@ const spotiUserSlice = createSlice({
   },
 });
 
-export const { setToken } = spotiUserSlice.actions;
+export const { setToken , updateCredentials} = spotiUserSlice.actions;
 
 export default spotiUserSlice.reducer;

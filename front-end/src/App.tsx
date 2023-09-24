@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {fetchTokenAsync, setToken} from "./store/features/spotiUserSlice";
+import {fetchTokenAsync, setToken, updateCredentials} from "./store/features/spotiUserSlice";
 import {useAppDispatch, useAppSelector} from "./store/hooks";
 import appStyle from "./app.module.css";
 import Navigation from "./components/navigation/navigation";
@@ -11,18 +11,30 @@ export function App() {
     const access = useAppSelector((state) => state.spotiUserReducer.spotiToken);
 
     const dispatch = useAppDispatch();
-    console.log(localStorage.getItem('access_token'))
+
+
     useEffect(() => {
-        if (localStorage.getItem('access_token') === undefined) {
+        if (localStorage.getItem('access_token') === null
+            ||
+            localStorage.getItem('refresh_token') === null ||
+            localStorage.getItem('refresh_token') === 'undefined'
+            || localStorage.getItem('access_token') === 'undefined'
+        ) {
             dispatch(fetchTokenAsync());
+        } else {
+            dispatch(updateCredentials({
+                access_token: String(localStorage.getItem('access_token')),
+                refresh_token: String(localStorage.getItem('refresh_token')),
+                issued_at: Number(localStorage.getItem('issued_at'))
+            }))
         }
-    }, []);
+    }, [dispatch]);
 
 
     window.addEventListener('localStorageChange', () => {
         dispatch(
             setToken({
-                accessToken: String(sessionStorage.getItem("access_token"))
+                accessToken: String(localStorage.getItem("access_token"))
             })
         );
     })
@@ -45,13 +57,12 @@ export function App() {
     }, []);
 
 
-    if ((access.refresh_token === 'unavailable'
-            &&
-            access.refresh_token === 'unavailable')
+    if ((access.accessToken === 'unavailable'
+            && access.refresh_token === 'unavailable')
         ||
-        (
-            (access.accessToken === 'pending') && (access.refresh_token === 'pending')
-        )
+        (access.accessToken === 'pending'
+            && access.refresh_token === 'pending')
+
     ) {
         return (
 
