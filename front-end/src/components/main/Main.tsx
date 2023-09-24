@@ -9,8 +9,7 @@ export function Main({height}: { height: number }) {
     return (
         <main className={mainStyle['main-container']} style={{height: `${height}px`}}>
             <Routes>
-                <Route path={'/search'} element={<Search/>}/>
-
+                <Route path={'/search'} element={<Search/>}></Route>
             </Routes>
         </main>
 

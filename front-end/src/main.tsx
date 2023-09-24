@@ -11,7 +11,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Provider store={SpotiStore}>
             <BrowserRouter>
                 <Routes>
-                    <Route path={'*'} element={<App/>}> </Route>
+                    <Route path={'*'} element={<App/>}></Route>
                 </Routes>
             </BrowserRouter>
         </Provider>
