@@ -27,8 +27,6 @@ export async function PlayResumeStreaming(accessToken: string, context_uri?: str
     }
 
 
-
-
     if (context_uri) {
         const ID = await getActiveDeviceID();
         return axiosInstance.put(`/me/player/play?device_id=${ID}`, {
@@ -42,7 +40,7 @@ export async function PlayResumeStreaming(accessToken: string, context_uri?: str
     }
     if (track_uris) {
         const ID = await getActiveDeviceID();
-        console.log(ID)
+
         return axiosInstance.put(`/me/player/play?device_id=${ID}`, {
             uris: track_uris
         }, {
