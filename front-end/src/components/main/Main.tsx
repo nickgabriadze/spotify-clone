@@ -4,12 +4,20 @@ import {useAppSelector} from "../../store/hooks.ts";
 import searchBarStyle from "../search/components/search-bar/searchBar.module.css";
 import Left from "../search/components/search-bar/icons/left.svg";
 import Right from "../search/components/search-bar/icons/right.svg";
+import Queue from "./components/queue/Queue.tsx";
+import {ReactElement} from "react";
 
 
 export function Main({height}: { height: number }) {
     const navOption = useAppSelector((state) => state.navigationReducer.navTo);
-
-
+    // TODO have to remove as soon as the component array will be created
+    const navigation:{
+        [key: string]:ReactElement
+    } = {
+        "Search": <Search />,
+        "Queue": <Queue />
+    }
+    console.log(navOption)
     return (
         <main className={mainStyle['main-container']} style={{height: `${height}px`}}>
                  <div className={searchBarStyle["left-right-nav"]}>
@@ -20,7 +28,7 @@ export function Main({height}: { height: number }) {
                                 <img alt={'Right icon'} src={Right} height={32}></img>
                             </button>
                  </div>
-           <div style={{height: `${height}px`}}>{navOption === 'search' ? <Search/> : <div></div>}</div>
+           <div style={{height: `${height}px`}}>{navigation[navOption]}</div>
 
         </main>
 

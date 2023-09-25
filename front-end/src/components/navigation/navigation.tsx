@@ -6,28 +6,28 @@ import SearchUnfilled from "./icons/search-unfilled.svg";
 import navigationStyle from "./navigation.module.css";
 import SearchUnfilledGrey from "./icons/search-unfilled-grey.svg";
 import HomeUnfilledGrey from "./icons/home-unfilled-grey.svg";
-import {useAppDispatch} from "../../store/hooks";
+import {useAppDispatch, useAppSelector} from "../../store/hooks";
 import {setNavTo} from "../../store/features/navigationSlice";
 
 
 export function Navigation() {
-    //Home - True, Search - False
-    const [nav, setNav] = useState<boolean>(true);
+
     const [navHover, setNavHover] = useState<string>("none");
     const dispatchNavigation = useAppDispatch();
+    const navigateTo = useAppSelector((state) => state.navigationReducer.navTo);
 
 
     return (
         <section className={navigationStyle["nav-box"]}>
             <div
                 className={navigationStyle["home-box"]}
-                onMouseEnter={() => setNavHover("home")}
+                onMouseEnter={() => setNavHover("Home")}
                 onMouseLeave={() => setNavHover("none")}
                 onClick={() => {
-                    setNav(true);
+
                     dispatchNavigation(
                         setNavTo({
-                            navTo: "home",
+                            navTo: "Home",
                         })
                     );
                 }}
@@ -35,44 +35,44 @@ export function Navigation() {
                 <img
                     className={navigationStyle['nav-img']}
                     src={
-                        nav
+                        navigateTo === 'Home'
                             ? HomeFilled
-                            : navHover === "home"
+                            : navHover === "Home"
                                 ? HomeUnfilled
                                 : HomeUnfilledGrey
                     }
 
 
                     alt={'Home icon'}></img>
-                <h4 style={nav ? {color: "white"} : {}}>Home</h4>
+                <h4 style={navigateTo === 'Home' ? {color: "white"} : {}}>Home</h4>
             </div>
 
             <div
                   className={navigationStyle["search-box"]}
                   onClick={() => {
-                      setNav(false)
+
                       dispatchNavigation(
                           setNavTo({
-                              navTo: "search",
+                              navTo: "Search",
                           })
                       );
                   }}
-                  onMouseEnter={() => setNavHover("search")}
+                  onMouseEnter={() => setNavHover("Search")}
                   onMouseLeave={() => setNavHover("none")}
             >
                 <img
                     alt={'Search icon'}
                     className={navigationStyle['nav-img']}
                     src={
-                        !nav
+                        navigateTo === 'Search'
                             ? SearchFilled
-                            : navHover === "search"
+                            : navHover === "Search"
                                 ? SearchUnfilled
                                 : SearchUnfilledGrey
                     }
 
                 ></img>
-                <h4 style={!nav ? {color: "white"} : {}}>Search</h4>
+                <h4 style={navigateTo === 'Search'? {color: "white"} : {}}>Search</h4>
             </div>
         </section>
     );

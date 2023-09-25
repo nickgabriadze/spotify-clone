@@ -282,10 +282,11 @@ button {
     display: flex;
     flex-direction: column;
     position: relative;
-
+    margin-top: 3px;
     .choose-devices {
         filter: invert(28%) sepia(60%) saturate(3000%) hue-rotate(83deg) brightness(95%) contrast(80%);
         margin-left: 2px;
+
     }
 
 

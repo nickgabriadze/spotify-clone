@@ -9,8 +9,10 @@ export type Option =
   | "Playlists"
   | "Podcasts & Shows";
 
+export type NavTo = "Home" | "Queue" | "Search"
+
 interface Navigation {
-  navTo: string;
+  navTo: NavTo;
   searchQuery: string;
   typing: boolean;
   searchOption: Option;
@@ -24,7 +26,7 @@ interface Navigation {
 }
 
 const initialState: Navigation = {
-  navTo: "search",
+  navTo: "Search",
   searchQuery: "",
   typing: false,
   searchOption: "All",
@@ -58,7 +60,7 @@ const navigationSlice = createSlice({
       state,
       action: {
         payload: {
-          navTo: string;
+          navTo: NavTo;
         };
       }
     ) => {
