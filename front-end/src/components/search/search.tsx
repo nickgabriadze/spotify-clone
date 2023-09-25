@@ -1,5 +1,5 @@
 import {useAppDispatch, useAppSelector} from "../../store/hooks";
-import Genres from "./components/genres/genres";
+import BrowsingCategory from "./components/browsing-categories/BrowsingCategory.tsx";
 import SearchBar from "./components/search-bar/searchBar";
 import SearchResult from "./components/search-result/searchResult";
 import {useEffect} from "react";
@@ -18,13 +18,13 @@ export function Search() {
     }, [searchStuff.searchQuery.trim().length]);
 
     return (
-        <section style={{height: 'calc(100% - 86px)'}}>
+        <section style={{height: 'calc(100% - 110px)'}}>
             <SearchBar/>
             <div style={{ height: '100%'}}>
                 {searchStuff.searchQuery.trim().length > 0 ? (
                     <SearchResult/>
                 ) : (
-                    <Genres/>
+                    <BrowsingCategory/>
                 )}
             </div>
         </section>

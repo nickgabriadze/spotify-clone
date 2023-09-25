@@ -1,9 +1,9 @@
-.genres-wrapper h1 {
+.browsing-categories-wrapper h1 {
   color: white;
   font-size: 1.5rem;
 }
 
-.genres-wrapper {
+.browsing-categories-wrapper {
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -16,5 +16,5 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 30px;
-  
+
 }

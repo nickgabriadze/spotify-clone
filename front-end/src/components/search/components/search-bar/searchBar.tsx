@@ -3,8 +3,7 @@ import SearchUnfilledGrey from "../../../navigation/icons/search-unfilled-grey.s
 import SearchUnfilled from "../../../navigation/icons/search-unfilled.svg";
 import closeSearch from "../../../navigation/icons/close-search.svg";
 import {useEffect, useState} from "react";
-import Left from "./icons/left.svg";
-import Right from "./icons/right.svg";
+
 import Download from "./icons/download.svg";
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks";
 import {
@@ -54,14 +53,7 @@ export function SearchBar() {
                             marginLeft: '-6px'
                         }}
                     >
-                        <div className={searchBarStyle["left-right-nav"]}>
-                            <button>
-                                <img alt={'Left icon'} src={Left} height={32}></img>
-                            </button>
-                            <button style={{marginLeft: "-3px"}}>
-                                <img alt={'Right icon'} src={Right} height={32}></img>
-                            </button>
-                        </div>
+
 
                         <div className={searchBarStyle["search-bar-wrapper"]}
                              style={
