@@ -33,13 +33,25 @@ export function Queue() {
 
 
     return <section className={queueStyle['queue-wrapper']}>
-        <h1>Queue</h1>
+
+      <div className={queueStyle['queue']}>
+
+            <h1>Queue</h1>
         <div className={queueStyle['current-track']}>
             <p>Now Playing</p>
             <div
             className={queueStyle['currently-playing-track']}
             >{queueLoading ? <SongCardSkeleton /> : <SongCard eachTrack={queueData?.currently_playing} n={1} accessToken={accessToken} />}</div>
         </div>
+
+        <div className={queueStyle['next-up-in-queue']}>
+            <p>Next up</p>
+            <div className={queueStyle['upcoming-tracks']}>
+                {queueLoading ? Array.from({length: 30}).map((_, i) =>  <SongCardSkeleton  key={i}/>) : queueData?.queue.map((eachTrack, i) => <SongCard key={i} eachTrack={eachTrack} n={i+2} accessToken={accessToken} />)}
+
+            </div>
+        </div>
+      </div>
     </section>
 }
 

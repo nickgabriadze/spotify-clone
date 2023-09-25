@@ -1,29 +1,47 @@
 .queue-wrapper{
-   margin-top: 80px;
+    margin-top: 60px;
+    height: calc(100% + 40px);
     display: flex;
     flex-direction: column;
-    gap: 20px;
+
+    padding-right: 30px;
+    overflow-y: scroll;
+
+     & p {
+        font-family: 'Gotham Medium', sans-serif;
+        font-weight: 300;
+        color: #b3b3b3;
+    }
 }
 .queue-wrapper h1{
     color: white;
 
 }
 
-.current-track{
+.queue{
+    display: flex;
+    flex-direction: column;
+    gap:30px;
+    margin-top: 30px;
+}
+
+.current-track {
     display: flex;
     flex-direction: column;
     gap: 10px;
 
-.currently-playing-track{
-    transform: scale(0.95);
-    position: relative;
-    left: -30px
-}
-    & p {
-        font-family: 'Gotham Light', sans-serif;
-        font-weight: bold;
-
-        color: #b3b3b3;
+    .currently-playing-track{
+        transform: scale(0.95);
+        position: relative;
+        left: -20px
     }
+}
+
+.next-up-in-queue{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+
 }
 

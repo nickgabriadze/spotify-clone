@@ -66,6 +66,9 @@
 }
 
 
+.album-img{
+    margin-left: 3%;
+}
 .album-img img {
     object-fit: cover;
 
