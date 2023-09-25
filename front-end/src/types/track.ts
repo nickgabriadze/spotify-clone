@@ -28,7 +28,7 @@ export interface Track {
   id: string,
   is_local: boolean,
   name: string,
-  pupularity: number,
+  popularity: number,
   preview_url: string,
   track_number: number,
   type: string,

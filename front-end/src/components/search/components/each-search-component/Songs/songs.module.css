@@ -7,6 +7,7 @@
     padding: 0 20px 0 0;
     overflow-y: scroll;
     height: 100%;
+
 }
 
 
@@ -59,7 +60,6 @@
 .img-title-artists {
     display: flex;
     gap: 10px;
-
     justify-content: space-between;
     align-items: center;
 
@@ -76,6 +76,7 @@
     font-weight: 600;
     font-family: 'Gotham Light', sans-serif;
     width: 40px;
+    color: #b3b3b3;
 }
 
 .title-artists {
@@ -84,7 +85,7 @@
     height: 100%;
     justify-content: space-between;
     gap: 10px;
-
+    color: #b3b3b3;
 }
 
 .title-artists a {
@@ -105,6 +106,7 @@
     align-items: center;
     font-size: 12px;
     margin-left: -60px;;
+    color: #b3b3b3;
 }
 
 .album-title a {

@@ -10,15 +10,18 @@ import Play from "../components/each-search-component/Songs/icons/play.svg"
 import episodesStyle from "../components/each-search-component/PodcastsShows/podcastsShows.module.css";
 import NoTrackPicture from "../components/each-search-component/icons/no-track-pic.svg"
 export const SongCard = forwardRef(function SongCard(props: {
-    eachTrack: Track | null,
+    eachTrack: Track | undefined,
     n: number,
     accessToken: string
 }, ref: LegacyRef<HTMLDivElement>) {
+
 
     const {n, eachTrack, accessToken} = props;
     const songID = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong.songID);
     const dispatch = useAppDispatch();
     const [hoveringOver, setHoveringOver] = useState<boolean>(false)
+
+
 
     return (
         <div className={songsStyle["track-wrapper"]}

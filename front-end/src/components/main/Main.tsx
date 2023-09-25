@@ -4,7 +4,7 @@ import {useAppSelector} from "../../store/hooks.ts";
 import searchBarStyle from "../search/components/search-bar/searchBar.module.css";
 import Left from "../search/components/search-bar/icons/left.svg";
 import Right from "../search/components/search-bar/icons/right.svg";
-import Queue from "./components/queue/Queue.tsx";
+import  Queue  from "./components/queue/Queue.tsx";
 import {ReactElement} from "react";
 
 
