@@ -20,6 +20,8 @@ import toggleShuffleOnOff from "../../../api/player/toggleShuffleOnOff.ts";
 import RepeatOne from "../icons/repeat_one.svg";
 import RepeatOn from "../icons/repeat_on.svg"
 import setRepeatMode from "../../../api/player/setRepeatMode.ts";
+import getTracksAudioFeatures from "../../../api/player/getTracksAudioFeatures.ts";
+import {TrackAudioFeatures} from "../../../types/tracksFeatures.ts";
 
 export function StreamController({
                                      currentlyPlaying,
@@ -148,8 +150,21 @@ export function StreamController({
                     ></img>
                 </button>
                 <button
-                    onClick={async () => {
-                        await PlayNext(accessToken);
+                    onClick={ () => {
+                            const playNextSong = async () => {
+                                const nextReq = await PlayNext(accessToken);
+                                if(nextReq.status === 204) {
+                                    const trackFeatures = await getTracksAudioFeatures(accessToken, String(currentlyPlaying?.item.id))
+                                    const features:TrackAudioFeatures = trackFeatures.data;
+                                    console.log(features)
+
+                                }else{
+
+                                }
+                            }
+
+                            playNextSong()
+
                         dispatch(
                             setUserControlActions({
                                 userAction: "Play Next Song",

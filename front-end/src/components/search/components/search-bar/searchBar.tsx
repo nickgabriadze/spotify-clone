@@ -52,8 +52,6 @@ export function SearchBar() {
                             marginLeft: '-6px'
                         }}
                     >
-
-
                         <div className={searchBarStyle["search-bar-wrapper"]}
                              style={
                                  onElementFocus

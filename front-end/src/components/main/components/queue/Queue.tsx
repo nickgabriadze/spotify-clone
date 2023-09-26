@@ -28,34 +28,37 @@ export function Queue() {
             }
         }
         fetchQueue()
-    }, [accessToken,currentSongId]);
+    }, [accessToken, currentSongId]);
 
 
     const noNewSongsInQueue = queueData?.queue.filter((song) => song.id !== queueData?.currently_playing?.id).length === 0;
     const everyNewTrackIsFromTheSameArtist = queueData?.queue.every((track) => track.artists.filter(eachArtist => eachArtist?.id === queueData?.currently_playing?.artists[0]?.id)[0]?.id === queueData?.currently_playing?.artists[0]?.id)
     return <section className={queueStyle['queue-wrapper']}>
 
-      <div className={queueStyle['queue']}>
+        <div className={queueStyle['queue']}>
 
             <h1>Queue</h1>
-        <div className={queueStyle['current-track']}>
-            <p>Now Playing</p>
-            <div
-            className={queueStyle['currently-playing-track']}
-            >{queueLoading ? <SongCardSkeleton /> : <SongCard eachTrack={queueData?.currently_playing} n={1} accessToken={accessToken} />}</div>
+            <div className={queueStyle['current-track']}>
+                <p>Now Playing</p>
+                <div
+                    className={queueStyle['currently-playing-track']}
+                >{queueLoading ? <SongCardSkeleton/> :
+                    <SongCard eachTrack={queueData?.currently_playing} n={1} accessToken={accessToken}/>}</div>
+            </div>
+
+            {!noNewSongsInQueue && <div className={queueStyle['next-up-in-queue']}>
+                <div
+                style={{color: '#b3b3b3'}}>{everyNewTrackIsFromTheSameArtist ?
+                    <div>Next from: <a>{queueData?.currently_playing.artists[0].name}</a></div> : `Next up`}</div>
+                <div className={queueStyle['upcoming-tracks']}>
+                    {queueLoading ? Array.from({length: 30}).map((_, i) => <SongCardSkeleton
+                        key={i}/>) : queueData?.queue.map((eachTrack, i) => <SongCard key={i} eachTrack={eachTrack}
+                                                                                      n={i + 2}
+                                                                                      accessToken={accessToken}/>)}
+
+                </div>
+            </div>}
         </div>
-
-          {!noNewSongsInQueue && <div className={queueStyle['next-up-in-queue']}>
-              <p>{everyNewTrackIsFromTheSameArtist ? <div>Next from: <a>{queueData?.currently_playing.artists[0].name}</a></div> :`Next up`}</p>
-              <div className={queueStyle['upcoming-tracks']}>
-                  {queueLoading ? Array.from({length: 30}).map((_, i) => <SongCardSkeleton
-                      key={i}/>) : queueData?.queue.map((eachTrack, i) => <SongCard key={i} eachTrack={eachTrack}
-                                                                                    n={i + 2}
-                                                                                    accessToken={accessToken}/>)}
-
-              </div>
-          </div>}
-      </div>
     </section>
 }
 
