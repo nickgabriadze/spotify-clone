@@ -43,5 +43,10 @@
     gap: 20px;
     height: 100%;
 
+    & a:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
 }
 
