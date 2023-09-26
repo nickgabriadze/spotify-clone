@@ -13,7 +13,6 @@ import {
 import getMe from "../../../../api/getMe";
 import {Me} from "../../../../types/me";
 import Searchables from '../searchables/searchables.tsx';
-import SpotiError from "../../../Error.tsx";
 
 export function SearchBar() {
     const searchStuff = useAppSelector((state) => state.navigationReducer);
@@ -134,7 +133,7 @@ export function SearchBar() {
                             <img alt={'Download icon'} src={Download} width={25} height={25}></img> Install App
                         </a>
                         {loading ? (
-                            <SpotiError/>
+                            <div className={searchBarStyle['profile-pic-loading']}></div>
                         ) : (
                             <img alt={'User picture'} src={userData?.images[0].url} width={32} height={32}></img>
                         )}
