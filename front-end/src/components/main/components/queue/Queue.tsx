@@ -1,17 +1,19 @@
 import {useEffect, useState} from "react";
 import getSongQueue from "../../../../api/player/getSongQueue.ts";
-import {useAppSelector} from "../../../../store/hooks.ts";
+import {useAppDispatch, useAppSelector} from "../../../../store/hooks.ts";
 import {QueueType} from "../../../../types/queue.ts";
 import queueStyle from "./queue.module.css";
 import SongCardSkeleton from "../../../../skeletons/songCardSkeleton.tsx";
 import {SongCard} from "../../../search/reuseables/songCard.tsx";
+import {setQueueLength} from "../../../../store/features/navigationSlice.ts";
 
 export function Queue() {
     const accessToken = useAppSelector(state => state.spotiUserReducer.spotiToken.accessToken)
     const [queueData, setQueueData] = useState<QueueType>();
     const [queueLoading, setQueueLoading] = useState<boolean>(true);
     const currentSongId = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong.songID);
-
+    const dispatch = useAppDispatch();
+    const noNewSongsInQueue = queueData?.queue.filter((song) => song.id !== queueData?.currently_playing?.id).length === 0;
     useEffect(() => {
         const fetchQueue = async () => {
 
@@ -20,7 +22,9 @@ export function Queue() {
                 const requestQueue = await getSongQueue(accessToken)
                 const queueData = requestQueue.data;
                 setQueueData(queueData)
-
+                dispatch(setQueueLength({
+                    length: noNewSongsInQueue ? 0 : queueData.queue.length
+                }))
             } catch (err) {
 
             } finally {
@@ -31,7 +35,6 @@ export function Queue() {
     }, [accessToken, currentSongId]);
 
 
-    const noNewSongsInQueue = queueData?.queue.filter((song) => song.id !== queueData?.currently_playing?.id).length === 0;
     const everyNewTrackIsFromTheSameArtist = queueData?.queue.every((track) => track.artists.filter(eachArtist => eachArtist?.id === queueData?.currently_playing?.artists[0]?.id)[0]?.id === queueData?.currently_playing?.artists[0]?.id)
     return <section className={queueStyle['queue-wrapper']}>
 

@@ -8,7 +8,6 @@ export async function getRecommendedTracks(
     currently_playing: CurrentlyPlaying | undefined,
     available_stats: TrackAudioFeatures,
 ) {
-    console.log(currently_playing)
     const relatedArtists = await getRelatedArtists(accessToken, String(currently_playing?.item?.artists[0]?.id))
     const artistsIDs = relatedArtists.data.artists.map(each => each.id).slice(0, 5).join(',')
 

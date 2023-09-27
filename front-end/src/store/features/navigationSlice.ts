@@ -1,154 +1,162 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 import Navigation from "../../components/navigation/navigation";
 
 export type Option =
-  | "All"
-  | "Artists"
-  | "Albums"
-  | "Songs"
-  | "Playlists"
-  | "Podcasts & Shows";
+    | "All"
+    | "Artists"
+    | "Albums"
+    | "Songs"
+    | "Playlists"
+    | "Podcasts & Shows";
 
 export type NavTo = "Home" | "Queue" | "Search"
 
 interface Navigation {
-  navTo: NavTo;
-  searchQuery: string;
-  typing: boolean;
-  searchOption: Option;
-  currentlyPlayingSong: {
-    artistID: string,
-    songID: string,
-    albumID: string,
-    isPlaying: boolean | null
-  };
-  userControlActions: string[];
+    navTo: NavTo;
+    searchQuery: string;
+    typing: boolean;
+    searchOption: Option;
+    queueLength: number
+    currentlyPlayingSong: {
+        artistID: string,
+        songID: string,
+        albumID: string,
+        isPlaying: boolean | null
+    };
+    userControlActions: string[];
 }
 
 const initialState: Navigation = {
-  navTo: "Search",
-  searchQuery: "",
-  typing: false,
-  searchOption: "All",
-  currentlyPlayingSong: {
-    artistID: "None",
-    songID: "None",
-    albumID: "None",
-    isPlaying: null
-  },
-  userControlActions: [],
+    navTo: "Search",
+    searchQuery: "",
+    typing: false,
+    searchOption: "All",
+    currentlyPlayingSong: {
+        artistID: "None",
+        songID: "None",
+        albumID: "None",
+        isPlaying: null
+    },
+    queueLength: 0,
+    userControlActions: [],
 };
 
 const navigationSlice = createSlice({
-  name: "Navigation Slice",
-  initialState,
-  reducers: {
-    setSearchOption: (
-      state,
-      action: {
-        payload: {
-          option: Option;
-        };
-      }
-    ) => {
-      return {
-        ...state,
-        searchOption: action.payload.option,
-      };
-    },
-    setNavTo: (
-      state,
-      action: {
-        payload: {
-          navTo: NavTo;
-        };
-      }
-    ) => {
-      return {
-        ...state,
-        navTo: action.payload.navTo,
-      };
-    },
+    name: "Navigation Slice",
+    initialState,
+    reducers: {
+        setSearchOption: (
+            state,
+            action: {
+                payload: {
+                    option: Option;
+                };
+            }
+        ) => {
+            return {
+                ...state,
+                searchOption: action.payload.option,
+            };
+        },
+        setNavTo: (
+            state,
+            action: {
+                payload: {
+                    navTo: NavTo;
+                };
+            }
+        ) => {
+            return {
+                ...state,
+                navTo: action.payload.navTo,
+            };
+        },
+        setQueueLength: (state, action: { payload: { length: number } }) => {
+            return {
+                ...state,
+                queueLength: action.payload.length
+            }
+        },
+        setTyping: (
+            state,
+            action: {
+                payload: {
+                    typing: boolean;
+                };
+            }
+        ) => {
+            return {
+                ...state,
+                typing: action.payload.typing,
+            };
+        },
 
-    setTyping: (
-      state,
-      action: {
-        payload: {
-          typing: boolean;
-        };
-      }
-    ) => {
-      return {
-        ...state,
-        typing: action.payload.typing,
-      };
-    },
+        setSearchQuery: (
+            state,
+            action: {
+                payload: {
+                    searchQuery: string;
+                };
+            }
+        ) => {
+            return {
+                ...state,
+                searchQuery: action.payload.searchQuery,
+            };
+        },
 
-    setSearchQuery: (
-      state,
-      action: {
-        payload: {
-          searchQuery: string;
-        };
-      }
-    ) => {
-      return {
-        ...state,
-        searchQuery: action.payload.searchQuery,
-      };
-    },
+        setCurrentlyPlayingSong: (
+            state,
+            action: {
+                payload: {
+                    currentlyPlayingSong: {
+                        artistID: string;
+                        songID: string,
+                        albumID: string,
+                        isPlaying: boolean | null
+                    };
+                };
+            }
+        ) => {
+            return {
+                ...state,
+                currentlyPlayingSong: action.payload.currentlyPlayingSong,
+            };
+        },
 
-    setCurrentlyPlayingSong: (
-      state,
-      action: {
-        payload: {
-          currentlyPlayingSong: {
-            artistID: string;
-            songID: string,
-            albumID: string,
-            isPlaying: boolean | null
-          };
-        };
-      }
-    ) => {
-      return {
-        ...state,
-        currentlyPlayingSong: action.payload.currentlyPlayingSong,
-      };
+        setUserControlActions: (
+            state,
+            action: {
+                payload: {
+                    userAction: string | "Nullify";
+                };
+            }
+        ) => {
+            if (action.payload.userAction === "Nullify") {
+                return {
+                    ...state,
+                    userControlActions: [],
+                };
+            } else {
+                return {
+                    ...state,
+                    userControlActions: [
+                        ...state.userControlActions,
+                        action.payload.userAction,
+                    ],
+                };
+            }
+        },
     },
-
-    setUserControlActions: (
-      state,
-      action: {
-        payload: {
-          userAction: string | "Nullify";
-        };
-      }
-    ) => {
-      if (action.payload.userAction === "Nullify") {
-        return {
-          ...state,
-          userControlActions: [],
-        };
-      } else {
-        return {
-          ...state,
-          userControlActions: [
-            ...state.userControlActions,
-            action.payload.userAction,
-          ],
-        };
-      }
-    },
-  },
 });
 
 export const {
-  setNavTo,
-  setSearchQuery,
-  setTyping,
-  setSearchOption,
-  setCurrentlyPlayingSong,
-  setUserControlActions,
+    setNavTo,
+    setSearchQuery,
+    setTyping,
+    setSearchOption,
+    setCurrentlyPlayingSong,
+    setUserControlActions,
+    setQueueLength
 } = navigationSlice.actions;
 export default navigationSlice.reducer;

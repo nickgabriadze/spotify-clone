@@ -28,6 +28,7 @@ import {addToQueueRecursive} from "../../../api/player/addTracksToQueue.ts";
 export function StreamController({
                                      currentlyPlaying,
                                      accessToken,
+                                     queueLength,
                                      playbackRepeat,
                                      playbackShuffle,
                                      disallows
@@ -36,6 +37,7 @@ export function StreamController({
     playbackRepeat: "track" | "context" | "off" | undefined;
     accessToken: string;
     currentlyPlaying: CurrentlyPlaying | undefined;
+    queueLength: number
     disallows: Disallows | undefined
 }) {
     const [repeatState, setRepeatState] = useState<string>(String(playbackRepeat))
@@ -96,7 +98,6 @@ export function StreamController({
         setShuffleState(Boolean(playbackShuffle))
 
     }, [playbackShuffle])
-
     useEffect(() => {
 
         setRepeatState(String(playbackRepeat))
@@ -108,7 +109,10 @@ export function StreamController({
             <div className={playerStyle["actual-controls"]}>
                 <button
 
-                    style={{marginBottom: "9px", filter: `${disallows?.toggling_shuffle ? 'brightness(50%)' : 'brightness(100%)'}`}}
+                    style={{
+                        marginBottom: "9px",
+                        filter: `${disallows?.toggling_shuffle ? 'brightness(50%)' : 'brightness(100%)'}`
+                    }}
                     onClick={async () => {
                         if (!(disallows?.toggling_shuffle === true)) {
                             await toggleShuffleOnOff(accessToken, !shuffleState);
@@ -152,32 +156,30 @@ export function StreamController({
                     ></img>
                 </button>
                 <button
-                    onClick={ () => {
-                            const playNextSong = async () => {
-                                const nextReq = await PlayNext(accessToken);
-                                console.log(nextReq.status)
-                                if(nextReq.status === 204) {
-                                    const trackFeatures = await getTracksAudioFeatures(accessToken, String(currentlyPlaying?.item.id))
-                                    const features:TrackAudioFeatures = trackFeatures.data;
-                                    const reqRecommendations = await getRecommendedTracks(accessToken, currentlyPlaying? currentlyPlaying : undefined, features)
-                                    console.log(reqRecommendations.data)
-                                    const done = await addToQueueRecursive(accessToken, reqRecommendations.data.tracks)
-                                    console.log(done)
-                                    if(done === "All Done") {
-                                        await PlayNext(accessToken)
-                                    }
-                                }else{
+                    onClick={() => {
+                        const playNextSong = async () => {
+                            if (queueLength === 0) {
+                                const trackFeatures = await getTracksAudioFeatures(accessToken, String(currentlyPlaying?.item.id))
+                                const features: TrackAudioFeatures = trackFeatures.data;
+                                const recommended = await getRecommendedTracks(accessToken, currentlyPlaying ? currentlyPlaying : undefined, features)
 
+                                const addedItemsToQueue = await addToQueueRecursive(accessToken, recommended.data.tracks);
+                                if (addedItemsToQueue === "All Done") {
+                                    await PlayNext(accessToken)
                                 }
+                            } else {
+                                await PlayNext(accessToken)
                             }
+                        }
 
-                            playNextSong()
+                        playNextSong()
 
                         dispatch(
                             setUserControlActions({
                                 userAction: "Play Next Song",
                             })
                         );
+
                     }}
                 >
                     <img alt="Skip Next" src={SkipNext} width={30}></img>
@@ -190,14 +192,14 @@ export function StreamController({
                         } else if (disallows?.toggling_repeat_track === true && !disallows.toggling_repeat_context) {
                             await setRepeatMode(accessToken, repeatState === 'context' ? 'off' : 'context');
                             setRepeatState(repeatState === 'context' ? 'off' : 'context')
-                        } else if(!disallows?.toggling_repeat_track && !disallows?.toggling_repeat_context){
+                        } else if (!disallows?.toggling_repeat_track && !disallows?.toggling_repeat_context) {
                             if (repeatState === 'off') {
                                 await setRepeatMode(accessToken, 'context');
                                 setRepeatState('context')
                             } else if (repeatState === 'context') {
                                 await setRepeatMode(accessToken, 'track');
                                 setRepeatState('track')
-                            } else if(repeatState === 'track') {
+                            } else if (repeatState === 'track') {
                                 await setRepeatMode(accessToken, 'off');
                                 setRepeatState('off')
                             }
@@ -205,7 +207,10 @@ export function StreamController({
                     }
                     }
 
-                    style={{marginBottom: "9px", filter: `${disallows?.toggling_repeat_context || disallows?.toggling_repeat_track ? 'brightness(50%)' : 'brightness(100%)'}`}}>
+                    style={{
+                        marginBottom: "9px",
+                        filter: `${disallows?.toggling_repeat_context || disallows?.toggling_repeat_track ? 'brightness(50%)' : 'brightness(100%)'}`
+                    }}>
                     <img alt="Repeat" src={repeats[repeatState]} width={20}></img>
                 </button>
             </div>
