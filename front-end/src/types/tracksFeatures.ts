@@ -12,7 +12,7 @@ export interface TrackAudioFeatures {
     "mode": number, // Major - 1, Minor - 0
     "speechiness": number, // 0 - 1 (> 0.66 spoken, 0.33 < music and speech < 0.66, < 0.33 likely to be only music
     "tempo": number,
-    "time_signature": 3 | 4 | 5 | 6 | 7,
+    "time_signature": number,//max 11
     "track_href": string,
     "type": "audio_features",
     "uri": string,

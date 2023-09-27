@@ -22,6 +22,8 @@ import RepeatOn from "../icons/repeat_on.svg"
 import setRepeatMode from "../../../api/player/setRepeatMode.ts";
 import getTracksAudioFeatures from "../../../api/player/getTracksAudioFeatures.ts";
 import {TrackAudioFeatures} from "../../../types/tracksFeatures.ts";
+import getRecommendedTracks from "../../../api/player/getRecommendedTracks.ts";
+import {addToQueueRecursive} from "../../../api/player/addTracksToQueue.ts";
 
 export function StreamController({
                                      currentlyPlaying,
@@ -153,11 +155,17 @@ export function StreamController({
                     onClick={ () => {
                             const playNextSong = async () => {
                                 const nextReq = await PlayNext(accessToken);
+                                console.log(nextReq.status)
                                 if(nextReq.status === 204) {
                                     const trackFeatures = await getTracksAudioFeatures(accessToken, String(currentlyPlaying?.item.id))
                                     const features:TrackAudioFeatures = trackFeatures.data;
-                                    console.log(features)
-
+                                    const reqRecommendations = await getRecommendedTracks(accessToken, currentlyPlaying? currentlyPlaying : undefined, features)
+                                    console.log(reqRecommendations.data)
+                                    const done = await addToQueueRecursive(accessToken, reqRecommendations.data.tracks)
+                                    console.log(done)
+                                    if(done === "All Done") {
+                                        await PlayNext(accessToken)
+                                    }
                                 }else{
 
                                 }
