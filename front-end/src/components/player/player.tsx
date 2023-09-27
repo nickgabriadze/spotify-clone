@@ -22,7 +22,6 @@ export function Player() {
     const dispatch = useAppDispatch();
     const userActions = useAppSelector(state => state.navigationReducer.userControlActions);
     const [playbackStateInformation, setPlaybackStateInformation] = useState<PlaybackState>();
-    const queueLength = useAppSelector((state) => state.navigationReducer.queueLength)
 
 
     const fetchCurrentData = useCallback(async () => {
@@ -142,7 +141,7 @@ export function Player() {
                 <div className={playerStyle['player-wrapper']}>
                     <SongDetails currentlyPlaying={currentlyPlaying}/>
                     <StreamController accessToken={access.accessToken}
-                                      queueLength={queueLength}
+
                                       disallows={playbackStateInformation?.actions?.disallows}
                                       playbackShuffle={playbackStateInformation?.shuffle_state}
                                       playbackRepeat={playbackStateInformation?.repeat_state}

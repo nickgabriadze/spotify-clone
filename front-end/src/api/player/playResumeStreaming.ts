@@ -3,23 +3,27 @@ import {getDevices} from "./getDevices.ts";
 
 export async function PlayResumeStreaming(accessToken: string, context_uri?: string, track_uris?: string[]) {
 
-   /*
-   * basically, this small function makes sure that if there is no active device found for streaming
-   * the smartphone device will be checked for availability, and it will be chosen automatically
-   * otherwise, nothing will happen
-   */
+    /*
+    * basically, this small function makes sure that if there is no active device found for streaming
+    * the smartphone device will be checked for availability, and it will be chosen automatically
+    * otherwise, nothing will happen
+    */
 
     const getActiveDeviceID = async () => {
         const devices = await getDevices(accessToken);
 
         const activeDevice = devices.data.devices.filter((each) => each.is_active)
-        if(activeDevice.length === 1) {
+        if (activeDevice.length === 1) {
             return activeDevice[0].id;
-        }else{
+        } else {
             const smartphoneDevice = devices.data.devices.filter((each) => each.type === "Smartphone")[0]
-            if(smartphoneDevice){
+            const computerDevice = devices.data.devices.filter(each => each.type === "Computer")[0]
+
+            if (computerDevice) {
+                return computerDevice.id;
+            } else if (smartphoneDevice) {
                 return smartphoneDevice.id
-            }else{
+            } else {
                 return 'Nothing found'
             }
         }

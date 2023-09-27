@@ -20,15 +20,10 @@ import toggleShuffleOnOff from "../../../api/player/toggleShuffleOnOff.ts";
 import RepeatOne from "../icons/repeat_one.svg";
 import RepeatOn from "../icons/repeat_on.svg"
 import setRepeatMode from "../../../api/player/setRepeatMode.ts";
-import getTracksAudioFeatures from "../../../api/player/getTracksAudioFeatures.ts";
-import {TrackAudioFeatures} from "../../../types/tracksFeatures.ts";
-import getRecommendedTracks from "../../../api/player/getRecommendedTracks.ts";
-import {addToQueueRecursive} from "../../../api/player/addTracksToQueue.ts";
 
 export function StreamController({
                                      currentlyPlaying,
                                      accessToken,
-                                     queueLength,
                                      playbackRepeat,
                                      playbackShuffle,
                                      disallows
@@ -37,7 +32,6 @@ export function StreamController({
     playbackRepeat: "track" | "context" | "off" | undefined;
     accessToken: string;
     currentlyPlaying: CurrentlyPlaying | undefined;
-    queueLength: number
     disallows: Disallows | undefined
 }) {
     const [repeatState, setRepeatState] = useState<string>(String(playbackRepeat))
@@ -70,6 +64,8 @@ export function StreamController({
 
         setDuration(Number(currentlyPlaying?.progress_ms));
     }, [currentlyPlaying?.progress_ms, currentlyPlaying?.item?.duration_ms]);
+
+
 
     useEffect(() => {
         if (currentlyPlaying?.is_playing) {
@@ -158,18 +154,7 @@ export function StreamController({
                 <button
                     onClick={() => {
                         const playNextSong = async () => {
-                            if (queueLength === 0) {
-                                const trackFeatures = await getTracksAudioFeatures(accessToken, String(currentlyPlaying?.item.id))
-                                const features: TrackAudioFeatures = trackFeatures.data;
-                                const recommended = await getRecommendedTracks(accessToken, currentlyPlaying ? currentlyPlaying : undefined, features)
-
-                                const addedItemsToQueue = await addToQueueRecursive(accessToken, recommended.data.tracks);
-                                if (addedItemsToQueue === "All Done") {
-                                    await PlayNext(accessToken)
-                                }
-                            } else {
-                                await PlayNext(accessToken)
-                            }
+                          await PlayNext(accessToken)
                         }
 
                         playNextSong()

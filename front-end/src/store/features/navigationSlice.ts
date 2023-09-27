@@ -16,7 +16,7 @@ interface Navigation {
     searchQuery: string;
     typing: boolean;
     searchOption: Option;
-    queueLength: number
+    queueEmpty: boolean
     currentlyPlayingSong: {
         artistID: string,
         songID: string,
@@ -37,7 +37,7 @@ const initialState: Navigation = {
         albumID: "None",
         isPlaying: null
     },
-    queueLength: 0,
+    queueEmpty: false,
     userControlActions: [],
 };
 
@@ -71,10 +71,10 @@ const navigationSlice = createSlice({
                 navTo: action.payload.navTo,
             };
         },
-        setQueueLength: (state, action: { payload: { length: number } }) => {
+        setQueueEmpty: (state, action: { payload: { empty: boolean } }) => {
             return {
                 ...state,
-                queueLength: action.payload.length
+                queueEmpty: action.payload.empty
             }
         },
         setTyping: (
@@ -157,6 +157,6 @@ export const {
     setSearchOption,
     setCurrentlyPlayingSong,
     setUserControlActions,
-    setQueueLength
+    setQueueEmpty
 } = navigationSlice.actions;
 export default navigationSlice.reducer;

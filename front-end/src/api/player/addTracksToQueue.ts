@@ -3,6 +3,7 @@ import {Track} from "../../types/track.ts";
 
 
 export async function addToQueueRecursive(accessToken: string, tracks: Track[]) {
+
     if (tracks.length !== 0) {
         const req = await addTracksToQueue(accessToken, tracks[0].uri)
         const success = req.status === 204;
@@ -11,10 +12,9 @@ export async function addToQueueRecursive(accessToken: string, tracks: Track[]) 
         } else {
             return
         }
-    } else {
-        return "All Done"
+    }else{
+        return "Available"
     }
-
 
 }
 
