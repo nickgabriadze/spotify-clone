@@ -4,8 +4,30 @@
     padding: 8px 15px 15px 15px;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
     width: 100%;
     position: relative;
+
+}
+
+.head-of-main {
+    display: flex;
+    justify-content: space-between;
+
+    padding-right: 10px;
+    align-items: center;
+    position: relative;
+    height: 50px;
+}
+.left-right-nav button img {
+    background-color: black;
+    border-radius: 100%;
+    padding: 3px;
+
+}
+
+.left-right-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
 }

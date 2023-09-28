@@ -1,9 +1,9 @@
 import {useAppDispatch, useAppSelector} from "../../store/hooks";
 import BrowsingCategory from "./components/browsing-categories/BrowsingCategory.tsx";
-import SearchBar from "./components/search-bar/searchBar";
 import SearchResult from "./components/search-result/searchResult";
 import {useEffect} from "react";
 import {setSearchOption} from "../../store/features/navigationSlice.ts";
+import Searchables from "./components/searchables/searchables.tsx";
 
 export function Search() {
     const searchStuff = useAppSelector((state) => state.navigationReducer);
@@ -18,11 +18,12 @@ export function Search() {
     }, [searchStuff.searchQuery.trim().length]);
 
     return (
-        <section style={{height: 'calc(100%)'}}>
-            <SearchBar/>
+        <section style={{height: '100%'}}>
             <div style={{ height: '100%'}}>
                 {searchStuff.searchQuery.trim().length > 0 ? (
+                     <>{searchStuff.searchQuery.trim().length > 0 ? <Searchables/> : ""}
                     <SearchResult/>
+                     </>
                 ) : (
                     <BrowsingCategory/>
                 )}

@@ -2,42 +2,21 @@ import searchBarStyle from "./searchBar.module.css";
 import SearchUnfilledGrey from "../../../navigation/icons/search-unfilled-grey.svg";
 import SearchUnfilled from "../../../navigation/icons/search-unfilled.svg";
 import closeSearch from "../../../navigation/icons/close-search.svg";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
-import Download from "./icons/download.svg";
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks";
 import {
     setSearchQuery,
     setTyping,
 } from "../../../../store/features/navigationSlice";
-import getMe from "../../../../api/getMe";
-import {Me} from "../../../../types/me";
-import Searchables from '../searchables/searchables.tsx';
+
 
 export function SearchBar() {
     const searchStuff = useAppSelector((state) => state.navigationReducer);
     const dispatchSearch = useAppDispatch();
     const [onElementFocus, setOnElementFocus] = useState<boolean>(false);
-    const access = useAppSelector((state) => state.spotiUserReducer.spotiToken);
-    const [userData, setUserData] = useState<Me>();
-    const [loading, setLoading] = useState<boolean>(true);
+
     // const [err, setErr] = useState<string | unknown>();
-
-    useEffect(() => {
-        const fetchMyData = async () => {
-            try {
-                const req = await getMe(access.accessToken);
-                const data = req.data;
-                setUserData(data);
-            } catch (err) {
-                // setErr(err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchMyData();
-    }, [access.accessToken]);
 
 
     return (
@@ -125,19 +104,8 @@ export function SearchBar() {
                     </div>
 
 
-                    <div className={searchBarStyle["install-profile"]}>
-                        <a href="https://www.spotify.com/us/download/windows/" target="_blank">
-                            {" "}
-                            <img alt={'Download icon'} src={Download} width={25} height={25}></img> Install App
-                        </a>
-                        {loading ? (
-                            <div className={searchBarStyle['profile-pic-loading']}></div>
-                        ) : (
-                            <img alt={'User picture'} src={userData?.images[0].url} width={32} height={32}></img>
-                        )}
-                    </div>
                 </div>
-                {searchStuff.searchQuery.trim().length > 0 ? <Searchables/> : ""}
+
             </div>
 
         </div>
