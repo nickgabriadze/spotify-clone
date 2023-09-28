@@ -1,10 +1,10 @@
 .queue-wrapper{
-    margin-top: 60px;
+    margin-top: 20px;
     height: calc(100% + 40px);
     display: flex;
     flex-direction: column;
 
-    padding-right: 30px;
+    padding: 10px;
     overflow-y: scroll;
 
      & p {

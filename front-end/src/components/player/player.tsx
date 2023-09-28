@@ -132,9 +132,9 @@ export function Player() {
         document.title = "Spotify Clone";
         return <PlayerSkeleton />;
     } else {
-        document.title = String(currentlyPlaying?.item?.name)
+        document.title = currentlyPlaying?.item ? String(currentlyPlaying?.item?.name)
             .concat(" • ")
-            .concat(String(currentlyPlaying?.item?.artists.map((each) => each.name).join(", ")));
+            .concat(String(currentlyPlaying?.item?.artists.map((each) => each.name).join(", "))) : 'Spotify Clone';
 
         return (
             <section className={playerStyle["player"]}>
