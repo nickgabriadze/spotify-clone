@@ -27,7 +27,7 @@ interface Navigation {
 }
 
 const initialState: Navigation = {
-    navTo: "Search",
+    navTo: "Home",
     searchQuery: "",
     typing: false,
     searchOption: "All",

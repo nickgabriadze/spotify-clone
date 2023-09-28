@@ -1,0 +1,21 @@
+.homepage-wrapper{
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+        .greeting-message{
+            color: white;
+            font-size: 2rem;
+
+    }
+
+}
+
+
+/* top items  */
+.user-top-items-wrapper{
+
+
+}
+

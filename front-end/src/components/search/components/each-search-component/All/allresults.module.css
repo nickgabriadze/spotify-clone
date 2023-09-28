@@ -220,7 +220,6 @@
     .top-artists, .top-albums, .top-playlists, .top-podcasts, .top-episodes {
         display: grid;
         gap: 25px;
-
         grid-template-columns: repeat(5, 1fr);
         width: calc(100% - 5px);
         overflow-x: scroll;

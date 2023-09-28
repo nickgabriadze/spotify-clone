@@ -6,6 +6,7 @@ import Left from "../search/components/search-bar/icons/left.svg";
 import Right from "../search/components/search-bar/icons/right.svg";
 import  Queue  from "./components/queue/Queue.tsx";
 import {ReactElement} from "react";
+import Home from "./components/home/Home.tsx";
 
 
 export function Main({height}: { height: number }) {
@@ -15,6 +16,7 @@ export function Main({height}: { height: number }) {
         [key: string]:ReactElement
     } = {
         "Search": <Search />,
+        "Home": <Home />,
         "Queue": <Queue />
     }
 
