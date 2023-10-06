@@ -1,13 +1,13 @@
-.homepage-wrapper{
+.homepage-wrapper {
 
     display: flex;
     flex-direction: column;
     gap: 30px;
     padding: 15px;
 
-        .greeting-message{
-            color: white;
-            font-size: 2rem;
+    .greeting-message {
+        color: white;
+        font-size: 2rem;
 
     }
 
@@ -15,8 +15,70 @@
 
 
 /* top items  */
-.user-top-items-wrapper{
+.user-top-items-wrapper {
+
+    display: grid;
+    grid-template-columns: repeat(3, minmax(200px, 1fr));
+    gap: 10px;
+    grid-auto-flow: row;
+    overflow-x: clip;
+
+    .album-picture {
+        height: 100%;
+        width: 70px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    .album-picture img {
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+        object-fit: cover;
+        height: 100%;
+        box-shadow: 10px 0 8px -2px #262626;
+
+    }
+
+    .top-item {
+        background-color: #2f2f2f;
+        border-radius: 3px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        height: 70px;
 
 
+    }
+
+    .top-item:hover{
+        background-color: #3d3c3c;
+    }
+    .detail-play {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        gap: 10px;
+        .top-item-title {
+            font-size: 0.9rem;
+            color: white;
+        }
+    }
+
+    .play-button {
+        width: 50px;
+        height: 50px;
+        background-color: #1ed760;
+        border-radius: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+
+    }
 }
 

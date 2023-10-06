@@ -14,7 +14,6 @@
 
 .nav-lib-main-wrapper{
   display: flex;
-
   gap: 8px;
   height: 100%;
 }
@@ -22,6 +21,7 @@
 
 .main{
   width: 80%;
+
 }
 
 

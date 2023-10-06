@@ -259,7 +259,7 @@
         & img {
             border-radius: 5px;
             margin-top: 15px;
-            object-fit: contain
+            object-fit: cover
         }
 
         .top-episode-show-image{
