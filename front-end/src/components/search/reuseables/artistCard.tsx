@@ -34,6 +34,7 @@ export function ArtistCard({ eachArtist }: { eachArtist: Artist }) {
             src={eachArtist.images[0]?.url}
             width={150}
             height={150}
+            alt={"Artist image"}
           ></img>
         ) : (
           <img
@@ -42,6 +43,7 @@ export function ArtistCard({ eachArtist }: { eachArtist: Artist }) {
             src={NoArtistImage}
             width={150}
             height={150}
+            alt={"Artist image placeholder"}
           ></img>
         )}
       </div>
@@ -79,11 +81,14 @@ export function ArtistCard({ eachArtist }: { eachArtist: Artist }) {
           {currentlyPlaying.artistID === eachArtist.id &&
           currentlyPlaying.isPlaying ? (
             <div>
-              <img src={Pause} width={30} height={30}></img>
+              <img
+                  alt={"Pause image"}
+                  src={Pause} width={30} height={30}></img>
             </div>
           ) : (
             <div>
-              <img src={Play} width={50} height={50}></img>
+
+              <img alt={"Play image"} src={Play} width={50} height={50}></img>
             </div>
           )}
         </button>

@@ -3,12 +3,17 @@
     display: flex;
     flex-direction: column;
     gap: 30px;
-    padding: 15px;
+    padding-left: 10px;
+
 
     .greeting-message {
         color: white;
-        font-size: 2rem;
+        font-size: 2rem
+    }
 
+    & h2 {
+        color: white;
+        font-size: 24px;
     }
 
 }
@@ -77,8 +82,20 @@
         display: flex;
         justify-content: center;
         align-items: center;
-
-
     }
+}
+
+/* Recently Played */
+.recently-played-section{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.recent-section {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    align-items: center;
+    scale: 0.95;
 }
 

@@ -64,7 +64,7 @@ export function Main({height}: { height: number }) {
                 </div>
             </div>
 
-            <div style={{height: `${height - 115}px`}}>{navigation[navOption]}</div>
+            <div>{navigation[navOption]}</div>
 
         </main>
 

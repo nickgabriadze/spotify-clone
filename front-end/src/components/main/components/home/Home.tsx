@@ -2,6 +2,7 @@ import homepageStyle from "./homepage.module.css";
 
 import {useEffect} from "react";
 import TopItems from "./components/TopItems.tsx";
+import {RecentlyPlayed} from "./components/RecentlyPlayed.tsx";
 
 export function Home() {
     const time = new Date().getHours();
@@ -24,6 +25,7 @@ export function Home() {
     return <section className={homepageStyle['homepage-wrapper']}>
         <h1 className={homepageStyle['greeting-message']}>Good {timeFrame()}</h1>
         <TopItems />
+        <RecentlyPlayed />
     </section>
 }
 
