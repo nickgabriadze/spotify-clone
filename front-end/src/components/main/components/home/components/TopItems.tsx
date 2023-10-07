@@ -10,16 +10,17 @@ import {setUserControlActions} from "../../../../../store/features/navigationSli
 import PauseStreaming from "../../../../../api/player/pauseStreaming.ts";
 import Pause from "../../../../search/components/each-search-component/Playlists/icons/pause.svg";
 import Play from "../../../../search/components/each-search-component/Playlists/icons/play.svg";
-
+import UsersTopItemSkeleton from "../../../../../skeletons/usersTopItemSkeleton.tsx";
 export function TopItems() {
     const [topItemsData, setTopItemsData] = useState<(Album | Artist)[]>([]);
     const access = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
     const [hoveringOverTopItem, setHoveringOverTopItem] = useState<{ itemID: string }>({itemID: ""});
     const currentlyPlaying = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong);
-
+    const [dataLoading, setDataLoading] = useState<boolean>(true)
     useEffect(() => {
         const fetchTops = async () => {
             try {
+                setDataLoading(true)
                 const getTopArtists: Artist[] = (await getUsersTopItems(access, 'artists', 'medium_term', 3)).data.items;
                 const getTopTracks: Track[] = (await getUsersTopItems(access, 'tracks', "medium_term", 3)).data.items;
                 const tracksMappedToAlbums = getTopTracks.map(eachTopTrack => eachTopTrack.album);
@@ -36,7 +37,7 @@ export function TopItems() {
             } catch (err) {
 
             } finally {
-
+            setDataLoading(false)
             }
         }
         fetchTops();
@@ -45,7 +46,10 @@ export function TopItems() {
     const dispatch = useAppDispatch();
 
     return <div className={homepageStyle['user-top-items-wrapper']}>
-        {topItemsData.map((eachTopItem, i) => <div key={i} className={homepageStyle['top-item']}
+        {!dataLoading ?
+            Array.from({length: 6}).map((_, i) => <UsersTopItemSkeleton key={i}/>)
+            :
+            topItemsData.map((eachTopItem, i) => <div key={i} className={homepageStyle['top-item']}
                                                    onMouseOver={() => setHoveringOverTopItem({itemID: eachTopItem.id})}
                                                    onMouseOut={() => setHoveringOverTopItem({itemID: ''})}
         >
