@@ -5,7 +5,9 @@
     padding: 8px 15px 15px 15px;
     display: flex;
     flex-direction: column;
+
     width: 100%;
+    gap: 20px;
     position: relative;
     overflow-y: scroll;
 
@@ -14,8 +16,8 @@
 .head-of-main {
     display: flex;
     justify-content: space-between;
+    padding-top: 10px;
 
-    padding-right: 10px;
     align-items: center;
     position: relative;
     height: 50px;

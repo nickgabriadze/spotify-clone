@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { Playlist } from "../../../types/playlist";
 import playlistsStyle from "../components/each-search-component/Playlists/playlists.module.css";
 import NoPlaylistImage from "../components/each-search-component/icons/no-playlist-pic.webp";
@@ -6,8 +6,28 @@ import Play from "../components/each-search-component/Playlists/icons/play.svg";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
 import { setUserControlActions } from "../../../store/features/navigationSlice";
+import getPlaylist from "../../../api/search/getPlaylist.ts";
 
-export function PlaylistCard({ eachPlaylist }: { eachPlaylist: Playlist }) {
+
+export function PlaylistCardApi({playlistID} : {playlistID: string}){
+  const [singlePlayList, setSinglePlaylist] = useState<Playlist | undefined>();
+   const accessToken = useAppSelector(
+    (state) => state.spotiUserReducer.spotiToken.accessToken
+  );
+  useEffect(() => {
+    const getSinglePlaylist = async () => {
+      try{
+        const playlistData = (await getPlaylist(accessToken, playlistID)).data;
+        setSinglePlaylist(playlistData)
+      }catch(err){}
+    }
+    getSinglePlaylist()
+  }, [accessToken, playlistID]);
+
+  return <PlaylistCard eachPlaylist={singlePlayList}/>
+}
+
+export function PlaylistCard({ eachPlaylist }: { eachPlaylist: Playlist | undefined }) {
   const [hoveringOver, setHoveringOver] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector(
@@ -25,8 +45,8 @@ export function PlaylistCard({ eachPlaylist }: { eachPlaylist: Playlist }) {
         <img
             alt={'Playlist image'}
           src={
-            eachPlaylist.images[0]?.url
-              ? eachPlaylist.images[0]?.url
+            eachPlaylist?.images[0]?.url
+              ? eachPlaylist?.images[0]?.url
               : NoPlaylistImage
           }
           height={160}
@@ -36,7 +56,7 @@ export function PlaylistCard({ eachPlaylist }: { eachPlaylist: Playlist }) {
       {hoveringOver && (
         <button
           onClick={async () => {
-            await PlayResumeStreaming(accessToken, eachPlaylist.uri);
+            await PlayResumeStreaming(accessToken, eachPlaylist?.uri);
             dispatch(
               setUserControlActions({
                 userAction: "Play Playlist",
@@ -50,15 +70,15 @@ export function PlaylistCard({ eachPlaylist }: { eachPlaylist: Playlist }) {
       )}
       <div className={playlistsStyle["playlist-details"]}>
         <a>
-          {eachPlaylist.name.length > 15
-            ? eachPlaylist.name.slice(0, 16).concat("...")
-            : eachPlaylist.name}
+          {Number(eachPlaylist?.name?.length) > 15
+            ? eachPlaylist?.name.slice(0, 16).concat("...")
+            : eachPlaylist?.name}
         </a>
         <p>
           By{" "}
-          {eachPlaylist.owner.display_name.length > 15
-            ? eachPlaylist.owner.display_name.slice(0, 16).concat("...")
-            : eachPlaylist.owner.display_name}
+          {Number(eachPlaylist?.owner.display_name.length) > 15
+            ? eachPlaylist?.owner.display_name.slice(0, 16).concat("...")
+            : eachPlaylist?.owner.display_name}
         </p>
       </div>
     </div>

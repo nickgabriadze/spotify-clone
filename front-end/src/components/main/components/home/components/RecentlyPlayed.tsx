@@ -3,13 +3,13 @@ import {useAppSelector} from "../../../../../store/hooks.ts";
 import getRecentlyPlayed from "../../../../../api/home/getRecentlyPlayed.ts";
 import {RecentlyPlayed} from "../../../../../types/recentlyPlayed.ts";
 import homepageStyle from "../homepage.module.css";
-import ArtistCard from "../../../../search/reuseables/artistCard.tsx";
-import Albums from "../../../../search/components/each-search-component/Albums/Albums.tsx";
-import AlbumCard from "../../../../search/reuseables/albumCard.tsx";
-import home from "../Home.tsx";
+import {ArtistCardApi} from "../../../../search/reuseables/artistCard.tsx";
+import {AlbumCardApi} from "../../../../search/reuseables/albumCard.tsx";
+import {PlaylistCardApi} from "../../../../search/reuseables/playListCard.tsx";
 
-export function RecentlyPlayed(){
-    const [recentlyPlayedData, setRecentlyPlayedData] = useState<RecentlyPlayed>();
+
+export function RecentlyPlayed() {
+    const [recentlyPlayedData, setRecentlyPlayedData] = useState<string[]>();
     const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
 
 
@@ -17,29 +17,40 @@ export function RecentlyPlayed(){
         const fetchRecent = async () => {
             try {
                 const data: RecentlyPlayed = (await getRecentlyPlayed(accessToken, 5)).data;
-               setRecentlyPlayedData(data)
-                console.log(data)
+
+                const filteredData = [...data.items].filter(e => e.context).map((e) => e.context.href)
+                const finalizedObjectAddresses = filteredData.filter((e, i) => filteredData.lastIndexOf(e) === i);
+                setRecentlyPlayedData(finalizedObjectAddresses)
+
+
             } catch (err) {
 
             }
         }
-
         fetchRecent();
     }, [])
-    console.log(recentlyPlayedData?.items[0].track.artists)
+
+
     return <section className={homepageStyle['recently-played-section']}>
         <h2>Recently played</h2>
         <div className={homepageStyle['recent-section']}>
-            {recentlyPlayedData?.items.map((recent, i) => {
-                if(recent.context.type === 'album') {
-                    return <AlbumCard eachAlbum={recent.track.album} key={i}/>
-                }else{
-                    return <h3>...</h3>
+            {recentlyPlayedData?.map((recent, i) => {
+                const contextType = recent.split('/');
+                const type = contextType[contextType.length - 2]
+                const id = contextType[contextType?.length - 1]
+
+                if (type === 'artists') {
+                    return <ArtistCardApi artistID={id} key={i}/>
+                } else if (type === 'albums') {
+                    return <AlbumCardApi albumID={id} key={i}/>
+                } else if (type === 'playlists') {
+                    return <PlaylistCardApi playlistID={id}/>
+
                 }
+
             })}
         </div>
     </section>
-
 
 
 }

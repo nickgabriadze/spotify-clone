@@ -1,15 +1,39 @@
 import artistsStyle from "../components/each-search-component/Artists/artists.module.css";
 import { Artist } from "../../../types/artist";
 import NoArtistImage from "../components/each-search-component/icons/no-artist-pic.webp";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
 import Play from "../components/each-search-component/Playlists/icons/play.svg";
 import Pause from "../components/each-search-component/Playlists/icons/pause.svg";
 import { setUserControlActions } from "../../../store/features/navigationSlice";
 import PauseStreaming from "../../../api/player/pauseStreaming";
+import getArtist from "../../../api/search/getArtist.ts";
 
-export function ArtistCard({ eachArtist }: { eachArtist: Artist }) {
+
+export function ArtistCardApi({artistID}: {artistID: string}) {
+
+  const [singleArtist, setSingleArtist] = useState<Artist | undefined>();
+   const accessToken = useAppSelector(
+      (state) => state.spotiUserReducer.spotiToken.accessToken
+    );
+
+  useEffect(() => {
+      const getSingleArtist = async () => {
+          try{
+            const reqArtist = await getArtist(accessToken, artistID);
+            const artistData = reqArtist.data;
+            console.log(artistData);
+            setSingleArtist(artistData)
+          }catch(err){}
+      }
+
+      getSingleArtist()
+  }, [accessToken, artistID]);
+
+    return <ArtistCard eachArtist={singleArtist} />
+}
+export function ArtistCard({ eachArtist }: { eachArtist: Artist | undefined}) {
   const [hoveringOver, setHoveringOver] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const currentlyPlaying = useAppSelector(
@@ -28,10 +52,10 @@ export function ArtistCard({ eachArtist }: { eachArtist: Artist }) {
       onMouseOut={() => setHoveringOver(false)}
     >
       <div className={artistsStyle["artist-img"]}>
-        {eachArtist.images[0]?.url ? (
+        {eachArtist?.images[0]?.url ? (
           <img
             draggable={false}
-            src={eachArtist.images[0]?.url}
+            src={eachArtist?.images[0]?.url}
             width={150}
             height={150}
             alt={"Artist image"}
@@ -51,7 +75,7 @@ export function ArtistCard({ eachArtist }: { eachArtist: Artist }) {
       {hoveringOver && (
         <button
           onClick={async () => {
-            if (currentlyPlaying.artistID === eachArtist.id) {
+            if (currentlyPlaying.artistID === eachArtist?.id) {
               if (!currentlyPlaying.isPlaying) {
                 await PlayResumeStreaming(accessToken);
                 dispatch(
@@ -68,7 +92,7 @@ export function ArtistCard({ eachArtist }: { eachArtist: Artist }) {
                 );
               }
             } else {
-              await PlayResumeStreaming(accessToken, eachArtist.uri);
+              await PlayResumeStreaming(accessToken, eachArtist?.uri);
               dispatch(
                 setUserControlActions({
                   userAction: "Play Artist",
@@ -78,7 +102,7 @@ export function ArtistCard({ eachArtist }: { eachArtist: Artist }) {
           }}
           className={artistsStyle["artist-hover-button"]}
         >
-          {currentlyPlaying.artistID === eachArtist.id &&
+          {currentlyPlaying.artistID === eachArtist?.id &&
           currentlyPlaying.isPlaying ? (
             <div>
               <img
@@ -95,12 +119,12 @@ export function ArtistCard({ eachArtist }: { eachArtist: Artist }) {
       )}
       <div className={artistsStyle["artist-info"]}>
         <a>
-          {eachArtist.name.length > 21
-            ? eachArtist.name.slice(0, 22).concat("...")
-            : eachArtist.name}
+          {Number(eachArtist?.name.length) > 21
+            ? eachArtist?.name.slice(0, 22).concat("...")
+            : eachArtist?.name}
         </a>
         <p>
-          {eachArtist.type[0].toUpperCase().concat(eachArtist.type.slice(1))}
+          {eachArtist?.type[0].toUpperCase().concat(eachArtist?.type.slice(1))}
         </p>
       </div>
     </div>

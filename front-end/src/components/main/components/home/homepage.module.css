@@ -90,12 +90,19 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-}
-.recent-section {
-    display: flex;
-    width: 100%;
-    gap: 10px;
-    align-items: center;
-    scale: 0.95;
+
 }
 
+
+.recent-section {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    gap:30px;
+    overflow-x: scroll;
+
+}
+
+.recent-section::-webkit-scrollbar{
+    display: none;
+}
