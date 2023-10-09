@@ -1,8 +1,8 @@
 .main-container {
     background: #121212;
-
+    padding: 0 15px 15px 15px;
     border-radius: 8px;
-    padding: 8px 15px 15px 15px;
+
     display: flex;
     flex-direction: column;
 
@@ -16,12 +16,16 @@
 .head-of-main {
     display: flex;
     justify-content: space-between;
-    padding-top: 10px;
-
     align-items: center;
-    position: relative;
-    height: 50px;
+    padding: 8px;
+
 }
+.header-container{
+    display: flex;
+
+    flex-direction: column;
+}
+
 .left-right-nav button img {
     background-color: black;
     border-radius: 100%;

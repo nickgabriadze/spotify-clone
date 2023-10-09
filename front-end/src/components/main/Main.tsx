@@ -10,6 +10,7 @@ import Home from "./components/home/Home.tsx";
 import {Me} from "../../types/me.ts";
 import getMe from "../../api/getMe.ts";
 import SearchBar from "../search/components/search-bar/searchBar.tsx";
+import Searchables from "../search/components/searchables/searchables.tsx";
 
 
 export function Main({height}: { height: number }) {
@@ -18,6 +19,8 @@ export function Main({height}: { height: number }) {
     const access = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken)
     const navOption = useAppSelector((state) => state.navigationReducer.navTo);
     // TODO have to remove as soon as the component array will be created
+    const searching = useAppSelector((state) => state.navigationReducer.searchQuery);
+
     const navigation: {
         [key: string]: ReactElement
     } = {
@@ -43,27 +46,34 @@ export function Main({height}: { height: number }) {
 
     return (
         <main className={mainStyle['main-container']} style={{height: `${height}px`}}>
+            <div
+                className={mainStyle['header-container']}
+                style={navOption === 'Search' ? {position: 'sticky', top: '0', zIndex: '9999', height: '100%', backgroundColor: '#121212'} : {paddingTop: '8px'}}
+            >
+                <div className={mainStyle['head-of-main']}
 
-            <div className={mainStyle['head-of-main']}>
-                <div className={mainStyle["left-right-nav"]}>
-                    <button>
-                        <img alt={'Left icon'} src={Left} height={32}></img>
-                    </button>
-                    <button style={{marginLeft: "-3px"}}>
-                        <img alt={'Right icon'} src={Right} height={32}></img>
-                    </button>
+                >
+                    <div className={mainStyle["left-right-nav"]}>
+                        <button>
+                            <img alt={'Left icon'} src={Left} height={32}></img>
+                        </button>
+                        <button style={{marginLeft: "-3px"}}>
+                            <img alt={'Right icon'} src={Right} height={32}></img>
+                        </button>
 
-                    {navOption === 'Search' && <SearchBar />}
+                        {navOption === 'Search' && <SearchBar/>}
+                    </div>
+
+                    <div className={searchBarStyle["install-profile"]}>
+                        {loading ? (
+                            <div className={searchBarStyle['profile-pic-loading']}></div>
+                        ) : (
+                            <img alt={'User picture'} src={userData?.images[0].url} width={32} height={32}></img>
+                        )}
+                    </div>
                 </div>
-                <div className={searchBarStyle["install-profile"]}>
-                    {loading ? (
-                        <div className={searchBarStyle['profile-pic-loading']}></div>
-                    ) : (
-                        <img alt={'User picture'} src={userData?.images[0].url} width={32} height={32}></img>
-                    )}
-                </div>
+                {navOption === 'Search' && searching.trim().length > 0 ? <Searchables/> : ""}
             </div>
-
             <div>{navigation[navOption]}</div>
 
         </main>

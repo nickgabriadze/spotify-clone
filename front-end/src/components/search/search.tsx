@@ -3,7 +3,6 @@ import BrowsingCategory from "./components/browsing-categories/BrowsingCategory.
 import SearchResult from "./components/search-result/searchResult";
 import {useEffect} from "react";
 import {setSearchOption} from "../../store/features/navigationSlice.ts";
-import Searchables from "./components/searchables/searchables.tsx";
 
 export function Search() {
     const searchStuff = useAppSelector((state) => state.navigationReducer);
@@ -21,9 +20,9 @@ export function Search() {
         <section style={{height: '100%'}}>
             <div style={{ height: '100%'}}>
                 {searchStuff.searchQuery.trim().length > 0 ? (
-                     <>{searchStuff.searchQuery.trim().length > 0 ? <Searchables/> : ""}
+
                     <SearchResult/>
-                     </>
+
                 ) : (
                     <BrowsingCategory/>
                 )}
