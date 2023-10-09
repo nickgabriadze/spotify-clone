@@ -52,6 +52,7 @@ export function AlbumCard({ eachAlbum }: { eachAlbum: Album | undefined }) {
     <div className={albumsStyle["album-card"]}
     onMouseOver={() => setHoveringOver(true)}
     onMouseOut={() => setHoveringOver(false)}>
+        <div className={albumsStyle['album-inner-content']}>
       <div className={albumsStyle["album-img"]}>
           {eachAlbum?.images[0]?.url ?  <img
                   src={eachAlbum?.images[0]?.url}
@@ -123,15 +124,16 @@ export function AlbumCard({ eachAlbum }: { eachAlbum: Album | undefined }) {
         </a>
         <p>
           {String(eachAlbum?.release_date).slice(0, 4)} •{" "}
-          {Number(eachAlbum?.artists?.map((each) => each.name).join(", ").length) > 20
+          {Number(eachAlbum?.artists?.map((each) => each.name).join(", ").length) > 15
             ? eachAlbum?.artists
                 .map((each) => each.name)
                 .join(", ")
-                .slice(0, 15)
+                .slice(0, 10)
                 .concat("...")
             : eachAlbum?.artists.map((each) => each.name).join(", ")}
         </p>
       </div>
+            </div>
     </div>
   );
 }

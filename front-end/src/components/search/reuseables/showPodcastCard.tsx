@@ -8,6 +8,7 @@ export function ShowPodcastCard({eachShowPodcast}: { eachShowPodcast: Show }) {
         <div
             className={podcastsShowsStyle["showPodcast-card"]}
         >
+            <div className={podcastsShowsStyle['showPodcast-inner-part']}>
             <div className={podcastsShowsStyle["showPodcast-img"]}
             >
                 {eachShowPodcast.images[0]?.url ?
@@ -38,16 +39,17 @@ export function ShowPodcastCard({eachShowPodcast}: { eachShowPodcast: Show }) {
             <div className={podcastsShowsStyle["showPodcast-details"]}>
                 <a>
                     {eachShowPodcast.name.length > 15
-                        ? eachShowPodcast.name.slice(0, 16).concat("...")
+                        ? eachShowPodcast.name.slice(0, 10).concat("...")
                         : eachShowPodcast.name}
                 </a>
                 <p>
                     By{" "}
                     {eachShowPodcast.publisher.length > 15
-                        ? eachShowPodcast.publisher.slice(0, 16).concat("...")
+                        ? eachShowPodcast.publisher.slice(0, 15).concat("...")
                         : eachShowPodcast.publisher}
                 </p>
             </div>
+                </div>
         </div>)
 
 }

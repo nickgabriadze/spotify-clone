@@ -1,7 +1,7 @@
 .albums-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 30px;
+  gap: 20px;
   padding: 10px;
   height: 100%;
   overflow-y: scroll;
@@ -10,9 +10,9 @@
 .album-card {
   background-color: #181818;
   display: flex;
-  height:fit-content;
-  width: fit-content;
-  align-items: flex-start;
+  height:100%;
+  width: 100%;
+  align-items: center;
   justify-content: space-between;
   flex-direction: column;
   border-radius: 8px;
@@ -28,13 +28,18 @@
 
 .album-img {
   display: flex;
-  height: 180px;
-  width: 210px;
+  height: fit-content;
+  width: fit-content;
   z-index: 1;
   padding: 0 15px 0 15px;
 
 }
-
+.album-inner-content{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+}
 .album-img img {
 
   object-fit: cover;
@@ -48,8 +53,9 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+
   gap: 15px;
-  padding: 0 15px 30px 15px;
+  padding: 0 15px 10px 15px;
   z-index: 1;
 }
 

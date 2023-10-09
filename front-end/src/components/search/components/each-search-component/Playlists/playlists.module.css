@@ -1,8 +1,9 @@
 .playlists-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 30px;
+    gap: 20px;
     padding: 10px;
+    width: 100%;
     height: 100%;
     overflow-y: scroll;
 }
@@ -12,6 +13,8 @@
     display: flex;
     flex-direction: column;
     gap: 30px;
+    width: 100%;
+    height: 100%;
     border-radius: 8px;
     cursor: pointer;
     transition: all 300ms linear;
@@ -33,6 +36,7 @@
     object-fit: cover;
     border-radius: 5px;
     margin-top: 15px;
+
 }
 
 .playlist-details {
@@ -40,7 +44,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 15px;
-    padding: 0 15px 30px 15px;
+    padding: 0 15px 10px 15px;
     z-index: 1
 }
 
@@ -68,7 +72,7 @@
 .playlist-hover-button {
     position: absolute;
     z-index: 2;
-    margin-left: 110px;
+    margin-left: 55%;
     margin-top: 125px;
 
 }

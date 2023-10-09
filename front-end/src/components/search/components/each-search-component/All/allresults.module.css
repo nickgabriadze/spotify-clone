@@ -218,9 +218,9 @@
     }
 
     .top-artists, .top-albums, .top-playlists, .top-podcasts, .top-episodes {
-        display: grid;
+        display: flex;
         gap: 25px;
-        grid-template-columns: repeat(5, 1fr);
+        justify-content: space-between;
         width: calc(100% - 5px);
         overflow-x: scroll;
     }
