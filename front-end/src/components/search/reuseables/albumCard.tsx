@@ -67,15 +67,14 @@ export function AlbumCard({ eachAlbum }: { eachAlbum: Album | undefined }) {
 
                   }}
                   src={NoAlbumPicture}
-                  width={160}
-                  height={160}
+
                   draggable={false}
                   alt="Album Picture"></img>}
       </div>
 
       {hoveringOver && (
-        <button 
-      
+        <button
+
         className={albumsStyle["album-hover-button"]}
         onClick={async () => {
           if (currentlyPlaying.albumID === eachAlbum?.id) {

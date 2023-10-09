@@ -21,7 +21,7 @@ export async function searchAll(query:string, accessToken: string):Promise<Axios
 
     const allTypes= ["album", "artist", "playlist", "track", "show", "episode"].join("%2C")
 
-    return axiosInstance.get(`/search?q=${searchStr}&type=${allTypes}&limit=5`, {
+    return axiosInstance.get(`/search?q=${searchStr}&type=${allTypes}&limit=6`, {
         headers:{
             Authorization: `Bearer ${accessToken}`
         }

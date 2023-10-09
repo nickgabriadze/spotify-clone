@@ -28,8 +28,8 @@
 
 .album-img {
   display: flex;
-  height: fit-content;
-  width: fit-content;
+  height: 100%;
+  width: 100%;
   z-index: 1;
   padding: 0 15px 0 15px;
 
@@ -55,7 +55,8 @@
   align-items: flex-start;
 
   gap: 15px;
-  padding: 0 15px 10px 15px;
+  padding: 0 15px 20px 15px;
+
   z-index: 1;
 }
 
@@ -81,8 +82,8 @@
 
   position: absolute;
   z-index: 2;
-  margin-left: 58%;
-  margin-top: 60%;
+    top: 42%;
+    right: 10%;
    
   }
 
