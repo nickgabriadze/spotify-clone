@@ -46,6 +46,8 @@
   width: 100%;
   height: 100%;
   margin-top: 15px;
+  border-radius: 5%;
+  box-shadow: 0 8px 8px rgba(0,0,0,.3);
  
 }
 
@@ -53,10 +55,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-
   gap: 15px;
   padding: 0 15px 20px 15px;
-
   z-index: 1;
 }
 
@@ -68,6 +68,7 @@
 .album-details a:hover {
   text-decoration: underline;
   cursor: pointer;
+
 }
 
 .album-details p {
@@ -84,7 +85,7 @@
   z-index: 2;
     top: 42%;
     right: 10%;
-   
+
   }
 
   .album-hover-button div {
@@ -92,9 +93,11 @@
     height: 50px;
     background-color: #1ed760;
     border-radius: 100%;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     
   }
   

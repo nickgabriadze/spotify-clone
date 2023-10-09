@@ -24,6 +24,7 @@
 
 .each-artist .artist-img {
   border-radius: 100%;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -32,10 +33,12 @@
 
 .artist-img{
   z-index: 1;
+
 }
 .artist-img img {
   border-radius: 100%;
   object-fit: cover;
+   box-shadow: 0 8px 8px rgba(0,0,0,.3);
 }
 
 .no-artist-img {
@@ -80,7 +83,7 @@
     z-index: 2;
   margin-left: 80px;
   margin-top: 15%;
-   
+
   }
 
 .artist-hover-button div {
@@ -89,6 +92,7 @@
     background-color: #1ed760;
     border-radius: 100%;
     display: flex;
+
     justify-content: center;
     align-items: center;
     
