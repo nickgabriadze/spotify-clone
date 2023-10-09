@@ -53,7 +53,7 @@ export function MoreLikeArtists() {
                     <span></span>
                 </h2>
                 <div className={homepageStyle['related-artists']}>
-                    {Array.from({length: 5}).map((eachLike, i) => <ArtistCardSkeleton eachArtist={eachLike} key={i}/>)}
+                    {Array.from({length: 5}).map((_, i) => <ArtistCardSkeleton key={i}/>)}
                 </div>
             </div>
         )
