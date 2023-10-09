@@ -111,6 +111,7 @@
 .album-wrapper {
     cursor: pointer;
     height: 260px;
+    width: 200px;
     border-radius: 8px;
     background-color: #181818;
     display: flex;

@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
 import { setUserControlActions } from "../../../store/features/navigationSlice";
 import getPlaylist from "../../../api/search/getPlaylist.ts";
+import PlaylistCardSkeleton from "../../../skeletons/playlistCardSekeleton.tsx";
 
 
 export function PlaylistCardApi({playlistID} : {playlistID: string}){
@@ -14,17 +15,23 @@ export function PlaylistCardApi({playlistID} : {playlistID: string}){
    const accessToken = useAppSelector(
     (state) => state.spotiUserReducer.spotiToken.accessToken
   );
+   const [loading, setLoading] = useState<boolean>(true);
+
   useEffect(() => {
     const getSinglePlaylist = async () => {
       try{
+        setLoading(true)
         const playlistData = (await getPlaylist(accessToken, playlistID)).data;
         setSinglePlaylist(playlistData)
       }catch(err){}
+      finally {
+        setLoading(false)
+      }
     }
     getSinglePlaylist()
   }, [accessToken, playlistID]);
 
-  return <PlaylistCard eachPlaylist={singlePlayList}/>
+  return loading ? <PlaylistCardSkeleton /> : <PlaylistCard eachPlaylist={singlePlayList}/>
 }
 
 export function PlaylistCard({ eachPlaylist }: { eachPlaylist: Playlist | undefined }) {

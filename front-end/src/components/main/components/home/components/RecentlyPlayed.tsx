@@ -16,8 +16,8 @@ export function RecentlyPlayed() {
     useEffect(() => {
         const fetchRecent = async () => {
             try {
-                const data: RecentlyPlayed = (await getRecentlyPlayed(accessToken, 5)).data;
-
+                const data: RecentlyPlayed = (await getRecentlyPlayed(accessToken)).data;
+ console.log(data)
                 const filteredData = [...data.items].filter(e => e.context).map((e) => e.context.href)
                 const finalizedObjectAddresses = filteredData.filter((e, i) => filteredData.lastIndexOf(e) === i);
                 setRecentlyPlayedData(finalizedObjectAddresses)
@@ -30,28 +30,29 @@ export function RecentlyPlayed() {
         fetchRecent();
     }, [])
 
+    if(recentlyPlayedData?.length !== 0) {
 
-    return <section className={homepageStyle['recently-played-section']}>
-        <h2>Recently played</h2>
-        <div className={homepageStyle['recent-section']}>
-            {recentlyPlayedData?.map((recent, i) => {
-                const contextType = recent.split('/');
-                const type = contextType[contextType.length - 2]
-                const id = contextType[contextType?.length - 1]
+        return <section className={homepageStyle['recently-played-section']}>
+            <h2>Recently played</h2>
+            <div className={homepageStyle['recent-section']}>
+                {recentlyPlayedData?.slice(0, 4).map((recent, i) => {
+                    const contextType = recent.split('/');
+                    const type = contextType[contextType.length - 2]
+                    const id = contextType[contextType?.length - 1]
 
-                if (type === 'artists') {
-                    return <ArtistCardApi artistID={id} key={i}/>
-                } else if (type === 'albums') {
-                    return <AlbumCardApi albumID={id} key={i}/>
-                } else if (type === 'playlists') {
-                    return <PlaylistCardApi playlistID={id}/>
+                    if (type === 'artists') {
+                        return <ArtistCardApi artistID={id} key={i}/>
+                    } else if (type === 'albums') {
+                        return <AlbumCardApi albumID={id} key={i}/>
+                    } else if (type === 'playlists') {
+                        return <PlaylistCardApi playlistID={id}/>
 
-                }
+                    }
 
-            })}
-        </div>
-    </section>
-
+                })}
+            </div>
+        </section>
+    }
 
 }
 

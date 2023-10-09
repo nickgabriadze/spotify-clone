@@ -9,6 +9,7 @@ import Pause from "../components/each-search-component/Playlists/icons/pause.svg
 import { setUserControlActions } from "../../../store/features/navigationSlice";
 import PauseStreaming from "../../../api/player/pauseStreaming";
 import getArtist from "../../../api/search/getArtist.ts";
+import ArtistCardSkeleton from "../../../skeletons/artistCardSkeleton.tsx";
 
 
 export function ArtistCardApi({artistID}: {artistID: string}) {
@@ -17,21 +18,25 @@ export function ArtistCardApi({artistID}: {artistID: string}) {
    const accessToken = useAppSelector(
       (state) => state.spotiUserReducer.spotiToken.accessToken
     );
-
+    const [loading, setLoading] = useState<boolean>(true)
   useEffect(() => {
       const getSingleArtist = async () => {
           try{
+              setLoading(true)
             const reqArtist = await getArtist(accessToken, artistID);
             const artistData = reqArtist.data;
             console.log(artistData);
             setSingleArtist(artistData)
           }catch(err){}
+          finally {
+              setLoading(false)
+          }
       }
 
       getSingleArtist()
   }, [accessToken, artistID]);
 
-    return <ArtistCard eachArtist={singleArtist} />
+    return loading ? <ArtistCardSkeleton /> : <ArtistCard eachArtist={singleArtist} />
 }
 export function ArtistCard({ eachArtist }: { eachArtist: Artist | undefined}) {
   const [hoveringOver, setHoveringOver] = useState<boolean>(false);

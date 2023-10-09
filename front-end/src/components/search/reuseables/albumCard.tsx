@@ -9,6 +9,7 @@ import Pause from "../components/each-search-component/Playlists/icons/pause.svg
 import PauseStreaming from "../../../api/player/pauseStreaming";
 import NoAlbumPicture from "../components/each-search-component/icons/no-album-pic.svg"
 import getAlbum from "../../../api/search/getAlbum.ts";
+import AlbumCardSkeleton from "../../../skeletons/albumCardSkeleton.tsx";
 
 
 
@@ -17,20 +18,25 @@ import getAlbum from "../../../api/search/getAlbum.ts";
 export function AlbumCardApi({albumID} : {albumID: string}){
     const [singleAlbum, setSingleAlbum] = useState<Album | undefined>();
   const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const getSingleAlbum = async () => {
             try {
+                setLoading(true)
                 const reqAlbum = await getAlbum(accessToken, albumID);
                 const albumData = reqAlbum.data;
                 setSingleAlbum(albumData)
             }catch(err){}
+            finally {
+                setLoading(false)
+            }
         }
 
         getSingleAlbum();
     }, [accessToken, albumID]);
 
-    return <AlbumCard eachAlbum={singleAlbum}/>
+    return loading ? <AlbumCardSkeleton /> :  <AlbumCard eachAlbum={singleAlbum}/>
 
 }
 
