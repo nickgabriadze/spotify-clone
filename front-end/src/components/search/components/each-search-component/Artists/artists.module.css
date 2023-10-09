@@ -52,13 +52,15 @@
 
 .each-artist a {
   font-size: clamp(12px, 2.5vw, 0.9rem);
-  word-break: break-all;
-
+  word-wrap: break-word;
+  word-break: break-word;
+  width: fit-content;
   max-width: 150px;
 }
 .each-artist a:hover {
   text-decoration: underline;
   cursor: pointer;
+
 }
 .each-artist p {
   align-items: flex-end;
@@ -75,13 +77,15 @@
   margin-top: 20px;
   padding-bottom: 10px;
   z-index: 1;
+
 }
+
 
 
 .artist-hover-button{
   position: absolute;
-    z-index: 2;
-  margin-left: 80px;
+  z-index: 2;
+  margin-left: 40%;
   margin-top: 15%;
 
   }

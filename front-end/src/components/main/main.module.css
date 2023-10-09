@@ -1,14 +1,12 @@
 .main-container {
     background: #121212;
-    padding: 0 15px 15px 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 20px;
     border-radius: 8px;
-
     display: flex;
     flex-direction: column;
-
     width: 100%;
-    gap: 20px;
-    position: relative;
     overflow-y: scroll;
 
 }
@@ -16,14 +14,19 @@
 .head-of-main {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 8px;
+    padding-top: 20px;
+    padding-bottom: 5px;
+
 
 }
-.header-container{
-    display: flex;
 
+.header-container {
+    display: flex;
     flex-direction: column;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background-color: #121212;
 }
 
 .left-right-nav button img {

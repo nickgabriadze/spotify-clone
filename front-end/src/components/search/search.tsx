@@ -4,6 +4,7 @@ import SearchResult from "./components/search-result/searchResult";
 import {useEffect} from "react";
 import {setSearchOption} from "../../store/features/navigationSlice.ts";
 
+
 export function Search() {
     const searchStuff = useAppSelector((state) => state.navigationReducer);
     const appDispatch = useAppDispatch();

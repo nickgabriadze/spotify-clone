@@ -48,7 +48,7 @@ export function Main({height}: { height: number }) {
         <main className={mainStyle['main-container']} style={{height: `${height}px`}}>
             <div
                 className={mainStyle['header-container']}
-                style={navOption === 'Search' ? {position: 'sticky', top: '0', zIndex: '9999', height: '100%', backgroundColor: '#121212'} : {paddingTop: '8px'}}
+                style={navOption === 'Search' ? {position: 'sticky', top: '0', zIndex: '9999', backgroundColor: '#121212'} : {paddingTop: '15px', paddingBottom: '20px'}}
             >
                 <div className={mainStyle['head-of-main']}
 

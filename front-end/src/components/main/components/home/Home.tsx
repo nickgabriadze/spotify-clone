@@ -3,6 +3,7 @@ import homepageStyle from "./homepage.module.css";
 import {useEffect} from "react";
 import TopItems from "./components/TopItems.tsx";
 import {RecentlyPlayed} from "./components/RecentlyPlayed.tsx";
+import  {MoreLikeArtists} from "./components/MoreLike.tsx";
 
 export function Home() {
     const time = new Date().getHours();
@@ -26,6 +27,7 @@ export function Home() {
         <h1 className={homepageStyle['greeting-message']}>Good {timeFrame()}</h1>
         <TopItems />
         <RecentlyPlayed />
+        <MoreLikeArtists />
     </section>
 }
 

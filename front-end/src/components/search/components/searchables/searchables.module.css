@@ -3,9 +3,9 @@
     gap: 10px;
     flex-wrap: wrap;
     padding: 10px;
-      position: sticky;
+    position: sticky;
     z-index: 9999;
-    top: 70px;
+
 }
 
 .search-options p {

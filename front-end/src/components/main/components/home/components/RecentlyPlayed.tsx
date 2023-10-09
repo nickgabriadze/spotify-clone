@@ -6,6 +6,7 @@ import homepageStyle from "../homepage.module.css";
 import {ArtistCardApi} from "../../../../search/reuseables/artistCard.tsx";
 import {AlbumCardApi} from "../../../../search/reuseables/albumCard.tsx";
 import {PlaylistCardApi} from "../../../../search/reuseables/playListCard.tsx";
+import AlbumCardSkeleton from "../../../../../skeletons/albumCardSkeleton.tsx";
 
 
 export function RecentlyPlayed() {
@@ -17,8 +18,8 @@ export function RecentlyPlayed() {
         const fetchRecent = async () => {
             try {
                 const data: RecentlyPlayed = (await getRecentlyPlayed(accessToken)).data;
- console.log(data)
-                const filteredData = [...data.items].filter(e => e.context).map((e) => e.context.href)
+                const filteredData = [...data.items].filter(e => e.context !== null).map((e) => e.context.href)
+
                 const finalizedObjectAddresses = filteredData.filter((e, i) => filteredData.lastIndexOf(e) === i);
                 setRecentlyPlayedData(finalizedObjectAddresses)
 
@@ -35,7 +36,7 @@ export function RecentlyPlayed() {
         return <section className={homepageStyle['recently-played-section']}>
             <h2>Recently played</h2>
             <div className={homepageStyle['recent-section']}>
-                {recentlyPlayedData?.slice(0, 4).map((recent, i) => {
+                {recentlyPlayedData?.slice(0, 5).map((recent, i) => {
                     const contextType = recent.split('/');
                     const type = contextType[contextType.length - 2]
                     const id = contextType[contextType?.length - 1]
@@ -52,6 +53,15 @@ export function RecentlyPlayed() {
                 })}
             </div>
         </section>
+    }else{
+       return <section className={homepageStyle['recently-played-section']}>
+            <h2 className={homepageStyle['recent-section-title-skeleton']}></h2>
+            <div className={homepageStyle['recent-section']}>
+                {Array.from({length: 6}).map((_, i) =>
+                        <AlbumCardSkeleton key={i}/>
+                )}
+            </div>
+       </section>
     }
 
 }

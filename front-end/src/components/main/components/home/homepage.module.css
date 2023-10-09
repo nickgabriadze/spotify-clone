@@ -92,7 +92,13 @@
     gap: 20px;
     height: fit-content;
 }
-
+ .recent-section-title-skeleton{
+        width: 280px;
+        border-radius: 30px;
+        height: 30px;
+        background-color: #181818;
+        animation: brightness-animation 3s linear infinite;
+    }
 
 .recent-section {
     display: grid;
@@ -100,11 +106,49 @@
 
     width: 100%;
     gap: 20px;
-
     overflow-x: scroll;
 
+
+
 }
 
-.recent-section::-webkit-scrollbar{
+.recent-section::-webkit-scrollbar, .related-artists::-webkit-scrollbar{
     display: none;
 }
+
+/* more like */
+
+.like-section{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .related-artists{
+        display: grid;
+        grid-template-columns: repeat(5, minmax(180px, 1fr));
+        overflow-x: scroll;
+        gap: 20px;
+    }
+    .like-to-skeleton {
+        width: 280px;
+        border-radius: 30px;
+        height: 30px;
+        background-color: #181818;
+        animation: brightness-animation 3s linear infinite;
+    }
+}
+@keyframes brightness-animation {
+    0% {
+        background-color: #181818;
+    }
+    50% {
+        background-color: rgb(93, 91, 91);
+
+    }
+    100% {
+        background-color: #3e3c3c69;
+
+    }
+}
+
+
