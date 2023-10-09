@@ -149,7 +149,7 @@ export function SongsRes({ songName }: { songName: string }) {
                 n={i + 1}
                 key={i}
                 accessToken={accessToken}
-                eachTrack={typeof eachTrack === "object" ? eachTrack : null}
+                eachTrack={typeof eachTrack === "object" ? eachTrack : undefined}
               />
             );
           }
