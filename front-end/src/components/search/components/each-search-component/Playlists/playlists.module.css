@@ -13,8 +13,8 @@
     display: flex;
     flex-direction: column;
     gap: 30px;
-    width: fit-content;
-    height: fit-content;
+    width: 100%;
+    height: 100%;
     border-radius: 8px;
     cursor: pointer;
     transition: all 300ms linear;
@@ -30,12 +30,15 @@
     justify-content: center;
     align-items: center;
     width: 100%;
+    height: 100%;
 }
 
 .playlist-img img {
     object-fit: cover;
     border-radius: 5px;
     margin-top: 15px;
+    width: 100%;
+    height: 100%;
     box-shadow: 0 8px 8px rgba(0, 0, 0, .3);
 }
 

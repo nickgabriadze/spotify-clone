@@ -46,7 +46,7 @@ export function TopItems() {
     const dispatch = useAppDispatch();
 
     return <div className={homepageStyle['user-top-items-wrapper']}>
-        {dataLoading ?
+        {dataLoading || topItemsData.length === 0 ?
             Array.from({length: 6}).map((_, i) => <UsersTopItemSkeleton key={i}/>)
             :
             topItemsData.map((eachTopItem, i) => <div key={i} className={homepageStyle['top-item']}

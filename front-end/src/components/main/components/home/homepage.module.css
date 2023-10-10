@@ -58,9 +58,10 @@
 
     }
 
-    .top-item:hover{
+    .top-item:hover {
         background-color: #3d3c3c;
     }
+
     .detail-play {
         display: flex;
         width: 100%;
@@ -68,6 +69,7 @@
         justify-content: space-between;
         padding: 10px;
         gap: 10px;
+
         .top-item-title {
             font-size: 0.9rem;
             color: white;
@@ -86,19 +88,20 @@
 }
 
 /* Recently Played */
-.recently-played-section{
+.recently-played-section {
     display: flex;
     flex-direction: column;
     gap: 20px;
     height: fit-content;
 }
- .recent-section-title-skeleton{
-        width: 280px;
-        border-radius: 30px;
-        height: 30px;
-        background-color: #181818;
-        animation: brightness-animation 3s linear infinite;
-    }
+
+.recent-section-title-skeleton {
+    width: 280px;
+    border-radius: 30px;
+    height: 30px;
+    background-color: #181818;
+    animation: brightness-animation 3s linear infinite;
+}
 
 .recent-section {
     display: grid;
@@ -107,28 +110,26 @@
     width: 100%;
     gap: 20px;
     overflow-x: scroll;
-
-
-
 }
 
-.recent-section::-webkit-scrollbar, .related-artists::-webkit-scrollbar{
+.recent-section::-webkit-scrollbar, .related-artists::-webkit-scrollbar, .featured-grid::-webkit-scrollbar {
     display: none;
 }
 
 /* more like */
 
-.like-section{
+.like-section {
     display: flex;
     flex-direction: column;
     gap: 20px;
 
-    .related-artists{
+    .related-artists {
         display: grid;
         grid-template-columns: repeat(5, minmax(180px, 1fr));
         overflow-x: scroll;
         gap: 20px;
     }
+
     .like-to-skeleton {
         width: 280px;
         border-radius: 30px;
@@ -139,28 +140,30 @@
 }
 
 
-
 /* featured */
 
-.featured-wrapper{
+.featured-wrapper {
     display: flex;
     flex-direction: column;
     gap: 20px;
 
-    .featured-grid{
-         display: grid;
+    .featured-grid {
+        display: grid;
         grid-template-columns: repeat(5, minmax(180px, 1fr));
         overflow-x: scroll;
         gap: 20px;
+        width: 100%;
     }
-    .featured-message-skeleton{
-         width: 280px;
+
+    .featured-message-skeleton {
+        width: 280px;
         border-radius: 30px;
         height: 30px;
         background-color: #181818;
         animation: brightness-animation 3s linear infinite;
     }
 }
+
 @keyframes brightness-animation {
     0% {
         background-color: #181818;
