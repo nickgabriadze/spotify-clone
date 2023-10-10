@@ -25,7 +25,6 @@ export function ArtistCardApi({artistID}: {artistID: string}) {
               setLoading(true)
             const reqArtist = await getArtist(accessToken, artistID);
             const artistData = reqArtist.data;
-            console.log(artistData);
             setSingleArtist(artistData)
           }catch(err){}
           finally {

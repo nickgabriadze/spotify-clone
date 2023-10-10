@@ -1,11 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import fetchAccessToken from "../../api/getToken";
+import {Me} from "../../types/me.ts";
 
 interface TokenData {
   accessToken: string;
   token_type: "Bearer";
   refresh_token: string;
   expires_in: number;
+
 }
 
 export const fetchTokenAsync = createAsyncThunk(
@@ -28,6 +30,7 @@ interface SpotiUser {
     issued_at: number;
     refresh_token: string;
   };
+  userInformation: Me | null
 }
 
 const initialState: SpotiUser = {
@@ -38,12 +41,21 @@ const initialState: SpotiUser = {
     issued_at: 0,
     refresh_token: 'unavailable',
   },
+  userInformation: null
 };
 
 const spotiUserSlice = createSlice({
   name: "Spoti User Slice",
   initialState,
   reducers: {
+
+    setUserInformation: (state, action: {payload: Me}) => {
+      return {
+        ...state,
+        userInformation: action.payload
+      }
+    },
+
     updateCredentials: (state, action: {
       payload: {
         access_token: string,
@@ -134,6 +146,6 @@ const spotiUserSlice = createSlice({
   },
 });
 
-export const { setToken , updateCredentials} = spotiUserSlice.actions;
+export const { setUserInformation, setToken , updateCredentials} = spotiUserSlice.actions;
 
 export default spotiUserSlice.reducer;

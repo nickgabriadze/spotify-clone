@@ -18,7 +18,6 @@ export function MoreLikeArtists() {
     useEffect(() => {
         const fetchMoreLike = async () => {
             const reqTopArtists: Artist[] = (await getUsersTopItems(accessToken, 'artists', 'medium_term', 5)).data.items;
-            console.log(reqTopArtists)
             const relatedOnes = []
             for (const artist of reqTopArtists) {
                 const relatedArtists = (await getArtistsRelatedArtists(accessToken, artist.id)).data.artists.slice(0, 5);
@@ -35,7 +34,6 @@ export function MoreLikeArtists() {
     }, [accessToken])
 
 
-    console.log(relatedArtists)
 
     if (relatedArtists.length !== 0) {
         return relatedArtists.map((eachArtist, numbering) =>
@@ -50,7 +48,6 @@ export function MoreLikeArtists() {
         return Array.from({length: 5}).map((_, numbering) =>
             <div key={numbering} className={homepageStyle['like-section']}>
                 <h2 className={homepageStyle['like-to-skeleton']}>
-                    <span></span>
                 </h2>
                 <div className={homepageStyle['related-artists']}>
                     {Array.from({length: 5}).map((_, i) => <ArtistCardSkeleton key={i}/>)}

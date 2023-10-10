@@ -102,7 +102,7 @@
 
 .recent-section {
     display: grid;
-    grid-template-columns: repeat(6, minmax(180px, 1fr));
+    grid-template-columns: repeat(5, minmax(180px, 1fr));
 
     width: 100%;
     gap: 20px;
@@ -137,6 +137,30 @@
         animation: brightness-animation 3s linear infinite;
     }
 }
+
+
+
+/* featured */
+
+.featured-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .featured-grid{
+         display: grid;
+        grid-template-columns: repeat(5, minmax(180px, 1fr));
+        overflow-x: scroll;
+        gap: 20px;
+    }
+    .featured-message-skeleton{
+         width: 280px;
+        border-radius: 30px;
+        height: 30px;
+        background-color: #181818;
+        animation: brightness-animation 3s linear infinite;
+    }
+}
 @keyframes brightness-animation {
     0% {
         background-color: #181818;
@@ -150,5 +174,7 @@
 
     }
 }
+
+
 
 

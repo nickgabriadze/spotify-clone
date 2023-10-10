@@ -1,6 +1,6 @@
 import mainStyle from "./main.module.css";
 import Search from "../search/search.tsx";
-import {useAppSelector} from "../../store/hooks.ts";
+import {useAppDispatch, useAppSelector} from "../../store/hooks.ts";
 import searchBarStyle from "../search/components/search-bar/searchBar.module.css";
 import Left from "../search/components/search-bar/icons/left.svg";
 import Right from "../search/components/search-bar/icons/right.svg";
@@ -11,6 +11,7 @@ import {Me} from "../../types/me.ts";
 import getMe from "../../api/getMe.ts";
 import SearchBar from "../search/components/search-bar/searchBar.tsx";
 import Searchables from "../search/components/searchables/searchables.tsx";
+import {setUserInformation} from "../../store/features/spotiUserSlice.ts";
 
 
 export function Main({height}: { height: number }) {
@@ -20,6 +21,7 @@ export function Main({height}: { height: number }) {
     const navOption = useAppSelector((state) => state.navigationReducer.navTo);
     // TODO have to remove as soon as the component array will be created
     const searching = useAppSelector((state) => state.navigationReducer.searchQuery);
+    const dispatch = useAppDispatch();
 
     const navigation: {
         [key: string]: ReactElement
@@ -34,6 +36,7 @@ export function Main({height}: { height: number }) {
                 const req = await getMe(access);
                 const data = req.data;
                 setUserData(data);
+                dispatch(setUserInformation(data))
             } catch (err) {
                 // setErr(err);
             } finally {
@@ -42,7 +45,7 @@ export function Main({height}: { height: number }) {
         };
 
         fetchMyData();
-    }, [access]);
+    }, [access, dispatch]);
 
     return (
         <main className={mainStyle['main-container']} style={{height: `${height}px`}}>
