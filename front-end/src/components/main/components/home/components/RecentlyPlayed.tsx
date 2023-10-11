@@ -12,26 +12,32 @@ import AlbumCardSkeleton from "../../../../../skeletons/albumCardSkeleton.tsx";
 export function RecentlyPlayed() {
     const [recentlyPlayedData, setRecentlyPlayedData] = useState<string[]>();
     const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
-
+    const [recentlyLoading, setRecentlyLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const fetchRecent = async () => {
             try {
+                setRecentlyLoading(true)
                 const data: RecentlyPlayed = (await getRecentlyPlayed(accessToken)).data;
                 const filteredData = [...data.items].filter(e => e.context !== null).map((e) => e.context.href)
-
                 const finalizedObjectAddresses = filteredData.filter((e, i) => filteredData.lastIndexOf(e) === i);
                 setRecentlyPlayedData(finalizedObjectAddresses)
 
 
             } catch (err) {
 
+            } finally {
+                setRecentlyLoading(false)
             }
         }
         fetchRecent();
     }, [])
 
-    if(recentlyPlayedData?.length !== 0) {
+    if (recentlyPlayedData?.length === 0) {
+        return;
+    }
+
+    if (!recentlyLoading) {
 
         return <section className={homepageStyle['recently-played-section']}>
             <h2>Recently played</h2>
@@ -53,15 +59,15 @@ export function RecentlyPlayed() {
                 })}
             </div>
         </section>
-    }else{
-       return <section className={homepageStyle['recently-played-section']}>
+    } else {
+        return <section className={homepageStyle['recently-played-section']}>
             <h2 className={homepageStyle['recent-section-title-skeleton']}></h2>
             <div className={homepageStyle['recent-section']}>
-                {Array.from({length: 6}).map((_, i) =>
-                        <AlbumCardSkeleton key={i}/>
+                {Array.from({length: 5}).map((_, i) =>
+                    <AlbumCardSkeleton key={i}/>
                 )}
             </div>
-       </section>
+        </section>
     }
 
 }
