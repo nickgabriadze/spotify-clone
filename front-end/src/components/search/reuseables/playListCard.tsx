@@ -56,8 +56,7 @@ export function PlaylistCard({ eachPlaylist }: { eachPlaylist: Playlist | undefi
               ? eachPlaylist?.images[0]?.url
               : NoPlaylistImage
           }
-          height={160}
-          width={160}
+
         ></img>
       </div>
       {hoveringOver && (

@@ -1,103 +1,116 @@
+@import '../../../../../global.css';
+
 .artists-wrapper {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-  gap: 20px;
-  padding: 10px;
-  height: 100%;
-  overflow-y: scroll;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+    padding: 10px;
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
 }
 
 .each-artist {
-  background-color: #181818;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  gap: 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  padding: 20px;
-  height: 100%;
-  width: 100%;
-  transition: all 300ms linear;
-  position: relative;
+    background-color: #181818;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 20px;
+    height: 100%;
+    width: 100%;
+    transition: all 300ms linear;
+    position: relative;
 }
 
 .each-artist .artist-img {
-  border-radius: 100%;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  
-}
 
-.artist-img{
-  z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
 }
+
+.artist-img {
+
+    width: 100%;
+    height: 100%;
+
+}
+
 .artist-img img {
-  border-radius: 100%;
-  object-fit: cover;
-   box-shadow: 0 8px 8px rgba(0,0,0,.3);
+    border-radius: 100%;
+
+    object-fit: cover;
+    box-shadow: 0 8px 8px rgba(0, 0, 0, .3);
 }
 
 .no-artist-img {
-  background-color: #302f2f;
-  padding: 30px;
+    background-color: #302f2f;
+    padding: 30px;
 }
 
 .each-artist:hover {
-  background-color: #302f2f;
+    background-color: #302f2f;
 }
 
 .each-artist a {
-  font-size: clamp(12px, 2.5vw, 0.9rem);
-  word-wrap: break-word;
-  word-break: break-word;
-  width: fit-content;
-  max-width: 150px;
+    font-size: clamp(12px, 2.5vw, 0.9rem);
+    word-wrap: break-word;
+    word-break: break-word;
+    width: fit-content;
+    max-width: 150px;
 }
+
 .each-artist a:hover {
-  text-decoration: underline;
-  cursor: pointer;
+    text-decoration: underline;
+    cursor: pointer;
 
 }
+
 .each-artist p {
-  align-items: flex-end;
-  color: #a7a7a7;
-  font-size: 12px;
-  font-family: "Gotham Medium", sans-serif;
+    align-items: flex-end;
+    color: #a7a7a7;
+    font-size: 12px;
+    font-family: "Gotham Medium", sans-serif;
 }
 
 .artist-info {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-  margin-top: 20px;
-  padding-bottom: 10px;
-  z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 20px;
+    padding-bottom: 10px;
+    z-index: 1;
 
 }
 
 
+.artist-hover-button {
+    position: absolute;
+    z-index: 2;
+    margin-left: 50%;
+    margin-top: 10%;
+    animation: pop-up-button-animation-artists 200ms linear;
 
-.artist-hover-button{
-  position: absolute;
-  z-index: 2;
-  margin-left: 40%;
-  margin-top: 15%;
+    & div:hover {
+        scale: 1.03
+    }
 
-  }
+}
 
-.artist-hover-button div {
+.artist-hover-button div img {
     width: 50px;
     height: 50px;
     background-color: #1ed760;
     border-radius: 100%;
     display: flex;
-
     justify-content: center;
     align-items: center;
-    
-  }
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.3);
+
+}

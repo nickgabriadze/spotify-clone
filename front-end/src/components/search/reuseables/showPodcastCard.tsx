@@ -17,8 +17,7 @@ export function ShowPodcastCard({eachShowPodcast}: { eachShowPodcast: Show }) {
                         src={
                             eachShowPodcast.images[0]?.url
                         }
-                        height={160}
-                        width={160}
+
                     ></img>
                     :
                     <img
@@ -31,8 +30,7 @@ export function ShowPodcastCard({eachShowPodcast}: { eachShowPodcast: Show }) {
                         src={
                             NoPodcastPic
                         }
-                        height={160}
-                        width={160}
+
                     ></img>
                 }
             </div>

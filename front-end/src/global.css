@@ -52,3 +52,30 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+
+@keyframes pop-up-button-animation {
+    from {
+        top: 10px;
+        opacity: 50%;
+        }
+
+    to{
+        top: 0;
+        opacity: initial;
+
+    }
+}
+
+@keyframes pop-up-button-animation-artists {
+    from {
+        margin-bottom: -10px;
+        opacity: 50%;
+        }
+
+    to{
+        margin-bottom: 0;
+        opacity: initial;
+
+    }
+}
