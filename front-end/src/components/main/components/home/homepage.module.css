@@ -140,14 +140,15 @@
 }
 
 
-/* featured */
 
-.featured-wrapper {
+/* featured, new releases */
+
+.featured-wrapper, .new-releases {
     display: flex;
     flex-direction: column;
     gap: 20px;
 
-    .featured-grid {
+    .featured-grid, .new-releases-grid {
         display: grid;
         grid-template-columns: repeat(5, minmax(180px, 1fr));
         overflow-x: scroll;

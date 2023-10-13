@@ -83,7 +83,7 @@
     margin-top: 65%;
     right: 10%;
     animation: pop-up-button-animation 300ms linear;
-    & div:hover {
+    & img:hover {
         scale: 1.03
     }
 }

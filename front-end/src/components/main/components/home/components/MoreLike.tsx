@@ -17,7 +17,7 @@ export function MoreLikeArtists() {
 
     useEffect(() => {
         const fetchMoreLike = async () => {
-            const reqTopArtists: Artist[] = (await getUsersTopItems(accessToken, 'artists', 'medium_term', 5)).data.items;
+            const reqTopArtists: Artist[] = (await getUsersTopItems(accessToken, 'artists', 'short_term', 5)).data.items;
             const relatedOnes = []
             for (const artist of reqTopArtists) {
                 const relatedArtists = (await getArtistsRelatedArtists(accessToken, artist.id)).data.artists.slice(0, 5);

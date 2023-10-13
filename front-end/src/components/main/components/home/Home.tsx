@@ -3,6 +3,7 @@ import TopItems from "./components/TopItems.tsx";
 import {RecentlyPlayed} from "./components/RecentlyPlayed.tsx";
 import  {MoreLikeArtists} from "./components/MoreLike.tsx";
 import FeaturedInCountry from "./components/FeaturedInCountry.tsx";
+import NewReleases from "./components/NewReleases.tsx";
 
 export function Home() {
     const time = new Date().getHours();
@@ -26,6 +27,7 @@ export function Home() {
         <TopItems />
         <FeaturedInCountry />
         <RecentlyPlayed />
+        <NewReleases />
         <MoreLikeArtists />
     </section>
 }
