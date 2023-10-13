@@ -1,22 +1,23 @@
 
-.lib-wrapper{
+.lib-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 10px;
     background-color: #121212;
     width: 100%;
     height: 100%;
     border-radius: 8px;
 
 
-
 }
-.library-title{
+
+.library-title {
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 15px 15px 0;
     cursor: pointer;
+
     & p {
         font-weight: bold;
         font-family: 'Gotham Medium', sans-serif;
@@ -25,13 +26,13 @@
         transition: all 300ms linear;
     }
 
-    & img{
+    & img {
         transition: all 50ms linear;
     }
 
 }
 
-.library-title:hover{
+.library-title:hover {
     & p {
         color: white;
     }
@@ -42,29 +43,30 @@
 }
 
 
-
 .library-stuff {
     width: 100%;
     height: 100%;
     padding: 5px;
+
     overflow-x: hidden;
     overflow-y: scroll;
 }
 
-.library-stuff::-webkit-scrollbar{
+.library-stuff::-webkit-scrollbar {
     display: none;
     width: 5px;
 }
-.library-stuff:hover::-webkit-scrollbar{
+
+.library-stuff:hover::-webkit-scrollbar {
     display: initial;
 }
 
-.listed-playlist-album:hover{
+.listed-playlist-album:hover {
     background-color: #302f2f;
     border-radius: 4px;
 }
 
-.listed-playlist-album{
+.listed-playlist-album {
     display: flex;
     gap: 10px;
     cursor: pointer;
@@ -75,7 +77,8 @@
         border-radius: 4px;
         object-fit: cover;
     }
-    .playlist-album-info{
+
+    .playlist-album-info {
         display: flex;
         height: 100%;
         width: 100%;
@@ -86,7 +89,7 @@
     }
 
 
-    .playlist-album-name p{
+    .playlist-album-name p {
         font-size: 14px;
         white-space: nowrap;
         overflow: hidden;
@@ -94,7 +97,7 @@
         color: white
     }
 
-    .type-owner{
+    .type-owner {
 
         font-size: 12px;
         color: #a7a7a7;
@@ -109,3 +112,68 @@
         }
     }
 }
+
+
+/* library skeleton item */
+
+.library-skeleton-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+
+    padding: 10px 10px 0 10px;
+
+    .library-skeleton-img-holder {
+        width: 70px;
+        height: 50px;
+        border-radius: 4px;
+        background-color: var(--default-background-color);
+        animation: brightness-animation 2s ease-in-out infinite;
+
+
+    }
+
+    .library-info-skeleton-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        height: 50px;
+        gap: 8px;
+        width: 100%;
+
+        .library-info-title-skeleton {
+            width: 70%;
+            height: 10px;
+            border-radius: 3px;
+            background-color: var(--default-background-color);
+            animation: brightness-animation 3s ease-in-out infinite;
+
+        }
+
+        .library-info-owner-skeleton {
+            width: 40%;
+            height: 7px;
+            border-radius: 2px;
+            background-color: var(--default-background-color);
+            animation: brightness-animation 3s ease-in-out infinite;
+
+        }
+
+    }
+}
+
+@keyframes brightness-animation {
+    0% {
+        background-color: var(--default-background-color);
+    }
+    50% {
+        background-color: rgb(93, 91, 91);
+
+    }
+    100% {
+        background-color: #3e3c3c69;
+
+    }
+}
+
