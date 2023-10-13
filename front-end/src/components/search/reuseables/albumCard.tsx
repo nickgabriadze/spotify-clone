@@ -106,7 +106,9 @@ export function AlbumCard({ eachAlbum }: { eachAlbum: Album | undefined }) {
         {currentlyPlaying.albumID === eachAlbum?.id &&
           currentlyPlaying.isPlaying ? (
            <div>
-            <img alt={"Pause icon"} src={Pause} width={30} height={30}></img>
+            <img
+                style={{padding: '10px'}}
+                alt={"Pause icon"} src={Pause} width={30} height={30}></img>
             </div>
           ) : (
             <div>

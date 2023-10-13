@@ -112,7 +112,7 @@
     overflow-x: scroll;
 }
 
-.recent-section::-webkit-scrollbar, .related-artists::-webkit-scrollbar, .featured-grid::-webkit-scrollbar {
+.recent-section::-webkit-scrollbar, .related-artists::-webkit-scrollbar, .featured-grid::-webkit-scrollbar, .new-releases-grid::-webkit-scrollbar {
     display: none;
 }
 

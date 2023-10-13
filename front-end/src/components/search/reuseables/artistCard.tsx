@@ -111,6 +111,9 @@ export function ArtistCard({ eachArtist }: { eachArtist: Artist | undefined}) {
             <div>
               <img
                   alt={"Pause image"}
+                  style={{
+                      padding: '10px'
+                  }}
                   src={Pause} width={30} height={30}></img>
             </div>
           ) : (

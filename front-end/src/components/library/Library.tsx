@@ -7,6 +7,8 @@ import {Playlist} from "../../types/playlist.ts";
 import getSavedAlbums from "../../api/library/getSavedAlbums.ts";
 import getSavedPlaylists from "../../api/library/getSavedPlaylists.ts";
 import LibraryItemSkeleton from "./libraryItemSkeleton.tsx";
+import getSavedTracks from "../../api/library/getSavedTracks.ts";
+import HeartIcon from "./icons/saved-songs-icon.png";
 
 export function Library({divHeight}: { divHeight: number }) {
     const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
@@ -17,7 +19,7 @@ export function Library({divHeight}: { divHeight: number }) {
         albumItems: [],
         playlistItems: []
     })
-
+    const [likedSongsAvailable, setLikedSongsAvailable] = useState<number>(0)
     const [libraryLoading, setLibraryLoading] = useState<boolean>(true);
 
 
@@ -36,15 +38,18 @@ export function Library({divHeight}: { divHeight: number }) {
         return () => window.removeEventListener('resize', resize)
     }, [widthPref, pTagWidth]);
 
+
     useEffect(() => {
         const fetchPlaylistsAlbums = async () => {
             try {
+
                 setLibraryLoading(true)
                 const reqAlbums = await getSavedAlbums(accessToken);
                 const albumsData = reqAlbums.data.items;
                 const reqPlaylists = await getSavedPlaylists(accessToken);
                 const playlistsData = reqPlaylists.data.items;
-
+                const savedSongsAvailability = (await getSavedTracks(accessToken)).data.items.length;
+                setLikedSongsAvailable(savedSongsAvailability)
                 setLibData({
                     albumItems: albumsData,
                     playlistItems: playlistsData
@@ -74,7 +79,23 @@ export function Library({divHeight}: { divHeight: number }) {
         <div className={libraryStyle['library-stuff']}
              style={{height: divHeight}}
         >
+            {likedSongsAvailable > 0 && (!libraryLoading)  &&
+                <li
+                    className={libraryStyle['listed-playlist-album']}
+                   >
+                   <div className={libraryStyle['liked-songs-icon-wrapper']}>
+                        <img src={HeartIcon} width={50} height={50} alt={"Playlist Image"}></img>
+                   </div>
+                    <div className={libraryStyle['playlist-album-info']}>
+                        <div className={libraryStyle['playlist-album-name']}><p
+                            style={{width: pTagWidth}}>Liked Songs</p></div>
+                        <div className={libraryStyle['type-owner']}>
+                            <p style={{width: pTagWidth}}>Playlist • {`${likedSongsAvailable} ${likedSongsAvailable > 1 ? 'songs': 'song'}`}</p>
 
+                        </div>
+                    </div>
+                </li>
+            }
             {libraryLoading ?
                 Array.from({length: 3}).map((_, i) => <LibraryItemSkeleton key={i} />)
                 :

@@ -26,11 +26,11 @@ export function FeaturedInCountry() {
             getFeaturedOnes();
         }
     }, [userInfo, accessToken, userInfo])
-
+    console.log(featuredData)
 
     if (featuredData.playlists?.length !== 0) {
         return <section className={homepageStyle['featured-wrapper']}>
-            <h2>{featuredData.message}</h2>
+            <h2>Editor's picks</h2>
             <div className={homepageStyle['featured-grid']}>
                 {featuredData.playlists?.map((eachPlaylist, i) => <PlayListCard key={i} eachPlaylist={eachPlaylist}/>)}
             </div>

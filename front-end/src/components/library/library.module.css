@@ -113,6 +113,11 @@
     }
 }
 
+.liked-songs-icon-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 /* library skeleton item */
 
