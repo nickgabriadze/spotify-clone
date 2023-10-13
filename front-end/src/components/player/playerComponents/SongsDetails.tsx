@@ -18,10 +18,10 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
 
     useEffect(() => {
         setCurrentSaved(
-            savedSongs.filter((trackItem) => trackItem.id === currentlyPlaying?.item.id).length === 1
+            savedSongs.filter((trackItem) => trackItem.id === currentlyPlaying?.item?.id).length === 1
         )
 
-    }, [savedSongs.length, currentlyPlaying?.item.id]);
+    }, [savedSongs.length, currentlyPlaying?.item?.id]);
 
     useEffect(() => {
         if (songNameHover) {
