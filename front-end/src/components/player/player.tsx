@@ -23,7 +23,6 @@ export function Player() {
     const userActions = useAppSelector(state => state.navigationReducer.userControlActions);
     const [playbackStateInformation, setPlaybackStateInformation] = useState<PlaybackState>();
 
-
     const fetchCurrentData = useCallback(async () => {
 
         try {
@@ -35,6 +34,7 @@ export function Player() {
             const data = req.data;
             const requestPlaybackState = await getPlaybackState(access.accessToken);
             const playbackStateData = requestPlaybackState.data;
+
             if (req.status === 204) {
                 setNoDataAvailable(true);
                 const prevData = window.localStorage.getItem('previousSong')
@@ -52,11 +52,13 @@ export function Player() {
                 }
             } else {
                 setCurrentlyPlaying(data);
+
                 setNoDataAvailable(false);
                 setPlaybackStateInformation(playbackStateData)
                 window.localStorage.setItem('previousSong', JSON.stringify({
-                   type: data.item.type, id: data.item.id
+                    type: data.item.type, id: data.item.id
                 }))
+
 
                 dispatch(setCurrentlyPlayingSong({
                     currentlyPlayingSong: {
@@ -67,7 +69,8 @@ export function Player() {
                     }
                 }))
             }
-        }catch(_){}
+        } catch (_) {
+        }
 
     }, [access.accessToken, dispatch]);
 
@@ -85,52 +88,52 @@ export function Player() {
         [fetchCurrentData, dispatch, userActions.length])
 
 
+
     useEffect(() => {
-            const fetchCurrent = async () => {
-                try {
+        const fetchCurrent = async () => {
+            try {
 
-                    const devices = await getDevices(access.accessToken);
-                    const devicesData = devices.data;
+                const devices = await getDevices(access.accessToken);
+                const devicesData = devices.data;
 
-                    setDevices(devicesData);
-                    const req = await getCurrentlyPlaying(access.accessToken);
-                    const data = req.data;
-                    const requestPlaybackState = await getPlaybackState(access.accessToken);
-                    const playbackStateData = requestPlaybackState.data;
+                setDevices(devicesData);
+                const req = await getCurrentlyPlaying(access.accessToken);
+                const data = req.data;
+                const requestPlaybackState = await getPlaybackState(access.accessToken);
+                const playbackStateData = requestPlaybackState.data;
 
 
-                    if (req.status === 204) {
-                        setNoDataAvailable(true);
-                    } else {
-                        setCurrentlyPlaying(data);
-                        setNoDataAvailable(false);
-                        setPlaybackStateInformation(playbackStateData)
+                if (req.status === 204) {
+                    setNoDataAvailable(true);
+                } else {
+                    setCurrentlyPlaying(data);
+                    setNoDataAvailable(false);
+                    setPlaybackStateInformation(playbackStateData)
 
-                        dispatch(setCurrentlyPlayingSong({
-                            currentlyPlayingSong: {
-                                artistID: data.item.artists[0].id,
-                                albumID: data.item.album.id,
-                                songID: data.item.id,
-                                isPlaying: data.is_playing
-                            }
-                        }))
+                    dispatch(setCurrentlyPlayingSong({
+                        currentlyPlayingSong: {
+                            artistID: data.item.artists[0].id,
+                            albumID: data.item.album.id,
+                            songID: data.item.id,
+                            isPlaying: data.is_playing
+                        }
+                    }))
 
-                    }
-                } catch (_) {
                 }
+            } catch (_) {
+            }
+        };
 
-            };
 
+        const fetcher = setInterval(() => fetchCurrent(), 3000);
 
-            const fetcher = setInterval(() => fetchCurrent(), 3000);
-
-            return () => clearInterval(fetcher)
-        }, [access, dispatch])
+        return () => clearInterval(fetcher)
+    }, [access, dispatch])
 
 
     if (noDataAvailable) {
         document.title = "Spotify Clone";
-        return <PlayerSkeleton />;
+        return <PlayerSkeleton/>;
     } else {
         document.title = currentlyPlaying?.item ? String(currentlyPlaying?.item?.name)
             .concat(" • ")

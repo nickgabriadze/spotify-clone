@@ -26,7 +26,7 @@ export function FeaturedInCountry() {
             getFeaturedOnes();
         }
     }, [userInfo, accessToken, userInfo])
-    console.log(featuredData)
+
 
     if (featuredData.playlists?.length !== 0) {
         return <section className={homepageStyle['featured-wrapper']}>

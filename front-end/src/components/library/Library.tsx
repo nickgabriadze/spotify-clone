@@ -1,6 +1,6 @@
 import libraryStyle from './library.module.css';
 import LibrarySVG from "./icons/library.svg";
-import {useAppSelector} from "../../store/hooks.ts";
+import {useAppDispatch, useAppSelector} from "../../store/hooks.ts";
 import {useEffect, useRef, useState} from "react";
 import {Album} from "../../types/album.ts";
 import {Playlist} from "../../types/playlist.ts";
@@ -9,6 +9,8 @@ import getSavedPlaylists from "../../api/library/getSavedPlaylists.ts";
 import LibraryItemSkeleton from "./libraryItemSkeleton.tsx";
 import getSavedTracks from "../../api/library/getSavedTracks.ts";
 import HeartIcon from "./icons/saved-songs-icon.png";
+import {setUsersSavedSongIDs} from "../../store/features/spotiUserSlice.ts";
+import {Track} from "../../types/track.ts";
 
 export function Library({divHeight}: { divHeight: number }) {
     const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
@@ -25,7 +27,7 @@ export function Library({divHeight}: { divHeight: number }) {
 
     const widthPref = useRef<HTMLParagraphElement>(null);
     const [pTagWidth, setPTagWidth] = useState<number>(150);
-
+    const dispatch = useAppDispatch()
     useEffect(() => {
 
         const resize = () => {
@@ -48,7 +50,9 @@ export function Library({divHeight}: { divHeight: number }) {
                 const albumsData = reqAlbums.data.items;
                 const reqPlaylists = await getSavedPlaylists(accessToken);
                 const playlistsData = reqPlaylists.data.items;
-                const savedSongsAvailability = (await getSavedTracks(accessToken)).data.items.length;
+                const savedSongItems:{added_at: string, track: Track}[] = (await getSavedTracks(accessToken)).data.items;
+                dispatch(setUsersSavedSongIDs(savedSongItems.map((each) => each.track)))
+                const savedSongsAvailability = savedSongItems.length;
                 setLikedSongsAvailable(savedSongsAvailability)
                 setLibData({
                     albumItems: albumsData,

@@ -2,7 +2,9 @@ import {CurrentlyPlaying} from "../../../types/currentlyPlaying"
 import playerStyle from "../player.module.css"
 import Heart from "../icons/heart.svg";
 import {useEffect, useRef, useState} from "react";
-import './animation.css'
+import './animation.css';
+import SavedTrackIcon from "../icons/liked-indicator-heart.svg"
+import {useAppSelector} from "../../../store/hooks.ts";
 
 export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPlaying | undefined }) {
 
@@ -11,6 +13,16 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
     const [artistNameHover, setArtistNameHover] = useState(false)
     const songNameRef = useRef<HTMLAnchorElement>(null)
     const artistNameRef = useRef<HTMLDivElement>(null)
+    const savedSongs = useAppSelector((state) => state.spotiUserReducer.userLikedSongIDs);
+    const [currentSaved, setCurrentSaved] = useState<boolean>(false)
+
+    useEffect(() => {
+        setCurrentSaved(
+            savedSongs.filter((trackItem) => trackItem.id === currentlyPlaying?.item.id).length === 1
+        )
+
+    }, [savedSongs.length, currentlyPlaying?.item.id]);
+
     useEffect(() => {
         if (songNameHover) {
 
@@ -105,7 +117,7 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
             </div>
             <div>
                 {currentlyPlaying?.item?.name &&
-                    <img src={Heart} width={20} height={18} alt="heart icon"></img>}
+                    <img src={currentSaved ? SavedTrackIcon : Heart} width={20} height={18} alt="heart icon"></img>}
             </div>
         </div>
     </div>)

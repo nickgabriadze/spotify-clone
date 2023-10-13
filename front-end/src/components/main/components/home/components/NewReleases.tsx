@@ -8,7 +8,6 @@ import AlbumCard from "../../../../search/reuseables/albumCard.tsx";
 export function NewReleases() {
     const accessToken = useAppSelector(state => state.spotiUserReducer.spotiToken.accessToken);
     const country = useAppSelector(state => state.spotiUserReducer?.userInformation?.country);
-    console.log(country)
     const [newReleasesData, setNewReleasesData] = useState<Album[]>([]);
 
     useEffect(() => {
