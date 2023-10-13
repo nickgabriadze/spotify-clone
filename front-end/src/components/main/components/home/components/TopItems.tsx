@@ -64,6 +64,9 @@ export function TopItems() {
                     <div className={homepageStyle['play-button']}>
                         <button
                             onClick={async () => {
+                                  console.log((currentlyPlaying.isPlaying))
+                                    console.log(currentlyPlaying.albumID === String(eachTopItem?.id))
+                                    console.log(currentlyPlaying.artistID === String(eachTopItem?.id))
                                 if (!(currentlyPlaying.albumID === String(eachTopItem?.id) || currentlyPlaying.artistID === String(eachTopItem?.id))) {
                                     await PlayResumeStreaming(access, eachTopItem.uri, undefined);
                                     dispatch(
@@ -71,15 +74,18 @@ export function TopItems() {
                                             userAction: "Play Track",
                                         })
                                     );
-                                } else if (currentlyPlaying.isPlaying && currentlyPlaying.albumID === String(eachTopItem?.id || currentlyPlaying.artistID === String(eachTopItem?.id))) {
+                                } else if (currentlyPlaying.isPlaying && (currentlyPlaying.albumID === String(eachTopItem?.id) || currentlyPlaying.artistID === String(eachTopItem?.id))) {
+
                                     await PauseStreaming(access);
                                     dispatch(
                                         setUserControlActions({
                                             userAction: "Pause Track",
                                         })
                                     );
-                                } else if (!(currentlyPlaying.isPlaying) && currentlyPlaying.albumID === String(eachTopItem?.id) || currentlyPlaying.artistID === String(eachTopItem?.id)) {
+                                } else if (!(currentlyPlaying.isPlaying) && (currentlyPlaying.albumID === String(eachTopItem?.id) || currentlyPlaying.artistID === String(eachTopItem?.id))) {
+
                                     await PlayResumeStreaming(access);
+
                                     dispatch(
                                         setUserControlActions({
                                             userAction: "Resume Track",
