@@ -1,6 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 import Navigation from "../../components/navigation/navigation";
 
+
 export type Option =
     | "All"
     | "Artists"
@@ -24,6 +25,12 @@ interface Navigation {
         isPlaying: boolean | null
     };
     userControlActions: string[];
+    pageNavigation: {
+        pageHistory: {
+           component: string
+        }[],
+        currentPageIndex: number
+    }
 }
 
 const initialState: Navigation = {
@@ -37,14 +44,51 @@ const initialState: Navigation = {
         albumID: "None",
         isPlaying: null
     },
+
     queueEmpty: false,
     userControlActions: [],
+    pageNavigation: {
+        pageHistory: [{
+            component: "Home"
+        }],
+        currentPageIndex: 0
+    }
 };
 
 const navigationSlice = createSlice({
     name: "Navigation Slice",
     initialState,
     reducers: {
+
+        addReactComponentToNavigation: (state, action: { payload: string }) => {
+
+            if(action.payload === "Home"){
+                return {
+                ...state,
+                pageNavigation: {
+                    ...state.pageNavigation,
+                    pageHistory: [{
+                        component: "Home"
+                    }],
+                    currentPageIndex: 0
+
+                }
+            }
+            }
+
+            return {
+                ...state,
+                pageNavigation: {
+                    ...state.pageNavigation,
+                    pageHistory: [...state.pageNavigation.pageHistory, {
+                        component : action.payload
+                    }],
+                    currentPageIndex: state.pageNavigation.currentPageIndex + 1
+
+                }
+            }
+        },
+
         setSearchOption: (
             state,
             action: {
@@ -157,6 +201,6 @@ export const {
     setSearchOption,
     setCurrentlyPlayingSong,
     setUserControlActions,
-    setQueueEmpty
+   addReactComponentToNavigation
 } = navigationSlice.actions;
 export default navigationSlice.reducer;

@@ -8,6 +8,7 @@ import SearchUnfilledGrey from "./icons/search-unfilled-grey.svg";
 import HomeUnfilledGrey from "./icons/home-unfilled-grey.svg";
 import {useAppDispatch, useAppSelector} from "../../store/hooks";
 import {setNavTo} from "../../store/features/navigationSlice";
+import {addReactComponentToNavigation} from "../../store/features/navigationSlice.ts";
 
 
 export function Navigation() {
@@ -24,6 +25,7 @@ export function Navigation() {
                 onMouseEnter={() => setNavHover("Home")}
                 onMouseLeave={() => setNavHover("none")}
                 onClick={() => {
+                    dispatchNavigation(addReactComponentToNavigation("Home"))
 
                     dispatchNavigation(
                         setNavTo({
@@ -50,7 +52,7 @@ export function Navigation() {
             <div
                   className={navigationStyle["search-box"]}
                   onClick={() => {
-
+                       dispatchNavigation(addReactComponentToNavigation("Search"))
                       dispatchNavigation(
                           setNavTo({
                               navTo: "Search",

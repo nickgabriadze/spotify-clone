@@ -5,13 +5,15 @@ import searchBarStyle from "../search/components/search-bar/searchBar.module.css
 import Left from "../search/components/search-bar/icons/left.svg";
 import Right from "../search/components/search-bar/icons/right.svg";
 import Queue from "./components/queue/Queue.tsx";
-import {ReactElement, useEffect, useState} from "react";
+import {ReactNode, useEffect, useState} from "react";
 import Home from "./components/home/Home.tsx";
 import {Me} from "../../types/me.ts";
 import getMe from "../../api/getMe.ts";
 import SearchBar from "../search/components/search-bar/searchBar.tsx";
 import Searchables from "../search/components/searchables/searchables.tsx";
 import {setUserInformation} from "../../store/features/spotiUserSlice.ts";
+import AlbumPage from "./components/album/AlbumPage.tsx";
+import {Album} from "../../types/album.ts";
 
 
 export function Main({height}: { height: number }) {
@@ -22,13 +24,13 @@ export function Main({height}: { height: number }) {
     // TODO have to remove as soon as the component array will be created
     const searching = useAppSelector((state) => state.navigationReducer.searchQuery);
     const dispatch = useAppDispatch();
-
     const navigation: {
-        [key: string]: ReactElement
+        [key: string]: (data:any) => ReactNode
     } = {
-        "Search": <Search/>,
-        "Home": <Home/>,
-        "Queue": <Queue/>
+        "Search": () => <Search/>,
+        "Home":() =>  <Home/>,
+        "Queue": () => <Queue/>,
+        "Album": (albumData: Album) => <AlbumPage albumData={albumData} />
     }
     useEffect(() => {
         const fetchMyData = async () => {
@@ -47,6 +49,11 @@ export function Main({height}: { height: number }) {
         fetchMyData();
     }, [access, dispatch]);
 
+
+    const PageNavigation = useAppSelector(state => state.navigationReducer.pageNavigation);
+
+
+ console.log(PageNavigation.pageHistory)
     return (
         <main className={mainStyle['main-container']} style={{height: `${height}px`}}>
             <div
@@ -77,7 +84,7 @@ export function Main({height}: { height: number }) {
                 </div>
                 {navOption === 'Search' && searching.trim().length > 0 ? <Searchables/> : ""}
             </div>
-            <div>{navigation[navOption]}</div>
+            <div>{navigation[PageNavigation.pageHistory[PageNavigation.currentPageIndex].component](null)}</div>
 
         </main>
 
