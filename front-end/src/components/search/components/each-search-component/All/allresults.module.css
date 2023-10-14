@@ -34,9 +34,8 @@
 
     .track-hover-button {
         position: absolute;
-        right: 0;
-        bottom: 0;
-        padding: 15px;
+        right: 3%;
+        bottom: 6%;
         z-index: 3;
         animation: pop-up-button-animation-artists 200ms linear;
 
