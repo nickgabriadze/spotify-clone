@@ -7,7 +7,6 @@ import navigationStyle from "./navigation.module.css";
 import SearchUnfilledGrey from "./icons/search-unfilled-grey.svg";
 import HomeUnfilledGrey from "./icons/home-unfilled-grey.svg";
 import {useAppDispatch, useAppSelector} from "../../store/hooks";
-import {setNavTo} from "../../store/features/navigationSlice";
 import {addReactComponentToNavigation} from "../../store/features/navigationSlice.ts";
 
 
@@ -15,9 +14,8 @@ export function Navigation() {
 
     const [navHover, setNavHover] = useState<string>("none");
     const dispatchNavigation = useAppDispatch();
-    const navigateTo = useAppSelector((state) => state.navigationReducer.navTo);
-
-
+    const pageNav = useAppSelector(state => state.navigationReducer.pageNavigation)
+    const currentPage = pageNav.pageHistory[pageNav.currentPageIndex].component
     return (
         <section className={navigationStyle["nav-box"]}>
             <div
@@ -27,17 +25,12 @@ export function Navigation() {
                 onClick={() => {
                        dispatchNavigation(addReactComponentToNavigation({componentName: "Home", props: null}))
 
-                    dispatchNavigation(
-                        setNavTo({
-                            navTo: "Home",
-                        })
-                    );
                 }}
             >
                 <img
                     className={navigationStyle['nav-img']}
                     src={
-                        navigateTo === 'Home'
+                        currentPage === 'Home'
                             ? HomeFilled
                             : navHover === "Home"
                                 ? HomeUnfilled
@@ -46,18 +39,14 @@ export function Navigation() {
 
 
                     alt={'Home icon'}></img>
-                <h4 style={navigateTo === 'Home' ? {color: "white"} : {}}>Home</h4>
+                <h4 style={currentPage === 'Home' ? {color: "white"} : {}}>Home</h4>
             </div>
 
             <div
                   className={navigationStyle["search-box"]}
                   onClick={() => {
                        dispatchNavigation(addReactComponentToNavigation({componentName: "Search", props: null}))
-                      dispatchNavigation(
-                          setNavTo({
-                              navTo: "Search",
-                          })
-                      );
+
                   }}
                   onMouseEnter={() => setNavHover("Search")}
                   onMouseLeave={() => setNavHover("none")}
@@ -66,7 +55,7 @@ export function Navigation() {
                     alt={'Search icon'}
                     className={navigationStyle['nav-img']}
                     src={
-                        navigateTo === 'Search'
+                        currentPage === 'Search'
                             ? SearchFilled
                             : navHover === "Search"
                                 ? SearchUnfilled
@@ -74,7 +63,7 @@ export function Navigation() {
                     }
 
                 ></img>
-                <h4 style={navigateTo === 'Search'? {color: "white"} : {}}>Search</h4>
+                <h4 style={currentPage === 'Search'? {color: "white"} : {}}>Search</h4>
             </div>
         </section>
     );

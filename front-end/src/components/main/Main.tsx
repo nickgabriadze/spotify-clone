@@ -13,6 +13,7 @@ import SearchBar from "../search/components/search-bar/searchBar.tsx";
 import Searchables from "../search/components/searchables/searchables.tsx";
 import {setUserInformation} from "../../store/features/spotiUserSlice.ts";
 import AlbumPage from "./components/album/AlbumPage.tsx";
+import {navigateToDirection} from "../../store/features/navigationSlice.ts";
 
 
 
@@ -52,8 +53,8 @@ export function Main({height}: { height: number }) {
 
     const PageNavigation = useAppSelector(state => state.navigationReducer.pageNavigation);
     const componentObject = PageNavigation.pageHistory[PageNavigation.currentPageIndex]
-    console.log(navigation[componentObject.component])
-    console.log(componentObject)
+    console.log(PageNavigation.pageHistory)
+
     return (
         <main className={mainStyle['main-container']} style={{height: `${height}px`}}>
             <div
@@ -64,14 +65,27 @@ export function Main({height}: { height: number }) {
 
                 >
                     <div className={mainStyle["left-right-nav"]}>
-                        <button>
-                            <img alt={'Left icon'} src={Left} height={32}></img>
+                        <button
+
+                        onClick={() => {
+                            dispatch(navigateToDirection("BACK"))
+                        }}
+                        >
+                            <img
+                                style={{filter: `${PageNavigation.currentPageIndex === 0 ? `brightness(50%)`: `brightness(100%)`}`}}
+                                alt={'Left icon'} src={Left} height={32}></img>
                         </button>
-                        <button style={{marginLeft: "-3px"}}>
-                            <img alt={'Right icon'} src={Right} height={32}></img>
+                        <button style={{marginLeft: "-3px"}}
+                        onClick={() => {
+                            dispatch(navigateToDirection("FORWARD"))
+                        }}
+                        >
+                            <img
+                                style={{filter: `${PageNavigation.currentPageIndex === PageNavigation.pageHistory.length - 1 ? `brightness(50%)`: `brightness(100%)`}`}}
+                                alt={'Right icon'} src={Right} height={32}></img>
                         </button>
 
-                        {navOption === 'Search' && <SearchBar/>}
+                        {componentObject.component === 'Search' && <SearchBar/>}
                     </div>
 
                     <div className={searchBarStyle["install-profile"]}>

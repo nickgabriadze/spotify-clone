@@ -7,7 +7,7 @@ import VolumeUp from "../icons/volume.svg";
 import VolumeOff from "../icons/volume-off.svg";
 import setPlaybackVolume from "../../../api/player/setPlaybackVolume";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks";
-import {setNavTo, setUserControlActions} from "../../../store/features/navigationSlice";
+import {addReactComponentToNavigation, setUserControlActions} from "../../../store/features/navigationSlice";
 import DeviceEqualiser from "../icons/device-picker-equaliser.webp"
 import SmartphoneDevice from "../icons/smartphone-device.svg";
 import TVDevice from "../icons/tv-device.svg";
@@ -18,7 +18,6 @@ import switchActiveDevice from "../../../api/player/switchActiveDevice.ts";
 export function DeviceController({devices,}: {
     devices: Devices | undefined;
 }) {
-    const navigationSetTo = useAppSelector((state) => state.navigationReducer.navTo);
 
     const currentlyPlayingIsPlaying = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong.isPlaying)
     const deviceImages: {
@@ -45,7 +44,8 @@ export function DeviceController({devices,}: {
     const dispatch = useAppDispatch();
     const accessToken = useAppSelector(state => state.spotiUserReducer.spotiToken.accessToken)
     const [showDevices, setShowDevices] = useState<boolean>(false)
-
+ const pageNav = useAppSelector(state => state.navigationReducer.pageNavigation)
+    const currentPage = pageNav.pageHistory[pageNav.currentPageIndex].component
 
     const popupRef = useRef<HTMLDivElement>(null); // Create a ref for the devices-popup
     const devicesIconRef = useRef<HTMLImageElement>(null);
@@ -73,13 +73,14 @@ export function DeviceController({devices,}: {
         <div className={playerStyle["devices-volume"]}>
             <button
                 onClick={() => {
-                    dispatch(setNavTo({
-                        navTo: 'Queue'
+                    dispatch(addReactComponentToNavigation({
+                        componentName: "Queue",
+                        props: null
                     }))
                 }}
             style={{
                 padding: '2px 0 2px 0',
-                filter: `${navigationSetTo === 'Queue' ? 'invert(10%) sepia(60%) saturate(800%) hue-rotate(83deg) brightness(95%) contrast(80%)': 'initial'}`
+                filter: `${currentPage === 'Queue' ? 'invert(10%) sepia(60%) saturate(800%) hue-rotate(83deg) brightness(95%) contrast(80%)': 'initial'}`
             }}
             ><img src={Queue} width={23} style={{marginRight: '3px'}} alt="Song Queue icon"></img></button>
             <div className={playerStyle['devices-triangle']}

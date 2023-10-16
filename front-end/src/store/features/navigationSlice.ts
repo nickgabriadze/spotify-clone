@@ -27,7 +27,7 @@ interface Navigation {
     userControlActions: string[];
     pageNavigation: {
         pageHistory: {
-           component: string, props?: any
+            component: string, props?: any
         }[],
         currentPageIndex: number
     }
@@ -60,29 +60,61 @@ const navigationSlice = createSlice({
     initialState,
     reducers: {
 
-        addReactComponentToNavigation: (state, action: { payload: { componentName: string, props?: any } }) => {
-
-            if(action.payload.componentName === "Home"){
+        navigateToDirection: (state, action: { payload: "BACK" | "FORWARD" }) => {
+           console.log(state.pageNavigation.currentPageIndex)
+            if (action.payload === "BACK" && state.pageNavigation.currentPageIndex > 0) {
                 return {
-                ...state,
-                pageNavigation: {
-                    ...state.pageNavigation,
-                    pageHistory: [{
-                        component: "Home",
-                        props: null
-                    }],
-                    currentPageIndex: 0
+                    ...state,
 
+                    pageNavigation: {
+                        ...state.pageNavigation,
+                        currentPageIndex: state.pageNavigation.currentPageIndex - 1
+
+                    }
                 }
             }
+            if (action.payload === "FORWARD" && state.pageNavigation.currentPageIndex < state.pageNavigation.pageHistory.length - 1) {
+                return {
+                    ...state,
+
+                    pageNavigation: {
+                        ...state.pageNavigation,
+                        currentPageIndex: state.pageNavigation.currentPageIndex + 1
+
+                    }
+                }
+            }
+        },
+
+        addReactComponentToNavigation: (state, action: { payload: { componentName: string, props?: any } }) => {
+
+
+
+            if(action.payload.componentName === state.pageNavigation.pageHistory[state.pageNavigation.currentPageIndex].component){
+                return;
             }
 
+            if (action.payload.componentName === "Home") {
+                return {
+                    ...state,
+                    pageNavigation: {
+                        ...state.pageNavigation,
+                        pageHistory: [{
+                            component: "Home",
+                            props: null
+                        }],
+                        currentPageIndex: 0
+
+                    }
+                }
+            }
+            console.log(state.pageNavigation.currentPageIndex)
             return {
                 ...state,
                 pageNavigation: {
                     ...state.pageNavigation,
                     pageHistory: [...state.pageNavigation.pageHistory, {
-                        component : action.payload.componentName,
+                        component: action.payload.componentName,
                         props: action.payload.props
                     }],
                     currentPageIndex: state.pageNavigation.currentPageIndex + 1
@@ -203,6 +235,7 @@ export const {
     setSearchOption,
     setCurrentlyPlayingSong,
     setUserControlActions,
-   addReactComponentToNavigation
+    addReactComponentToNavigation,
+    navigateToDirection
 } = navigationSlice.actions;
 export default navigationSlice.reducer;
