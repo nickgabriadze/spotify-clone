@@ -1,10 +1,9 @@
-import {Album} from "../../../../types/album.ts";
 
-export function AlbumPage({albumData}:{albumData: Album}){
-
+export function AlbumPage({albumID}:{albumID: string}){
 
 
-    return <>This is album page</>
+   return <h1 style={{color: 'white'}}>{albumID}</h1>
+
 }
 
 export default AlbumPage;

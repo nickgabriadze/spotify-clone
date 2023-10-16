@@ -27,7 +27,7 @@ interface Navigation {
     userControlActions: string[];
     pageNavigation: {
         pageHistory: {
-           component: string
+           component: string, props?: any
         }[],
         currentPageIndex: number
     }
@@ -49,7 +49,7 @@ const initialState: Navigation = {
     userControlActions: [],
     pageNavigation: {
         pageHistory: [{
-            component: "Home"
+            component: "Home",
         }],
         currentPageIndex: 0
     }
@@ -60,15 +60,16 @@ const navigationSlice = createSlice({
     initialState,
     reducers: {
 
-        addReactComponentToNavigation: (state, action: { payload: string }) => {
+        addReactComponentToNavigation: (state, action: { payload: { componentName: string, props?: any } }) => {
 
-            if(action.payload === "Home"){
+            if(action.payload.componentName === "Home"){
                 return {
                 ...state,
                 pageNavigation: {
                     ...state.pageNavigation,
                     pageHistory: [{
-                        component: "Home"
+                        component: "Home",
+                        props: null
                     }],
                     currentPageIndex: 0
 
@@ -81,7 +82,8 @@ const navigationSlice = createSlice({
                 pageNavigation: {
                     ...state.pageNavigation,
                     pageHistory: [...state.pageNavigation.pageHistory, {
-                        component : action.payload
+                        component : action.payload.componentName,
+                        props: action.payload.props
                     }],
                     currentPageIndex: state.pageNavigation.currentPageIndex + 1
 

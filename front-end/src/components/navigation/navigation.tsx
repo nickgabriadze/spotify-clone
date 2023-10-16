@@ -25,7 +25,7 @@ export function Navigation() {
                 onMouseEnter={() => setNavHover("Home")}
                 onMouseLeave={() => setNavHover("none")}
                 onClick={() => {
-                    dispatchNavigation(addReactComponentToNavigation("Home"))
+                       dispatchNavigation(addReactComponentToNavigation({componentName: "Home", props: null}))
 
                     dispatchNavigation(
                         setNavTo({
@@ -52,7 +52,7 @@ export function Navigation() {
             <div
                   className={navigationStyle["search-box"]}
                   onClick={() => {
-                       dispatchNavigation(addReactComponentToNavigation("Search"))
+                       dispatchNavigation(addReactComponentToNavigation({componentName: "Search", props: null}))
                       dispatchNavigation(
                           setNavTo({
                               navTo: "Search",

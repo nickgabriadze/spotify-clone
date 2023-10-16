@@ -13,7 +13,7 @@ import SearchBar from "../search/components/search-bar/searchBar.tsx";
 import Searchables from "../search/components/searchables/searchables.tsx";
 import {setUserInformation} from "../../store/features/spotiUserSlice.ts";
 import AlbumPage from "./components/album/AlbumPage.tsx";
-import {Album} from "../../types/album.ts";
+
 
 
 export function Main({height}: { height: number }) {
@@ -30,7 +30,7 @@ export function Main({height}: { height: number }) {
         "Search": () => <Search/>,
         "Home":() =>  <Home/>,
         "Queue": () => <Queue/>,
-        "Album": (albumData: Album) => <AlbumPage albumData={albumData} />
+        "Album": (ID: string) => <AlbumPage albumID={ID} />
     }
     useEffect(() => {
         const fetchMyData = async () => {
@@ -51,9 +51,9 @@ export function Main({height}: { height: number }) {
 
 
     const PageNavigation = useAppSelector(state => state.navigationReducer.pageNavigation);
-
-
- console.log(PageNavigation.pageHistory)
+    const componentObject = PageNavigation.pageHistory[PageNavigation.currentPageIndex]
+    console.log(navigation[componentObject.component])
+    console.log(componentObject)
     return (
         <main className={mainStyle['main-container']} style={{height: `${height}px`}}>
             <div
@@ -84,7 +84,7 @@ export function Main({height}: { height: number }) {
                 </div>
                 {navOption === 'Search' && searching.trim().length > 0 ? <Searchables/> : ""}
             </div>
-            <div>{navigation[PageNavigation.pageHistory[PageNavigation.currentPageIndex].component](null)}</div>
+            <div>{navigation[componentObject.component](componentObject.props)}</div>
 
         </main>
 
