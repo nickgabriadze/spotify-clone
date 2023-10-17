@@ -1,0 +1,67 @@
+.album-page-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    height: 100%;
+    width: 100%;
+}
+
+.album-main-info {
+    display: flex;
+    gap: 25px;
+    height: 200px;
+    width: 100%;
+    align-items: end;
+
+
+
+    .album-picture {
+        height: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        & img {
+            object-fit: cover;
+            height: 100%;
+            width: 100%;
+            transition: all 200ms linear;
+        }
+
+        & img:hover{
+            scale: 1.05
+        }
+    }
+
+    .album-general-information {
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        gap: 40px;
+
+        & p {
+            font-family: 'Gotham medium', sans-serif;
+        }
+
+        & h1 {
+            font-size: 8vh;
+        }
+
+        .artist-information {
+            display: flex;
+            gap: 5px;
+
+            align-items: center;
+            .artist-name-ry-nos{
+                font-family: 'Gotham Medium', sans-serif;
+            }
+            .album-duration {
+                color: #babcbe;
+                font-family: 'Gotham Light', sans-serif;
+                font-weight: bold;
+                font-size: 14px;
+            }
+        }
+    }
+}
