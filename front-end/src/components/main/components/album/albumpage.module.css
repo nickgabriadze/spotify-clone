@@ -14,21 +14,22 @@
     align-items: end;
 
 
-
     .album-picture {
         height: 200px;
         display: flex;
         justify-content: center;
         align-items: center;
         cursor: pointer;
+
         & img {
             object-fit: cover;
+            box-shadow: 0 8px 8px rgba(0, 0, 0, .3);
             height: 100%;
             width: 100%;
             transition: all 200ms linear;
         }
 
-        & img:hover{
+        & img:hover {
             scale: 1.05
         }
     }
@@ -53,9 +54,11 @@
             gap: 5px;
 
             align-items: center;
-            .artist-name-ry-nos{
+
+            .artist-name-ry-nos {
                 font-family: 'Gotham Medium', sans-serif;
             }
+
             .album-duration {
                 color: #babcbe;
                 font-family: 'Gotham Light', sans-serif;

@@ -82,7 +82,7 @@
     }
     & img {
         border-radius: 5px;
-         box-shadow: 0 8px 8px rgba(0,0,0,.3);
+        box-shadow: 0 8px 8px rgba(0,0,0,.3);
     }
     .track-artist-type {
         display: flex;
