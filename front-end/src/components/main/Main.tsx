@@ -95,7 +95,7 @@ export function Main({height}: { height: number }) {
                         )}
                     </div>
                 </div>
-                {navOption === 'Search' && searching.trim().length > 0 ? <Searchables/> : ""}
+                {componentObject.component === 'Search' && searching.trim().length > 0 ? <Searchables/> : ""}
             </div>
             <div>{navigation[componentObject.component](componentObject.props)}</div>
 

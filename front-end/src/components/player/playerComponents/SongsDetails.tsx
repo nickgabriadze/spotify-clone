@@ -13,12 +13,12 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
     const [artistNameHover, setArtistNameHover] = useState(false)
     const songNameRef = useRef<HTMLAnchorElement>(null)
     const artistNameRef = useRef<HTMLDivElement>(null)
-    const savedSongs = useAppSelector((state) => state.spotiUserReducer.userLikedSongIDs);
+    const savedSongs = useAppSelector((state) => state.spotiUserReducer.userSaved.userSavedSongIDs);
     const [currentSaved, setCurrentSaved] = useState<boolean>(false)
 
     useEffect(() => {
         setCurrentSaved(
-            savedSongs.filter((trackItem) => trackItem.id === currentlyPlaying?.item?.id).length === 1
+            savedSongs.includes(String((currentlyPlaying?.item?.id)))
         )
 
     }, [savedSongs.length, currentlyPlaying?.item?.id]);
