@@ -4,9 +4,6 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    padding: 0 20px 0 0;
-    overflow-y: scroll;
-    height: 100%;
 
 }
 
@@ -19,28 +16,36 @@
     font-size: 14px;
     align-items: center;
     padding: 10px;
-    border-bottom: 1px solid #575555;
     width: 100%;
+    border-bottom: 1px solid rgba(87, 85, 85, 0.58);
     position: sticky;
-    top: 0;
-    background-color: rgb(31, 30, 30);
-    border-radius: 10px;
+    top: 160px;
+    background-color: #1a1a1a
+
+
+}
+
+.during-hover {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10px;
 
 }
 
 .numbering-title {
     display: flex;
     gap: 15px;
+
+
 }
 
 .track-wrapper {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+
     width: 100%;
     padding: 10px;
     cursor: pointer;
-    align-items: center;
+
 
 }
 
@@ -53,8 +58,8 @@
     display: flex;
     gap: 20px;
     align-items: center;
-    justify-content: center;
-
+    padding-left: 10px;
+    padding-right: 20px;
 }
 
 .img-title-artists {
@@ -66,9 +71,10 @@
 }
 
 
-.album-img{
+.album-img {
     margin-left: 3%;
 }
+
 .album-img img {
     object-fit: cover;
 
@@ -78,8 +84,9 @@
     font-size: 14px;
     font-weight: 600;
     font-family: 'Gotham Light', sans-serif;
-    width: 40px;
+
     color: #b3b3b3;
+
 }
 
 .title-artists {
@@ -87,41 +94,53 @@
     flex-direction: column;
     height: 100%;
     justify-content: space-between;
+
     gap: 10px;
+    font-family: 'Gotham Light', sans-serif;
+    font-weight: lighter;
     color: #b3b3b3;
+    width: 100%;
+
+
 }
 
 .title-artists a {
     font-size: 14px;
     color: white;
-    width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
 }
 
 .title-artists p {
     font-size: 12px;
     font-family: 'Gotham Light', sans-serif;
-    width: 250px;
     font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
 }
 
 .album-title {
     display: flex;
     align-items: center;
     font-size: 12px;
-    margin-left: -60px;;
     color: #b3b3b3;
+    width: 20vw;
 }
 
 .album-title a {
-    width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-family: 'Gotham Light', sans-serif;
     font-weight: 600;
+
 }
 
 .song-hover-over img {
-    width: 30px;
-    height: 30px;
-    background-color: #1ed760;
     border-radius: 100%;
     display: flex;
     justify-content: center;

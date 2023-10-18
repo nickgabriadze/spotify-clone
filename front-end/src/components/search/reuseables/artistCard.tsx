@@ -60,8 +60,7 @@ export function ArtistCard({ eachArtist }: { eachArtist: Artist | undefined}) {
           <img
             draggable={false}
             src={eachArtist?.images[0]?.url}
-            width={160}
-            height={160}
+
             alt={"Artist image"}
           ></img>
         ) : (

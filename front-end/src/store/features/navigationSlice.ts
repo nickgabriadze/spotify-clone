@@ -1,6 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 import Navigation from "../../components/navigation/navigation";
 
+
 export type Option =
     | "All"
     | "Artists"
@@ -23,7 +24,14 @@ interface Navigation {
         albumID: string,
         isPlaying: boolean | null
     };
+    libraryActions: string[],
     userControlActions: string[];
+    pageNavigation: {
+        pageHistory: {
+            component: string, props?: any
+        }[],
+        currentPageIndex: number
+    }
 }
 
 const initialState: Navigation = {
@@ -37,14 +45,95 @@ const initialState: Navigation = {
         albumID: "None",
         isPlaying: null
     },
+
     queueEmpty: false,
+    libraryActions: [],
     userControlActions: [],
+    pageNavigation: {
+        pageHistory: [{
+            component: "Home",
+        }],
+        currentPageIndex: 0
+    }
 };
 
 const navigationSlice = createSlice({
     name: "Navigation Slice",
     initialState,
     reducers: {
+
+        addLibraryAction: (state, action: { payload: string }) => {
+            if (state.libraryActions.length > 50) {
+                return {
+                    ...state,
+                    libraryActions: [action.payload]
+                }
+            } else {
+                return {
+                    ...state,
+                    libraryActions: [...state.libraryActions, action.payload]
+                }
+            }
+        },
+
+        navigateToDirection: (state, action: { payload: "BACK" | "FORWARD" }) => {
+
+            if (action.payload === "BACK" && state.pageNavigation.currentPageIndex > 0) {
+                return {
+                    ...state,
+
+                    pageNavigation: {
+                        ...state.pageNavigation,
+                        currentPageIndex: state.pageNavigation.currentPageIndex - 1
+
+                    }
+                }
+            }
+            if (action.payload === "FORWARD" && state.pageNavigation.currentPageIndex < state.pageNavigation.pageHistory.length - 1) {
+                return {
+                    ...state,
+
+                    pageNavigation: {
+                        ...state.pageNavigation,
+                        currentPageIndex: state.pageNavigation.currentPageIndex + 1
+
+                    }
+                }
+            }
+        },
+
+        addReactComponentToNavigation: (state, action: { payload: { componentName: string, props?: any } }) => {
+
+
+            if (action.payload.componentName === "Home") {
+                return {
+                    ...state,
+                    pageNavigation: {
+                        ...state.pageNavigation,
+                        pageHistory: [{
+                            component: "Home",
+                            props: null
+                        }],
+                        currentPageIndex: 0
+
+                    }
+                }
+            }
+
+            return {
+                ...state,
+                pageNavigation: {
+                    ...state.pageNavigation,
+                    pageHistory: [...state.pageNavigation.pageHistory, {
+                        component: action.payload.componentName,
+                        props: action.payload.props
+                    }],
+                    currentPageIndex: state.pageNavigation.pageHistory.length
+
+                }
+            }
+        },
+
         setSearchOption: (
             state,
             action: {
@@ -151,12 +240,13 @@ const navigationSlice = createSlice({
 });
 
 export const {
-    setNavTo,
     setSearchQuery,
     setTyping,
     setSearchOption,
     setCurrentlyPlayingSong,
     setUserControlActions,
-    setQueueEmpty
+    addReactComponentToNavigation,
+    navigateToDirection,
+    addLibraryAction
 } = navigationSlice.actions;
 export default navigationSlice.reducer;

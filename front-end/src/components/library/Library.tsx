@@ -9,7 +9,7 @@ import getSavedPlaylists from "../../api/library/getSavedPlaylists.ts";
 import LibraryItemSkeleton from "./libraryItemSkeleton.tsx";
 import getSavedTracks from "../../api/library/getSavedTracks.ts";
 import HeartIcon from "./icons/saved-songs-icon.png";
-import {setUsersSavedSongIDs} from "../../store/features/spotiUserSlice.ts";
+import {setUserSavedAlbumIDs, setUsersSavedSongIDs} from "../../store/features/spotiUserSlice.ts";
 import {Track} from "../../types/track.ts";
 
 export function Library({divHeight}: { divHeight: number }) {
@@ -23,7 +23,7 @@ export function Library({divHeight}: { divHeight: number }) {
     })
     const [likedSongsAvailable, setLikedSongsAvailable] = useState<number>(0)
     const [libraryLoading, setLibraryLoading] = useState<boolean>(true);
-
+    const libraryActions = useAppSelector(s => s.navigationReducer.libraryActions);
 
     const widthPref = useRef<HTMLParagraphElement>(null);
     const [pTagWidth, setPTagWidth] = useState<number>(150);
@@ -51,7 +51,8 @@ export function Library({divHeight}: { divHeight: number }) {
                 const reqPlaylists = await getSavedPlaylists(accessToken);
                 const playlistsData = reqPlaylists.data.items;
                 const savedSongItems:{added_at: string, track: Track}[] = (await getSavedTracks(accessToken)).data.items;
-                dispatch(setUsersSavedSongIDs(savedSongItems.map((each) => each.track)))
+                dispatch(setUsersSavedSongIDs(savedSongItems.map(e => e.track)))
+                dispatch(setUserSavedAlbumIDs(albumsData.map(e => e.album)));
                 const savedSongsAvailability = savedSongItems.length;
                 setLikedSongsAvailable(savedSongsAvailability)
                 setLibData({
@@ -66,7 +67,7 @@ export function Library({divHeight}: { divHeight: number }) {
         }
 
         fetchPlaylistsAlbums()
-    }, [accessToken]);
+    }, [accessToken, libraryActions.length]);
 
     return <section className={libraryStyle['lib-wrapper']}
 

@@ -1,4 +1,5 @@
 import { Artist } from "./artist"
+import {Tracks} from "./track.ts";
 
 export interface Albums {
     href: string,   
@@ -10,6 +11,13 @@ export interface Albums {
     total: number
 }
 
+export interface AlbumWithTracks extends  Album {
+    tracks: Tracks,
+    copyrights: {
+        text: string,
+        type: string
+    }[]
+}
 
 export interface Album {
     album_type: string,

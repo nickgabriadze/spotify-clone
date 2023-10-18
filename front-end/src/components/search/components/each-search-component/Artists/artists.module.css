@@ -20,13 +20,13 @@
     cursor: pointer;
     padding: 20px;
     height: 100%;
-    width: 100%;
+
     transition: all 300ms linear;
     position: relative;
+    width: fit-content;
 }
 
 .each-artist .artist-img {
-
 
     display: flex;
     justify-content: center;
@@ -36,14 +36,19 @@
 
 .artist-img {
 
-    width: 100%;
-    height: 100%;
+    width: 22vh;
+    height: 22vh;
+    max-width: 160px;
+    max-height: 160px;
+    min-width: 120px;
+    min-height: 120px;
 
 }
 
 .artist-img img {
     border-radius: 100%;
-
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     box-shadow: 0 8px 8px rgba(0, 0, 0, .3);
 }
@@ -58,10 +63,10 @@
 }
 
 .each-artist a {
-    font-size: clamp(12px, 2.5vw, 0.9rem);
+    font-size: clamp(12px, 2.5vw, 2vh);
     word-wrap: break-word;
     word-break: break-word;
-    width: fit-content;
+
     max-width: 150px;
 }
 
@@ -100,6 +105,7 @@
     & div:hover {
         scale: 1.03
     }
+
 
 }
 

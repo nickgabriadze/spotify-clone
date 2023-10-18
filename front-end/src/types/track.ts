@@ -1,5 +1,5 @@
 import { Album } from "./album";
-import { Artist } from "./artist";
+import {Artist, SimplifiedArtist} from "./artist";
 
 export interface Tracks {
   href: string;
@@ -9,6 +9,29 @@ export interface Tracks {
   offset: number;
   previous: string | null;
   total: number;
+}
+
+export interface SimplifiedTrack {
+  artists: SimplifiedArtist[],
+  available_markets: string[],
+  disc_number: number,
+  duration_ms: number,
+  explicit: boolean,
+  external_urls:{
+    spotify: string
+  },
+  href: string,
+  id: string,
+  is_playable: boolean,
+  restrictions:{
+    reason: 'market' | 'product' | 'explicit'
+  },
+  name: string,
+  preview_url: string | null,
+  track_number: number,
+  type: string,
+  uri: string,
+  is_local: boolean
 }
 
 export interface Track {

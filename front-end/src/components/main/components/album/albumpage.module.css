@@ -1,0 +1,163 @@
+.album-page-wrapper {
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+    width: 100%;
+}
+
+.album-main-info {
+    display: flex;
+    gap: 25px;
+    height: fit-content;
+    width: 100%;
+    align-items: end;
+    justify-content: left;
+
+    padding: 15px 15px 20px;
+
+    .album-picture {
+        height: 25vh;
+        width: 25vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+
+        & img {
+            object-fit: cover;
+            box-shadow: 0 8px 8px rgba(0, 0, 0, .3);
+            height: 100%;
+            width: 100%;
+
+            transition: all 200ms linear;
+        }
+
+        & img:hover {
+            scale: 1.05
+        }
+    }
+
+    .album-general-information {
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        gap: 40px;
+
+        & p {
+            font-family: 'Gotham medium', sans-serif;
+        }
+
+        & h1 {
+            font-size: 8vh;
+        }
+
+        .artist-information {
+            display: flex;
+            gap: 5px;
+
+            align-items: center;
+
+            .artist-name-ry-nos {
+                font-family: 'Gotham Light', sans-serif;
+                font-weight: bold;
+            }
+
+            .album-duration {
+                color: #babcbe;
+                font-family: 'Gotham Light', sans-serif;
+                font-weight: bold;
+                font-size: 14px;
+            }
+        }
+    }
+}
+
+.play-track-list {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    gap: 10px;
+
+    .album-hover-button {
+        width: 60px;
+        height: 60px;
+        background-color: #1ed760;
+        border-radius: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 8px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .album-hover-button:hover{
+        scale: 1.05
+    }
+
+    .heart:hover{
+        cursor: pointer;
+        scale: 1.05
+    }
+    .play-save{
+        display: flex;
+
+        align-items: center;
+
+        gap: 20px;
+    }
+
+    .track-list-box{
+        display: flex;
+        flex-direction: column;
+        padding-top: 20px;
+
+        .track-box{
+         padding-top: 20px;
+        }
+
+        .numbering-title-duration{
+            display: flex;
+            position: sticky;
+
+            background-color: #121212;
+            align-items: center;
+            justify-content: space-between;
+            padding-left: 25px;
+            padding-right: 25px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #303030;
+            width: 100%;
+            .i-title{
+                display: flex;
+                gap: 15px;
+                color: #b3b3b3;
+            }
+        }
+    }
+}
+
+.exact-date-copyright{
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    font-family: 'Gotham Light', sans-serif !important;
+    font-weight: lighter;
+    padding: 15px;
+    color: #b3b3b3;
+    font-size: 12px;
+}
+
+.more-from-artist{
+    padding: 15px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .displayed-albums{
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0,1fr));
+        gap: 10px;
+    }
+}
