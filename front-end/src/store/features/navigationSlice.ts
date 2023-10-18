@@ -132,7 +132,7 @@ const navigationSlice = createSlice({
                         component: action.payload.componentName,
                         props: action.payload.props
                     }],
-                    currentPageIndex: state.pageNavigation.currentPageIndex + 1
+                    currentPageIndex: state.pageNavigation.pageHistory.length
 
                 }
             }
@@ -244,7 +244,6 @@ const navigationSlice = createSlice({
 });
 
 export const {
-    setNavTo,
     setSearchQuery,
     setTyping,
     setSearchOption,
