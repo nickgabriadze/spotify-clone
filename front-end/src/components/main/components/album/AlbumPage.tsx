@@ -1,5 +1,5 @@
 import albumStyle from "./albumpage.module.css";
-import {SimplifiedTrack} from "../../../../types/track.ts";
+import {Track} from "../../../../types/track.ts";
 import {AlbumWithTracks} from "../../../../types/album.ts";
 import {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks.ts";
@@ -15,9 +15,11 @@ import Heart from '../../../player/icons/heart.svg';
 import HeartSaved from '../../../player/icons/liked-indicator-heart.svg';
 import removeAlbumForCurrentUser from "../../../../api/library/removeAlbumForCurrentUser.ts";
 import saveAlbumForCurrentUser from "../../../../api/library/saveAlbumForCurrentUser.ts";
+import Duration from "../../../search/components/each-search-component/icons/duration.svg";
+import {SongCard} from "../../../search/reuseables/songCard.tsx";
 
 export function AlbumPage({albumID}: { albumID: string }) {
-    const [albumData, setAlbumData] = useState<{ album: AlbumWithTracks, albumTracks: SimplifiedTrack[] }>();
+    const [albumData, setAlbumData] = useState<{ album: AlbumWithTracks, albumTracks: Track[] }>();
     const accessToken = useAppSelector(state => state.spotiUserReducer.spotiToken.accessToken);
     const [dataLoading, setDataLoading] = useState<boolean>(true);
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong)
@@ -29,7 +31,7 @@ export function AlbumPage({albumID}: { albumID: string }) {
             try {
                 setDataLoading(true)
                 const album = (await getAlbum(accessToken, albumID)).data;
-                const tracks: SimplifiedTrack[] = (await getAlbumTracks(accessToken, albumID)).data.items;
+                const tracks: Track[] = (await getAlbumTracks(accessToken, albumID)).data.items;
 
                 setAlbumData({
                     album: album,
@@ -120,22 +122,45 @@ export function AlbumPage({albumID}: { albumID: string }) {
                         <nav>
                             <button
                                 onClick={async () => {
-                                    if(albumIsSaved){
-                                       const req = await removeAlbumForCurrentUser(accessToken, albumID)
-                                        if(req.status === 200){
-                                         dispatch(addLibraryAction("User removed Album from Library"))
+                                    if (albumIsSaved) {
+                                        const req = await removeAlbumForCurrentUser(accessToken, albumID)
+                                        if (req.status === 200) {
+                                            dispatch(addLibraryAction("User removed Album from Library"))
                                         }
-                                    }else{
+                                    } else {
                                         const req = await saveAlbumForCurrentUser(accessToken, albumID)
-                                        if(req.status === 200){
-                                         dispatch(addLibraryAction("User added Album to Library"))
+                                        if (req.status === 200) {
+                                            dispatch(addLibraryAction("User added Album to Library"))
                                         }
                                     }
                                 }}
-                              title={albumIsSaved ? "Remove from Your Library" : "Save to Your Library"}
+                                title={albumIsSaved ? "Remove from Your Library" : "Save to Your Library"}
                             ><img alt={"Heart icon"} src={albumIsSaved ? HeartSaved : Heart} width={40}
                                   height={45}></img></button>
                         </nav>
+                    </div>
+                </div>
+                <div className={albumStyle['track-list-box']}>
+                    <nav className={albumStyle['numbering-title-duration']}>
+                        <div className={albumStyle['i-title']}>
+                            <p>#</p>
+                            <p>Title</p>
+
+                        </div>
+
+                        <div>
+                            <img
+                                src={Duration}
+                                draggable={false}
+                                width={20}
+                                height={20}
+                                alt="Duration"
+                                style={{marginBottom: "-5px"}}
+                            ></img>
+                        </div>
+                    </nav>
+                    <div className={albumStyle['track-box']}>
+                        {albumData?.albumTracks.map((eachTrack, i) => <SongCard eachTrack={eachTrack} n={i+1} accessToken={accessToken} forAlbum={true}/>)}
                     </div>
                 </div>
             </div>

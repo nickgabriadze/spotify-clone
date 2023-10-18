@@ -45,7 +45,7 @@ export function Queue() {
                 <div
                     className={queueStyle['currently-playing-track']}
                 >{queueLoading ? <SongCardSkeleton/> :
-                    <SongCard eachTrack={queueData?.currently_playing} n={1} accessToken={accessToken}/>}</div>
+                    <SongCard forAlbum={false} eachTrack={queueData?.currently_playing} n={1} accessToken={accessToken}/>}</div>
             </div>
 
             {!noNewSongsInQueue && <div className={queueStyle['next-up-in-queue']}>
@@ -54,7 +54,7 @@ export function Queue() {
                     <div>Next from: <a>{queueData?.currently_playing.artists[0].name}</a></div> : `Next up`}</div>
                 <div className={queueStyle['upcoming-tracks']}>
                     {queueLoading ? Array.from({length: 30}).map((_, i) => <SongCardSkeleton
-                        key={i}/>) : queueData?.queue.map((eachTrack, i) => <SongCard key={i} eachTrack={eachTrack}
+                        key={i}/>) : queueData?.queue.map((eachTrack, i) => <SongCard forAlbum={false} key={i} eachTrack={eachTrack}
                                                                                       n={i + 2}
                                                                                       accessToken={accessToken}/>)}
 
