@@ -12,7 +12,11 @@ export interface Albums {
 }
 
 export interface AlbumWithTracks extends  Album {
-    tracks: Tracks
+    tracks: Tracks,
+    copyrights: {
+        text: string,
+        type: string
+    }[]
 }
 
 export interface Album {

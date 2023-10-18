@@ -136,3 +136,28 @@
         }
     }
 }
+
+.exact-date-copyright{
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    font-family: 'Gotham Light', sans-serif !important;
+    font-weight: lighter;
+    padding: 15px;
+    color: #b3b3b3;
+    font-size: 12px;
+}
+
+.more-from-artist{
+    padding: 15px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .displayed-albums{
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0,1fr));
+        gap: 10px;
+    }
+}

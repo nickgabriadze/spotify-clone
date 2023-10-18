@@ -1,6 +1,6 @@
 import albumStyle from "./albumpage.module.css";
 import {Track} from "../../../../types/track.ts";
-import {AlbumWithTracks} from "../../../../types/album.ts";
+import {Album, AlbumWithTracks} from "../../../../types/album.ts";
 import {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks.ts";
 import getAlbum from "../../../../api/search/getAlbum.ts";
@@ -17,6 +17,8 @@ import removeAlbumForCurrentUser from "../../../../api/library/removeAlbumForCur
 import saveAlbumForCurrentUser from "../../../../api/library/saveAlbumForCurrentUser.ts";
 import Duration from "../../../search/components/each-search-component/icons/duration.svg";
 import {SongCard} from "../../../search/reuseables/songCard.tsx";
+import getArtistAlbums from "../../../../api/home/album/getArtistAlbums.ts";
+import AlbumCard from "../../../search/reuseables/albumCard.tsx";
 
 export function AlbumPage({albumID}: { albumID: string }) {
     const [albumData, setAlbumData] = useState<{ album: AlbumWithTracks, albumTracks: Track[] }>();
@@ -25,6 +27,22 @@ export function AlbumPage({albumID}: { albumID: string }) {
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong)
     const dispatch = useAppDispatch();
     const albumIsSaved = useAppSelector(s => s.spotiUserReducer.userSaved.userSavedAlbumIDs).includes(albumID)
+    const [artistAlbums, setArtistAlbums] = useState<Album[]>([]);
+
+    useEffect(() => {
+        const getOtherAlbums = async () => {
+            try {
+                const artistAlbums = (await getArtistAlbums(accessToken, String(albumData?.album.artists[0].id))).data;
+                setArtistAlbums(artistAlbums.items)
+            } catch (err) {
+
+            }
+        }
+
+        if (albumData?.album.artists[0].id) {
+            getOtherAlbums();
+        }
+    }, [accessToken, String(albumData?.album.artists[0].id), albumID]);
 
     useEffect(() => {
         const getAlbumInformation = async () => {
@@ -32,7 +50,6 @@ export function AlbumPage({albumID}: { albumID: string }) {
                 setDataLoading(true)
                 const album = (await getAlbum(accessToken, albumID)).data;
                 const tracks: Track[] = (await getAlbumTracks(accessToken, albumID)).data.items;
-
                 setAlbumData({
                     album: album,
                     albumTracks: tracks
@@ -45,11 +62,12 @@ export function AlbumPage({albumID}: { albumID: string }) {
         }
 
         getAlbumInformation()
-    }, [accessToken]);
-
+    }, [accessToken, albumID]);
 
     if (!dataLoading) {
-
+        const albumDate = new Date(String(albumData?.album.release_date))
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+        const releaseDate = months[albumDate.getMonth()].concat(" ").concat(String(albumDate.getDate()).concat(", ").concat(String(albumDate.getFullYear())))
         return <section className={albumStyle['album-page-wrapper']}
 
         >
@@ -65,7 +83,7 @@ export function AlbumPage({albumID}: { albumID: string }) {
                         <h1>{Number(albumData?.album.name.length) < 20 ? albumData?.album.name : albumData?.album.name.slice(0, 20).concat("...")}</h1>
                     </div>
                     <div className={albumStyle['artist-information']}>
-                        <h4 className={albumStyle['artist-name-ry-nos']}>{albumData?.album.artists[0].name} • {new Date(String(albumData?.album.release_date)).getFullYear()} • {albumData?.album.total_tracks} song, </h4>
+                        <h4 className={albumStyle['artist-name-ry-nos']}>{albumData?.album.artists[0].name} • {albumDate.getFullYear()} • {albumData?.album.total_tracks} song, </h4>
                         <p className={albumStyle['album-duration']}>{millisecondsToHhMmSs(Number(albumData?.album.tracks.items.map(e => e.duration_ms).reduce((a, b) => a + b, 0)), true)}</p>
                     </div>
                 </div>
@@ -160,8 +178,26 @@ export function AlbumPage({albumID}: { albumID: string }) {
                         </div>
                     </nav>
                     <div className={albumStyle['track-box']}>
-                        {albumData?.albumTracks.map((eachTrack, i) => <SongCard eachTrack={eachTrack} n={i+1} accessToken={accessToken} forAlbum={true}/>)}
+                        {albumData?.albumTracks.map((eachTrack, i) => <SongCard eachTrack={eachTrack}
+                                                                                key={i} n={i + 1}
+                                                                                accessToken={accessToken}
+                                                                                forAlbum={true}/>)}
                     </div>
+                </div>
+            </div>
+            <div className={albumStyle['exact-date-copyright']}>
+                <p>
+                    {releaseDate}
+                </p>
+                {albumData?.album.copyrights.map((c, i) =>
+                    <p key={i}>{c.text}</p>
+                )}
+            </div>
+
+            <div className={albumStyle['more-from-artist']}>
+                <h2>More by {albumData?.album.artists[0].name}</h2>
+                <div className={albumStyle['displayed-albums']}>
+                    {artistAlbums.map((eachAlbum) => <AlbumCard eachAlbum={eachAlbum} key={eachAlbum.id}/>)}
                 </div>
             </div>
         </section>

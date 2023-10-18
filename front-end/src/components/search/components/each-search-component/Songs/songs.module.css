@@ -16,6 +16,7 @@
     font-size: 14px;
     align-items: center;
     padding: 10px;
+    width: 100%;
     border-bottom: 1px solid rgba(87, 85, 85, 0.58);
     position: sticky;
     top: 160px;
@@ -24,7 +25,7 @@
 
 }
 
-.during-hover{
+.during-hover {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -36,17 +37,15 @@
     display: flex;
     gap: 15px;
 
+
 }
 
 .track-wrapper {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    display: grid;
     width: 100%;
     padding: 10px;
     cursor: pointer;
-    align-items: center;
-
+    grid-template-columns: 1fr 1fr auto
 }
 
 .track-wrapper:hover {
@@ -58,7 +57,6 @@
     display: flex;
     gap: 20px;
     align-items: center;
-
     padding-left: 10px;
     padding-right: 20px;
 }
@@ -85,8 +83,9 @@
     font-size: 14px;
     font-weight: 600;
     font-family: 'Gotham Light', sans-serif;
-    width: 40px;
+
     color: #b3b3b3;
+
 }
 
 .title-artists {
@@ -99,7 +98,9 @@
     font-family: 'Gotham Light', sans-serif;
     font-weight: lighter;
     color: #b3b3b3;
-    width: 150px;
+    width: 100%;
+
+
 }
 
 .title-artists a {
@@ -108,7 +109,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-
+    width: 100%;
 }
 
 .title-artists p {
@@ -118,7 +119,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-
+    width: 100%;
 }
 
 .album-title {
@@ -126,8 +127,7 @@
     align-items: center;
     font-size: 12px;
     color: #b3b3b3;
-    text-align: left;
-    width: 200px;
+    width: 20vw;
 }
 
 .album-title a {
@@ -136,10 +136,10 @@
     text-overflow: ellipsis;
     font-family: 'Gotham Light', sans-serif;
     font-weight: 600;
+
 }
 
 .song-hover-over img {
-
     border-radius: 100%;
     display: flex;
     justify-content: center;

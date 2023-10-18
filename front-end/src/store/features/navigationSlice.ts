@@ -77,7 +77,7 @@ const navigationSlice = createSlice({
         },
 
         navigateToDirection: (state, action: { payload: "BACK" | "FORWARD" }) => {
-            console.log(state.pageNavigation.currentPageIndex)
+
             if (action.payload === "BACK" && state.pageNavigation.currentPageIndex > 0) {
                 return {
                     ...state,
@@ -104,10 +104,6 @@ const navigationSlice = createSlice({
 
         addReactComponentToNavigation: (state, action: { payload: { componentName: string, props?: any } }) => {
 
-
-            if (action.payload.componentName === state.pageNavigation.pageHistory[state.pageNavigation.currentPageIndex].component) {
-                return;
-            }
 
             if (action.payload.componentName === "Home") {
                 return {

@@ -28,7 +28,12 @@ export const SongCard = forwardRef(function SongCard(props: {
 
     return (
         <div className={songsStyle["track-wrapper"]}
-
+             onDoubleClick={async () => {
+                 await PlayResumeStreaming(accessToken, undefined, [String(eachTrack?.uri)])
+                 dispatch(setUserControlActions({
+                     userAction: 'Play Track'
+                 }))
+             }}
 
              onMouseOver={() => setHoveringOver(true)}
              onMouseOut={() => setHoveringOver(false)}
@@ -38,8 +43,9 @@ export const SongCard = forwardRef(function SongCard(props: {
 
 
                 {eachTrack?.id === songID && !hoveringOver ?
-                    <div style={{width: '15px', marginLeft: '-5px'}}><img alt={'Equaliser icon'} src={Equaliser}
-                                                                          width={20} height={30}></img></div>
+                    <div style={{width: '15px', marginLeft: '-5px'}}>
+                        <img alt={'Equaliser icon'} src={Equaliser}
+                             width={20} height={30}></img></div>
                     :
                     <div>{hoveringOver ?
                         <div
@@ -105,7 +111,11 @@ export const SongCard = forwardRef(function SongCard(props: {
                                 alt="Album Picture"></img>}
                     </div>}
 
-                    <div className={songsStyle["title-artists"]}>
+                    <div className={songsStyle["title-artists"]}
+                    style={{
+                        width: `${forAlbum ? '55vw' : '30vw'}`
+                    }}
+                    >
                         <a style={{
                             color: `${eachTrack?.id === songID ? '#1ed760' : 'white'}`
                         }}>{eachTrack?.name}</a>
@@ -119,17 +129,13 @@ export const SongCard = forwardRef(function SongCard(props: {
             </div>
 
             {
-                !forAlbum && <div className={songsStyle["album-title"]}>
+                !forAlbum && <div className={songsStyle["album-title"]}
+                >
                     <a>{eachTrack?.album.name}</a>
                 </div>
             }
 
-            <div className
-                     ={
-                songsStyle
-                    [
-                    "duration"]
-            }>
+            <div className={songsStyle["duration"]}>
                 {
                     millisecondsToMmSs(Number(eachTrack?.duration_ms))
                 }
