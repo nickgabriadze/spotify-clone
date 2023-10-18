@@ -28,6 +28,16 @@ export const SongCard = forwardRef(function SongCard(props: {
 
     return (
         <div className={songsStyle["track-wrapper"]}
+
+             style={!forAlbum ? {
+                 display: 'grid',
+                 gridTemplateColumns: '1fr 1fr auto'
+             }:{
+                 display: 'flex',
+                 justifyContent: 'space-between',
+                 alignItems: 'center'
+
+             }}
              onDoubleClick={async () => {
                  await PlayResumeStreaming(accessToken, undefined, [String(eachTrack?.uri)])
                  dispatch(setUserControlActions({

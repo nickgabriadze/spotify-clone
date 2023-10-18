@@ -41,11 +41,12 @@
 }
 
 .track-wrapper {
-    display: grid;
+
     width: 100%;
     padding: 10px;
     cursor: pointer;
-    grid-template-columns: 1fr 1fr auto
+
+
 }
 
 .track-wrapper:hover {
