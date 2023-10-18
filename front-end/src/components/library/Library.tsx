@@ -23,7 +23,7 @@ export function Library({divHeight}: { divHeight: number }) {
     })
     const [likedSongsAvailable, setLikedSongsAvailable] = useState<number>(0)
     const [libraryLoading, setLibraryLoading] = useState<boolean>(true);
-
+    const libraryActions = useAppSelector(s => s.navigationReducer.libraryActions);
 
     const widthPref = useRef<HTMLParagraphElement>(null);
     const [pTagWidth, setPTagWidth] = useState<number>(150);
@@ -67,7 +67,7 @@ export function Library({divHeight}: { divHeight: number }) {
         }
 
         fetchPlaylistsAlbums()
-    }, [accessToken]);
+    }, [accessToken, libraryActions.length]);
 
     return <section className={libraryStyle['lib-wrapper']}
 

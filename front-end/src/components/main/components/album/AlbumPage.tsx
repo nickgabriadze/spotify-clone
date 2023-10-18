@@ -7,12 +7,14 @@ import getAlbum from "../../../../api/search/getAlbum.ts";
 import getAlbumTracks from "../../../../api/home/album/getAlbumTracks.ts";
 import millisecondsToHhMmSs from "../../../player/msConverter.ts";
 import PlayResumeStreaming from "../../../../api/player/playResumeStreaming.ts";
-import {setUserControlActions} from "../../../../store/features/navigationSlice.ts";
+import {addLibraryAction, setUserControlActions} from "../../../../store/features/navigationSlice.ts";
 import PauseStreaming from "../../../../api/player/pauseStreaming.ts";
 import Pause from "../../../search/components/each-search-component/Playlists/icons/pause.svg";
 import Play from "../../../search/components/each-search-component/Playlists/icons/play.svg";
 import Heart from '../../../player/icons/heart.svg';
 import HeartSaved from '../../../player/icons/liked-indicator-heart.svg';
+import removeAlbumForCurrentUser from "../../../../api/library/removeAlbumForCurrentUser.ts";
+import saveAlbumForCurrentUser from "../../../../api/library/saveAlbumForCurrentUser.ts";
 
 export function AlbumPage({albumID}: { albumID: string }) {
     const [albumData, setAlbumData] = useState<{ album: AlbumWithTracks, albumTracks: SimplifiedTrack[] }>();
@@ -20,7 +22,7 @@ export function AlbumPage({albumID}: { albumID: string }) {
     const [dataLoading, setDataLoading] = useState<boolean>(true);
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong)
     const dispatch = useAppDispatch();
-     const albumIsSaved = useAppSelector(s => s.spotiUserReducer.userSaved.userSavedAlbumIDs).includes(albumID)
+    const albumIsSaved = useAppSelector(s => s.spotiUserReducer.userSaved.userSavedAlbumIDs).includes(albumID)
 
     useEffect(() => {
         const getAlbumInformation = async () => {
@@ -69,51 +71,71 @@ export function AlbumPage({albumID}: { albumID: string }) {
 
             <div className={albumStyle['play-track-list']}>
                 <div className={albumStyle['play-save']}>
-                    <div><button
+                    <div>
+                        <button
 
-                        className={albumStyle["album-hover-button"]}
-                        onClick={async () => {
-                            if (currentlyPlaying.albumID === albumID) {
-                                if (!currentlyPlaying.isPlaying) {
-                                    await PlayResumeStreaming(accessToken);
+                            className={albumStyle["album-hover-button"]}
+                            onClick={async () => {
+                                if (currentlyPlaying.albumID === albumID) {
+                                    if (!currentlyPlaying.isPlaying) {
+                                        await PlayResumeStreaming(accessToken);
+                                        dispatch(
+                                            setUserControlActions({
+                                                userAction: "Play Album",
+                                            })
+                                        );
+                                    } else {
+                                        await PauseStreaming(accessToken);
+                                        dispatch(
+                                            setUserControlActions({
+                                                userAction: "Pause Album",
+                                            })
+                                        );
+                                    }
+                                } else {
+                                    await PlayResumeStreaming(accessToken, albumData?.album?.uri);
                                     dispatch(
                                         setUserControlActions({
                                             userAction: "Play Album",
                                         })
                                     );
-                                } else {
-                                    await PauseStreaming(accessToken);
-                                    dispatch(
-                                        setUserControlActions({
-                                            userAction: "Pause Album",
-                                        })
-                                    );
                                 }
-                            } else {
-                                await PlayResumeStreaming(accessToken, albumData?.album?.uri);
-                                dispatch(
-                                    setUserControlActions({
-                                        userAction: "Play Album",
-                                    })
-                                );
-                            }
-                        }}
-                    >
-                        {currentlyPlaying.albumID === albumID &&
-                        currentlyPlaying.isPlaying ? (
-                            <div>
-                                <img
+                            }}
+                        >
+                            {currentlyPlaying.albumID === albumID &&
+                            currentlyPlaying.isPlaying ? (
+                                <div>
+                                    <img
 
-                                    alt={"Pause icon"} src={Pause} width={40} height={40}></img>
-                            </div>
-                        ) : (
-                            <div>
-                                <img alt={"Play icon"} src={Play} width={60} height={60}></img>
-                            </div>
-                        )}
-                    </button></div>
+                                        alt={"Pause icon"} src={Pause} width={40} height={40}></img>
+                                </div>
+                            ) : (
+                                <div>
+                                    <img alt={"Play icon"} src={Play} width={60} height={60}></img>
+                                </div>
+                            )}
+                        </button>
+                    </div>
                     <div className={albumStyle['heart']}>
-                        <img alt={"Heart icon"} src={albumIsSaved ? HeartSaved : Heart} width={40} height={45}></img>
+                        <nav>
+                            <button
+                                onClick={async () => {
+                                    if(albumIsSaved){
+                                       const req = await removeAlbumForCurrentUser(accessToken, albumID)
+                                        if(req.status === 200){
+                                         dispatch(addLibraryAction("User removed Album from Library"))
+                                        }
+                                    }else{
+                                        const req = await saveAlbumForCurrentUser(accessToken, albumID)
+                                        if(req.status === 200){
+                                         dispatch(addLibraryAction("User added Album to Library"))
+                                        }
+                                    }
+                                }}
+                              title={albumIsSaved ? "Remove from Your Library" : "Save to Your Library"}
+                            ><img alt={"Heart icon"} src={albumIsSaved ? HeartSaved : Heart} width={40}
+                                  height={45}></img></button>
+                        </nav>
                     </div>
                 </div>
             </div>

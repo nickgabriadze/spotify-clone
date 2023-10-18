@@ -24,6 +24,7 @@ interface Navigation {
         albumID: string,
         isPlaying: boolean | null
     };
+    libraryActions: string[],
     userControlActions: string[];
     pageNavigation: {
         pageHistory: {
@@ -46,6 +47,7 @@ const initialState: Navigation = {
     },
 
     queueEmpty: false,
+    libraryActions: [],
     userControlActions: [],
     pageNavigation: {
         pageHistory: [{
@@ -60,8 +62,22 @@ const navigationSlice = createSlice({
     initialState,
     reducers: {
 
+        addLibraryAction: (state, action: { payload: string }) => {
+            if (state.libraryActions.length > 50) {
+                return {
+                    ...state,
+                    libraryActions: [action.payload]
+                }
+            } else {
+                return {
+                    ...state,
+                    libraryActions: [...state.libraryActions, action.payload]
+                }
+            }
+        },
+
         navigateToDirection: (state, action: { payload: "BACK" | "FORWARD" }) => {
-           console.log(state.pageNavigation.currentPageIndex)
+            console.log(state.pageNavigation.currentPageIndex)
             if (action.payload === "BACK" && state.pageNavigation.currentPageIndex > 0) {
                 return {
                     ...state,
@@ -89,8 +105,7 @@ const navigationSlice = createSlice({
         addReactComponentToNavigation: (state, action: { payload: { componentName: string, props?: any } }) => {
 
 
-
-            if(action.payload.componentName === state.pageNavigation.pageHistory[state.pageNavigation.currentPageIndex].component){
+            if (action.payload.componentName === state.pageNavigation.pageHistory[state.pageNavigation.currentPageIndex].component) {
                 return;
             }
 
@@ -108,7 +123,7 @@ const navigationSlice = createSlice({
                     }
                 }
             }
-            console.log(state.pageNavigation.currentPageIndex)
+
             return {
                 ...state,
                 pageNavigation: {
@@ -236,6 +251,7 @@ export const {
     setCurrentlyPlayingSong,
     setUserControlActions,
     addReactComponentToNavigation,
-    navigateToDirection
+    navigateToDirection,
+    addLibraryAction
 } = navigationSlice.actions;
 export default navigationSlice.reducer;
