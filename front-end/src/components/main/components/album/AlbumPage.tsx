@@ -2,15 +2,25 @@ import albumStyle from "./albumpage.module.css";
 import {SimplifiedTrack} from "../../../../types/track.ts";
 import {AlbumWithTracks} from "../../../../types/album.ts";
 import {useEffect, useState} from "react";
-import {useAppSelector} from "../../../../store/hooks.ts";
+import {useAppDispatch, useAppSelector} from "../../../../store/hooks.ts";
 import getAlbum from "../../../../api/search/getAlbum.ts";
 import getAlbumTracks from "../../../../api/home/album/getAlbumTracks.ts";
 import millisecondsToHhMmSs from "../../../player/msConverter.ts";
+import PlayResumeStreaming from "../../../../api/player/playResumeStreaming.ts";
+import {setUserControlActions} from "../../../../store/features/navigationSlice.ts";
+import PauseStreaming from "../../../../api/player/pauseStreaming.ts";
+import Pause from "../../../search/components/each-search-component/Playlists/icons/pause.svg";
+import Play from "../../../search/components/each-search-component/Playlists/icons/play.svg";
+import Heart from '../../../player/icons/heart.svg';
+import HeartSaved from '../../../player/icons/liked-indicator-heart.svg';
 
 export function AlbumPage({albumID}: { albumID: string }) {
     const [albumData, setAlbumData] = useState<{ album: AlbumWithTracks, albumTracks: SimplifiedTrack[] }>();
     const accessToken = useAppSelector(state => state.spotiUserReducer.spotiToken.accessToken);
     const [dataLoading, setDataLoading] = useState<boolean>(true);
+    const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong)
+    const dispatch = useAppDispatch();
+     const albumIsSaved = useAppSelector(s => s.spotiUserReducer.userSaved.userSavedAlbumIDs).includes(albumID)
 
     useEffect(() => {
         const getAlbumInformation = async () => {
@@ -48,7 +58,8 @@ export function AlbumPage({albumID}: { albumID: string }) {
                 <div className={albumStyle['album-general-information']}>
                     <div>
                         <p>{albumData?.album.album_type.slice(0, 1).toUpperCase().concat(albumData?.album.album_type.slice(1,))}</p>
-                        <h1>{albumData?.album.name}</h1></div>
+                        <h1>{Number(albumData?.album.name.length) < 20 ? albumData?.album.name : albumData?.album.name.slice(0, 20).concat("...")}</h1>
+                    </div>
                     <div className={albumStyle['artist-information']}>
                         <h4 className={albumStyle['artist-name-ry-nos']}>{albumData?.album.artists[0].name} • {new Date(String(albumData?.album.release_date)).getFullYear()} • {albumData?.album.total_tracks} song, </h4>
                         <p className={albumStyle['album-duration']}>{millisecondsToHhMmSs(Number(albumData?.album.tracks.items.map(e => e.duration_ms).reduce((a, b) => a + b, 0)), true)}</p>
@@ -56,7 +67,56 @@ export function AlbumPage({albumID}: { albumID: string }) {
                 </div>
             </div>
 
-            <div></div>
+            <div className={albumStyle['play-track-list']}>
+                <div className={albumStyle['play-save']}>
+                    <div><button
+
+                        className={albumStyle["album-hover-button"]}
+                        onClick={async () => {
+                            if (currentlyPlaying.albumID === albumID) {
+                                if (!currentlyPlaying.isPlaying) {
+                                    await PlayResumeStreaming(accessToken);
+                                    dispatch(
+                                        setUserControlActions({
+                                            userAction: "Play Album",
+                                        })
+                                    );
+                                } else {
+                                    await PauseStreaming(accessToken);
+                                    dispatch(
+                                        setUserControlActions({
+                                            userAction: "Pause Album",
+                                        })
+                                    );
+                                }
+                            } else {
+                                await PlayResumeStreaming(accessToken, albumData?.album?.uri);
+                                dispatch(
+                                    setUserControlActions({
+                                        userAction: "Play Album",
+                                    })
+                                );
+                            }
+                        }}
+                    >
+                        {currentlyPlaying.albumID === albumID &&
+                        currentlyPlaying.isPlaying ? (
+                            <div>
+                                <img
+
+                                    alt={"Pause icon"} src={Pause} width={40} height={40}></img>
+                            </div>
+                        ) : (
+                            <div>
+                                <img alt={"Play icon"} src={Play} width={60} height={60}></img>
+                            </div>
+                        )}
+                    </button></div>
+                    <div className={albumStyle['heart']}>
+                        <img alt={"Heart icon"} src={albumIsSaved ? HeartSaved : Heart} width={40} height={45}></img>
+                    </div>
+                </div>
+            </div>
         </section>
     }
 }

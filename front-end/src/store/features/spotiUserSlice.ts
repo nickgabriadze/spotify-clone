@@ -2,6 +2,7 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import fetchAccessToken from "../../api/getToken";
 import {Me} from "../../types/me.ts";
 import {Track} from "../../types/track.ts";
+import {Album} from "../../types/album.ts";
 
 interface TokenData {
     accessToken: string;
@@ -31,7 +32,10 @@ interface SpotiUser {
         refresh_token: string;
     };
     userInformation: Me | null,
-    userLikedSongIDs: Track[]
+    userSaved:{
+        userSavedSongIDs: string[],
+          userSavedAlbumIDs: string[]
+    }
 }
 
 const initialState: SpotiUser = {
@@ -43,7 +47,11 @@ const initialState: SpotiUser = {
         refresh_token: 'unavailable',
     },
     userInformation: null,
-    userLikedSongIDs: []
+    userSaved: {
+        userSavedSongIDs: [],
+        userSavedAlbumIDs: []
+
+    }
 };
 
 const spotiUserSlice = createSlice({
@@ -57,10 +65,23 @@ const spotiUserSlice = createSlice({
                 userInformation: action.payload
             }
         },
+        setUserSavedAlbumIDs: (state, action:{payload: Album[]}) => {
+
+            return {
+                ...state,
+                userSaved: {
+                    ...state.userSaved,
+                    userSavedAlbumIDs: action.payload.map(a => a.id)
+                }
+            }
+        },
         setUsersSavedSongIDs: (state, action: { payload: Track[] }) => {
             return {
                 ...state,
-                userLikedSongIDs: action.payload
+                userSaved: {
+                    ...state.userSaved,
+                    userSavedSongIDs: action.payload.map(t => t.id)
+                }
             }
         },
 
@@ -154,6 +175,6 @@ const spotiUserSlice = createSlice({
     },
 });
 
-export const {setUserInformation, setToken, updateCredentials, setUsersSavedSongIDs} = spotiUserSlice.actions;
+export const {setUserInformation, setToken, updateCredentials, setUsersSavedSongIDs, setUserSavedAlbumIDs} = spotiUserSlice.actions;
 
 export default spotiUserSlice.reducer;

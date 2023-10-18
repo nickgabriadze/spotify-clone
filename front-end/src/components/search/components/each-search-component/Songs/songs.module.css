@@ -4,7 +4,6 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    padding: 0 20px 0 0;
 
 }
 
@@ -18,7 +17,7 @@
     align-items: center;
     padding: 10px;
     border-bottom: 1px solid rgba(87, 85, 85, 0.58);
-    width: 100%;
+
     position: sticky;
     top: 160px;
     background-color: #1a1a1a
@@ -65,9 +64,10 @@
 }
 
 
-.album-img{
+.album-img {
     margin-left: 3%;
 }
+
 .album-img img {
     object-fit: cover;
 
@@ -85,7 +85,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: 250px;
+    width: 200px;
     justify-content: space-between;
     gap: 10px;
     color: #b3b3b3;
@@ -108,7 +108,6 @@
     display: flex;
     align-items: center;
     font-size: 12px;
-    margin-left: -60px;;
     color: #b3b3b3;
 }
 

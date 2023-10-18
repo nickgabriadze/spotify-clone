@@ -16,7 +16,6 @@ import AlbumPage from "./components/album/AlbumPage.tsx";
 import {navigateToDirection} from "../../store/features/navigationSlice.ts";
 
 
-
 export function Main({height}: { height: number }) {
     const [userData, setUserData] = useState<Me>();
     const [loading, setLoading] = useState<boolean>(true);
@@ -26,12 +25,12 @@ export function Main({height}: { height: number }) {
     const searching = useAppSelector((state) => state.navigationReducer.searchQuery);
     const dispatch = useAppDispatch();
     const navigation: {
-        [key: string]: (data:any) => ReactNode
+        [key: string]: (data: any) => ReactNode
     } = {
         "Search": () => <Search/>,
-        "Home":() =>  <Home/>,
+        "Home": () => <Home/>,
         "Queue": () => <Queue/>,
-        "Album": (ID: string) => <AlbumPage albumID={ID} />
+        "Album": (ID: string) => <AlbumPage albumID={ID}/>
     }
     useEffect(() => {
         const fetchMyData = async () => {
@@ -66,21 +65,21 @@ export function Main({height}: { height: number }) {
                     <div className={mainStyle["left-right-nav"]}>
                         <button
 
-                        onClick={() => {
-                            dispatch(navigateToDirection("BACK"))
-                        }}
+                            onClick={() => {
+                                dispatch(navigateToDirection("BACK"))
+                            }}
                         >
                             <img
-                                style={{filter: `${PageNavigation.currentPageIndex === 0 ? `brightness(50%)`: `brightness(100%)`}`}}
+                                style={{filter: `${PageNavigation.currentPageIndex === 0 ? `brightness(50%)` : `brightness(100%)`}`}}
                                 alt={'Left icon'} src={Left} height={32}></img>
                         </button>
                         <button style={{marginLeft: "-3px"}}
-                        onClick={() => {
-                            dispatch(navigateToDirection("FORWARD"))
-                        }}
+                                onClick={() => {
+                                    dispatch(navigateToDirection("FORWARD"))
+                                }}
                         >
                             <img
-                                style={{filter: `${PageNavigation.currentPageIndex === PageNavigation.pageHistory.length - 1 ? `brightness(50%)`: `brightness(100%)`}`}}
+                                style={{filter: `${PageNavigation.currentPageIndex === PageNavigation.pageHistory.length - 1 ? `brightness(50%)` : `brightness(100%)`}`}}
                                 alt={'Right icon'} src={Right} height={32}></img>
                         </button>
 
@@ -97,6 +96,7 @@ export function Main({height}: { height: number }) {
                 </div>
                 {componentObject.component === 'Search' && searching.trim().length > 0 ? <Searchables/> : ""}
             </div>
+
             <div>{navigation[componentObject.component](componentObject.props)}</div>
 
         </main>

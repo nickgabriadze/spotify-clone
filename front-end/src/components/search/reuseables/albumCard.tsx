@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react";
-import { Album } from "../../../types/album";
+import {Album} from "../../../types/album";
 import albumsStyle from "../components/each-search-component/Albums/albums.module.css";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import {useAppDispatch, useAppSelector} from "../../../store/hooks";
 import Play from "../components/each-search-component/Playlists/icons/play.svg";
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
-import { setUserControlActions } from "../../../store/features/navigationSlice";
+import {addReactComponentToNavigation, setUserControlActions} from "../../../store/features/navigationSlice";
 import Pause from "../components/each-search-component/Playlists/icons/pause.svg";
 import PauseStreaming from "../../../api/player/pauseStreaming";
 import NoAlbumPicture from "../components/each-search-component/icons/no-album-pic.svg"
@@ -12,12 +12,9 @@ import getAlbum from "../../../api/search/getAlbum.ts";
 import AlbumCardSkeleton from "../../../skeletons/albumCardSkeleton.tsx";
 
 
-
-
-
-export function AlbumCardApi({albumID} : {albumID: string}){
+export function AlbumCardApi({albumID}: { albumID: string }) {
     const [singleAlbum, setSingleAlbum] = useState<Album | undefined>();
-  const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
+    const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
@@ -27,8 +24,8 @@ export function AlbumCardApi({albumID} : {albumID: string}){
                 const reqAlbum = await getAlbum(accessToken, albumID);
                 const albumData = reqAlbum.data;
                 setSingleAlbum(albumData)
-            }catch(err){}
-            finally {
+            } catch (err) {
+            } finally {
                 setLoading(false)
             }
         }
@@ -36,107 +33,121 @@ export function AlbumCardApi({albumID} : {albumID: string}){
         getSingleAlbum();
     }, [accessToken, albumID]);
 
-    return loading ? <AlbumCardSkeleton /> :  <AlbumCard eachAlbum={singleAlbum}/>
+    return loading ? <AlbumCardSkeleton/> : <AlbumCard eachAlbum={singleAlbum}/>
 
 }
 
 
+export function AlbumCard({eachAlbum}: { eachAlbum: Album | undefined }) {
+    const [hoveringOver, setHoveringOver] = useState<boolean>(false);
+    const dispatch = useAppDispatch();
+    const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
+    const currentlyPlaying = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong);
 
-export function AlbumCard({ eachAlbum }: { eachAlbum: Album | undefined }) {
-  const [hoveringOver, setHoveringOver] = useState<boolean>(false);
-  const dispatch = useAppDispatch();
-  const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
-  const currentlyPlaying = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong);
+    return (
+        <div className={albumsStyle["album-card"]}
 
-  return (
-    <div className={albumsStyle["album-card"]}
-    onMouseOver={() => setHoveringOver(true)}
-    onMouseOut={() => setHoveringOver(false)}>
-        <div className={albumsStyle['album-inner-content']}>
-      <div className={albumsStyle["album-img"]}>
-          {eachAlbum?.images[0]?.url ?  <img
-                  src={eachAlbum?.images[0]?.url}
-                  draggable={false}
-                  alt="Album Picture"
-              ></img>:
-              <img
-                  style={{
-                      backgroundColor: '#302f2f',
-                      padding: '5px',
-                      borderRadius: '5px',
+             onMouseOver={() => setHoveringOver(true)}
+             onMouseOut={() => setHoveringOver(false)}>
+            <div className={albumsStyle['album-inner-content']}>
+                <div className={albumsStyle["album-img"]}
+                     onClick={() => {
+                         dispatch(addReactComponentToNavigation({
+                             componentName: String(eachAlbum?.type.slice(0, 1).toUpperCase().concat(eachAlbum?.type.slice(1,))),
+                             props: eachAlbum?.id
+                         }))
+                     }}
+                >
+                    {eachAlbum?.images[0]?.url ? <img
+                            src={eachAlbum?.images[0]?.url}
+                            draggable={false}
+                            alt="Album Picture"
+                        ></img> :
+                        <img
+                            style={{
+                                backgroundColor: '#302f2f',
+                                padding: '5px',
+                                borderRadius: '5px',
 
-                  }}
-                  src={NoAlbumPicture}
+                            }}
+                            src={NoAlbumPicture}
 
-                  draggable={false}
-                  alt="Album Picture"></img>}
-      </div>
+                            draggable={false}
+                            alt="Album Picture"></img>}
+                </div>
 
-      {hoveringOver && (
-        <button
+                {hoveringOver && (
+                    <button
 
-        className={albumsStyle["album-hover-button"]}
-        onClick={async () => {
-          if (currentlyPlaying.albumID === eachAlbum?.id) {
-            if (!currentlyPlaying.isPlaying) {
-              await PlayResumeStreaming(accessToken);
-              dispatch(
-                setUserControlActions({
-                  userAction: "Play Album",
-                })
-              );
-            } else {
-              await PauseStreaming(accessToken);
-              dispatch(
-                setUserControlActions({
-                  userAction: "Pause Album",
-                })
-              );
-            }
-          } else {
-            await PlayResumeStreaming(accessToken, eachAlbum?.uri);
-            dispatch(
-              setUserControlActions({
-                userAction: "Play Album",
-              })
-            );
-          }
-        }}
-        >
-        {currentlyPlaying.albumID === eachAlbum?.id &&
-          currentlyPlaying.isPlaying ? (
-           <div>
-            <img
-                style={{padding: '10px'}}
-                alt={"Pause icon"} src={Pause} width={30} height={30}></img>
+                        className={albumsStyle["album-hover-button"]}
+                        onClick={async () => {
+                            if (currentlyPlaying.albumID === eachAlbum?.id) {
+                                if (!currentlyPlaying.isPlaying) {
+                                    await PlayResumeStreaming(accessToken);
+                                    dispatch(
+                                        setUserControlActions({
+                                            userAction: "Play Album",
+                                        })
+                                    );
+                                } else {
+                                    await PauseStreaming(accessToken);
+                                    dispatch(
+                                        setUserControlActions({
+                                            userAction: "Pause Album",
+                                        })
+                                    );
+                                }
+                            } else {
+                                await PlayResumeStreaming(accessToken, eachAlbum?.uri);
+                                dispatch(
+                                    setUserControlActions({
+                                        userAction: "Play Album",
+                                    })
+                                );
+                            }
+                        }}
+                    >
+                        {currentlyPlaying.albumID === eachAlbum?.id &&
+                        currentlyPlaying.isPlaying ? (
+                            <div>
+                                <img
+                                    style={{padding: '10px'}}
+                                    alt={"Pause icon"} src={Pause} width={30} height={30}></img>
+                            </div>
+                        ) : (
+                            <div>
+                                <img alt={"Play icon"} src={Play} width={50} height={50}></img>
+                            </div>
+                        )}
+                    </button>
+                )}
+                <div className={albumsStyle["album-details"]}
+                     onClick={() => {
+                         dispatch(addReactComponentToNavigation({
+                             componentName: String(eachAlbum?.type.slice(0, 1).toUpperCase().concat(eachAlbum?.type.slice(1,))),
+                             props: eachAlbum?.id
+                         }))
+                     }}
+                >
+                    <a>
+                        {Number(eachAlbum?.name?.length) > 15
+                            ? eachAlbum?.name.slice(0, 16).concat("...")
+                            : eachAlbum?.name}
+                    </a>
+                    <p>
+                        {String(eachAlbum?.release_date).slice(0, 4)} •{" "}
+                        {Number(eachAlbum?.artists?.map((each) => each.name).join(", ").length) > 15
+                            ? eachAlbum?.artists
+                                .map((each) => each.name)
+                                .join(", ")
+                                .slice(0, 10)
+                                .concat("...")
+                            : eachAlbum?.artists.map((each) => each.name).join(", ")}
+                    </p>
+                </div>
             </div>
-          ) : (
-            <div>
-            <img alt={"Play icon"} src={Play} width={50} height={50}></img>
-            </div>
-          )}
-        </button>
-      )}
-      <div className={albumsStyle["album-details"]}>
-        <a>
-          {Number(eachAlbum?.name?.length) > 15
-            ? eachAlbum?.name.slice(0, 16).concat("...")
-            : eachAlbum?.name}
-        </a>
-        <p>
-          {String(eachAlbum?.release_date).slice(0, 4)} •{" "}
-          {Number(eachAlbum?.artists?.map((each) => each.name).join(", ").length) > 15
-            ? eachAlbum?.artists
-                .map((each) => each.name)
-                .join(", ")
-                .slice(0, 10)
-                .concat("...")
-            : eachAlbum?.artists.map((each) => each.name).join(", ")}
-        </p>
-      </div>
-            </div>
-    </div>
-  );
+        </div>
+    );
 }
 
 export default AlbumCard;
