@@ -120,6 +120,44 @@ const navigationSlice = createSlice({
                 }
             }
 
+
+            if( action.payload.componentName === 'Search' &&
+                state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].component === 'Search'){
+
+                return {
+                    ...state,
+                    pageNavigation: {
+                        ...state.pageNavigation,
+                        currentPageIndex: state.pageNavigation.pageHistory.length - 1
+                    }
+                }
+            }
+
+            if(state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].props &&
+                action.payload.props &&
+                state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].props === action.payload.props){
+
+                return {
+                    ...state,
+                    pageNavigation: {
+                        ...state.pageNavigation,
+                        currentPageIndex: state.pageNavigation.pageHistory.length - 1
+                    }
+                }
+            }
+
+
+            if(state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].props &&
+              action.payload.props
+            && state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].props === action.payload.props
+                &&
+                state.pageNavigation.currentPageIndex === state.pageNavigation.pageHistory.length - 1
+            ){
+                return;
+            }
+
+
+
             return {
                 ...state,
                 pageNavigation: {

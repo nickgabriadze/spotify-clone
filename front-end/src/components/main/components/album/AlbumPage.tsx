@@ -80,7 +80,7 @@ export function AlbumPage({albumID}: { albumID: string }) {
                 <div className={albumStyle['album-general-information']}>
                     <div>
                         <p>{albumData?.album.album_type.slice(0, 1).toUpperCase().concat(albumData?.album.album_type.slice(1,))}</p>
-                        <h1>{Number(albumData?.album.name.length) < 20 ? albumData?.album.name : albumData?.album.name.slice(0, 20).concat("...")}</h1>
+                        <h1>{albumData?.album.name}</h1>
                     </div>
                     <div className={albumStyle['artist-information']}>
                         <h4 className={albumStyle['artist-name-ry-nos']}>{albumData?.album.artists[0].name} • {albumDate.getFullYear()} • {albumData?.album.total_tracks} song, </h4>

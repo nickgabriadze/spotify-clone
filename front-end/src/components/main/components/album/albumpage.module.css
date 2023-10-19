@@ -51,6 +51,10 @@
 
         & h1 {
             font-size: 8vh;
+               white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 50vw;
         }
 
         .artist-information {
