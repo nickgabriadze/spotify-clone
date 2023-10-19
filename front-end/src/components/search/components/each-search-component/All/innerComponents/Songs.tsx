@@ -29,31 +29,14 @@ export function Songs({firstFour, resultsLoading}: { firstFour: Track[] | undefi
 
                 firstFour?.map((eachTrack, i) =>
                     <div key={i} className={allResultsStyle['top-song']}
-                         onClick={async () => {
-
-                             if (!(currentlyPlaying.songID === String(eachTrack?.id))) {
+                            onDoubleClick={async () => {
                                  await PlayResumeStreaming(accessToken, undefined, [String(eachTrack?.uri)]);
                                  dispatch(
                                      setUserControlActions({
                                          userAction: "Play Track",
                                      })
                                  );
-                             } else if (currentlyPlaying.isPlaying && currentlyPlaying.songID === String(eachTrack?.id)) {
-                                 await PauseStreaming(accessToken);
-                                 dispatch(
-                                     setUserControlActions({
-                                         userAction: "Pause Track",
-                                     })
-                                 );
-                             } else if (!(currentlyPlaying.isPlaying) && currentlyPlaying.songID === String(eachTrack?.id)) {
-                                 await PlayResumeStreaming(accessToken);
-                                 dispatch(
-                                     setUserControlActions({
-                                         userAction: "Resume Track",
-                                     })
-                                 );
-                             }
-                         }}
+                            }}
                          style={eachTrack.id === hoveringOver ? {
                              cursor: "pointer",
                              backgroundColor: `#3b3a3a`,
@@ -83,7 +66,33 @@ export function Songs({firstFour, resultsLoading}: { firstFour: Track[] | undefi
                                         draggable={false}
                                         alt="Album Picture"></img>}
                                 {eachTrack.id === hoveringOver &&
-                                    <div>{(currentlyPlaying.songID === String(eachTrack?.id) && currentlyPlaying.isPlaying) ?
+                                    <div
+                                       onClick={async () => {
+
+                             if (!(currentlyPlaying.songID === String(eachTrack?.id))) {
+                                 await PlayResumeStreaming(accessToken, undefined, [String(eachTrack?.uri)]);
+                                 dispatch(
+                                     setUserControlActions({
+                                         userAction: "Play Track",
+                                     })
+                                 );
+                             } else if (currentlyPlaying.isPlaying && currentlyPlaying.songID === String(eachTrack?.id)) {
+                                 await PauseStreaming(accessToken);
+                                 dispatch(
+                                     setUserControlActions({
+                                         userAction: "Pause Track",
+                                     })
+                                 );
+                             } else if (!(currentlyPlaying.isPlaying) && currentlyPlaying.songID === String(eachTrack?.id)) {
+                                 await PlayResumeStreaming(accessToken);
+                                 dispatch(
+                                     setUserControlActions({
+                                         userAction: "Resume Track",
+                                     })
+                                 );
+                             }
+                         }}
+                                    >{(currentlyPlaying.songID === String(eachTrack?.id) && currentlyPlaying.isPlaying) ?
                                         <img style={{padding: '5px'}} className={allResultsStyle['play-button']}
                                              width={40}
                                              alt={'Pause Button'} height={40} src={Pause}></img>

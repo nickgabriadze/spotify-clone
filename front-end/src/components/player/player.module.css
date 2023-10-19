@@ -21,6 +21,9 @@ button {
 }
 
 
+.currently-playing-info-album-img{
+    cursor: pointer;
+}
 .currently-playing-info-album-img img {
     object-fit: contain;
     border-radius: 3px;

@@ -5,7 +5,7 @@ import {LegacyRef, forwardRef, useState} from "react";
 import Equaliser from "../../player/icons/device-picker-equaliser.webp"
 import {useAppDispatch, useAppSelector} from "../../../store/hooks";
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
-import {setUserControlActions} from "../../../store/features/navigationSlice";
+import {addReactComponentToNavigation, setUserControlActions} from "../../../store/features/navigationSlice";
 import Play from "../components/each-search-component/Songs/icons/play.svg"
 import episodesStyle from "../components/each-search-component/PodcastsShows/podcastsShows.module.css";
 import NoTrackPicture from "../components/each-search-component/icons/no-track-pic.svg"
@@ -32,7 +32,7 @@ export const SongCard = forwardRef(function SongCard(props: {
              style={!forAlbum ? {
                  display: 'grid',
                  gridTemplateColumns: '1fr 1fr auto'
-             }:{
+             } : {
                  display: 'flex',
                  justifyContent: 'space-between',
                  alignItems: 'center'
@@ -122,13 +122,22 @@ export const SongCard = forwardRef(function SongCard(props: {
                     </div>}
 
                     <div className={songsStyle["title-artists"]}
-                    style={{
-                        width: `${forAlbum ? '55vw' : '30vw'}`
-                    }}
+                         style={{
+                             width: `${forAlbum ? '55vw' : '30vw'}`
+                         }}
                     >
-                        <a style={{
-                            color: `${eachTrack?.id === songID ? '#1ed760' : 'white'}`
-                        }}>{eachTrack?.name}</a>
+                        <a
+                            onClick={() => {
+                                dispatch(addReactComponentToNavigation({
+                                    componentName: 'Album',
+                                    props: eachTrack?.album?.id
+                                }))
+                            }}
+                            style={
+
+                                {
+                                    color: `${eachTrack?.id === songID ? '#1ed760' : 'white'}`
+                                }}>{eachTrack?.name}</a>
                         <div
                             style={{display: 'flex', gap: '5px', alignItems: 'center'}}>
                             {eachTrack?.explicit ?
@@ -140,6 +149,7 @@ export const SongCard = forwardRef(function SongCard(props: {
 
             {
                 !forAlbum && <div className={songsStyle["album-title"]}
+
                 >
                     <a>{eachTrack?.album.name}</a>
                 </div>

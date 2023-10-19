@@ -11,6 +11,7 @@ import getSavedTracks from "../../api/library/getSavedTracks.ts";
 import HeartIcon from "./icons/saved-songs-icon.png";
 import {setUserSavedAlbumIDs, setUsersSavedSongIDs} from "../../store/features/spotiUserSlice.ts";
 import {Track} from "../../types/track.ts";
+import {addReactComponentToNavigation} from "../../store/features/navigationSlice.ts";
 
 export function Library({divHeight}: { divHeight: number }) {
     const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
@@ -45,12 +46,15 @@ export function Library({divHeight}: { divHeight: number }) {
         const fetchPlaylistsAlbums = async () => {
             try {
 
-                setLibraryLoading(true)
+
                 const reqAlbums = await getSavedAlbums(accessToken);
                 const albumsData = reqAlbums.data.items;
                 const reqPlaylists = await getSavedPlaylists(accessToken);
                 const playlistsData = reqPlaylists.data.items;
-                const savedSongItems:{added_at: string, track: Track}[] = (await getSavedTracks(accessToken)).data.items;
+                const savedSongItems: {
+                    added_at: string,
+                    track: Track
+                }[] = (await getSavedTracks(accessToken)).data.items;
                 dispatch(setUsersSavedSongIDs(savedSongItems.map(e => e.track)))
                 dispatch(setUserSavedAlbumIDs(albumsData.map(e => e.album)));
                 const savedSongsAvailability = savedSongItems.length;
@@ -84,44 +88,51 @@ export function Library({divHeight}: { divHeight: number }) {
         <div className={libraryStyle['library-stuff']}
              style={{height: divHeight}}
         >
-            {likedSongsAvailable > 0 && (!libraryLoading)  &&
+            {likedSongsAvailable > 0 && (!libraryLoading) &&
                 <li
                     className={libraryStyle['listed-playlist-album']}
-                   >
-                   <div className={libraryStyle['liked-songs-icon-wrapper']}>
+                >
+                    <div className={libraryStyle['liked-songs-icon-wrapper']}>
                         <img src={HeartIcon} width={50} height={50} alt={"Playlist Image"}></img>
-                   </div>
+                    </div>
                     <div className={libraryStyle['playlist-album-info']}>
                         <div className={libraryStyle['playlist-album-name']}><p
                             style={{width: pTagWidth}}>Liked Songs</p></div>
                         <div className={libraryStyle['type-owner']}>
-                            <p style={{width: pTagWidth}}>Playlist • {`${likedSongsAvailable} ${likedSongsAvailable > 1 ? 'songs': 'song'}`}</p>
+                            <p style={{width: pTagWidth}}>Playlist
+                                • {`${likedSongsAvailable} ${likedSongsAvailable > 1 ? 'songs' : 'song'}`}</p>
 
                         </div>
                     </div>
                 </li>
             }
             {libraryLoading ?
-                Array.from({length: 3}).map((_, i) => <LibraryItemSkeleton key={i} />)
+                Array.from({length: 3}).map((_, i) => <LibraryItemSkeleton key={i}/>)
                 :
                 libData.albumItems.map(each => each.album).map((eachAlbum, i) =>
-                <li
-                    className={libraryStyle['listed-playlist-album']}
-                    key={i}>
-                    <img src={eachAlbum.images[0].url} width={50} height={50} alt={"Playlist Image"}></img>
-                    <div className={libraryStyle['playlist-album-info']}>
-                        <div className={libraryStyle['playlist-album-name']}><p
-                            style={{width: pTagWidth}}>{eachAlbum.name}</p></div>
-                        <div className={libraryStyle['type-owner']}>
-                            <p style={{width: pTagWidth}}>{eachAlbum.type[0].toUpperCase().concat(eachAlbum.type.slice(1,))} • {eachAlbum.artists.map(each => each.name).join(', ')}</p>
+                    <li
+                        className={libraryStyle['listed-playlist-album']}
+                        onClick={() => {
+                            dispatch(addReactComponentToNavigation({
+                                componentName: String(eachAlbum?.type.slice(0, 1).toUpperCase().concat(eachAlbum?.type.slice(1,))),
+                                props: eachAlbum?.id
+                            }))
+                        }}
+                        key={i}>
+                        <img src={eachAlbum.images[0].url} width={50} height={50} alt={"Playlist Image"}></img>
+                        <div className={libraryStyle['playlist-album-info']}>
+                            <div className={libraryStyle['playlist-album-name']}><p
+                                style={{width: pTagWidth}}>{eachAlbum.name}</p></div>
+                            <div className={libraryStyle['type-owner']}>
+                                <p style={{width: pTagWidth}}>{eachAlbum.type[0].toUpperCase().concat(eachAlbum.type.slice(1,))} • {eachAlbum.artists.map(each => each.name).join(', ')}</p>
 
+                            </div>
                         </div>
-                    </div>
-                </li>
-            )}
+                    </li>
+                )}
 
             {libraryLoading ?
-                Array.from({length: 2}).map((_, i) => <LibraryItemSkeleton key={i} />)
+                Array.from({length: 2}).map((_, i) => <LibraryItemSkeleton key={i}/>)
                 :
                 libData.playlistItems.map((eachPlaylist, i) =>
 
