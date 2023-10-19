@@ -19,7 +19,7 @@
     width: 100%;
     border-bottom: 1px solid rgba(87, 85, 85, 0.58);
     position: sticky;
-    top: 160px;
+    top: 130px;
     background-color: #1a1a1a
 
 
@@ -45,8 +45,6 @@
     width: 100%;
     padding: 10px;
     cursor: pointer;
-
-
 }
 
 .track-wrapper:hover {
