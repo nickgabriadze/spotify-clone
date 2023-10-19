@@ -54,7 +54,7 @@ export function ArtistCard({ eachArtist }: { eachArtist: Artist | undefined}) {
       style={{ color: "white" }}
       onMouseOver={() => setHoveringOver(true)}
       onMouseOut={() => setHoveringOver(false)}
-    >
+    ><div className={artistsStyle['artist-img-wrapper']}>
       <div className={artistsStyle["artist-img"]}>
         {eachArtist?.images[0]?.url ? (
           <img
@@ -74,6 +74,7 @@ export function ArtistCard({ eachArtist }: { eachArtist: Artist | undefined}) {
           ></img>
         )}
       </div>
+    </div>
 
       {hoveringOver && (
         <button

@@ -4,7 +4,10 @@ import millisecondsToHhMmSs from "../../../../../player/msConverter.ts";
 import {useState} from "react";
 import HeartSVG from "../../../../../player/icons/heart.svg";
 import PlayResumeStreaming from "../../../../../../api/player/playResumeStreaming.ts";
-import {setUserControlActions} from "../../../../../../store/features/navigationSlice.ts";
+import {
+    addReactComponentToNavigation,
+    setUserControlActions
+} from "../../../../../../store/features/navigationSlice.ts";
 import PauseStreaming from "../../../../../../api/player/pauseStreaming.ts";
 import {useAppDispatch, useAppSelector} from "../../../../../../store/hooks.ts";
 import Pause from "../icons/pause.svg"
@@ -29,14 +32,14 @@ export function Songs({firstFour, resultsLoading}: { firstFour: Track[] | undefi
 
                 firstFour?.map((eachTrack, i) =>
                     <div key={i} className={allResultsStyle['top-song']}
-                            onDoubleClick={async () => {
-                                 await PlayResumeStreaming(accessToken, undefined, [String(eachTrack?.uri)]);
-                                 dispatch(
-                                     setUserControlActions({
-                                         userAction: "Play Track",
-                                     })
-                                 );
-                            }}
+                         onDoubleClick={async () => {
+                             await PlayResumeStreaming(accessToken, undefined, [String(eachTrack?.uri)]);
+                             dispatch(
+                                 setUserControlActions({
+                                     userAction: "Play Track",
+                                 })
+                             );
+                         }}
                          style={eachTrack.id === hoveringOver ? {
                              cursor: "pointer",
                              backgroundColor: `#3b3a3a`,
@@ -46,13 +49,13 @@ export function Songs({firstFour, resultsLoading}: { firstFour: Track[] | undefi
                          onMouseOver={() => setHoveringOver(eachTrack.id)}>
                         <div className={allResultsStyle['song-img-details']}>
                             <div className={allResultsStyle['interactive-album-img']}>
-                                {eachTrack?.album.images[0]?.url ?  <img
+                                {eachTrack?.album.images[0]?.url ? <img
                                         src={eachTrack?.album.images[0]?.url}
                                         width={40}
                                         height={40}
                                         draggable={false}
                                         alt="Album Picture"
-                                    ></img>:
+                                    ></img> :
                                     <img
                                         style={{
                                             backgroundColor: '#181818',
@@ -67,31 +70,31 @@ export function Songs({firstFour, resultsLoading}: { firstFour: Track[] | undefi
                                         alt="Album Picture"></img>}
                                 {eachTrack.id === hoveringOver &&
                                     <div
-                                       onClick={async () => {
+                                        onClick={async () => {
 
-                             if (!(currentlyPlaying.songID === String(eachTrack?.id))) {
-                                 await PlayResumeStreaming(accessToken, undefined, [String(eachTrack?.uri)]);
-                                 dispatch(
-                                     setUserControlActions({
-                                         userAction: "Play Track",
-                                     })
-                                 );
-                             } else if (currentlyPlaying.isPlaying && currentlyPlaying.songID === String(eachTrack?.id)) {
-                                 await PauseStreaming(accessToken);
-                                 dispatch(
-                                     setUserControlActions({
-                                         userAction: "Pause Track",
-                                     })
-                                 );
-                             } else if (!(currentlyPlaying.isPlaying) && currentlyPlaying.songID === String(eachTrack?.id)) {
-                                 await PlayResumeStreaming(accessToken);
-                                 dispatch(
-                                     setUserControlActions({
-                                         userAction: "Resume Track",
-                                     })
-                                 );
-                             }
-                         }}
+                                            if (!(currentlyPlaying.songID === String(eachTrack?.id))) {
+                                                await PlayResumeStreaming(accessToken, undefined, [String(eachTrack?.uri)]);
+                                                dispatch(
+                                                    setUserControlActions({
+                                                        userAction: "Play Track",
+                                                    })
+                                                );
+                                            } else if (currentlyPlaying.isPlaying && currentlyPlaying.songID === String(eachTrack?.id)) {
+                                                await PauseStreaming(accessToken);
+                                                dispatch(
+                                                    setUserControlActions({
+                                                        userAction: "Pause Track",
+                                                    })
+                                                );
+                                            } else if (!(currentlyPlaying.isPlaying) && currentlyPlaying.songID === String(eachTrack?.id)) {
+                                                await PlayResumeStreaming(accessToken);
+                                                dispatch(
+                                                    setUserControlActions({
+                                                        userAction: "Resume Track",
+                                                    })
+                                                );
+                                            }
+                                        }}
                                     >{(currentlyPlaying.songID === String(eachTrack?.id) && currentlyPlaying.isPlaying) ?
                                         <img style={{padding: '5px'}} className={allResultsStyle['play-button']}
                                              width={40}
@@ -104,7 +107,14 @@ export function Songs({firstFour, resultsLoading}: { firstFour: Track[] | undefi
                                     </div>}
                             </div>
                             <div className={allResultsStyle['song-details']}>
-                                <a>{eachTrack?.name[0].toUpperCase().concat(eachTrack?.name.slice(1,)).length > 30 ? eachTrack?.name[0].toUpperCase().concat(eachTrack?.name.slice(1,)).slice(0, 30).concat('...') : eachTrack?.name[0].toUpperCase().concat(eachTrack?.name.slice(1,))}</a>
+                                <a
+                                    onClick={() => {
+                                        dispatch(addReactComponentToNavigation({
+                                            componentName: 'Album',
+                                            props: eachTrack?.album?.id
+                                        }))
+                                    }}
+                                >{eachTrack?.name[0].toUpperCase().concat(eachTrack?.name.slice(1,)).length > 30 ? eachTrack?.name[0].toUpperCase().concat(eachTrack?.name.slice(1,)).slice(0, 30).concat('...') : eachTrack?.name[0].toUpperCase().concat(eachTrack?.name.slice(1,))}</a>
                                 <div className={allResultsStyle['song-artists']}>
                                     {eachTrack?.explicit ?
                                         <div className={episodesStyle['explicit']}

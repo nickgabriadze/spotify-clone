@@ -2,7 +2,7 @@
 
 .artists-wrapper {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
     gap: 20px;
     padding: 10px;
     height: 100%;
@@ -20,28 +20,35 @@
     cursor: pointer;
     padding: 20px;
     height: 100%;
-
+    width: 100%;
     transition: all 300ms linear;
     position: relative;
-    width: fit-content;
+
 }
 
-.each-artist .artist-img {
+.each-artist {
 
     display: flex;
     justify-content: center;
-    align-items: center;
 
+}
+
+
+.artist-img-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .artist-img {
 
-    width: 22vh;
-    height: 22vh;
+    height: 100%;
+    width: 100%;
+
     max-width: 160px;
     max-height: 160px;
-    min-width: 120px;
-    min-height: 120px;
+    min-width: 160px;
+    min-height: 160px;
 
 }
 
@@ -50,6 +57,9 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     box-shadow: 0 8px 8px rgba(0, 0, 0, .3);
 }
 
