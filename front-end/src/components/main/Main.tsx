@@ -21,7 +21,6 @@ export function Main({height}: { height: number }) {
     const [loading, setLoading] = useState<boolean>(true);
     const access = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken)
     const navOption = useAppSelector((state) => state.navigationReducer.navTo);
-    // TODO have to remove as soon as the component array will be created
     const searching = useAppSelector((state) => state.navigationReducer.searchQuery);
     const dispatch = useAppDispatch();
     const navigation: {
