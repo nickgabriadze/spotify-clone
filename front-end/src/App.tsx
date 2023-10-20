@@ -11,8 +11,6 @@ export function App() {
     const access = useAppSelector((state) => state.spotiUserReducer.spotiToken);
 
     const dispatch = useAppDispatch();
-
-
     useEffect(() => {
         if (localStorage.getItem('access_token') === null
             ||
@@ -78,16 +76,20 @@ export function App() {
     } else {
 
         return (
-            <div className={appStyle["application-wrapper"]}>
+            <div className={appStyle["application-wrapper"]}
+            >
                 <div className={appStyle['nav-lib-main-wrapper']}
+
                 >
                     <div className={appStyle['nav-lib-wrapper']}
                          style={{height: windowInnerHeight}}
+
                     >
                         <Navigation/>
                         <Library divHeight={windowInnerHeight - 133}/>
                     </div>
-                    <div className={appStyle['main']}><Main height={windowInnerHeight}/></div>
+                    <div className={appStyle['main']}
+                    ><Main height={windowInnerHeight}/></div>
                 </div>
 
                 <Player/>

@@ -31,7 +31,8 @@ interface Navigation {
             component: string, props?: any
         }[],
         currentPageIndex: number
-    }
+    },
+    somethingIsFullScreen: boolean
 }
 
 const initialState: Navigation = {
@@ -54,14 +55,20 @@ const initialState: Navigation = {
             component: "Home",
         }],
         currentPageIndex: 0
-    }
+    },
+    somethingIsFullScreen: false
 };
 
 const navigationSlice = createSlice({
     name: "Navigation Slice",
     initialState,
     reducers: {
-
+        setSomethingIsFullScreen: (state, action: {payload: boolean}) => {
+            return {
+                ...state,
+                somethingIsFullScreen: action.payload
+            }
+        },
         addLibraryAction: (state, action: { payload: string }) => {
             if (state.libraryActions.length > 50) {
                 return {
@@ -285,6 +292,7 @@ export const {
     setUserControlActions,
     addReactComponentToNavigation,
     navigateToDirection,
-    addLibraryAction
+    addLibraryAction,
+    setSomethingIsFullScreen
 } = navigationSlice.actions;
 export default navigationSlice.reducer;

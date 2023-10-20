@@ -7,7 +7,10 @@ import getAlbum from "../../../../api/search/getAlbum.ts";
 import getAlbumTracks from "../../../../api/home/album/getAlbumTracks.ts";
 import millisecondsToHhMmSs from "../../../player/msConverter.ts";
 import PlayResumeStreaming from "../../../../api/player/playResumeStreaming.ts";
-import {addLibraryAction, setUserControlActions} from "../../../../store/features/navigationSlice.ts";
+import {
+    addLibraryAction,
+    setUserControlActions
+} from "../../../../store/features/navigationSlice.ts";
 import PauseStreaming from "../../../../api/player/pauseStreaming.ts";
 import Pause from "../../../search/components/each-search-component/Playlists/icons/pause.svg";
 import Play from "../../../search/components/each-search-component/Playlists/icons/play.svg";
@@ -28,6 +31,8 @@ export function AlbumPage({albumID}: { albumID: string }) {
     const dispatch = useAppDispatch();
     const albumIsSaved = useAppSelector(s => s.spotiUserReducer.userSaved.userSavedAlbumIDs).includes(albumID)
     const [artistAlbums, setArtistAlbums] = useState<Album[]>([]);
+    const [onFullScreen, setOnFullScreen] = useState<boolean>(false);
+
 
     useEffect(() => {
         const getOtherAlbums = async () => {
@@ -73,8 +78,44 @@ export function AlbumPage({albumID}: { albumID: string }) {
         >
             <div className={albumStyle['album-main-info']}
             >
-                <div className={albumStyle['album-picture']}>
-                    <img alt="Album Image" draggable={false} src={albumData?.album.images[0]?.url}
+                {onFullScreen && <div
+
+                    style={{
+                             position: 'absolute',
+                             width: '100%',
+                             height: '100%',
+                             display: 'flex',
+                             justifyContent: 'center',
+                             alignItems: 'center',
+                             top: '50%',
+                             left: '50%',
+                             translate: "-50% -50%",
+                             zIndex: 999,
+
+                             backdropFilter: 'brightness(20%)'
+                         }}
+                >
+                    <img alt="Album Image"
+
+                         onClick={() => setOnFullScreen(false)}
+                         style={{ borderRadius: '10px',width: '70vh', height: '70vh', cursor: 'pointer'}}
+                         draggable={false} src={albumData?.album.images[0]?.url}
+                         width={albumData?.album.images[0]?.width}></img>
+
+                </div>}
+                <div className={albumStyle['album-picture']}
+                      onBlur={() => {
+                        setOnFullScreen(false);
+                    }}
+                    tabIndex={-1}
+                     onClick={() => {
+                         setOnFullScreen(true);
+                     }}
+
+                >
+                    <img alt="Album Image"
+                         style={{borderRadius: onFullScreen ? '10px' : ''}}
+                         draggable={false} src={albumData?.album.images[0]?.url}
                          width={albumData?.album.images[0]?.width}></img>
                 </div>
                 <div className={albumStyle['album-general-information']}>
