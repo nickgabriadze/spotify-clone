@@ -17,8 +17,8 @@
     padding: 15px 15px 20px;
 
     .album-picture {
-        height: 25vh;
-        width: 25vh;
+        height: 20vw;
+        width: 20vw;
         display: flex;
         justify-content: center;
         align-items: center;
