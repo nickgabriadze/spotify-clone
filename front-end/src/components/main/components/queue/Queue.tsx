@@ -21,7 +21,20 @@ export function Queue() {
                 setQueueLoading(true)
                 const requestQueue = await getSongQueue(accessToken)
                 const queueData = requestQueue.data;
-                setQueueData(queueData)
+                const set = [...new Set(queueData.queue.map(e => e.id))]
+                const newData = {
+                    queue: queueData.queue.filter(e => {
+                        if(set.includes(e.id)){
+                            const i = set.indexOf(e.id);
+                            set.splice(i, 1)
+                            return true
+                        }else{
+                            return false
+                        }
+                    }).slice(0, -1),
+                    currently_playing: queueData.currently_playing
+                };
+                setQueueData(newData)
 
             } catch (err) {
 
