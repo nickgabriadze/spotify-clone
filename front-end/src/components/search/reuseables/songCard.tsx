@@ -16,7 +16,7 @@ export const SongCard = forwardRef(function SongCard(props: {
     eachTrack: Track | undefined,
     n: number,
     accessToken: string,
-    forAlbum: boolean
+    forAlbum: boolean,
 }, ref: LegacyRef<HTMLDivElement>) {
 
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong)
@@ -128,14 +128,17 @@ export const SongCard = forwardRef(function SongCard(props: {
                     >
                         <a
                             onClick={() => {
-                                dispatch(addReactComponentToNavigation({
-                                    componentName: 'Album',
-                                    props: eachTrack?.album?.id
-                                }))
+                                if (eachTrack?.album?.id) {
+                                    dispatch(addReactComponentToNavigation({
+                                        componentName: 'Album',
+                                        props: eachTrack?.album?.id
+                                    }))
+                                }
                             }}
                             style={
 
-                                {width: 'fit-content',
+                                {
+                                    width: 'fit-content',
                                     color: `${eachTrack?.id === songID ? '#1ed760' : 'white'}`
                                 }}>{eachTrack?.name}</a>
                         <div

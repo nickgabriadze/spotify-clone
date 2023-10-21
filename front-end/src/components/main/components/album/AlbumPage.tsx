@@ -37,6 +37,7 @@ export function AlbumPage({albumID}: { albumID: string }) {
     useEffect(() => {
         const getOtherAlbums = async () => {
             try {
+
                 const artistAlbums = (await getArtistAlbums(accessToken, String(albumData?.album.artists[0].id))).data;
                 setArtistAlbums(artistAlbums.items)
             } catch (err) {
@@ -50,6 +51,7 @@ export function AlbumPage({albumID}: { albumID: string }) {
     }, [accessToken, String(albumData?.album.artists[0].id), albumID]);
 
     useEffect(() => {
+
         const getAlbumInformation = async () => {
             try {
                 setDataLoading(true)
@@ -69,7 +71,7 @@ export function AlbumPage({albumID}: { albumID: string }) {
         getAlbumInformation()
     }, [accessToken, albumID]);
 
-    if (!dataLoading) {
+    if (!dataLoading && albumData?.albumTracks.length !== 0) {
         const albumDate = new Date(String(albumData?.album.release_date))
         const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
         const releaseDate = months[albumDate.getMonth()].concat(" ").concat(String(albumDate.getDate()).concat(", ").concat(String(albumDate.getFullYear())))
