@@ -325,7 +325,8 @@
     animation: brightness-animation 3s linear infinite;
 
 }
-.episode-small-dot-skeleton{
+
+.episode-small-dot-skeleton {
     width: 5px;
     height: 5px;
     border-radius: 100%;
@@ -334,7 +335,8 @@
 
 
 }
-.episode-duration-skeleton{
+
+.episode-duration-skeleton {
     width: 90px;
     height: 8px;
     background-color: var(--default-background-color);
@@ -342,13 +344,15 @@
 }
 
 /* top result */
-.top-res-skeleton-wrapper{
+.top-res-skeleton-wrapper {
     display: flex;
     flex-direction: column;
     width: 40%;
+
     & h2 {
         color: white;
     }
+
     gap: 20px;
 
 }
@@ -359,7 +363,8 @@
     background-color: #181818;
     padding: 25px 25px 25px 25px;
     gap: 30px;
-    .top-res-image-skeleton{
+
+    .top-res-image-skeleton {
         width: 92px;
         height: 92px;
         background-color: var(--default-background-color);
@@ -386,12 +391,14 @@
             background-color: var(--default-background-color);
             animation: brightness-animation 3s linear infinite;
         }
-        .top-res-artist-skeleton{
+
+        .top-res-artist-skeleton {
             width: 80px;
             height: 10px;
             background-color: var(--default-background-color);
             animation: brightness-animation 3s linear infinite;
         }
+
         .top-res-type-skeleton {
             width: 50px;
             height: 20px;
@@ -405,48 +412,52 @@
 
 /* top songs */
 
-.top-song-skeleton-wrapper{
+.top-song-skeleton-wrapper {
     display: flex;
     width: 100%;
     align-items: center;
     justify-content: space-between;
     padding: 10px;
-    .top-song-details-skeleton{
+
+    .top-song-details-skeleton {
         display: flex;
         gap: 10px;
         align-items: center;
 
-        .top-song-image-skeleton{
+        .top-song-image-skeleton {
             width: 40px;
             height: 40px;
             background-color: var(--default-background-color);
             animation: brightness-animation 3s linear infinite;
         }
 
-        .top-song-title-artist-skeleton{
+        .top-song-title-artist-skeleton {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             gap: 10px;
-           .top-song-title-skeleton{
+
+            .top-song-title-skeleton {
                 width: 150px;
                 height: 10px;
                 background-color: var(--default-background-color);
                 animation: brightness-animation 3s linear infinite;
             }
 
-          .top-song-explicit-artists {
-                display:flex;
+            .top-song-explicit-artists {
+                display: flex;
                 gap: 10px;
-              align-items: center;
-                :nth-child(1){
+                align-items: center;
+
+                :nth-child(1) {
                     width: 10px;
                     height: 10px;
                     border-radius: 2px;
                     background-color: var(--default-background-color);
                     animation: brightness-animation 3s linear infinite;
                 }
-                :nth-child(2){
+
+                :nth-child(2) {
                     width: 70px;
                     height: 5px;
                     background-color: var(--default-background-color);
@@ -455,7 +466,8 @@
             }
         }
     }
-    .top-song-duration-skeleton{
+
+    .top-song-duration-skeleton {
         width: 30px;
         height: 10px;
         border-radius: 2px;
@@ -464,7 +476,7 @@
     }
 }
 
-.top-episode-skeleton-wrapper{
+.top-episode-skeleton-wrapper {
     display: flex;
     flex-direction: column;
     background-color: #181818;
@@ -473,9 +485,10 @@
     gap: 15px;
     border-radius: 8px;
 
-    .top-episode-image-skeleton-wrapper{
+    .top-episode-image-skeleton-wrapper {
         position: relative;
-        .top-episode-image-skeleton{
+
+        .top-episode-image-skeleton {
             z-index: 1;
             position: relative;
             width: 150px;
@@ -485,7 +498,8 @@
             animation: brightness-animation 3s linear infinite;
             background-color: var(--default-background-color);
         }
-        .top-episode-small-image-skeleton{
+
+        .top-episode-small-image-skeleton {
             position: absolute;
             width: 35px;
             height: 35px;
@@ -495,12 +509,12 @@
             border-radius: 3px;
             animation: brightness-animation 2s ease-in-out infinite;
             background-color: var(--default-background-color);
-            z-index:2;
+            z-index: 2;
 
         }
     }
 
-    .top-episode-title-skeleton{
+    .top-episode-title-skeleton {
         width: 75%;
         height: 15px;
         border-radius: 4px;
@@ -508,20 +522,22 @@
         background-color: var(--default-background-color);
     }
 
-    .top-episode-info-skeleton{
+    .top-episode-info-skeleton {
         display: flex;
-        gap:10px;
+        gap: 10px;
         align-items: center;
         width: 75%;
         justify-content: space-evenly;
-        .top-episode-explicit-skeleton{
+
+        .top-episode-explicit-skeleton {
             width: 20px;
             height: 15px;
             border-radius: 3px;
             animation: brightness-animation 3s ease-in-out infinite;
             background-color: var(--default-background-color);
         }
-        .top-episode-date-time-skeleton{
+
+        .top-episode-date-time-skeleton {
             width: 100%;
             height: 10px;
             border-radius: 3px;
@@ -533,15 +549,17 @@
 
 /* user's top item */
 
-.user-top-item-skeleton{
+.user-top-item-skeleton {
     display: flex;
-      background-color: rgb(51, 51, 51);
+    background-color: rgb(51, 51, 51);
     width: 100%;
     border-radius: 3px;
+    flex-grow: 1;
+    flex-basis: 300px;
     animation: shimmerAnimation 10s linear infinite;
 }
 
-.user-top-item-title-skeleton{
+.user-top-item-title-skeleton {
     width: 80%;
     background-color: rgb(71, 71, 71);
     border-radius: 30px;
@@ -550,7 +568,7 @@
 
 }
 
-.user-top-item-info-skeleton{
+.user-top-item-info-skeleton {
     background-color: rgb(51, 51, 51);
     width: 100%;
     display: flex;
@@ -560,7 +578,7 @@
 
 }
 
-.user-top-item-album-img-skeleton{
+.user-top-item-album-img-skeleton {
     width: 90px;
     height: 70px;
     border-bottom-left-radius: 3px;
@@ -571,42 +589,41 @@
 }
 
 .user-top-item-skeleton {
-  display: flex;
-  background-color: rgb(51, 51, 51);
-  width: 100%;
-  border-radius: 3px;
-  overflow: hidden;
-  position: relative;
+    display: flex;
+    background-color: rgb(51, 51, 51);
+    width: 100%;
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
 }
 
 .shimmer {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 25%, rgba(255, 255, 255, 0.2) 50%, rgba(0, 0, 0, 0) 75%);
-  background-size: 200% 100%;
-  animation: shimmerAnimation 8s linear infinite;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0) 25%, rgba(255, 255, 255, 0.2) 50%, rgba(0, 0, 0, 0) 75%);
+    background-size: 200% 100%;
+    animation: shimmerAnimation 8s linear infinite;
 }
 
 @keyframes shimmerAnimation {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
 }
 
 
 @keyframes brightness-alternate {
-  0% {
-    filter: brightness(1);
-  }
-  100% {
-    filter: brightness(0.7);
-  }
+    0% {
+        filter: brightness(1);
+    }
+    100% {
+        filter: brightness(0.7);
+    }
 }
-
 
 
 @keyframes brightness-animation {

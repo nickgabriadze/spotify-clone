@@ -135,7 +135,7 @@ export const SongCard = forwardRef(function SongCard(props: {
                             }}
                             style={
 
-                                {
+                                {width: 'fit-content',
                                     color: `${eachTrack?.id === songID ? '#1ed760' : 'white'}`
                                 }}>{eachTrack?.name}</a>
                         <div
