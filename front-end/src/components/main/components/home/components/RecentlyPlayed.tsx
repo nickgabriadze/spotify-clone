@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useAppSelector} from "../../../../../store/hooks.ts";
-import getRecentlyPlayed from "../../../../../api/home/getRecentlyPlayed.ts";
+import getRecentlyPlayed from "../../../../../api/main/home/getRecentlyPlayed.ts";
 import {RecentlyPlayed} from "../../../../../types/recentlyPlayed.ts";
 import homepageStyle from "../homepage.module.css";
 import {ArtistCardApi} from "../../../../search/reuseables/artistCard.tsx";

@@ -4,7 +4,7 @@ import {Album, AlbumWithTracks} from "../../../../types/album.ts";
 import {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks.ts";
 import getAlbum from "../../../../api/search/getAlbum.ts";
-import getAlbumTracks from "../../../../api/home/album/getAlbumTracks.ts";
+import getAlbumTracks from "../../../../api/main/album/getAlbumTracks.ts";
 import millisecondsToHhMmSs from "../../../player/msConverter.ts";
 import PlayResumeStreaming from "../../../../api/player/playResumeStreaming.ts";
 import {
@@ -20,7 +20,7 @@ import removeAlbumForCurrentUser from "../../../../api/library/removeAlbumForCur
 import saveAlbumForCurrentUser from "../../../../api/library/saveAlbumForCurrentUser.ts";
 import Duration from "../../../search/components/each-search-component/icons/duration.svg";
 import {SongCard} from "../../../search/reuseables/songCard.tsx";
-import getArtistAlbums from "../../../../api/home/album/getArtistAlbums.ts";
+import getArtistAlbums from "../../../../api/main/album/getArtistAlbums.ts";
 import AlbumCard from "../../../search/reuseables/albumCard.tsx";
 
 export function AlbumPage({albumID}: { albumID: string }) {

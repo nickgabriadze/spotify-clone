@@ -18,8 +18,8 @@ export function Search() {
     }, [searchStuff.searchQuery.trim().length]);
 
     return (
-        <section style={{height: '100%'}}>
-            <div style={{ height: '100%'}}>
+        <section style={{height: '100%', width: '100%'}}>
+            <div style={{ height: '100%', width: '100%'}}>
                 {searchStuff.searchQuery.trim().length > 0 ? (
 
                     <SearchResult/>

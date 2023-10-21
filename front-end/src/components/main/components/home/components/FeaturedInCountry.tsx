@@ -1,6 +1,6 @@
 import {useAppSelector} from "../../../../../store/hooks.ts";
 import {useEffect, useState} from "react";
-import getFeaturedInCountry from "../../../../../api/home/getFeaturedInCountry.ts";
+import getFeaturedInCountry from "../../../../../api/main/home/getFeaturedInCountry.ts";
 import {Playlist} from "../../../../../types/playlist.ts";
 import homepageStyle from "../homepage.module.css";
 import PlayListCard from "../../../../search/reuseables/playListCard.tsx";

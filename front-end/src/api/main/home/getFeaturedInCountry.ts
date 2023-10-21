@@ -1,4 +1,4 @@
-import axiosInstance from "../../axios.ts";
+import axiosInstance from "../../../axios.ts";
 
 export async function getFeaturedInCountry(accessToken: string, countryCode: string | undefined) {
 

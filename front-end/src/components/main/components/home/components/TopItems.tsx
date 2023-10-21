@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import homepageStyle from "../homepage.module.css";
 import {useAppDispatch, useAppSelector} from "../../../../../store/hooks.ts";
-import getUsersTopItems from "../../../../../api/home/getUsersTopItems.ts";
+import getUsersTopItems from "../../../../../api/main/home/getUsersTopItems.ts";
 import {Artist} from "../../../../../types/artist.ts";
 import {Album} from "../../../../../types/album.ts";
 import {Track} from "../../../../../types/track.ts";

@@ -1,4 +1,4 @@
-import axiosInstance from "../../axios.ts";
+import axiosInstance from "../../../axios.ts";
 
 export async function getArtistsRelatedArtists(accessToken: string, id: string){
 

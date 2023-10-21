@@ -1,7 +1,7 @@
 import {useAppSelector} from "../../../../../store/hooks.ts";
 import {useEffect, useState} from "react";
-import getUsersTopItems from "../../../../../api/home/getUsersTopItems.ts";
-import getArtistsRelatedArtists from "../../../../../api/home/getRelatedArtists.ts";
+import getUsersTopItems from "../../../../../api/main/home/getUsersTopItems.ts";
+import getArtistsRelatedArtists from "../../../../../api/main/home/getRelatedArtists.ts";
 import {Artist} from "../../../../../types/artist.ts";
 import homepageStyle from "../homepage.module.css";
 import ArtistCard from "../../../../search/reuseables/artistCard.tsx";

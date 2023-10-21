@@ -1,7 +1,7 @@
 import homepageStyle from "../homepage.module.css";
 import {useEffect, useState} from "react";
 import {Album} from "../../../../../types/album.ts";
-import getNewReleases from "../../../../../api/home/getNewReleases.ts";
+import getNewReleases from "../../../../../api/main/home/getNewReleases.ts";
 import {useAppSelector} from "../../../../../store/hooks.ts";
 import AlbumCard from "../../../../search/reuseables/albumCard.tsx";
 
