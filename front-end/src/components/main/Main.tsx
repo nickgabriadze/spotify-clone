@@ -14,6 +14,8 @@ import Searchables from "../search/components/searchables/searchables.tsx";
 import {setUserInformation} from "../../store/features/spotiUserSlice.ts";
 import AlbumPage from "./components/album/AlbumPage.tsx";
 import {navigateToDirection} from "../../store/features/navigationSlice.ts";
+import ArtistPage from "./components/artist/ArtistPage.tsx";
+import  {CategoryPage} from "./components/browsingCategory/category.tsx";
 
 
 export function Main({height}: { height: number }) {
@@ -29,7 +31,9 @@ export function Main({height}: { height: number }) {
         "Search": () => <Search/>,
         "Home": () => <Home/>,
         "Queue": () => <Queue/>,
-        "Album": (ID: string) => <AlbumPage albumID={ID}/>
+        "Album": (ID: string) => <AlbumPage albumID={ID}/>,
+        "Artist": (ID: string) => <ArtistPage artistID={ID} />,
+        "BrowsingCategory": (categoryStuff: string[]) => <CategoryPage categoryStuff={categoryStuff} />
     }
     useEffect(() => {
         const fetchMyData = async () => {

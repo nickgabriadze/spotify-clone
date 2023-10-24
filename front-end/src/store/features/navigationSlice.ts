@@ -83,9 +83,23 @@ const navigationSlice = createSlice({
             }
         },
 
-        navigateToDirection: (state, action: { payload: "BACK" | "FORWARD" }) => {
+        navigateToDirection: (state, action: { payload: "BACK" | "FORWARD", causedByError?: boolean }) => {
+
+
 
             if (action.payload === "BACK" && state.pageNavigation.currentPageIndex > 0) {
+                if(action.causedByError){
+                        return {
+                    ...state,
+
+                    pageNavigation: {
+                        ...state.pageNavigation,
+                        pageHistory: [...state.pageNavigation.pageHistory.slice(0, -1)],
+                        currentPageIndex: state.pageNavigation.currentPageIndex - 1
+
+                    }
+                }
+                }
                 return {
                     ...state,
 

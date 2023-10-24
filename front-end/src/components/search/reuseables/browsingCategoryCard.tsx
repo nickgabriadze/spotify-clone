@@ -1,14 +1,21 @@
 import {Category} from "../../../types/categories.ts";
+import {useAppDispatch} from "../../../store/hooks.ts";
+import {addReactComponentToNavigation} from "../../../store/features/navigationSlice.ts";
 
 
-export function BrowsingCategoryCard({category,
-                                         colorHex}: {
+export function BrowsingCategoryCard({
+                                         category,
+                                         colorHex
+                                     }: {
     category: Category;
     colorHex: string;
 }) {
 
-
-
+    const dispatch = useAppDispatch();
+    const categoryName = category.name
+                        .split("-")
+                        .map((letter) => letter[0].toUpperCase().concat(letter.slice(1)))
+                        .join(" ")
 
     return (
         <div
@@ -23,13 +30,13 @@ export function BrowsingCategoryCard({category,
                 flexDirection: 'column',
                 position: "relative"
             }}
+            onClick={() => dispatch(addReactComponentToNavigation({componentName: 'BrowsingCategory', props: [category?.id, categoryName]}))}
         >
-            <h1 style={{padding: '10px', wordWrap: 'break-word'}}>
-                {category.name
-                    .split("-")
-                    .map((letter) => letter[0].toUpperCase().concat(letter.slice(1)))
-                    .join(" ")}
-            </h1>
+            <div >
+              <h1 style={{padding: '10px', wordWrap: 'break-word'}}>
+                    {categoryName}
+                </h1>
+            </div>
 
             <div
                 style={{
