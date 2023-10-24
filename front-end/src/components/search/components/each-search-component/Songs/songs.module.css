@@ -138,6 +138,23 @@
 
 }
 
+.artists-mapped {
+    & a {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-family: 'Gotham Light', sans-serif;
+        font-weight: 600;
+
+        color: #b3b3b3;
+    }
+
+    & a:hover {
+        text-decoration: underline;
+        color: white;
+    }
+}
+
 .song-hover-over img {
     border-radius: 100%;
     display: flex;

@@ -142,10 +142,20 @@ export const SongCard = forwardRef(function SongCard(props: {
                                     color: `${eachTrack?.id === songID ? '#1ed760' : 'white'}`
                                 }}>{eachTrack?.name}</a>
                         <div
+                            className={songsStyle['artists-mapped']}
                             style={{display: 'flex', gap: '5px', alignItems: 'center'}}>
                             {eachTrack?.explicit ?
                                 <div className={episodesStyle['explicit']} style={{fontSize: '8px'}}>E</div> : ''}
-                            <p>{eachTrack?.artists.map((each) => each.name).join(", ")}</p></div>
+                            <p >{eachTrack?.artists.slice(0, 4).map((artist, i) =>
+                                <a key={i}
+                                   onClick={() => {
+                                       dispatch(addReactComponentToNavigation({
+                                           componentName: 'Artist',
+                                           props: artist?.id
+                                       }))
+                                   }}
+                                >{i === eachTrack.artists.slice(0, 4).length - 1 ? artist.name : `${artist.name}, `}</a>)}</p>
+                        </div>
                     </div>
                 </div>
             </div>

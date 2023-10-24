@@ -1,7 +1,10 @@
 import {Track} from "../../../../../../types/track.ts";
 import allResultsStyle from "../allresults.module.css";
 import PlayResumeStreaming from "../../../../../../api/player/playResumeStreaming.ts";
-import {setUserControlActions} from "../../../../../../store/features/navigationSlice.ts";
+import {
+    addReactComponentToNavigation,
+    setUserControlActions
+} from "../../../../../../store/features/navigationSlice.ts";
 import Play from "../../Playlists/icons/play.svg";
 import {useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../../../../store/hooks.ts";
@@ -31,7 +34,14 @@ export function TopResult({topSong, accessToken, resultsLoading}: { topSong: Tra
             <div className={allResultsStyle['track-artist-type']}>
                 {topSong?.explicit ? <div className={episodesStyle['explicit']} style={{fontSize: '8px'}}>E</div> : ''}
 
-                <a>{topSong?.artists[0].name}</a>
+                <a
+                onClick={() => {
+                         dispatch(addReactComponentToNavigation({
+                             componentName: 'Artist',
+                             props: topSong?.artists[0]?.id
+                         }))
+                     }}
+                >{topSong?.artists[0].name}</a>
                 <p>{topSong?.type === 'track' ? 'Song' : topSong?.type}</p>
             </div>
 

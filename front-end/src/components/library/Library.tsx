@@ -9,9 +9,14 @@ import getSavedPlaylists from "../../api/library/getSavedPlaylists.ts";
 import LibraryItemSkeleton from "./libraryItemSkeleton.tsx";
 import getSavedTracks from "../../api/library/getSavedTracks.ts";
 import HeartIcon from "./icons/saved-songs-icon.png";
-import {setUserSavedAlbumIDs, setUsersSavedSongIDs} from "../../store/features/spotiUserSlice.ts";
+import {
+    setUserSavedAlbumIDs,
+    setUserSavedArtistIDs,
+    setUsersSavedSongIDs
+} from "../../store/features/spotiUserSlice.ts";
 import {Track} from "../../types/track.ts";
 import {addReactComponentToNavigation} from "../../store/features/navigationSlice.ts";
+import getSavedArtists from "../../api/library/getSavedArtists.ts";
 
 export function Library({divHeight}: { divHeight: number }) {
     const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
@@ -49,12 +54,14 @@ export function Library({divHeight}: { divHeight: number }) {
 
                 const reqAlbums = await getSavedAlbums(accessToken);
                 const albumsData = reqAlbums.data.items;
+                const savedArtists = await getSavedArtists(accessToken);
                 const reqPlaylists = await getSavedPlaylists(accessToken);
                 const playlistsData = reqPlaylists.data.items;
                 const savedSongItems: {
                     added_at: string,
                     track: Track
                 }[] = (await getSavedTracks(accessToken)).data.items;
+                dispatch(setUserSavedArtistIDs(savedArtists.data.artists.items))
                 dispatch(setUsersSavedSongIDs(savedSongItems.map(e => e.track)))
                 dispatch(setUserSavedAlbumIDs(albumsData.map(e => e.album)));
                 const savedSongsAvailability = savedSongItems.length;
@@ -63,8 +70,9 @@ export function Library({divHeight}: { divHeight: number }) {
                     albumItems: albumsData,
                     playlistItems: playlistsData
                 })
-            } catch {
-
+                console.log(libraryActions)
+            } catch(err) {
+                console.log(err)
             } finally {
                 setLibraryLoading(false)
             }
