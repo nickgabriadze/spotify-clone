@@ -34,13 +34,13 @@ export function PlaylistCardApi({playlistID} : {playlistID: string}){
   return loading ? <PlaylistCardSkeleton /> : <PlaylistCard eachPlaylist={singlePlayList}/>
 }
 
-export function PlaylistCard({ eachPlaylist }: { eachPlaylist: Playlist | undefined }) {
+export function PlaylistCard({ eachPlaylist, playlistDescription }: { eachPlaylist: Playlist | undefined, playlistDescription?: boolean }) {
   const [hoveringOver, setHoveringOver] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const accessToken = useAppSelector(
     (state) => state.spotiUserReducer.spotiToken.accessToken
   );
-   
+   console.log(eachPlaylist)
   return (
     <div
       className={playlistsStyle["playlist-card"]}
@@ -80,12 +80,14 @@ export function PlaylistCard({ eachPlaylist }: { eachPlaylist: Playlist | undefi
             ? eachPlaylist?.name.slice(0, 16).concat("...")
             : eachPlaylist?.name}
         </a>
-        <p>
+        {!playlistDescription ? <p>
           By{" "}
           {Number(eachPlaylist?.owner.display_name.length) > 15
-            ? eachPlaylist?.owner.display_name.slice(0, 16).concat("...")
-            : eachPlaylist?.owner.display_name}
-        </p>
+              ? eachPlaylist?.owner.display_name.slice(0, 16).concat("...")
+              : eachPlaylist?.owner.display_name}
+        </p>: <p>{String(eachPlaylist?.description).includes('<a') ? `By ${eachPlaylist?.owner.display_name}` :
+            Number(eachPlaylist?.description.length) > 15 ? eachPlaylist?.description.slice(0, 20).concat("...")
+              : eachPlaylist?.description.toString()}</p>}
       </div>
     </div>
   );
