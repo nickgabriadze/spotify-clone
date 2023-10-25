@@ -66,6 +66,15 @@
             .artist-name-ry-nos {
                 font-family: 'Gotham Light', sans-serif;
                 font-weight: bold;
+
+                & a {
+                    font-family: 'Gotham Light', sans-serif;
+                }
+
+                & a:hover {
+                    text-decoration: underline;
+                    cursor: pointer;
+                }
             }
 
             .album-duration {

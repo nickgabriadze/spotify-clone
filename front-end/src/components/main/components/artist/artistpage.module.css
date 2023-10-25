@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     padding: 10px;
+    gap: 10px;
 }
 
 
@@ -112,12 +113,27 @@
         gap: 5px;
     }
 
-    .see-more-tracks{
+
+}
+
+   .see-more-tracks{
         color: #b3b3b3;
         font-size: 14px;
     }
 
     .see-more-tracks:hover{
         color: white
+    }
+
+.discography-section{
+    display: flex;
+    flex-direction: column;
+    gap:15px;
+    padding: 10px;
+
+    .disco-header{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
     }
 }

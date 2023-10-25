@@ -141,6 +141,17 @@ const navigationSlice = createSlice({
                 }
             }
 
+            if( action.payload.componentName === 'Queue' &&
+                state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].component === 'Queue'){
+
+                return {
+                    ...state,
+                    pageNavigation: {
+                        ...state.pageNavigation,
+                        currentPageIndex: state.pageNavigation.pageHistory.length - 1
+                    }
+                }
+            }
 
             if( action.payload.componentName === 'Search' &&
                 state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].component === 'Search'){

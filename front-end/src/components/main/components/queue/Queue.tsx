@@ -60,6 +60,7 @@ export function Queue() {
                     className={queueStyle['currently-playing-track']}
                 >{queueLoading ? <SongCardSkeleton/> :
                     <SongCard forAlbum={false} eachTrack={queueData?.currently_playing} n={1}
+                              forArtist={false}
                               accessToken={accessToken}/>}</div>
             </div>
 
@@ -78,6 +79,7 @@ export function Queue() {
                         key={i}/>) : queueData?.queue.map((eachTrack, i) => <SongCard forAlbum={false} key={i}
                                                                                       eachTrack={eachTrack}
                                                                                       n={i + 2}
+                                                                                      forArtist={false}
                                                                                       accessToken={accessToken}/>)}
 
                 </div>

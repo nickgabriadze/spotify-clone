@@ -15,6 +15,7 @@ import {Track} from "../../../../types/track.ts";
 import {SongCard} from "../../../search/reuseables/songCard.tsx";
 import NoArtistImage from "../../../search/components/each-search-component/icons/no-artist-pic.webp";
 import artistsStyle from "../../../search/components/each-search-component/Artists/artists.module.css";
+import getDiscography from "../../../../api/main/artist/getDiscography.ts";
 
 export function ArtistPage({artistID}: { artistID: string }) {
     const [artistData, setArtistData] = useState<Artist>();
@@ -32,6 +33,10 @@ export function ArtistPage({artistID}: { artistID: string }) {
                 setArtistData(artistData)
                 const topTracks = (await getArtistsPopularTracks(accessToken, artistID, country)).data.tracks
                 setArtistTopTracks(topTracks)
+
+                const discoTime = (await getDiscography(accessToken, artistID)).data
+                console.log(discoTime)
+
             } catch (err) {
 
             }
@@ -40,6 +45,7 @@ export function ArtistPage({artistID}: { artistID: string }) {
     }, [artistID, accessToken, country]);
 
     return <section className={artistPageStyle['artist-page-wrapper']}>
+
 
         <div className={artistPageStyle['artist-general-info']}>
             <div className={artistPageStyle['artist-image']}>{artistData?.images[0]?.url ? (
@@ -148,6 +154,16 @@ export function ArtistPage({artistID}: { artistID: string }) {
                         onClick={() => setShowMore(prev => !prev)}
                 ><p>{showMore ? 'Show less' : 'See more'}</p></button>
             </div>
+        </div>
+
+
+        <div className={artistPageStyle['discography-section']}>
+
+            <div className={artistPageStyle['disco-header']}>
+                <h1>Discography</h1>
+                <button className={artistPageStyle['see-more-tracks']}><h4>Show all</h4></button>
+            </div>
+
         </div>
     </section>
 }

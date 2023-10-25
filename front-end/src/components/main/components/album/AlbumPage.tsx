@@ -8,7 +8,7 @@ import getAlbumTracks from "../../../../api/main/album/getAlbumTracks.ts";
 import millisecondsToHhMmSs from "../../../player/msConverter.ts";
 import PlayResumeStreaming from "../../../../api/player/playResumeStreaming.ts";
 import {
-    addLibraryAction,
+    addLibraryAction, addReactComponentToNavigation,
     setUserControlActions
 } from "../../../../store/features/navigationSlice.ts";
 import PauseStreaming from "../../../../api/player/pauseStreaming.ts";
@@ -74,7 +74,7 @@ export function AlbumPage({albumID}: { albumID: string }) {
     if (!dataLoading && albumData?.albumTracks.length !== 0) {
         const albumDate = new Date(String(albumData?.album.release_date))
         const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-        const releaseDate = months[albumDate.getMonth()].concat(" ").concat(String(albumDate.getDate()).concat(", ").concat(String(albumDate.getFullYear())))
+        const releaseDate = months[Number(albumDate.getMonth())].concat(" ").concat(String(albumDate.getDate()).concat(", ").concat(String(albumDate.getFullYear())))
         return <section className={albumStyle['album-page-wrapper']}
 
         >
@@ -83,33 +83,32 @@ export function AlbumPage({albumID}: { albumID: string }) {
                 {onFullScreen && <div
 
                     style={{
-                             position: 'absolute',
-                             width: '100%',
-                             height: '100%',
-                             display: 'flex',
-                             justifyContent: 'center',
-                             alignItems: 'center',
-                             top: '50%',
-                             left: '50%',
-                             translate: "-50% -50%",
-                             zIndex: 999,
-
-                             backdropFilter: 'brightness(20%)'
-                         }}
+                        position: 'absolute',
+                        width: '100%',
+                        height: '100%',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        top: '50%',
+                        left: '50%',
+                        translate: "-50% -50%",
+                        zIndex: 999,
+                        backdropFilter: 'brightness(20%)'
+                    }}
                 >
                     <img alt="Album Image"
 
                          onClick={() => setOnFullScreen(false)}
-                         style={{ borderRadius: '10px',width: '70vh', height: '70vh', cursor: 'pointer'}}
+                         style={{borderRadius: '10px', width: '70vh', height: '70vh', cursor: 'pointer'}}
                          draggable={false} src={albumData?.album.images[0]?.url}
                          width={albumData?.album.images[0]?.width}></img>
 
                 </div>}
                 <div className={albumStyle['album-picture']}
-                      onBlur={() => {
-                        setOnFullScreen(false);
-                    }}
-                    tabIndex={-1}
+                     onBlur={() => {
+                         setOnFullScreen(false);
+                     }}
+                     tabIndex={-1}
                      onClick={() => {
                          setOnFullScreen(true);
                      }}
@@ -126,7 +125,15 @@ export function AlbumPage({albumID}: { albumID: string }) {
                         <h1>{albumData?.album.name}</h1>
                     </div>
                     <div className={albumStyle['artist-information']}>
-                        <h4 className={albumStyle['artist-name-ry-nos']}>{albumData?.album.artists[0].name} • {albumDate.getFullYear()} • {albumData?.album.total_tracks} song, </h4>
+                        <h4 className={albumStyle['artist-name-ry-nos']}><a
+                            onClick={() => {
+                                dispatch(addReactComponentToNavigation({
+                                    componentName: 'Artist',
+                                    props: albumData?.album?.artists[0]?.id
+                                }))
+                            }}
+                        >{albumData?.album.artists[0].name}</a> • {albumDate.getFullYear()} • {albumData?.album.total_tracks} song,
+                        </h4>
                         <p className={albumStyle['album-duration']}>{millisecondsToHhMmSs(Number(albumData?.album.tracks.items.map(e => e.duration_ms).reduce((a, b) => a + b, 0)), true)}</p>
                     </div>
                 </div>
@@ -223,6 +230,7 @@ export function AlbumPage({albumID}: { albumID: string }) {
                     <div className={albumStyle['track-box']}>
                         {albumData?.albumTracks.map((eachTrack, i) => <SongCard eachTrack={eachTrack}
                                                                                 key={i} n={i + 1}
+
                                                                                 accessToken={accessToken}
                                                                                 forAlbum={true}/>)}
                     </div>

@@ -71,7 +71,6 @@ export function Library({divHeight}: { divHeight: number }) {
                     albumItems: albumsData,
                     playlistItems: playlistsData
                 })
-                console.log(libraryActions)
             } catch(err) {
                 console.log(err)
             } finally {

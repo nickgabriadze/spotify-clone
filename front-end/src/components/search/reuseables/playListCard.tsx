@@ -40,7 +40,6 @@ export function PlaylistCard({ eachPlaylist, playlistDescription }: { eachPlayli
   const accessToken = useAppSelector(
     (state) => state.spotiUserReducer.spotiToken.accessToken
   );
-   console.log(eachPlaylist)
   return (
     <div
       className={playlistsStyle["playlist-card"]}
