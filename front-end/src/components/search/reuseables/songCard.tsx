@@ -130,6 +130,7 @@ export const SongCard = forwardRef(function SongCard(props: {
                          }}
                     >
                         <a
+                            className={songsStyle['track-name']}
                             onClick={() => {
                                 if (eachTrack?.album?.id) {
                                     dispatch(addReactComponentToNavigation({

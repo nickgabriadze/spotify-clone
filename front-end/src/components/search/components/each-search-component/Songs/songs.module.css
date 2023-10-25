@@ -40,6 +40,10 @@
 
 }
 
+.track-name:hover{
+    text-decoration: underline;
+}
+
 .track-wrapper {
     display: flex;
     flex-direction: row;
