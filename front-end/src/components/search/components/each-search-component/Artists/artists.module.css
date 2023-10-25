@@ -14,7 +14,7 @@
     background-color: #181818;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-between;
     gap: 20px;
     border-radius: 8px;
     cursor: pointer;
@@ -26,12 +26,7 @@
 
 }
 
-.each-artist {
 
-    display: flex;
-    justify-content: center;
-
-}
 
 
 .artist-img-wrapper {
@@ -102,8 +97,8 @@
 .artist-hover-button {
     position: absolute;
     z-index: 2;
-    margin-left: 45%;
-    margin-top: 10%;
+    margin-left: 50%;
+    margin-top: 50%;
     animation: pop-up-button-animation-artists 200ms linear;
 
     & div:hover {
@@ -118,7 +113,6 @@
     height: 50px;
     background-color: #1ed760;
     border-radius: 100%;
-
     display: flex;
     justify-content: center;
     align-items: center;

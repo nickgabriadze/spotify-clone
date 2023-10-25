@@ -122,7 +122,14 @@ export function Songs({firstFour, resultsLoading}: { firstFour: Track[] | undefi
                                     <div
                                         className={allResultsStyle['song-artists-box']}
                                     >{eachTrack.artists.slice(0, 4).map((artist, i) =>
-                                        <a key={i}>{i === eachTrack.artists.slice(0, 4).length - 1 ? artist.name : `${artist.name}, `}</a>)}
+                                        <a key={i}
+                                           onClick={() => {
+                                               dispatch(addReactComponentToNavigation({
+                                                   componentName: 'Artist',
+                                                   props: artist?.id
+                                               }))
+                                           }}
+                                        >{i === eachTrack.artists.slice(0, 4).length - 1 ? artist.name : `${artist.name}, `}</a>)}
                                     </div>
                                 </div>
                             </div>

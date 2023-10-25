@@ -118,6 +118,12 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
                             >
                                 {currentlyPlaying?.item?.artists.map((each, i) => (
                                     <a key={each.id} className={playerStyle["artists-name"]}
+                                       onClick={() => {
+                                           dispatch(addReactComponentToNavigation({
+                                               componentName: 'Artist',
+                                               props: each?.id
+                                           }))
+                                       }}
                                     >
                                         {each.name}
                                         {i === currentlyPlaying.item.artists.length - 1 ? "" : ", "}

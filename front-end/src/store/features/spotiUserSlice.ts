@@ -3,6 +3,7 @@ import fetchAccessToken from "../../api/getToken";
 import {Me} from "../../types/me.ts";
 import {Track} from "../../types/track.ts";
 import {Album} from "../../types/album.ts";
+import {Artist} from "../../types/artist.ts";
 
 interface TokenData {
     accessToken: string;
@@ -32,9 +33,10 @@ interface SpotiUser {
         refresh_token: string;
     };
     userInformation: Me | null,
-    userSaved:{
+    userSaved: {
         userSavedSongIDs: string[],
-          userSavedAlbumIDs: string[]
+        userSavedAlbumIDs: string[],
+        userSavedArtistIDs: string[],
     }
 }
 
@@ -49,8 +51,8 @@ const initialState: SpotiUser = {
     userInformation: null,
     userSaved: {
         userSavedSongIDs: [],
-        userSavedAlbumIDs: []
-
+        userSavedAlbumIDs: [],
+        userSavedArtistIDs: []
     }
 };
 
@@ -58,14 +60,23 @@ const spotiUserSlice = createSlice({
     name: "Spoti User Slice",
     initialState,
     reducers: {
+        setUserSavedArtistIDs: (state, action: { payload: Artist[] }) => {
 
+            return {
+                ...state,
+                userSaved: {
+                    ...state.userSaved,
+                    userSavedArtistIDs: action.payload.map(a => a.id)
+                }
+            }
+        },
         setUserInformation: (state, action: { payload: Me }) => {
             return {
                 ...state,
                 userInformation: action.payload
             }
         },
-        setUserSavedAlbumIDs: (state, action:{payload: Album[]}) => {
+        setUserSavedAlbumIDs: (state, action: { payload: Album[] }) => {
 
             return {
                 ...state,
@@ -175,6 +186,6 @@ const spotiUserSlice = createSlice({
     },
 });
 
-export const {setUserInformation, setToken, updateCredentials, setUsersSavedSongIDs, setUserSavedAlbumIDs} = spotiUserSlice.actions;
+export const {setUserInformation, setToken, updateCredentials, setUserSavedArtistIDs, setUsersSavedSongIDs, setUserSavedAlbumIDs} = spotiUserSlice.actions;
 
 export default spotiUserSlice.reducer;

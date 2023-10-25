@@ -55,7 +55,7 @@ export function Main({height}: { height: number }) {
 
     const PageNavigation = useAppSelector(state => state.navigationReducer.pageNavigation);
 
-        console.log(PageNavigation.pageHistory)
+
     const componentObject = PageNavigation.pageHistory[PageNavigation.currentPageIndex]
     return (
         <main className={mainStyle['main-container']} style={{height: `${height}px`}}>

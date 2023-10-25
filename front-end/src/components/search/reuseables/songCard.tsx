@@ -16,15 +16,15 @@ export const SongCard = forwardRef(function SongCard(props: {
     eachTrack: Track | undefined,
     n: number,
     accessToken: string,
-    forAlbum: boolean,
+    forAlbum?: boolean,
+    forArtist?: boolean
 }, ref: LegacyRef<HTMLDivElement>) {
 
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong)
-    const {n, eachTrack, accessToken, forAlbum} = props;
+    const {n, eachTrack, accessToken, forAlbum, forArtist} = props;
     const songID = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong.songID);
     const dispatch = useAppDispatch();
     const [hoveringOver, setHoveringOver] = useState<boolean>(false)
-
 
     return (
         <div className={songsStyle["track-wrapper"]}
@@ -123,10 +123,14 @@ export const SongCard = forwardRef(function SongCard(props: {
 
                     <div className={songsStyle["title-artists"]}
                          style={{
-                             width: `${forAlbum ? '55vw' : '30vw'}`
+
+                             gap: forArtist ? '0px' : '10px',
+
+
                          }}
                     >
                         <a
+                            className={songsStyle['track-name']}
                             onClick={() => {
                                 if (eachTrack?.album?.id) {
                                     dispatch(addReactComponentToNavigation({
@@ -138,14 +142,31 @@ export const SongCard = forwardRef(function SongCard(props: {
                             style={
 
                                 {
-                                    width: 'fit-content',
-                                    color: `${eachTrack?.id === songID ? '#1ed760' : 'white'}`
+                                    width: `${forAlbum ? '55vw' : '25vw'}`,
+                                    color: `${eachTrack?.id === songID ? '#1ed760' : 'white'}`,
+                                    paddingBottom: forArtist && eachTrack?.explicit ? '10px' : '0px'
                                 }}>{eachTrack?.name}</a>
                         <div
-                            style={{display: 'flex', gap: '5px', alignItems: 'center'}}>
+                            className={songsStyle['artists-mapped']}
+
+                        >
                             {eachTrack?.explicit ?
-                                <div className={episodesStyle['explicit']} style={{fontSize: '8px'}}>E</div> : ''}
-                            <p>{eachTrack?.artists.map((each) => each.name).join(", ")}</p></div>
+                                <div className={episodesStyle['explicit']}
+                                     style={{fontSize: '8px', width: 'fit-content'}}>E</div> : ''}
+                            {(forArtist === false || forAlbum == true) &&
+                                <div className={songsStyle['artists-box']}
+                                style={{ width: `${forAlbum ? '55vw' : '29vw'}`}}
+                                >{eachTrack?.artists.map((artist, i) =>
+                                    <a key={i}
+                                       onClick={() => {
+                                           dispatch(addReactComponentToNavigation({
+                                               componentName: 'Artist',
+                                               props: artist?.id
+                                           }))
+                                       }}
+                                    >{i === eachTrack.artists.slice(0, 4).length - 1 ? artist.name : `${artist.name}, `}</a>)}</div>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
