@@ -13,6 +13,8 @@ import saveArtistForCurrentUser from "../../../../api/library/saveArtistForCurre
 import getArtistsPopularTracks from "../../../../api/main/artist/getArtistsPopularTracks.ts";
 import {Track} from "../../../../types/track.ts";
 import {SongCard} from "../../../search/reuseables/songCard.tsx";
+import NoArtistImage from "../../../search/components/each-search-component/icons/no-artist-pic.webp";
+import artistsStyle from "../../../search/components/each-search-component/Artists/artists.module.css";
 
 export function ArtistPage({artistID}: { artistID: string }) {
     const [artistData, setArtistData] = useState<Artist>();
@@ -40,8 +42,22 @@ export function ArtistPage({artistID}: { artistID: string }) {
     return <section className={artistPageStyle['artist-page-wrapper']}>
 
         <div className={artistPageStyle['artist-general-info']}>
-            <div className={artistPageStyle['artist-image']}><img alt={"Artists Image"} draggable={false}
-                                                                  src={artistData?.images[0]?.url}></img></div>
+            <div className={artistPageStyle['artist-image']}>{artistData?.images[0]?.url ? (
+                <img
+                    draggable={false}
+                    src={artistData?.images[0]?.url}
+                    alt={"Artist image"}
+                ></img>
+            ) : (
+                <img
+                    className={artistsStyle["no-artist-img"]}
+                    draggable={false}
+                    src={NoArtistImage}
+                    width={150}
+                    height={150}
+                    alt={"Artist image placeholder"}
+                ></img>
+            )}</div>
             <div className={artistPageStyle['artist-name']}>
                 <h1>{artistData?.name.slice(0, 25)}</h1>
                 <p>{artistData?.followers.total.toLocaleString()} followers</p>
