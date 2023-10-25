@@ -123,9 +123,8 @@ export const SongCard = forwardRef(function SongCard(props: {
 
                     <div className={songsStyle["title-artists"]}
                          style={{
-
+                             width: `${forAlbum ? '55vw' : '25vw'}`,
                              gap: forArtist ? '0px' : '10px',
-
 
                          }}
                     >
@@ -155,7 +154,7 @@ export const SongCard = forwardRef(function SongCard(props: {
                                      style={{fontSize: '8px', width: 'fit-content'}}>E</div> : ''}
                             {(forArtist === false || forAlbum == true) &&
                                 <div className={songsStyle['artists-box']}
-                                style={{ width: `${forAlbum ? '55vw' : '29vw'}`}}
+                                     style={{width: `${forAlbum ? '55vw' : '29vw'}`}}
                                 >{eachTrack?.artists.map((artist, i) =>
                                     <a key={i}
                                        onClick={() => {
