@@ -90,3 +90,34 @@
     border: 1px solid white;
     scale: 1.05
 }
+
+.top-tracks{
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding: 10px;
+    color: white;
+
+    .tracks-box{
+        padding-right: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .tracks {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .see-more-tracks{
+        color: #b3b3b3;
+        font-size: 14px;
+    }
+
+    .see-more-tracks:hover{
+        color: white
+    }
+}

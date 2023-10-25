@@ -41,10 +41,14 @@
 }
 
 .track-wrapper {
-
+    display: flex;
+    flex-direction: row;
     width: 100%;
     padding: 10px;
     cursor: pointer;
+    align-items: center;
+    justify-content: center;
+
 }
 
 .track-wrapper:hover {
@@ -90,36 +94,32 @@
 .title-artists {
     display: flex;
     flex-direction: column;
-    height: 100%;
-    justify-content: space-between;
 
-    gap: 10px;
+    justify-content: space-between;
     font-family: 'Gotham Light', sans-serif;
     font-weight: lighter;
     color: #b3b3b3;
-    width: 100%;
-
 
 }
 
 .title-artists a {
     font-size: 14px;
     color: white;
+
     white-space: nowrap;
+    font-family: 'Gotham Light', sans-serif;
+    font-weight: bold;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 100%;
+
 }
 
-.title-artists p {
-    font-size: 12px;
-    font-family: 'Gotham Light', sans-serif;
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.artists-box {
+    display: flex;
     width: 100%;
+    gap: 4px;
 }
+
 
 .album-title {
     display: flex;
@@ -139,6 +139,10 @@
 }
 
 .artists-mapped {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+
     & a {
         white-space: nowrap;
         overflow: hidden;
