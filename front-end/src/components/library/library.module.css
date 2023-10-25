@@ -19,6 +19,10 @@
     cursor: pointer;
 
     & p {
+        width: 10vw;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         font-weight: bold;
         font-family: 'Gotham Medium', sans-serif;
         color: #a7a7a7;

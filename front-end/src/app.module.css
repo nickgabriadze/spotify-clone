@@ -1,5 +1,5 @@
 .application-wrapper {
-  margin: 8px
+ padding: 8px;
 
 }
 
@@ -21,6 +21,7 @@
 
 .main{
   width: 80%;
+
 
 }
 
