@@ -119,7 +119,7 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
                     {episodeDataLoading || resultsLoading ? Array.from({length: 5}).map((_, i) =>
                             <TopEpisodeCardSkeleton key={i}/>) :
                         episodesData.slice(0, 5).map((eachEpisode, i) => <TopEpisodeCard eachEpisode={eachEpisode}
-                                                                             key={i}/>)
+                                                                                         key={i}/>)
                     }
                 </div>
             </div>

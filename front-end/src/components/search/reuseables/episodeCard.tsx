@@ -41,8 +41,7 @@ export function EpisodeCard({eachEpisode}: { eachEpisode: Episode }) {
                     src={
                         NoPodcastPic
                     }
-                    height={160}
-                    width={160}
+
                 ></img>
             }
 
