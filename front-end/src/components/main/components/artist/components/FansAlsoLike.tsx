@@ -25,7 +25,11 @@ export function FansAlsoLike({artistID}: { artistID: string }) {
     return fansAlsoLike.length > 0 && <section className={artistPageStyle['fans-also-like']}>
         <h2>Fans Also Like</h2>
         <div className={artistPageStyle['related-artists-list']}>
-            {fansAlsoLike.slice(0, 5).map((eachArtist, i) => <ArtistCard eachArtist={eachArtist} key={i}/>)}
+            {fansAlsoLike.slice(0, 5).map((eachArtist, i) => <div key={i}
+                                                                  onClick={() => scrollTo(0, 0)}
+            ><ArtistCard
+
+                eachArtist={eachArtist}/></div>)}
         </div>
     </section>
 }

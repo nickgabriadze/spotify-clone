@@ -32,10 +32,13 @@ export function ArtistPage({artistID}: { artistID: string }) {
     const [showMore, setShowMore] = useState<boolean>(false)
     const [discography, setDiscography] = useState<{ [key: string]: any }[]>([]);
     const [discoWhich, setDiscoWhich] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(true);
+
 
     useEffect(() => {
         const fetchArtist = async () => {
             try {
+                setLoading(true)
                 const artistData = (await getArtist(accessToken, artistID)).data;
                 setArtistData(artistData)
                 const topTracks = (await getArtistsPopularTracks(accessToken, artistID, country)).data.tracks
@@ -48,10 +51,14 @@ export function ArtistPage({artistID}: { artistID: string }) {
 
             } catch (err) {
 
+            }finally {
+                setLoading(false)
             }
         }
         fetchArtist();
     }, [artistID, accessToken, country]);
+
+    if(loading) return <></>
     return <section className={artistPageStyle['artist-page-wrapper']}>
 
 
@@ -147,7 +154,7 @@ export function ArtistPage({artistID}: { artistID: string }) {
             </div>
         </div>
 
-        <div className={artistPageStyle['top-tracks']}>
+        {artistTopTracks.length > 0 && <div className={artistPageStyle['top-tracks']}>
             <h1>Popular</h1>
 
             <div className={artistPageStyle['tracks-box']}>
@@ -163,7 +170,7 @@ export function ArtistPage({artistID}: { artistID: string }) {
                         onClick={() => setShowMore(prev => !prev)}
                 ><p>{showMore ? 'Show less' : 'See more'}</p></button>
             </div>
-        </div>
+        </div>}
 
 
         {discography.length > 0 && <div className={artistPageStyle['discography-section']}>
