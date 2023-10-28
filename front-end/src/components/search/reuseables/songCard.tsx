@@ -1,16 +1,24 @@
 import {Track} from "../../../types/track";
 import songsStyle from "../components/each-search-component/Songs/songs.module.css";
-import millisecondsToMmSs from "../../player/msConverter";
-import {LegacyRef, forwardRef, useState} from "react";
+import {LegacyRef, forwardRef, useState, useEffect} from "react";
 import Equaliser from "../../player/icons/device-picker-equaliser.webp"
 import {useAppDispatch, useAppSelector} from "../../../store/hooks";
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
-import {addReactComponentToNavigation, setUserControlActions} from "../../../store/features/navigationSlice";
+import {
+    addLibraryAction,
+    addReactComponentToNavigation,
+    setUserControlActions
+} from "../../../store/features/navigationSlice";
 import Play from "../components/each-search-component/Songs/icons/play.svg"
 import episodesStyle from "../components/each-search-component/PodcastsShows/podcastsShows.module.css";
 import NoTrackPicture from "../components/each-search-component/icons/no-track-pic.svg"
 import Pause from "../components/each-search-component/All/icons/pause.svg";
 import PauseStreaming from "../../../api/player/pauseStreaming.ts";
+import millisecondsToHhMmSs from "../../player/msConverter.ts";
+import removeTrackForCurrentUser from "../../../api/library/removeTrackForCurrentUser.ts";
+import saveTrackForCurrentUser from "../../../api/library/saveTrackForCurrentUser.ts";
+import SavedTrackIcon from "../../player/icons/liked-indicator-heart.svg";
+import Heart from "../../player/icons/heart.svg";
 
 export const SongCard = forwardRef(function SongCard(props: {
     eachTrack: Track | undefined,
@@ -19,12 +27,20 @@ export const SongCard = forwardRef(function SongCard(props: {
     forAlbum?: boolean,
     forArtist?: boolean
 }, ref: LegacyRef<HTMLDivElement>) {
+    const [currentSaved, setCurrentSaved] = useState<boolean>(false)
+    const savedSongs = useAppSelector((state) => state.spotiUserReducer.userSaved.userSavedSongIDs);
 
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong)
     const {n, eachTrack, accessToken, forAlbum, forArtist} = props;
     const songID = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong.songID);
     const dispatch = useAppDispatch();
     const [hoveringOver, setHoveringOver] = useState<boolean>(false)
+      useEffect(() => {
+            setCurrentSaved(
+                savedSongs.includes(String(eachTrack?.id))
+            )
+
+        }, [savedSongs.length, String(eachTrack?.id)]);
 
     return (
         <div className={songsStyle["track-wrapper"]}
@@ -178,10 +194,32 @@ export const SongCard = forwardRef(function SongCard(props: {
                 </div>
             }
 
-            <div className={songsStyle["duration"]}>
-                {
-                    millisecondsToMmSs(Number(eachTrack?.duration_ms))
-                }
+
+            <div className={songsStyle['song-duration-heart']}>
+
+                <div className={songsStyle['heart-space']}>
+                    { hoveringOver && <button
+                        onClick={async () => {
+                            if (currentSaved) {
+                                const req = (await removeTrackForCurrentUser(accessToken, String(eachTrack?.id))).status;
+                                if (req === 200) {
+                                    dispatch(addLibraryAction('Remove Track'))
+                                }
+
+                            } else {
+
+                                const req = (await saveTrackForCurrentUser(accessToken, String(eachTrack?.id))).status;
+                                if (req === 200) {
+                                    dispatch(addLibraryAction('Saved Track'))
+                                }
+                            }
+                        }}
+                        title={currentSaved ? "Remove from Your Library" : "Save to Your Library"}
+                    ><img alt={"Heart icon"} src={currentSaved ? SavedTrackIcon : Heart} width={20} height={28}></img>
+                    </button>}
+                </div>
+                <div className={songsStyle['duration']}>{millisecondsToHhMmSs(Number(eachTrack?.duration_ms))}</div>
+
             </div>
         </div>
     )

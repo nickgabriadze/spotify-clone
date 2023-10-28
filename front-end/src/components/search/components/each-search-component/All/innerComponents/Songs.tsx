@@ -1,10 +1,10 @@
 import allResultsStyle from "../allresults.module.css";
 import {Track} from "../../../../../../types/track.ts";
 import millisecondsToHhMmSs from "../../../../../player/msConverter.ts";
-import {useState} from "react";
-import HeartSVG from "../../../../../player/icons/heart.svg";
+import {useEffect, useState} from "react";
 import PlayResumeStreaming from "../../../../../../api/player/playResumeStreaming.ts";
 import {
+    addLibraryAction,
     addReactComponentToNavigation,
     setUserControlActions
 } from "../../../../../../store/features/navigationSlice.ts";
@@ -15,13 +15,25 @@ import Play from "../icons/play.svg";
 import episodesStyle from "../../PodcastsShows/podcastsShows.module.css";
 import TopSongCardSkeleton from "../../../../../../skeletons/topSongCardSkeleton.tsx";
 import NoTrackPicture from "../../icons/no-track-pic.svg";
+import removeTrackForCurrentUser from "../../../../../../api/library/removeTrackForCurrentUser.ts";
+import saveTrackForCurrentUser from "../../../../../../api/library/saveTrackForCurrentUser.ts";
+import SavedTrackIcon from "../../../../../player/icons/liked-indicator-heart.svg";
+import Heart from "../../../../../player/icons/heart.svg";
 
 export function Songs({firstFour, resultsLoading}: { firstFour: Track[] | undefined, resultsLoading: boolean }) {
     const [hoveringOver, setHoveringOver] = useState<string>('none');
     const currentlyPlaying = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong);
     const accessToken = useAppSelector(state => state.spotiUserReducer.spotiToken.accessToken);
     const dispatch = useAppDispatch();
+    const [currentSaved, setCurrentSaved] = useState<string[]>([])
+    const savedSongs = useAppSelector((state) => state.spotiUserReducer.userSaved.userSavedSongIDs);
 
+    useEffect(() => {
+        setCurrentSaved(
+            firstFour !== undefined ?  [...firstFour?.filter(eachTrack => savedSongs.includes(String(eachTrack?.id))).map(e => String(e?.id))] : []
+        )
+
+    }, [savedSongs.length, firstFour?.length]);
 
     return <div className={allResultsStyle['top-songs-wrapper']}>
         <h2>Songs</h2>
@@ -136,7 +148,28 @@ export function Songs({firstFour, resultsLoading}: { firstFour: Track[] | undefi
                         </div>
                         <div className={allResultsStyle['song-duration-heart']}>
                             {eachTrack.id === hoveringOver &&
-                                <div><img alt={"Heart icon"} src={HeartSVG} width={20} height={28}></img></div>}
+                                <div>
+                                    <button
+                                        onClick={async () => {
+                                            if (currentSaved.includes(eachTrack.id)) {
+                                                const req = (await removeTrackForCurrentUser(accessToken, String(eachTrack?.id))).status;
+                                                if (req === 200) {
+                                                    dispatch(addLibraryAction('Remove Track'))
+                                                }
+
+                                            } else {
+
+                                                const req = (await saveTrackForCurrentUser(accessToken, String(eachTrack?.id))).status;
+                                                if (req === 200) {
+                                                    dispatch(addLibraryAction('Saved Track'))
+                                                }
+                                            }
+                                        }}
+                                        title={currentSaved.includes(eachTrack.id) ? "Remove from Your Library" : "Save to Your Library"}
+                                    ><img alt={"Heart icon"} src={currentSaved.includes(eachTrack.id) ? SavedTrackIcon : Heart} width={20}
+                                          height={28}></img>
+                                    </button>
+                                </div>}
                             <div
                                 className={allResultsStyle['duration']}>{millisecondsToHhMmSs(Number(eachTrack?.duration_ms))}</div>
                         </div>
