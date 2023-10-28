@@ -18,6 +18,8 @@ import artistsStyle from "../../../search/components/each-search-component/Artis
 import getArtistsAlbums from "../../../../api/main/artist/getArtistsAlbums.ts";
 import AlbumCard from "../../../search/reuseables/albumCard.tsx";
 import {Album} from "../../../../types/album.ts";
+import AppearsOn from "./components/AppearsOn.tsx";
+import FansAlsoLike from "./components/FansAlsoLike.tsx";
 
 export function ArtistPage({artistID}: { artistID: string }) {
     const [artistData, setArtistData] = useState<Artist>();
@@ -182,7 +184,7 @@ export function ArtistPage({artistID}: { artistID: string }) {
                         onClick={() => setDiscoWhich(Object.keys(each).toString())}
                     >
                         <p
-                        style={{color: discoWhich === Object.keys(each).toString() ? 'black': '#FFFFFF'}}
+                            style={{color: discoWhich === Object.keys(each).toString() ? 'black' : '#FFFFFF'}}
                         >{Object.keys(each)[0].slice(0, 1).toUpperCase().concat(Object.keys(each)[0].slice(1,)).concat('s')}</p>
                     </button>
                 </div>)}
@@ -194,6 +196,13 @@ export function ArtistPage({artistID}: { artistID: string }) {
             }</div>
 
         </div>}
+
+
+        <FansAlsoLike artistID={artistID}/>
+
+
+        <AppearsOn artistID={artistID}/>
+
     </section>
 }
 

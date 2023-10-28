@@ -1,4 +1,5 @@
 import axiosInstance from "../../../axios.ts";
+import {Album} from "../../../types/album.ts";
 
 export async function getArtistsAlbums(accessToken: string, artistID: string, includedGroups: string[]) {
     const dataArray = []
@@ -9,7 +10,7 @@ export async function getArtistsAlbums(accessToken: string, artistID: string, in
                     Authorization: `Bearer ${accessToken}`
                 }
             })
-            const albumData = {[group] : getAlbums.data.items};
+            const albumData: {[key:string] : Album[]} = {[group] : getAlbums.data.items};
             if(getAlbums.data.items.length > 0){
                 dataArray.push(albumData)
             }

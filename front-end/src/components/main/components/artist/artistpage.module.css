@@ -128,7 +128,7 @@
 .discography-section {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 25px;
     padding: 10px;
 
     .disco-header {
@@ -162,6 +162,7 @@
             justify-content: center;
             align-items: center;
             transition: all 300ms linear;
+
             & p {
                 font-size: 14px;
                 font-family: 'Gotham Light', sans-serif;
@@ -169,10 +170,34 @@
             }
         }
 
-        & div:hover{
+        & div:hover {
             cursor: pointer;
             filter: brightness(140%);
             backface-visibility: hidden;
         }
     }
+}
+
+.appears_on, .fans-also-like {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px;
+
+    & h2 {
+        color: white;
+
+    }
+
+    .appears_on-albums-list, .related-artists-list {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(180px, 1fr));
+        gap: 20px;
+        overflow-x: scroll;
+    }
+
+    .appears_on-albums-list::-webkit-scrollbar, .appears_on-albums-list::-webkit-scrollbar {
+        display: none;
+    }
+
 }
