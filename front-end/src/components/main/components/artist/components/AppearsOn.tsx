@@ -15,7 +15,6 @@ export function AppearsOn({artistID} : {artistID: string}) {
             try {
                 const appearingOn = (await getArtistsAlbums(accessToken, artistID, ['appears_on']))[0];
                 setAppearingAlbums(appearingOn['appears_on'])
-                console.log(appearingOn)
             }catch(err){
 
             }

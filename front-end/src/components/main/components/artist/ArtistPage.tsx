@@ -46,7 +46,6 @@ export function ArtistPage({artistID}: { artistID: string }) {
 
                 const discoTime = (await getArtistsAlbums(accessToken, artistID, ['album', 'single', 'compilation']))
                 setDiscography(discoTime)
-                console.log(discoTime)
                 setDiscoWhich(Object.keys(discoTime[0]).toString())
 
             } catch (err) {
