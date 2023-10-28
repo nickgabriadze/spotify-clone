@@ -29,6 +29,8 @@ export function EpisodeCard({eachEpisode}: { eachEpisode: Episode }) {
             {eachEpisode.images[0]?.url ?
                 <img src={eachEpisode?.images[0]?.url}
                      alt={"Episode image"}
+                      width={160}
+                    height={160}
                 ></img>
                 :
                 <img
@@ -41,6 +43,8 @@ export function EpisodeCard({eachEpisode}: { eachEpisode: Episode }) {
                     src={
                         NoPodcastPic
                     }
+                    width={160}
+                    height={160}
 
                 ></img>
             }
