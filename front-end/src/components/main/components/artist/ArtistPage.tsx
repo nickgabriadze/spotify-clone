@@ -15,7 +15,9 @@ import {Track} from "../../../../types/track.ts";
 import {SongCard} from "../../../search/reuseables/songCard.tsx";
 import NoArtistImage from "../../../search/components/each-search-component/icons/no-artist-pic.webp";
 import artistsStyle from "../../../search/components/each-search-component/Artists/artists.module.css";
-import getDiscography from "../../../../api/main/artist/getDiscography.ts";
+import getArtistsAlbums from "../../../../api/main/artist/getArtistsAlbums.ts";
+import AlbumCard from "../../../search/reuseables/albumCard.tsx";
+import {Album} from "../../../../types/album.ts";
 
 export function ArtistPage({artistID}: { artistID: string }) {
     const [artistData, setArtistData] = useState<Artist>();
@@ -26,6 +28,9 @@ export function ArtistPage({artistID}: { artistID: string }) {
     const country = String(useAppSelector(s => s.spotiUserReducer.userInformation?.country));
     const [artistTopTracks, setArtistTopTracks] = useState<Track[]>([])
     const [showMore, setShowMore] = useState<boolean>(false)
+    const [discography, setDiscography] = useState<{ [key: string]: any }[]>([]);
+    const [discoWhich, setDiscoWhich] = useState<string>('');
+
     useEffect(() => {
         const fetchArtist = async () => {
             try {
@@ -34,8 +39,10 @@ export function ArtistPage({artistID}: { artistID: string }) {
                 const topTracks = (await getArtistsPopularTracks(accessToken, artistID, country)).data.tracks
                 setArtistTopTracks(topTracks)
 
-                const discoTime = (await getDiscography(accessToken, artistID)).data
+                const discoTime = (await getArtistsAlbums(accessToken, artistID, ['album', 'single', 'compilation']))
+                setDiscography(discoTime)
                 console.log(discoTime)
+                setDiscoWhich(Object.keys(discoTime[0]).toString())
 
             } catch (err) {
 
@@ -43,7 +50,6 @@ export function ArtistPage({artistID}: { artistID: string }) {
         }
         fetchArtist();
     }, [artistID, accessToken, country]);
-
     return <section className={artistPageStyle['artist-page-wrapper']}>
 
 
@@ -148,6 +154,7 @@ export function ArtistPage({artistID}: { artistID: string }) {
                         <SongCard eachTrack={track} n={i + 1}
                                   accessToken={accessToken}
                                   forAlbum={false}
+                                  key={i}
                                   forArtist={true}/>)}
                 </div>
                 <button className={artistPageStyle['see-more-tracks']}
@@ -157,14 +164,36 @@ export function ArtistPage({artistID}: { artistID: string }) {
         </div>
 
 
-        <div className={artistPageStyle['discography-section']}>
+        {discography.length > 0 && <div className={artistPageStyle['discography-section']}>
 
             <div className={artistPageStyle['disco-header']}>
                 <h1>Discography</h1>
                 <button className={artistPageStyle['see-more-tracks']}><h4>Show all</h4></button>
             </div>
 
-        </div>
+            <div className={artistPageStyle['option-disco']}>
+                {discography.map((each, i) => <div
+                    style={{
+                        backgroundColor: discoWhich === Object.keys(each).toString() ? 'white' : '#232323',
+
+                    }}
+                    key={i}>
+                    <button
+                        onClick={() => setDiscoWhich(Object.keys(each).toString())}
+                    >
+                        <p
+                        style={{color: discoWhich === Object.keys(each).toString() ? 'black': '#FFFFFF'}}
+                        >{Object.keys(each)[0].slice(0, 1).toUpperCase().concat(Object.keys(each)[0].slice(1,)).concat('s')}</p>
+                    </button>
+                </div>)}
+            </div>
+
+            <div
+                className={artistPageStyle['disco-albums-list']}>{discography.filter(e => Object.keys(e).toString() === discoWhich)[0][discoWhich].map((chosenGroup: Album, i: number) =>
+                <AlbumCard eachAlbum={chosenGroup} key={i}/>)
+            }</div>
+
+        </div>}
     </section>
 }
 
