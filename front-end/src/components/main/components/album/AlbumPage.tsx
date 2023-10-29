@@ -115,6 +115,7 @@ export function AlbumPage({albumID}: { albumID: string }) {
 
                 >
                     <img alt="Album Image"
+                         title={albumData?.album.name}
                          style={{borderRadius: onFullScreen ? '10px' : ''}}
                          draggable={false} src={albumData?.album.images[0]?.url}
                          width={albumData?.album.images[0]?.width}></img>
