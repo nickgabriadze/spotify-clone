@@ -183,7 +183,7 @@ export function PlaylistPage({playlistID}: { playlistID: string }) {
 
             <div className={playlistPageStyle['i-album']}>Album</div>
 
-            <div>Date Added</div>
+            <div className={playlistPageStyle['date_added_at']}>Date Added</div>
 
             <div>
                 <img

@@ -127,3 +127,13 @@
 
     color: #b3b3b3;
 }
+
+@media only screen and (width < 1250px){
+    .date_added_at{
+        display: none;
+    }
+
+
+
+
+}
