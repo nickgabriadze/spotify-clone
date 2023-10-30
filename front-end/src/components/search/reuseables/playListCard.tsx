@@ -8,6 +8,8 @@ import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
 import {addReactComponentToNavigation, setUserControlActions} from "../../../store/features/navigationSlice";
 import getPlaylist from "../../../api/search/getPlaylist.ts";
 import PlaylistCardSkeleton from "../../../skeletons/playlistCardSekeleton.tsx";
+import PauseStreaming from "../../../api/player/pauseStreaming.ts";
+import Pause from "../components/each-search-component/Playlists/icons/pause.svg";
 
 
 export function PlaylistCardApi({playlistID}: { playlistID: string }) {
@@ -43,6 +45,8 @@ export function PlaylistCard({eachPlaylist, playlistDescription}: {
     const accessToken = useAppSelector(
         (state) => state.spotiUserReducer.spotiToken.accessToken
     );
+    const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong);
+
     return (
         <div
             className={playlistsStyle["playlist-card"]}
@@ -70,16 +74,45 @@ export function PlaylistCard({eachPlaylist, playlistDescription}: {
             {hoveringOver && (
                 <button
                     onClick={async () => {
-                        await PlayResumeStreaming(accessToken, eachPlaylist?.uri);
-                        dispatch(
-                            setUserControlActions({
-                                userAction: "Play Playlist",
-                            })
-                        );
+                        if (currentlyPlaying?.context?.uri === eachPlaylist?.uri) {
+                            if (!currentlyPlaying.isPlaying) {
+                                await PlayResumeStreaming(accessToken);
+                                dispatch(
+                                    setUserControlActions({
+                                        userAction: "Play Playlist",
+                                    })
+                                );
+                            } else {
+                                await PauseStreaming(accessToken);
+                                dispatch(
+                                    setUserControlActions({
+                                        userAction: "Pause Playlist",
+                                    })
+                                );
+                            }
+                        } else {
+                            await PlayResumeStreaming(accessToken, eachPlaylist?.uri);
+                            dispatch(
+                                setUserControlActions({
+                                    userAction: "Play Playlist",
+                                })
+                            );
+                        }
                     }}
                     className={playlistsStyle["playlist-hover-button"]}
                 >
-                    <img alt={"Play image"} src={Play} width={20} height={20}></img>
+                 {currentlyPlaying?.context?.uri === eachPlaylist?.uri &&
+                currentlyPlaying.isPlaying ? (
+                    <div>
+                        <img
+                            style={{padding: '7px'}}
+                            alt={"Pause icon"} src={Pause} width={40} height={40}></img>
+                    </div>
+                ) : (
+                    <div>
+                        <img alt={"Play icon"} src={Play} width={60} height={60}></img>
+                    </div>
+                )}
                 </button>
             )}
             <div className={playlistsStyle["playlist-details"]}>

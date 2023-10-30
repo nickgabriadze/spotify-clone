@@ -2,7 +2,7 @@ import NoPlaylistImage from "../../../search/components/each-search-component/ic
 import playlistPageStyle from './playlistpage.module.css';
 import {useCallback, useEffect, useRef, useState} from "react";
 import getPlaylist from "../../../../api/search/getPlaylist.ts";
-import {FullPlayList,  PlayListTrackObject} from "../../../../types/playlist.ts";
+import {FullPlayList, PlayListTrackObject} from "../../../../types/playlist.ts";
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks.ts";
 import albumStyle from "../album/albumpage.module.css";
 import PlayResumeStreaming from "../../../../api/player/playResumeStreaming.ts";
@@ -134,20 +134,43 @@ export function PlaylistPage({playlistID}: { playlistID: string }) {
 
                     className={albumStyle["album-hover-button"]}
                     onClick={async () => {
-
-                        await PlayResumeStreaming(accessToken, String(playListData?.uri));
-                        dispatch(
-                            setUserControlActions({
-                                userAction: "Play Album",
-                            })
-                        );
-
+                        if (currentlyPlaying?.context?.uri === playListData?.uri) {
+                            if (!currentlyPlaying.isPlaying) {
+                                await PlayResumeStreaming(accessToken);
+                                dispatch(
+                                    setUserControlActions({
+                                        userAction: "Play Playlist",
+                                    })
+                                );
+                            } else {
+                                await PauseStreaming(accessToken);
+                                dispatch(
+                                    setUserControlActions({
+                                        userAction: "Pause Playlist",
+                                    })
+                                );
+                            }
+                        } else {
+                            await PlayResumeStreaming(accessToken, playListData?.uri);
+                            dispatch(
+                                setUserControlActions({
+                                    userAction: "Play Playlist",
+                                })
+                            );
+                        }
                     }}
-                >
+                >{currentlyPlaying?.context?.uri === playListData?.uri &&
+                currentlyPlaying.isPlaying ? (
+                    <div>
+                        <img
 
+                            alt={"Pause icon"} src={Pause} width={40} height={40}></img>
+                    </div>
+                ) : (
                     <div>
                         <img alt={"Play icon"} src={Play} width={60} height={60}></img>
                     </div>
+                )}
 
                 </button>
             </div>

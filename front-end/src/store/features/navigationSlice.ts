@@ -22,7 +22,15 @@ interface Navigation {
         artistID: string,
         songID: string,
         albumID: string,
-        isPlaying: boolean | null
+        isPlaying: boolean | null,
+        context: {
+            type: string,
+            href: string,
+            external_urls: {
+                spotify: string
+            },
+            uri: string
+        } | null
     };
     libraryActions: string[],
     userControlActions: string[];
@@ -44,7 +52,15 @@ const initialState: Navigation = {
         artistID: "None",
         songID: "None",
         albumID: "None",
-        isPlaying: null
+        isPlaying: null,
+        context: {
+            type: 'None',
+            href: 'None',
+            external_urls: {
+                spotify: 'None'
+            },
+            uri: 'None'
+        }
     },
 
     queueEmpty: false,
@@ -63,7 +79,7 @@ const navigationSlice = createSlice({
     name: "Navigation Slice",
     initialState,
     reducers: {
-        setSomethingIsFullScreen: (state, action: {payload: boolean}) => {
+        setSomethingIsFullScreen: (state, action: { payload: boolean }) => {
             return {
                 ...state,
                 somethingIsFullScreen: action.payload
@@ -86,19 +102,18 @@ const navigationSlice = createSlice({
         navigateToDirection: (state, action: { payload: "BACK" | "FORWARD", causedByError?: boolean }) => {
 
 
-
             if (action.payload === "BACK" && state.pageNavigation.currentPageIndex > 0) {
-                if(action.causedByError){
-                        return {
-                    ...state,
+                if (action.causedByError) {
+                    return {
+                        ...state,
 
-                    pageNavigation: {
-                        ...state.pageNavigation,
-                        pageHistory: [...state.pageNavigation.pageHistory.slice(0, -1)],
-                        currentPageIndex: state.pageNavigation.currentPageIndex - 1
+                        pageNavigation: {
+                            ...state.pageNavigation,
+                            pageHistory: [...state.pageNavigation.pageHistory.slice(0, -1)],
+                            currentPageIndex: state.pageNavigation.currentPageIndex - 1
 
+                        }
                     }
-                }
                 }
                 return {
                     ...state,
@@ -141,8 +156,8 @@ const navigationSlice = createSlice({
                 }
             }
 
-            if( action.payload.componentName === 'Queue' &&
-                state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].component === 'Queue'){
+            if (action.payload.componentName === 'Queue' &&
+                state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].component === 'Queue') {
 
                 return {
                     ...state,
@@ -153,8 +168,8 @@ const navigationSlice = createSlice({
                 }
             }
 
-            if( action.payload.componentName === 'Search' &&
-                state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].component === 'Search'){
+            if (action.payload.componentName === 'Search' &&
+                state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].component === 'Search') {
 
                 return {
                     ...state,
@@ -165,9 +180,9 @@ const navigationSlice = createSlice({
                 }
             }
 
-            if(state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].props &&
+            if (state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].props &&
                 action.payload.props &&
-                state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].props === action.payload.props){
+                state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].props === action.payload.props) {
 
                 return {
                     ...state,
@@ -179,15 +194,14 @@ const navigationSlice = createSlice({
             }
 
 
-            if(state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].props &&
-              action.payload.props
-            && state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].props === action.payload.props
+            if (state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].props &&
+                action.payload.props
+                && state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].props === action.payload.props
                 &&
                 state.pageNavigation.currentPageIndex === state.pageNavigation.pageHistory.length - 1
-            ){
+            ) {
                 return;
             }
-
 
 
             return {
@@ -272,7 +286,15 @@ const navigationSlice = createSlice({
                         artistID: string;
                         songID: string,
                         albumID: string,
-                        isPlaying: boolean | null
+                        isPlaying: boolean | null,
+                        context: {
+                            type: string,
+                            href: string,
+                            external_urls: {
+                                spotify: string
+                            },
+                            uri: string
+                        } | null
                     };
                 };
             }

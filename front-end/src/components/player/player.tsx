@@ -43,7 +43,15 @@ export function Player() {
                         artistID: string,
                         songID: string,
                         albumID: string,
-                        isPlaying: boolean | null
+                        isPlaying: boolean | null,
+                        context: {
+                            type: string,
+                            href: string,
+                            external_urls: {
+                                spotify: string
+                            },
+                            uri: string
+                        }
                     } = JSON.parse(prevData);
 
                     dispatch(setCurrentlyPlayingSong({
@@ -59,13 +67,14 @@ export function Player() {
                     type: data.item.type, id: data.item.id
                 }))
 
-
+                console.log(data)
                 dispatch(setCurrentlyPlayingSong({
                     currentlyPlayingSong: {
                         artistID: data.item.artists[0].id,
                         albumID: data.item.album.id,
                         songID: data.item.id,
-                        isPlaying: data.is_playing
+                        isPlaying: data.is_playing,
+                        context: data.context
                     }
                 }))
             }
@@ -86,7 +95,6 @@ export function Player() {
             }
         },
         [fetchCurrentData, dispatch, userActions.length])
-
 
 
     useEffect(() => {
@@ -115,7 +123,9 @@ export function Player() {
                             artistID: data.item.artists[0].id,
                             albumID: data.item.album.id,
                             songID: data.item.id,
-                            isPlaying: data.is_playing
+                            isPlaying: data.is_playing,
+                            context: data.context
+
                         }
                     }))
 
