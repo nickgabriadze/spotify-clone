@@ -16,6 +16,7 @@ import AlbumPage from "./components/album/AlbumPage.tsx";
 import {navigateToDirection} from "../../store/features/navigationSlice.ts";
 import ArtistPage from "./components/artist/ArtistPage.tsx";
 import  {CategoryPage} from "./components/browsingCategory/category.tsx";
+import PlaylistPage from "./components/playlist/PlaylistPage.tsx";
 
 
 export function Main({height}: { height: number }) {
@@ -33,6 +34,7 @@ export function Main({height}: { height: number }) {
         "Queue": () => <Queue/>,
         "Album": (ID: string) => <AlbumPage albumID={ID}/>,
         "Artist": (ID: string) => <ArtistPage artistID={ID} />,
+        "Playlist": (ID: string) => <PlaylistPage playlistID={ID} />,
         "BrowsingCategory": (categoryStuff: string[]) => <CategoryPage categoryStuff={categoryStuff} />
     }
     useEffect(() => {

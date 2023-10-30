@@ -1,4 +1,5 @@
-import { Image } from "./album"
+import {Image} from "./album"
+import {Track} from "./track.ts";
 
 export interface Playlists {
     href: string,
@@ -8,6 +9,41 @@ export interface Playlists {
     offset: number,
     previous: string | null,
     total: number
+}
+
+
+export interface FullPlayList extends Playlist {
+    followers: {
+      href: string | null,
+      total: number
+    },
+    tracks: {
+        href: string,
+        limit: number,
+        next: string | null,
+        offset: number,
+        previous: string | null,
+        total: number,
+        items: PlayListTrackObject[]
+    }
+}
+export interface PlayListTrackObject extends Track{
+    added_at: string,
+    added_by: {
+        external_urls: {
+            spotify: string
+        },
+        followers: {
+            href: string,
+            total: number
+        },
+        href: string,
+        id: string,
+        type: "user",
+        uri: string,
+    },
+    is_local: boolean,
+    track: Track
 }
 
 export interface Playlist {
@@ -22,7 +58,7 @@ export interface Playlist {
     name: string,
     owner: {
         display_name: string,
-        external_urls:{
+        external_urls: {
             spotify: string
         },
         href: string,

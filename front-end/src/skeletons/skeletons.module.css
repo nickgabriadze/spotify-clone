@@ -211,25 +211,33 @@
 }
 
 .track-name-skeleton {
-    width: 100px;
+    width: 20vw;
     height: 10px;
+    margin-right: 5vw;
     background-color: var(--default-background-color);
     animation: brightness-animation 3s linear infinite;
 }
 
 .track-artists-skeleton {
-    width: 60px;
+    width: 15vw;
     height: 10px;
     background-color: #3e3c3c69;
     animation: brightness-animation 3s linear infinite;
 }
 
-.track-album-skeleton {
+.track-album-skeleton, .track-added_at-skeleton {
     width: 120px;
     height: 10px;
     background-color: var(--default-background-color);
     margin-right: 75px;
     animation: brightness-animation 3s linear infinite;
+}
+.track-album-skeleton{
+    width: 15vw;
+}
+
+.track-added_at-skeleton{
+    width: 15vw;
 }
 
 .track-duration-skeleton {

@@ -4,6 +4,7 @@ import {Me} from "../../types/me.ts";
 import {Track} from "../../types/track.ts";
 import {Album} from "../../types/album.ts";
 import {Artist} from "../../types/artist.ts";
+import {Playlist} from "../../types/playlist.ts";
 
 interface TokenData {
     accessToken: string;
@@ -37,6 +38,7 @@ interface SpotiUser {
         userSavedSongIDs: string[],
         userSavedAlbumIDs: string[],
         userSavedArtistIDs: string[],
+         userSavedPlaylistIDs: string[]
     }
 }
 
@@ -52,7 +54,8 @@ const initialState: SpotiUser = {
     userSaved: {
         userSavedSongIDs: [],
         userSavedAlbumIDs: [],
-        userSavedArtistIDs: []
+        userSavedArtistIDs: [],
+        userSavedPlaylistIDs: []
     }
 };
 
@@ -60,6 +63,17 @@ const spotiUserSlice = createSlice({
     name: "Spoti User Slice",
     initialState,
     reducers: {
+         setUserSavedPlaylistIDs: (state, action: { payload: Playlist[] }) => {
+
+            return {
+                ...state,
+                userSaved: {
+                    ...state.userSaved,
+                    userSavedPlaylistIDs: action.payload.map(a => a.id)
+                }
+            }
+        },
+
         setUserSavedArtistIDs: (state, action: { payload: Artist[] }) => {
 
             return {
@@ -186,6 +200,6 @@ const spotiUserSlice = createSlice({
     },
 });
 
-export const {setUserInformation, setToken, updateCredentials, setUserSavedArtistIDs, setUsersSavedSongIDs, setUserSavedAlbumIDs} = spotiUserSlice.actions;
+export const {setUserInformation, setToken, updateCredentials, setUserSavedArtistIDs, setUsersSavedSongIDs, setUserSavedAlbumIDs, setUserSavedPlaylistIDs} = spotiUserSlice.actions;
 
 export default spotiUserSlice.reducer;

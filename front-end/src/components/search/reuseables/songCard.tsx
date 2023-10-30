@@ -19,41 +19,58 @@ import removeTrackForCurrentUser from "../../../api/library/removeTrackForCurren
 import saveTrackForCurrentUser from "../../../api/library/saveTrackForCurrentUser.ts";
 import SavedTrackIcon from "../../player/icons/liked-indicator-heart.svg";
 import Heart from "../../player/icons/heart.svg";
+import {PlayListTrackObject} from "../../../types/playlist.ts";
 
 export const SongCard = forwardRef(function SongCard(props: {
-    eachTrack: Track | undefined,
+    eachTrack: Track | PlayListTrackObject | undefined,
     n: number,
     accessToken: string,
     forAlbum?: boolean,
-    forArtist?: boolean
+    forArtist?: boolean,
+    playlistTrack?: PlayListTrackObject,
+    forPlaylist?: boolean
 }, ref: LegacyRef<HTMLDivElement>) {
     const [currentSaved, setCurrentSaved] = useState<boolean>(false)
     const savedSongs = useAppSelector((state) => state.spotiUserReducer.userSaved.userSavedSongIDs);
 
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong)
-    const {n, eachTrack, accessToken, forAlbum, forArtist} = props;
+    const {n, eachTrack, accessToken, forAlbum, forPlaylist, playlistTrack, forArtist} = props;
     const songID = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong.songID);
     const dispatch = useAppDispatch();
-    const [hoveringOver, setHoveringOver] = useState<boolean>(false)
-      useEffect(() => {
-            setCurrentSaved(
-                savedSongs.includes(String(eachTrack?.id))
-            )
+    const [addedAtDate, setAddedAtDate] = useState<string>('');
 
-        }, [savedSongs.length, String(eachTrack?.id)]);
+    const [hoveringOver, setHoveringOver] = useState<boolean>(false)
+    useEffect(() => {
+        setCurrentSaved(
+            savedSongs.includes(String(eachTrack?.id))
+        )
+
+    }, [savedSongs.length, String(eachTrack?.id)]);
+
+
+    useEffect(() => {
+        if (forPlaylist && playlistTrack) {
+            const addedAt = new Date(String(playlistTrack?.added_at))
+            const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+            const releaseDate = months[Number(addedAt.getMonth())].concat(" ").concat(String(addedAt.getDate()).concat(", ").concat(String(addedAt.getFullYear())))
+            setAddedAtDate(releaseDate)
+        }
+    }, [playlistTrack?.track.id]);
 
     return (
         <div className={songsStyle["track-wrapper"]}
 
-             style={!forAlbum ? {
-                 display: 'grid',
-                 gridTemplateColumns: '1fr 1fr auto'
-             } : {
-                 display: 'flex',
-                 justifyContent: 'space-between',
-                 alignItems: 'center'
-
-             }}
+             style={
+                 forPlaylist ?
+                     {
+                         display: 'flex',
+                         justifyContent: 'space-between',
+                         alignItems: 'center'
+                     } : {
+                         display: 'grid',
+                         gridTemplateColumns: '1fr 1fr auto'
+                     }
+             }
              onDoubleClick={async () => {
                  await PlayResumeStreaming(accessToken, undefined, [String(eachTrack?.uri)])
                  dispatch(setUserControlActions({
@@ -168,7 +185,7 @@ export const SongCard = forwardRef(function SongCard(props: {
                             {eachTrack?.explicit ?
                                 <div className={episodesStyle['explicit']}
                                      style={{fontSize: '8px', width: 'fit-content'}}>E</div> : ''}
-                            {(forArtist === false || forAlbum == true) &&
+                            {(forArtist === false || forAlbum == true || forPlaylist == true) &&
                                 <div className={songsStyle['artists-box']}
                                      style={{width: `${forAlbum ? '55vw' : '29vw'}`}}
                                 >{eachTrack?.artists.map((artist, i) =>
@@ -194,35 +211,39 @@ export const SongCard = forwardRef(function SongCard(props: {
                 </div>
             }
 
+            {forPlaylist && <div className={songsStyle['playlist-track-added_at']}>
+                {addedAtDate}
+
+            </div>}
 
             <div className={songsStyle['song-duration-heart']}>
+                <div>
+                    <div className={songsStyle['heart-space']}>
+                        {hoveringOver && <button
+                            onClick={async () => {
+                                if (currentSaved) {
+                                    const req = (await removeTrackForCurrentUser(accessToken, String(eachTrack?.id))).status;
+                                    if (req === 200) {
+                                        dispatch(addLibraryAction('Remove Track'))
+                                    }
 
-                <div className={songsStyle['heart-space']}>
-                    { hoveringOver && <button
-                        onClick={async () => {
-                            if (currentSaved) {
-                                const req = (await removeTrackForCurrentUser(accessToken, String(eachTrack?.id))).status;
-                                if (req === 200) {
-                                    dispatch(addLibraryAction('Remove Track'))
+                                } else {
+
+                                    const req = (await saveTrackForCurrentUser(accessToken, String(eachTrack?.id))).status;
+                                    if (req === 200) {
+                                        dispatch(addLibraryAction('Saved Track'))
+                                    }
                                 }
-
-                            } else {
-
-                                const req = (await saveTrackForCurrentUser(accessToken, String(eachTrack?.id))).status;
-                                if (req === 200) {
-                                    dispatch(addLibraryAction('Saved Track'))
-                                }
-                            }
-                        }}
-                        title={currentSaved ? "Remove from Your Library" : "Save to Your Library"}
-                    ><img alt={"Heart icon"} src={currentSaved ? SavedTrackIcon : Heart} width={20} height={28}></img>
-                    </button>}
+                            }}
+                            title={currentSaved ? "Remove from Your Library" : "Save to Your Library"}
+                        ><img alt={"Heart icon"} src={currentSaved ? SavedTrackIcon : Heart} width={20}
+                              height={28}></img>
+                        </button>}
+                    </div>
+                    <div className={songsStyle['duration']}>{millisecondsToHhMmSs(Number(eachTrack?.duration_ms))}</div>
                 </div>
-                <div className={songsStyle['duration']}>{millisecondsToHhMmSs(Number(eachTrack?.duration_ms))}</div>
-
             </div>
         </div>
-    )
-        ;
+    );
 })
 

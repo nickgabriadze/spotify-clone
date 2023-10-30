@@ -93,7 +93,39 @@
     padding: 15px;
     gap: 10px;
 
-    .album-hover-button {
+
+
+    .track-list-box{
+        display: flex;
+        flex-direction: column;
+        padding-top: 20px;
+
+        .track-box{
+         padding-top: 20px;
+        }
+
+        .numbering-title-duration{
+            display: flex;
+            position: sticky;
+            top: 85px;
+            background-color: #121212;
+            align-items: center;
+            justify-content: space-between;
+            padding-left: 25px;
+            padding-right: 25px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #303030;
+            width: 100%;
+            .i-title{
+                display: flex;
+                gap: 15px;
+                color: #b3b3b3;
+            }
+        }
+    }
+}
+
+  .album-hover-button {
         width: 60px;
         height: 60px;
         background-color: #1ed760;
@@ -119,36 +151,6 @@
 
         gap: 20px;
     }
-
-    .track-list-box{
-        display: flex;
-        flex-direction: column;
-        padding-top: 20px;
-
-        .track-box{
-         padding-top: 20px;
-        }
-
-        .numbering-title-duration{
-            display: flex;
-            position: sticky;
-
-            background-color: #121212;
-            align-items: center;
-            justify-content: space-between;
-            padding-left: 25px;
-            padding-right: 25px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #303030;
-            width: 100%;
-            .i-title{
-                display: flex;
-                gap: 15px;
-                color: #b3b3b3;
-            }
-        }
-    }
-}
 
 .exact-date-copyright{
     display: flex;

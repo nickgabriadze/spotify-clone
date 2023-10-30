@@ -17,7 +17,6 @@ export function CategoryPage({categoryStuff}: {categoryStuff: string[] }) {
                 const myCategory = await getCategoryPlaylist(accessToken, categoryID);
                 const data = myCategory.data.playlists;
                 setPlaylistsData(data)
-                console.log(myCategory)
 
             } catch (err:any) {
                   if(err.response.status){

@@ -52,7 +52,7 @@ export function RecentlyPlayed() {
                     } else if (type === 'albums') {
                         return <AlbumCardApi albumID={id} key={i}/>
                     } else if (type === 'playlists') {
-                        return <PlaylistCardApi playlistID={id}/>
+                        return <PlaylistCardApi  key={i} playlistID={id}/>
 
                     }
 

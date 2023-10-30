@@ -37,10 +37,14 @@
     display: flex;
     gap: 15px;
 
+    :nth-child(2){
+        width: 10vw;
+    }
+
 
 }
 
-.track-name:hover{
+.track-name:hover {
     text-decoration: underline;
 }
 
@@ -147,14 +151,20 @@
     flex-direction: row;
     gap: 5px;
 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: 'Gotham Light', sans-serif;
+    font-weight: 600;
+    color: #b3b3b3;
+
+
     & a {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
         font-family: 'Gotham Light', sans-serif;
         font-weight: 600;
-
         color: #b3b3b3;
+
+
     }
 
     & a:hover {
@@ -170,17 +180,35 @@
     align-items: center;
 }
 
-.song-duration-heart{
+.song-duration-heart {
     display: flex;
     flex-direction: row;
     height: 100%;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
-    gap: 10px;;
+    gap: 10px;
 
+    & div {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
 
-    .heart-space{
+    .heart-space {
         width: 30px;
     }
 
+}
+
+
+.playlist-track-added_at{
+    font-family: 'Gotham Light', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #b3b3b3;
+    width: 160px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: left;
+    text-align: left;
 }

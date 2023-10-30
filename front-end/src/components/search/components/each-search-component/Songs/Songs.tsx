@@ -112,7 +112,10 @@ export function SongsRes({songName}: { songName: string }) {
                 }
             });
             observing.current?.observe(node);
+
         },
+
+
         [accessToken, query, tracksData.next, tracksLoading]
     );
 
@@ -153,6 +156,7 @@ export function SongsRes({songName}: { songName: string }) {
                                 key={i}
                                 forAlbum={false}
                                 forArtist={false}
+                                forPlaylist={false}
                                 accessToken={accessToken}
                                 eachTrack={typeof eachTrack === "object" ? eachTrack : undefined}
                             />

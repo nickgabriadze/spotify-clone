@@ -1,6 +1,6 @@
 import skeletonStyle from "./skeletons.module.css";
 
-export function SongCardSkeleton() {
+export function SongCardSkeleton({forPlaylist}: {forPlaylist?: boolean}) {
   return (
     <section className={skeletonStyle["track-wrapper"]}>
       <div className={skeletonStyle["track-info-skeleton"]}>
@@ -14,6 +14,8 @@ export function SongCardSkeleton() {
       </div>
       
       <div className={skeletonStyle["track-album-skeleton"]}></div>
+
+        {forPlaylist && <div className={skeletonStyle["track-added_at-skeleton"]}></div>}
 
       <div className={skeletonStyle["track-duration-skeleton"]}>
         <div className={skeletonStyle["track-minutes-skeleton"]}></div>

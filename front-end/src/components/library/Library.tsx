@@ -11,7 +11,7 @@ import getSavedTracks from "../../api/library/getSavedTracks.ts";
 import HeartIcon from "./icons/saved-songs-icon.png";
 import {
     setUserSavedAlbumIDs,
-    setUserSavedArtistIDs,
+    setUserSavedArtistIDs, setUserSavedPlaylistIDs,
     setUsersSavedSongIDs
 } from "../../store/features/spotiUserSlice.ts";
 import {Track} from "../../types/track.ts";
@@ -62,7 +62,9 @@ export function Library({divHeight}: { divHeight: number }) {
                     added_at: string,
                     track: Track
                 }[] = (await getSavedTracks(accessToken)).data.items;
+
                 dispatch(setUserSavedArtistIDs(savedArtists.data.artists.items))
+                dispatch(setUserSavedPlaylistIDs(reqPlaylists.data.items))
                 dispatch(setUsersSavedSongIDs(savedSongItems.map(e => e.track)))
                 dispatch(setUserSavedAlbumIDs(albumsData.map(e => e.album)));
                 const savedSongsAvailability = savedSongItems.length;
@@ -146,6 +148,12 @@ export function Library({divHeight}: { divHeight: number }) {
 
                     <li
                         className={libraryStyle['listed-playlist-album']}
+                          onClick={() => {
+                        dispatch(addReactComponentToNavigation({
+                            componentName: 'Playlist',
+                            props: eachPlaylist?.id
+                        }))
+                    }}
                         key={i}>
                         <img src={eachPlaylist.images[0].url} width={50} height={50} alt={"Playlist Image"}></img>
                         <div className={libraryStyle['playlist-album-info']}>
