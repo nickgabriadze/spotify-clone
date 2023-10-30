@@ -132,8 +132,10 @@
     .date_added_at{
         display: none;
     }
+}
 
-
-
-
+@media only screen and (width < 1000px){
+    .i-album{
+        display: none;
+    }
 }

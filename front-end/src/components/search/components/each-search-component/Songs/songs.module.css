@@ -20,9 +20,11 @@
     border-bottom: 1px solid rgba(87, 85, 85, 0.58);
     position: sticky;
     top: 129px;
-    background-color: #1a1a1a
+    background-color: #1a1a1a;
 
-
+    .album-div {
+        width: 9vw;
+    }
 }
 
 .during-hover {
@@ -36,12 +38,6 @@
 .numbering-title {
     display: flex;
     gap: 15px;
-
-    :nth-child(2){
-        width: 10vw;
-    }
-
-
 }
 
 .track-name:hover {
@@ -102,12 +98,10 @@
 .title-artists {
     display: flex;
     flex-direction: column;
-
     justify-content: space-between;
     font-family: 'Gotham Light', sans-serif;
     font-weight: lighter;
     color: #b3b3b3;
-
 }
 
 .title-artists a {
@@ -215,6 +209,15 @@
 
 @media only screen and (width < 1250px){
     .playlist-track-added_at{
+        display: none;
+    }
+}
+
+@media only screen and (width < 1000px){
+    .album-div {
+        display: none;
+    }
+    .album-title{
         display: none;
     }
 }

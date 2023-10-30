@@ -123,13 +123,12 @@ export function SongsRes({songName}: { songName: string }) {
         <section className={songsStyle["tracks-wrapper"]}>
             <div className={songsStyle["navigation-wrapper"]}>
                 <div className={songsStyle["numbering-title"]}
-
                 >
                     <div>#</div>
                     <div>Title</div>
                 </div>
 
-                <div>Album</div>
+                <div className={songsStyle['album-div']}>Album</div>
 
                 <div>
                     <img
