@@ -17,6 +17,7 @@ import {
 import {Track} from "../../types/track.ts";
 import {addReactComponentToNavigation} from "../../store/features/navigationSlice.ts";
 import getSavedArtists from "../../api/library/getSavedArtists.ts";
+import PlayResumeStreaming from "../../api/player/playResumeStreaming.ts";
 
 export function Library({divHeight}: { divHeight: number }) {
     const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
@@ -30,7 +31,8 @@ export function Library({divHeight}: { divHeight: number }) {
     const [likedSongsAvailable, setLikedSongsAvailable] = useState<number>(0)
     const [libraryLoading, setLibraryLoading] = useState<boolean>(true);
     const libraryActions = useAppSelector(s => s.navigationReducer.libraryActions);
-
+    const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong);
+    console.log(currentlyPlaying)
     const widthPref = useRef<HTMLParagraphElement>(null);
     const [pTagWidth, setPTagWidth] = useState<number>(150);
     const dispatch = useAppDispatch()
@@ -45,7 +47,6 @@ export function Library({divHeight}: { divHeight: number }) {
 
         return () => window.removeEventListener('resize', resize)
     }, [widthPref, pTagWidth]);
-
 
 
     useEffect(() => {
@@ -73,14 +74,14 @@ export function Library({divHeight}: { divHeight: number }) {
                     albumItems: albumsData,
                     playlistItems: playlistsData
                 })
-            } catch(err) {
+            } catch (err) {
 
             } finally {
                 setLibraryLoading(false)
             }
         }
 
-        if(accessToken !== undefined && accessToken !== 'pending'){
+        if (accessToken !== undefined && accessToken !== 'pending') {
             fetchPlaylistsAlbums()
         }
     }, [accessToken, libraryActions.length]);
@@ -130,11 +131,17 @@ export function Library({divHeight}: { divHeight: number }) {
                                 props: eachAlbum?.id
                             }))
                         }}
+                        onDoubleClick={async () => {
+                            await PlayResumeStreaming(accessToken, eachAlbum.uri, undefined)
+                        }}
                         key={i}>
                         <img src={eachAlbum.images[0].url} width={50} height={50} alt={"Playlist Image"}></img>
                         <div className={libraryStyle['playlist-album-info']}>
                             <div className={libraryStyle['playlist-album-name']}><p
-                                style={{width: pTagWidth}}>{eachAlbum.name}</p></div>
+                                style={{
+                                    width: pTagWidth,
+                                    color: currentlyPlaying.albumID === eachAlbum?.id ? '#1ed760' : '#FFFFFF'
+                                }}>{eachAlbum.name}</p></div>
                             <div className={libraryStyle['type-owner']}>
                                 <p style={{width: pTagWidth}}>{eachAlbum.type[0].toUpperCase().concat(eachAlbum.type.slice(1,))} • {eachAlbum.artists.map(each => each.name).join(', ')}</p>
 
@@ -150,17 +157,22 @@ export function Library({divHeight}: { divHeight: number }) {
 
                     <li
                         className={libraryStyle['listed-playlist-album']}
-                          onClick={() => {
-                        dispatch(addReactComponentToNavigation({
-                            componentName: 'Playlist',
-                            props: eachPlaylist?.id
-                        }))
-                    }}
-                        key={i}>
+                        onClick={() => {
+                            dispatch(addReactComponentToNavigation({
+                                componentName: 'Playlist',
+                                props: eachPlaylist?.id
+                            }))
+                        }}
+                        onDoubleClick={async () => {
+                            await PlayResumeStreaming(accessToken, eachPlaylist.uri, undefined)
+                        }} key={i}>
                         <img src={eachPlaylist.images[0].url} width={50} height={50} alt={"Playlist Image"}></img>
                         <div className={libraryStyle['playlist-album-info']}>
                             <div className={libraryStyle['playlist-album-name']}><p
-                                style={{width: pTagWidth}}>{eachPlaylist.name}</p></div>
+                                style={{
+                                    width: pTagWidth,
+                                    color: currentlyPlaying?.context?.uri === eachPlaylist.uri ? '#1ed760' : '#FFFFFF'
+                                }}>{eachPlaylist.name}</p></div>
                             <div className={libraryStyle['type-owner']}>
                                 <p style={{width: pTagWidth}}>{eachPlaylist.type[0].toUpperCase().concat(eachPlaylist.type.slice(1,))} • {eachPlaylist.owner.display_name}</p>
 
