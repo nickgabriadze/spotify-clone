@@ -85,10 +85,25 @@
     .playlist-album-info {
         display: flex;
         height: 100%;
-        width: 100%;
-        flex-direction: column;
-        justify-content: space-between;
+
+        flex-direction: row;
+        align-items: center;
         gap: 10px;
+        width: 70%;
+        & .main-info {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+        }
+
+        & .active-indicator {
+            right: 30px;
+            width: 30px;
+
+
+            position: relative;
+        }
 
     }
 

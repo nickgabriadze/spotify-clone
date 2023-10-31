@@ -18,6 +18,7 @@ import {Track} from "../../types/track.ts";
 import {addReactComponentToNavigation} from "../../store/features/navigationSlice.ts";
 import getSavedArtists from "../../api/library/getSavedArtists.ts";
 import PlayResumeStreaming from "../../api/player/playResumeStreaming.ts";
+import Active from "./icons/lib-active.svg";
 
 export function Library({divHeight}: { divHeight: number }) {
     const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
@@ -109,12 +110,14 @@ export function Library({divHeight}: { divHeight: number }) {
                         <img src={HeartIcon} width={50} height={50} alt={"Playlist Image"}></img>
                     </div>
                     <div className={libraryStyle['playlist-album-info']}>
-                        <div className={libraryStyle['playlist-album-name']}><p
-                            style={{width: pTagWidth}}>Liked Songs</p></div>
-                        <div className={libraryStyle['type-owner']}>
-                            <p style={{width: pTagWidth}}>Playlist
-                                • {`${likedSongsAvailable} ${likedSongsAvailable > 1 ? 'songs' : 'song'}`}</p>
+                         <div className={libraryStyle['main-info']}>
+                            <div className={libraryStyle['playlist-album-name']}><p
+                                style={{width: pTagWidth}}>Liked Songs</p></div>
+                            <div className={libraryStyle['type-owner']}>
+                                <p style={{width: pTagWidth}}>Playlist
+                                    • {`${likedSongsAvailable} ${likedSongsAvailable > 1 ? 'songs' : 'song'}`}</p>
 
+                            </div>
                         </div>
                     </div>
                 </li>
@@ -137,15 +140,20 @@ export function Library({divHeight}: { divHeight: number }) {
                         key={i}>
                         <img src={eachAlbum.images[0].url} width={50} height={50} alt={"Playlist Image"}></img>
                         <div className={libraryStyle['playlist-album-info']}>
-                            <div className={libraryStyle['playlist-album-name']}><p
-                                style={{
-                                    width: pTagWidth,
-                                    color: currentlyPlaying.albumID === eachAlbum?.id ? '#1ed760' : '#FFFFFF'
-                                }}>{eachAlbum.name}</p></div>
-                            <div className={libraryStyle['type-owner']}>
-                                <p style={{width: pTagWidth}}>{eachAlbum.type[0].toUpperCase().concat(eachAlbum.type.slice(1,))} • {eachAlbum.artists.map(each => each.name).join(', ')}</p>
+                            <div className={libraryStyle['main-info']}>
+                                <div className={libraryStyle['playlist-album-name']}><p
+                                    style={{
+                                        width: currentlyPlaying.albumID === eachAlbum?.id ? pTagWidth - 30 : pTagWidth,
+                                        color: currentlyPlaying.albumID === eachAlbum?.id ? '#1ed760' : '#FFFFFF'
+                                    }}>{eachAlbum.name}</p></div>
+                                <div className={libraryStyle['type-owner']}>
+                                    <p style={{width: pTagWidth}}>{eachAlbum.type[0].toUpperCase().concat(eachAlbum.type.slice(1,))} • {eachAlbum.artists.map(each => each.name).join(', ')}</p>
 
+                                </div>
                             </div>
+                            <div className={libraryStyle['active-indicator']}>{currentlyPlaying.albumID === eachAlbum?.id && <img alt={'Active Item'} src={Active}
+                                                                                    width={25} height={25}></img>}</div>
+
                         </div>
                     </li>
                 )}
@@ -168,15 +176,19 @@ export function Library({divHeight}: { divHeight: number }) {
                         }} key={i}>
                         <img src={eachPlaylist.images[0].url} width={50} height={50} alt={"Playlist Image"}></img>
                         <div className={libraryStyle['playlist-album-info']}>
-                            <div className={libraryStyle['playlist-album-name']}><p
-                                style={{
-                                    width: pTagWidth,
-                                    color: currentlyPlaying?.context?.uri === eachPlaylist.uri ? '#1ed760' : '#FFFFFF'
-                                }}>{eachPlaylist.name}</p></div>
-                            <div className={libraryStyle['type-owner']}>
-                                <p style={{width: pTagWidth}}>{eachPlaylist.type[0].toUpperCase().concat(eachPlaylist.type.slice(1,))} • {eachPlaylist.owner.display_name}</p>
+                            <div className={libraryStyle['main-info']}>
+                                <div className={libraryStyle['playlist-album-name']}><p
+                                    style={{
+                                        width: currentlyPlaying?.context?.uri === eachPlaylist.uri ? pTagWidth - 30 : pTagWidth,
+                                        color: currentlyPlaying?.context?.uri === eachPlaylist.uri ? '#1ed760' : '#FFFFFF'
+                                    }}>{eachPlaylist.name}</p></div>
+                                <div className={libraryStyle['type-owner']}>
+                                    <p style={{width: pTagWidth}}>{eachPlaylist.type[0].toUpperCase().concat(eachPlaylist.type.slice(1,))} • {eachPlaylist.owner.display_name}</p>
 
+                                </div>
                             </div>
+                            <div className={libraryStyle['active-indicator']}>{currentlyPlaying?.context?.uri === eachPlaylist.uri  && <img alt={'Active Item'} src={Active}
+                                                                                    width={25} height={25}></img>}</div>
                         </div>
                     </li>)
             }
