@@ -67,7 +67,7 @@ export function Player() {
                     type: data.item.type, id: data.item.id
                 }))
 
-                console.log(data)
+
                 dispatch(setCurrentlyPlayingSong({
                     currentlyPlayingSong: {
                         artistID: data.item.artists[0].id,

@@ -74,13 +74,15 @@ export function Library({divHeight}: { divHeight: number }) {
                     playlistItems: playlistsData
                 })
             } catch(err) {
-                console.log(err)
+
             } finally {
                 setLibraryLoading(false)
             }
         }
 
-        fetchPlaylistsAlbums()
+        if(accessToken !== undefined && accessToken !== 'pending'){
+            fetchPlaylistsAlbums()
+        }
     }, [accessToken, libraryActions.length]);
 
     return <section className={libraryStyle['lib-wrapper']}

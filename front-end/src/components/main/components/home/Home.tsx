@@ -4,9 +4,11 @@ import {RecentlyPlayed} from "./components/RecentlyPlayed.tsx";
 import  {MoreLikeArtists} from "./components/MoreLike.tsx";
 import FeaturedInCountry from "./components/FeaturedInCountry.tsx";
 import NewReleases from "./components/NewReleases.tsx";
+import {useAppSelector} from "../../../../store/hooks.ts";
 
 export function Home() {
     const time = new Date().getHours();
+    const accessToken = useAppSelector(a => a.spotiUserReducer.spotiToken.accessToken)
     const timeFrame = () => {
         if(time >= 0 && time <= 12){
             return "morning"
@@ -24,7 +26,7 @@ export function Home() {
 
     return <section className={homepageStyle['homepage-wrapper']}>
         <h1 className={homepageStyle['greeting-message']}>Good {timeFrame()}</h1>
-        {localStorage.getItem('access_token') !== undefined && <TopItems/>}
+        {localStorage.getItem('access_token') !== undefined && accessToken !== 'pending'&& <TopItems/>}
         <FeaturedInCountry />
         <RecentlyPlayed />
         <NewReleases />

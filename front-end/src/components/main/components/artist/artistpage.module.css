@@ -197,7 +197,7 @@
         overflow-x: scroll;
     }
 
-    .appears_on-albums-list::-webkit-scrollbar, .appears_on-albums-list::-webkit-scrollbar {
+    .appears_on-albums-list::-webkit-scrollbar, .related-artists-list::-webkit-scrollbar {
         display: none;
     }
 
