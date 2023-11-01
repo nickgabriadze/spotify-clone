@@ -26,7 +26,7 @@ export function App() {
                 issued_at: Number(localStorage.getItem('issued_at'))
             }))
         }
-    }, [dispatch]);
+    }, []);
 
 
     window.addEventListener('localStorageChange', () => {
