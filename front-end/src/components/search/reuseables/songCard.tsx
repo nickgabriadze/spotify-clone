@@ -209,44 +209,45 @@ export const SongCard = forwardRef(function SongCard(props: {
                 </div>
             }
 
-            <div style={ forPlaylist ? {
-                display: 'flex',
-                width:  ' 17.5vw',
-                justifyContent: 'space-between'
-            }: {}}>
-            {forPlaylist && <div className={songsStyle['playlist-track-added_at']}>
-                <p>{addedAtDate}</p>
+            <div
+                className={songsStyle[`${forPlaylist ? 'date-added-duration-wrapper' : 'normal'}`]}
+            style={forPlaylist === false && forAlbum === false && forArtist === false ? {width:'7vw'}: {}}
+            >
 
-            </div>}
+                {forPlaylist && <div className={songsStyle['playlist-track-added_at']}>
+                    <p>{addedAtDate}</p>
 
-            <div className={songsStyle['song-duration-heart']}>
-                <div>
-                    <div className={songsStyle['heart-space']}>
-                        {hoveringOver && <button
-                            onClick={async () => {
-                                if (currentSaved) {
-                                    const req = (await removeTrackForCurrentUser(accessToken, String(eachTrack?.id))).status;
-                                    if (req === 200) {
-                                        dispatch(addLibraryAction('Remove Track'))
+                </div>}
+
+                <div className={songsStyle['song-duration-heart']}>
+                    <div>
+                        <div className={songsStyle['heart-space']}>
+                            {hoveringOver && <button
+                                onClick={async () => {
+                                    if (currentSaved) {
+                                        const req = (await removeTrackForCurrentUser(accessToken, String(eachTrack?.id))).status;
+                                        if (req === 200) {
+                                            dispatch(addLibraryAction('Remove Track'))
+                                        }
+
+                                    } else {
+
+                                        const req = (await saveTrackForCurrentUser(accessToken, String(eachTrack?.id))).status;
+                                        if (req === 200) {
+                                            dispatch(addLibraryAction('Saved Track'))
+                                        }
                                     }
-
-                                } else {
-
-                                    const req = (await saveTrackForCurrentUser(accessToken, String(eachTrack?.id))).status;
-                                    if (req === 200) {
-                                        dispatch(addLibraryAction('Saved Track'))
-                                    }
-                                }
-                            }}
-                            title={currentSaved ? "Remove from Your Library" : "Save to Your Library"}
-                        ><img alt={"Heart icon"} src={currentSaved ? SavedTrackIcon : Heart} width={20}
-                              height={30}></img>
-                        </button>}
+                                }}
+                                title={currentSaved ? "Remove from Your Library" : "Save to Your Library"}
+                            ><img alt={"Heart icon"} src={currentSaved ? SavedTrackIcon : Heart} width={20}
+                                  height={30}></img>
+                            </button>}
+                        </div>
+                        <div
+                            className={songsStyle['duration']}>{millisecondsToHhMmSs(Number(eachTrack?.duration_ms))}</div>
                     </div>
-                    <div className={songsStyle['duration']}>{millisecondsToHhMmSs(Number(eachTrack?.duration_ms))}</div>
                 </div>
             </div>
-                </div>
         </div>
     );
 })

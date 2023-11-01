@@ -62,11 +62,11 @@
 
 .general-info {
     display: flex;
-    gap: 20px;
+    gap: 10px;
     align-items: center;
 
     padding-left: 10px;
-    padding-right: 20px;
+    padding-right: 30px;
 }
 
 .img-title-artists {
@@ -136,10 +136,11 @@
 .album-title {
     display: flex;
     justify-content: left;
-    align-items: flex-start;
+    align-items: center;
     font-size: 12px;
-    color: #b3b3b3;
     width: 20vw;
+    color: #b3b3b3;
+
 
 }
 
@@ -194,6 +195,7 @@
     align-items: center;
     gap: 10px;
 
+
     & div {
         display: flex;
         gap: 10px;
@@ -224,10 +226,21 @@
 
     }
 }
+.date-added-duration-wrapper{
+    display: flex;
+    justify-content: space-between;
+    width: 17.5vw;
+    align-items: center;
+}
+
+
 
 @media only screen and (width < 1250px) {
     .playlist-track-added_at {
         display: none;
+    }
+    .date-added-duration-wrapper{
+        width: initial;
     }
 }
 
