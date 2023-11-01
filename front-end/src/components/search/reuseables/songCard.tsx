@@ -174,7 +174,7 @@ export const SongCard = forwardRef(function SongCard(props: {
                             style={
 
                                 {
-                                    width: `${forAlbum ? '55vw' : '25vw'}`,
+                                    width: `${forAlbum ? '55vw' : '26vw'}`,
                                     color: `${eachTrack?.id === songID ? '#1ed760' : 'white'}`,
                                     paddingBottom: forArtist && eachTrack?.explicit ? '10px' : '0px'
                                 }}>{eachTrack?.name}</a>
@@ -187,7 +187,7 @@ export const SongCard = forwardRef(function SongCard(props: {
                                      style={{fontSize: '8px', width: 'fit-content'}}>E</div> : ''}
                             {(forArtist === false || forAlbum == true || forPlaylist == true) &&
                                 <div className={songsStyle['artists-box']}
-                                     style={{width: `${forAlbum ? '55vw' : '29vw'}`}}
+                                     style={{width: `${forAlbum ? '55vw' : '25vw'}`}}
                                 >{eachTrack?.artists.map((artist, i) =>
                                     <a key={i}
                                        onClick={() => {
