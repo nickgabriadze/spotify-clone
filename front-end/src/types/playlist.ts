@@ -29,7 +29,7 @@ export interface FullPlayList extends Playlist {
 }
 export interface PlayListTrackObject extends Track{
     added_at: string,
-    added_by: {
+    added_by?: {
         external_urls: {
             spotify: string
         },
@@ -42,7 +42,7 @@ export interface PlayListTrackObject extends Track{
         type: "user",
         uri: string,
     },
-    is_local: boolean,
+    is_local?: boolean,
     track: Track
 }
 

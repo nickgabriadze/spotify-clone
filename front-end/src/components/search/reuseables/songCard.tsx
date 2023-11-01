@@ -27,14 +27,14 @@ export const SongCard = forwardRef(function SongCard(props: {
     accessToken: string,
     forAlbum?: boolean,
     forArtist?: boolean,
-    playlistTrack?: PlayListTrackObject,
+    playlistTrackAddedDate?: String,
     forPlaylist?: boolean
 }, ref: LegacyRef<HTMLDivElement>) {
     const [currentSaved, setCurrentSaved] = useState<boolean>(false)
     const savedSongs = useAppSelector((state) => state.spotiUserReducer.userSaved.userSavedSongIDs);
 
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong)
-    const {n, eachTrack, accessToken, forAlbum, forPlaylist, playlistTrack, forArtist} = props;
+    const {n, eachTrack, accessToken, forAlbum, forPlaylist, playlistTrackAddedDate, forArtist} = props;
     const songID = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong.songID);
     const dispatch = useAppDispatch();
     const [addedAtDate, setAddedAtDate] = useState<string>('');
@@ -49,13 +49,13 @@ export const SongCard = forwardRef(function SongCard(props: {
 
 
     useEffect(() => {
-        if (forPlaylist && playlistTrack) {
-            const addedAt = new Date(String(playlistTrack?.added_at))
+        if (forPlaylist && playlistTrackAddedDate) {
+            const addedAt = new Date(String(playlistTrackAddedDate))
             const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
             const releaseDate = months[Number(addedAt.getMonth())].concat(" ").concat(String(addedAt.getDate()).concat(", ").concat(String(addedAt.getFullYear())))
             setAddedAtDate(releaseDate)
         }
-    }, [playlistTrack?.track.id]);
+    }, [eachTrack?.id]);
 
     return (
         <div className={songsStyle["track-wrapper"]}
@@ -136,8 +136,7 @@ export const SongCard = forwardRef(function SongCard(props: {
                     {!forAlbum && <div className={songsStyle["album-img"]}>
                         {eachTrack?.album.images[0]?.url ? <img
                                 src={eachTrack?.album.images[0]?.url}
-                                width={45}
-                                height={45}
+
                                 draggable={false}
                                 alt="Album Picture"
                             ></img> :
@@ -205,14 +204,18 @@ export const SongCard = forwardRef(function SongCard(props: {
 
             {
                 !forAlbum && <div className={songsStyle["album-title"]}
-
                 >
                     <a>{eachTrack?.album.name}</a>
                 </div>
             }
 
+            <div style={ forPlaylist ? {
+                display: 'flex',
+                width:  ' 17.5vw',
+                justifyContent: 'space-between'
+            }: {}}>
             {forPlaylist && <div className={songsStyle['playlist-track-added_at']}>
-                {addedAtDate}
+                <p>{addedAtDate}</p>
 
             </div>}
 
@@ -237,12 +240,13 @@ export const SongCard = forwardRef(function SongCard(props: {
                             }}
                             title={currentSaved ? "Remove from Your Library" : "Save to Your Library"}
                         ><img alt={"Heart icon"} src={currentSaved ? SavedTrackIcon : Heart} width={20}
-                              height={28}></img>
+                              height={30}></img>
                         </button>}
                     </div>
                     <div className={songsStyle['duration']}>{millisecondsToHhMmSs(Number(eachTrack?.duration_ms))}</div>
                 </div>
             </div>
+                </div>
         </div>
     );
 })

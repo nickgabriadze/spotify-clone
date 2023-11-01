@@ -29,14 +29,16 @@ export function Library({divHeight}: { divHeight: number }) {
         albumItems: [],
         playlistItems: []
     })
+    const me = useAppSelector(me => me.spotiUserReducer.userInformation);
     const [likedSongsAvailable, setLikedSongsAvailable] = useState<number>(0)
     const [libraryLoading, setLibraryLoading] = useState<boolean>(true);
     const libraryActions = useAppSelector(s => s.navigationReducer.libraryActions);
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong);
     const [useSavedTracks, setUserSavedTracks] = useState<{
-                    added_at: string,
-                    track: Track
-                }[]>([])
+        added_at: string,
+        track: Track
+    }[]>([])
+
     const widthPref = useRef<HTMLParagraphElement>(null);
     const [pTagWidth, setPTagWidth] = useState<number>(150);
     const dispatch = useAppDispatch()
@@ -109,23 +111,35 @@ export function Library({divHeight}: { divHeight: number }) {
             {likedSongsAvailable > 0 && (!libraryLoading) &&
                 <li
                     onDoubleClick={async () => {
-                            await PlayResumeStreaming(accessToken, undefined, useSavedTracks.map(e => String(e.track.uri)) )
-                        }}
+                        await PlayResumeStreaming(accessToken, String(me?.uri).concat(':collection'), undefined)
+                    }}
+                    onClick={() => {
+                        dispatch(addReactComponentToNavigation({
+                            componentName: 'LikedSongs',
+                            props: useSavedTracks
+                        }))
+                    }}
                     className={libraryStyle['listed-playlist-album']}
                 >
                     <div className={libraryStyle['liked-songs-icon-wrapper']}>
                         <img src={HeartIcon} width={50} height={50} alt={"Playlist Image"}></img>
                     </div>
                     <div className={libraryStyle['playlist-album-info']}>
-                         <div className={libraryStyle['main-info']}>
+                        <div className={libraryStyle['main-info']}>
                             <div className={libraryStyle['playlist-album-name']}><p
-                                style={{width: pTagWidth}}>Liked Songs</p></div>
+                                style={{width: pTagWidth, color: currentlyPlaying?.context?.uri === me?.uri.concat(':collection') ? '#1ed760' : '#FFFFFF'}}>Liked Songs</p></div>
                             <div className={libraryStyle['type-owner']}>
                                 <p style={{width: pTagWidth}}>Playlist
                                     • {`${likedSongsAvailable} ${likedSongsAvailable > 1 ? 'songs' : 'song'}`}</p>
 
                             </div>
+
                         </div>
+                          <div
+                                className={libraryStyle['active-indicator']}>{currentlyPlaying?.context?.uri === me?.uri.concat(':collection') &&
+                                <img alt={'Active Item'} src={Active}
+                                     width={25} height={25}></img>}
+                            </div>
                     </div>
                 </li>
             }
@@ -137,7 +151,7 @@ export function Library({divHeight}: { divHeight: number }) {
                         className={libraryStyle['listed-playlist-album']}
                         onClick={() => {
                             dispatch(addReactComponentToNavigation({
-                                componentName: String(eachAlbum?.type.slice(0, 1).toUpperCase().concat(eachAlbum?.type.slice(1,))),
+                                componentName: 'Album',
                                 props: eachAlbum?.id
                             }))
                         }}
@@ -158,8 +172,11 @@ export function Library({divHeight}: { divHeight: number }) {
 
                                 </div>
                             </div>
-                            <div className={libraryStyle['active-indicator']}>{currentlyPlaying.albumID === eachAlbum?.id && <img alt={'Active Item'} src={Active}
-                                                                                    width={25} height={25}></img>}</div>
+                            <div
+                                className={libraryStyle['active-indicator']}>{currentlyPlaying.albumID === eachAlbum?.id &&
+                                <img alt={'Active Item'} src={Active}
+                                     width={25} height={25}></img>}
+                            </div>
 
                         </div>
                     </li>
@@ -194,8 +211,10 @@ export function Library({divHeight}: { divHeight: number }) {
 
                                 </div>
                             </div>
-                            <div className={libraryStyle['active-indicator']}>{currentlyPlaying?.context?.uri === eachPlaylist.uri  && <img alt={'Active Item'} src={Active}
-                                                                                    width={25} height={25}></img>}</div>
+                            <div
+                                className={libraryStyle['active-indicator']}>{currentlyPlaying?.context?.uri === eachPlaylist.uri &&
+                                <img alt={'Active Item'} src={Active}
+                                     width={25} height={25}></img>}</div>
                         </div>
                     </li>)
             }

@@ -49,7 +49,7 @@ export interface Track {
   };
   href: string,
   id: string,
-  is_local: boolean,
+  is_local?: boolean,
   name: string,
   popularity: number,
   preview_url: string,

@@ -229,7 +229,7 @@ export function PlaylistPage({playlistID}: { playlistID: string }) {
                 } else {
                     return <SongCard
                         ref={i === playlistTracks.data.length - 1 ? lastSong : null}
-                        playlistTrack={typeof plTrack === "object" ? plTrack : undefined} forPlaylist={true}
+                        playlistTrackAddedDate={typeof plTrack === "object" ? plTrack.added_at : undefined} forPlaylist={true}
                         eachTrack={typeof plTrack === "object" ? plTrack.track : undefined} n={i + 1} key={i}
                         accessToken={accessToken}/>
                 }

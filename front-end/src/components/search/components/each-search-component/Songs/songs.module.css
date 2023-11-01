@@ -64,6 +64,7 @@
     display: flex;
     gap: 20px;
     align-items: center;
+
     padding-left: 10px;
     padding-right: 20px;
 }
@@ -78,11 +79,19 @@
 
 
 .album-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-left: 3%;
+
 }
 
 .album-img img {
+
     object-fit: cover;
+    width: 50px;
+    height: 50px;
+
 
 }
 
@@ -126,10 +135,12 @@
 
 .album-title {
     display: flex;
-    align-items: center;
+    justify-content: left;
+    align-items: flex-start;
     font-size: 12px;
     color: #b3b3b3;
     width: 20vw;
+
 }
 
 .album-title a {
@@ -191,34 +202,41 @@
 
     .heart-space {
         width: 30px;
+        margin-top: 2px;
     }
 
 }
 
 
-.playlist-track-added_at{
-    font-family: 'Gotham Light', sans-serif;
-    font-weight: 600;
-    font-size: 14px;
+.playlist-track-added_at {
+
     color: #b3b3b3;
-    width: 160px;
+
     display: flex;
-    align-items: flex-start;
     justify-content: left;
-    text-align: left;
+
+    & p {
+
+        font-family: 'Gotham Light', sans-serif;
+        font-size: 14px;
+        font-weight: 300;
+
+
+    }
 }
 
-@media only screen and (width < 1250px){
-    .playlist-track-added_at{
+@media only screen and (width < 1250px) {
+    .playlist-track-added_at {
         display: none;
     }
 }
 
-@media only screen and (width < 1000px){
+@media only screen and (width < 1000px) {
     .album-div {
         display: none;
     }
-    .album-title{
+
+    .album-title {
         display: none;
     }
 }
