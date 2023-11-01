@@ -33,7 +33,10 @@ export function Library({divHeight}: { divHeight: number }) {
     const [libraryLoading, setLibraryLoading] = useState<boolean>(true);
     const libraryActions = useAppSelector(s => s.navigationReducer.libraryActions);
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong);
-    console.log(currentlyPlaying)
+    const [useSavedTracks, setUserSavedTracks] = useState<{
+                    added_at: string,
+                    track: Track
+                }[]>([])
     const widthPref = useRef<HTMLParagraphElement>(null);
     const [pTagWidth, setPTagWidth] = useState<number>(150);
     const dispatch = useAppDispatch()
@@ -71,6 +74,7 @@ export function Library({divHeight}: { divHeight: number }) {
                 dispatch(setUserSavedAlbumIDs(albumsData.map(e => e.album)));
                 const savedSongsAvailability = savedSongItems.length;
                 setLikedSongsAvailable(savedSongsAvailability)
+                setUserSavedTracks(savedSongItems)
                 setLibData({
                     albumItems: albumsData,
                     playlistItems: playlistsData
@@ -104,6 +108,9 @@ export function Library({divHeight}: { divHeight: number }) {
         >
             {likedSongsAvailable > 0 && (!libraryLoading) &&
                 <li
+                    onDoubleClick={async () => {
+                            await PlayResumeStreaming(accessToken, undefined, useSavedTracks.map(e => String(e.track.uri)) )
+                        }}
                     className={libraryStyle['listed-playlist-album']}
                 >
                     <div className={libraryStyle['liked-songs-icon-wrapper']}>
