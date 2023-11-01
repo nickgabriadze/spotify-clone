@@ -1,33 +1,18 @@
 import {useEffect, useState} from "react";
-import {fetchTokenAsync, setToken, updateCredentials} from "./store/features/spotiUserSlice";
+import { setToken, updateCredentials} from "./store/features/spotiUserSlice";
 import {useAppDispatch, useAppSelector} from "./store/hooks";
 import appStyle from "./app.module.css";
 import Navigation from "./components/navigation/navigation";
 import Player from "./components/player/player";
 import Main from "./components/main/Main.tsx";
 import Library from "./components/library/Library.tsx";
+import LoginPage from "./components/login/Login.tsx";
+
 
 export function App() {
     const access = useAppSelector((state) => state.spotiUserReducer.spotiToken);
 
     const dispatch = useAppDispatch();
-    useEffect(() => {
-        if (localStorage.getItem('access_token') === null
-            ||
-            localStorage.getItem('refresh_token') === null ||
-            localStorage.getItem('refresh_token') === 'undefined'
-            || localStorage.getItem('access_token') === 'undefined'
-        ) {
-            dispatch(fetchTokenAsync());
-        } else {
-            dispatch(updateCredentials({
-                access_token: String(localStorage.getItem('access_token')),
-                refresh_token: String(localStorage.getItem('refresh_token')),
-                issued_at: Number(localStorage.getItem('issued_at'))
-            }))
-        }
-    }, []);
-
 
     window.addEventListener('localStorageChange', () => {
         dispatch(
@@ -55,7 +40,31 @@ export function App() {
     }, []);
 
 
-    if ((access.accessToken === 'unavailable'
+    useEffect(() => {
+        if (!(localStorage.getItem('access_token') === null
+            ||
+            localStorage.getItem('refresh_token') === null ||
+            localStorage.getItem('refresh_token') === 'undefined'
+            || localStorage.getItem('access_token') === 'undefined')
+        ){
+            dispatch(updateCredentials({
+                access_token: String(localStorage.getItem('access_token')),
+                refresh_token: String(localStorage.getItem('refresh_token')),
+                issued_at: Number(localStorage.getItem('issued_at'))
+            }))
+        }
+    }, []);
+
+    if(localStorage.getItem('access_token') === null
+            ||
+            localStorage.getItem('refresh_token') === null ||
+            localStorage.getItem('refresh_token') === 'undefined'
+            || localStorage.getItem('access_token') === 'undefined')
+    {
+        return <LoginPage />
+    }
+
+     if ((access.accessToken === 'unavailable'
             && access.refresh_token === 'unavailable')
         ||
         (access.accessToken === 'pending'
@@ -73,8 +82,7 @@ export function App() {
             ></img>
 
         );
-    } else {
-
+    }
         return (
             <div className={appStyle["application-wrapper"]}
             >
@@ -96,7 +104,10 @@ export function App() {
 
             </div>
         );
-    }
+
+
+
+
 
 
 }

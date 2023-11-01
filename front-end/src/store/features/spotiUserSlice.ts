@@ -16,8 +16,15 @@ interface TokenData {
 
 export const fetchTokenAsync = createAsyncThunk(
     "spotify/token",
-    async (): Promise<TokenData> => {
-        const req = await fetchAccessToken();
+    async (info: {
+        client_id?: string,
+        client_secret_id?: string
+    } ): Promise<TokenData> => {
+        const req = await fetchAccessToken(
+            info.client_id,
+            info.client_secret_id
+
+        );
         history.replaceState({}, document.title, window.location.pathname);
 
         return req.data;
