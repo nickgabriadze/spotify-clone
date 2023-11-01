@@ -131,7 +131,7 @@ export function Songs({firstFour, resultsLoading}: { firstFour: Track[] | undefi
                                     {eachTrack?.explicit ?
                                         <div className={episodesStyle['explicit']}
                                              style={{fontSize: '8px'}}>E</div> : ''}
-                                    <div
+                                    <span
                                         className={allResultsStyle['song-artists-box']}
                                     >{eachTrack.artists.slice(0, 4).map((artist, i) =>
                                         <a key={i}
@@ -142,14 +142,14 @@ export function Songs({firstFour, resultsLoading}: { firstFour: Track[] | undefi
                                                }))
                                            }}
                                         >{i === eachTrack.artists.slice(0, 4).length - 1 ? artist.name : `${artist.name}, `}</a>)}
-                                    </div>
+                                    </span>
                                 </div>
                             </div>
                         </div>
                         <div className={allResultsStyle['song-duration-heart']}>
-                            {eachTrack.id === hoveringOver &&
-                                <div>
-                                    <button
+
+                                <div className={allResultsStyle['heart']}>
+                                    {eachTrack.id === hoveringOver && <button
                                         onClick={async () => {
                                             if (currentSaved.includes(eachTrack.id)) {
                                                 const req = (await removeTrackForCurrentUser(accessToken, String(eachTrack?.id))).status;
@@ -168,8 +168,8 @@ export function Songs({firstFour, resultsLoading}: { firstFour: Track[] | undefi
                                         title={currentSaved.includes(eachTrack.id) ? "Remove from Your Library" : "Save to Your Library"}
                                     ><img alt={"Heart icon"} src={currentSaved.includes(eachTrack.id) ? SavedTrackIcon : Heart} width={20}
                                           height={28}></img>
-                                    </button>
-                                </div>}
+                                    </button>}
+                                </div>
                             <div
                                 className={allResultsStyle['duration']}>{millisecondsToHhMmSs(Number(eachTrack?.duration_ms))}</div>
                         </div>

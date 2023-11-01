@@ -155,7 +155,7 @@
             .song-details{
                 display: flex;
                 flex-direction: column;
-                justify-content: space-between;
+                justify-content: space-around;
                 gap: 8px;
 
 
@@ -183,8 +183,9 @@
                     display: flex;
                     white-space: nowrap;
                     gap: 4px;
-                    overflow-x: hidden;
-
+                    width: 30vw;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                     }
                 & a:hover {
                     text-decoration: underline;
@@ -194,6 +195,10 @@
                     color: #b3b3b3;
                     font-weight: bold;
                     font-size: 14px;
+                    text-align: left;
+
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                     font-family: "Gotham Light", sans-serif;
                 }
             }
@@ -206,12 +211,16 @@
             font-size: 14px;
 
         }
-
+        .heart{
+            width: 30px;
+        }
         .song-duration-heart{
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 20px
+            justify-content: space-between;
+            gap: 10px;
+
+
         }
 
     }
