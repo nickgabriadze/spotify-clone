@@ -13,9 +13,9 @@ import SearchBar from "../search/components/search-bar/searchBar.tsx";
 import Searchables from "../search/components/searchables/searchables.tsx";
 import {setUserInformation} from "../../store/features/spotiUserSlice.ts";
 import AlbumPage from "./components/album/AlbumPage.tsx";
-import {navigateToDirection} from "../../store/features/navigationSlice.ts";
+import {navigateToDirection, setUserControlActions} from "../../store/features/navigationSlice.ts";
 import ArtistPage from "./components/artist/ArtistPage.tsx";
-import  {CategoryPage} from "./components/browsingCategory/category.tsx";
+import {CategoryPage} from "./components/browsingCategory/category.tsx";
 import PlaylistPage from "./components/playlist/PlaylistPage.tsx";
 import {LikedSongs} from "./components/playlist/LikedSongs.tsx";
 
@@ -34,10 +34,10 @@ export function Main({height}: { height: number }) {
         "Home": () => <Home/>,
         "Queue": () => <Queue/>,
         "Album": (ID: string) => <AlbumPage albumID={ID}/>,
-        "Artist": (ID: string) => <ArtistPage artistID={ID} />,
-        "Playlist": (ID: string) => <PlaylistPage playlistID={ID} />,
-        "LikedSongs": (tracks: any[]) =>  <LikedSongs tracks={tracks} />,
-        "BrowsingCategory": (categoryStuff: string[]) => <CategoryPage categoryStuff={categoryStuff} />
+        "Artist": (ID: string) => <ArtistPage artistID={ID}/>,
+        "Playlist": (ID: string) => <PlaylistPage playlistID={ID}/>,
+        "LikedSongs": (tracks: any[]) => <LikedSongs tracks={tracks}/>,
+        "BrowsingCategory": (categoryStuff: string[]) => <CategoryPage categoryStuff={categoryStuff}/>
     }
     useEffect(() => {
         const fetchMyData = async () => {
@@ -58,14 +58,19 @@ export function Main({height}: { height: number }) {
 
 
     const PageNavigation = useAppSelector(state => state.navigationReducer.pageNavigation);
-
+    const [displayLogOut, setDisplayLogut] = useState<boolean>(false)
 
     const componentObject = PageNavigation.pageHistory[PageNavigation.currentPageIndex]
     return (
         <main className={mainStyle['main-container']} style={{height: `${height}px`}}>
             <div
                 className={mainStyle['header-container']}
-                style={navOption === 'Search' ? {position: 'sticky', top: '0', zIndex: '9999', backgroundColor: '#121212'} : {paddingTop: '15px', paddingBottom: '20px'}}
+                style={navOption === 'Search' ? {
+                    position: 'sticky',
+                    top: '0',
+                    zIndex: '9999',
+                    backgroundColor: '#121212'
+                } : {paddingTop: '15px', paddingBottom: '20px'}}
             >
                 <div className={mainStyle['head-of-main']}
 
@@ -86,9 +91,14 @@ export function Main({height}: { height: number }) {
                                     dispatch(navigateToDirection("FORWARD"))
                                 }}
                         >
-                            <img
-                                style={{filter: `${PageNavigation.currentPageIndex === PageNavigation.pageHistory.length - 1 ? `brightness(50%)` : `brightness(100%)`}`}}
-                                alt={'Right icon'} src={Right} height={32}></img>
+                            <div>
+
+
+                                <img
+                                    style={{filter: `${PageNavigation.currentPageIndex === PageNavigation.pageHistory.length - 1 ? `brightness(50%)` : `brightness(100%)`}`}}
+                                    alt={'Right icon'} src={Right} height={32}></img>
+
+                            </div>
                         </button>
 
                         {componentObject.component === 'Search' && <SearchBar/>}
@@ -98,7 +108,32 @@ export function Main({height}: { height: number }) {
                         {loading ? (
                             <div className={searchBarStyle['profile-pic-loading']}></div>
                         ) : (
-                            <img alt={'User picture'} src={userData?.images[0].url} width={32} height={32}></img>
+                            <div className={mainStyle['user-icon-log-out-wrapper']}>
+                                {displayLogOut && <button
+                                     className={mainStyle['log-out-btn']}
+                                    onClick={() => {
+                                        localStorage.clear()
+                                        dispatch(setUserControlActions({
+                                            userAction: 'User logged out'
+                                        }))
+                                    }
+                                }>Log Out</button>}
+                                <button
+                                    onClick={() => {
+
+                                        setDisplayLogut((prev) => !prev)
+                                        const timeout = setTimeout(() => {
+                                            setDisplayLogut(false)
+
+                                            return () => clearTimeout(timeout)
+                                        }, 3000)
+                                    }}
+                                >
+                                    <img alt={'User picture'} src={userData?.images[0].url} width={32}
+                                         height={32}></img>
+                                </button>
+                            </div>
+
                         )}
                     </div>
                 </div>

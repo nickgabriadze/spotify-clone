@@ -23,8 +23,8 @@ export function TopItems() {
         const fetchTops = async () => {
             try {
                 setDataLoading(true)
-                const getTopArtists: Artist[] = (await getUsersTopItems(access, 'artists', 'short_term', 3)).data.items;
-                const getTopTracks: Track[] = (await getUsersTopItems(access, 'tracks', "short_term", 3)).data.items;
+                const getTopArtists: Artist[] = (await getUsersTopItems(access, 'artists', 'medium_term', 3)).data.items;
+                const getTopTracks: Track[] = (await getUsersTopItems(access, 'tracks', "medium_term", 3)).data.items;
                 const tracksMappedToAlbums = getTopTracks.map(eachTopTrack => eachTopTrack.album);
 
                 setTopItemsData([
@@ -35,7 +35,7 @@ export function TopItems() {
                     getTopArtists[1],
                     getTopArtists[0]
                 ]);
-
+                console.log()
             } catch (err) {
 
             } finally {
@@ -52,7 +52,7 @@ export function TopItems() {
             Array.from({length: 6}).map((_, i) => <UsersTopItemSkeleton key={i}/>)
             :
             topItemsData.map((eachTopItem, i) => <div key={i} className={homepageStyle['top-item']}
-                                                      onMouseOver={() => setHoveringOverTopItem({itemID: eachTopItem.id})}
+                                                      onMouseOver={() => setHoveringOverTopItem({itemID: eachTopItem?.id})}
                                                       onMouseOut={() => setHoveringOverTopItem({itemID: ''})}
 
             >
@@ -65,7 +65,7 @@ export function TopItems() {
                          }))
                      }}
                 >
-                    <img src={eachTopItem.images[0].url} alt={'Album Image'}></img>
+                    <img src={eachTopItem?.images[0].url} alt={'Album Image'}></img>
                 </div>
 
                 <div className={homepageStyle['detail-play']}>
@@ -76,8 +76,8 @@ export function TopItems() {
                                  props: eachTopItem.id
                              }))
                          }}
-                    >{eachTopItem.name}</div>
-                    {hoveringOverTopItem && hoveringOverTopItem.itemID === eachTopItem.id &&
+                    >{eachTopItem?.name}</div>
+                    {hoveringOverTopItem && hoveringOverTopItem.itemID === eachTopItem?.id &&
                         <div className={homepageStyle['play-button']}>
                             <button
                                 onClick={async () => {

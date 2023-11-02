@@ -11,6 +11,31 @@
 
 }
 
+.user-icon-log-out-wrapper{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    .log-out-btn{
+        color: #121212;
+        background-color: #1ed760;
+        padding: 10px;
+        font-size: 12px;
+        border-radius: 30px;
+    }
+
+    .log-out-btn:hover{
+
+        scale: 1.05
+    }
+
+
+
+    .log-out-btn:active{
+        scale: 0.95;
+    }
+}
+
 .head-of-main {
     display: flex;
     justify-content: space-between;

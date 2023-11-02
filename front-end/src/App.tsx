@@ -15,6 +15,7 @@ export function App() {
     const dispatch = useAppDispatch();
 
     window.addEventListener('localStorageChange', () => {
+
         dispatch(
             setToken({
                 accessToken: String(localStorage.getItem("access_token"))

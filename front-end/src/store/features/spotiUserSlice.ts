@@ -1,10 +1,10 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
-import fetchAccessToken from "../../api/getToken";
 import {Me} from "../../types/me.ts";
 import {Track} from "../../types/track.ts";
 import {Album} from "../../types/album.ts";
 import {Artist} from "../../types/artist.ts";
 import {Playlist} from "../../types/playlist.ts";
+import axios from "axios";
 
 interface TokenData {
     accessToken: string;
@@ -19,17 +19,28 @@ export const fetchTokenAsync = createAsyncThunk(
     async (info: {
         client_id?: string,
         client_secret_id?: string
-    } ): Promise<TokenData> => {
-        const req = await fetchAccessToken(
-            info.client_id,
-            info.client_secret_id
+    }): Promise<TokenData> => {
 
-        );
-        history.replaceState({}, document.title, window.location.pathname);
+        if (!window.location.hash.includes("#")) {
+            return axios.get(`http://localhost:3001/authenticate?client_id=${info.client_id}&client_secret_id=${info.client_secret_id}`,)
+                .then((res) => (window.location.href = res.data));
+        } else {
+            const access = window && window.location.hash
+                .split("#")[1]
+                .split("&")
+                .map((each) => {
+                    const split = each.split("=");
+                    const key = split[0];
+                    const value = split[1];
+                    return JSON.parse(`{"${key}":"${value}"}`);
+                }).reduce((acc, obj) => ({...acc, ...obj}), {});
 
-        return req.data;
-    }
-);
+            history.replaceState({}, document.title, window.location.pathname)
+            return access
+        }
+
+
+    });
 
 
 interface SpotiUser {
@@ -45,7 +56,7 @@ interface SpotiUser {
         userSavedSongIDs: string[],
         userSavedAlbumIDs: string[],
         userSavedArtistIDs: string[],
-         userSavedPlaylistIDs: string[]
+        userSavedPlaylistIDs: string[]
     }
 }
 
@@ -70,7 +81,7 @@ const spotiUserSlice = createSlice({
     name: "Spoti User Slice",
     initialState,
     reducers: {
-         setUserSavedPlaylistIDs: (state, action: { payload: Playlist[] }) => {
+        setUserSavedPlaylistIDs: (state, action: { payload: Playlist[] }) => {
 
             return {
                 ...state,
@@ -207,6 +218,14 @@ const spotiUserSlice = createSlice({
     },
 });
 
-export const {setUserInformation, setToken, updateCredentials, setUserSavedArtistIDs, setUsersSavedSongIDs, setUserSavedAlbumIDs, setUserSavedPlaylistIDs} = spotiUserSlice.actions;
+export const {
+    setUserInformation,
+    setToken,
+    updateCredentials,
+    setUserSavedArtistIDs,
+    setUsersSavedSongIDs,
+    setUserSavedAlbumIDs,
+    setUserSavedPlaylistIDs
+} = spotiUserSlice.actions;
 
 export default spotiUserSlice.reducer;
