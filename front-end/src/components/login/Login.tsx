@@ -1,37 +1,66 @@
 import {useState} from "react";
 import {fetchTokenAsync} from "../../store/features/spotiUserSlice.ts";
 import {useAppDispatch} from "../../store/hooks.ts";
+import loginPageStyle from './login-page.module.css';
+import SpotifyHeaderLogo from "./icons/spotify-logo.svg"
 
 export function LoginPage() {
     const dispatch = useAppDispatch();
     const [clientID, setClientID] = useState<string>('');
     const [clientSecretID, setClientSecretID] = useState<string>('')
-
+    document.title = "Spotify Login"
 
     if (window.location.hash.includes("#")) {
         dispatch(fetchTokenAsync({}))
 
     }
 
+    // onClick={async () =>
+    //                     dispatch(fetchTokenAsync({
+    //                         client_id: clientID,
+    //                         client_secret_id: clientSecretID
+    //                     }))
+    //                 }
 
-    return <div><h1>hello, log in</h1>
-        <input style={{color: 'white', border: '1px solid red'}}
 
-               onChange={(e) => setClientID(e.target.value)}
-        ></input> <input
+    return <div className={loginPageStyle['login-form-wrapper']}>
 
-            onChange={(e) => setClientSecretID(e.target.value)}
-            style={{color: 'white', border: '1px solid red'}}></input>
-        <button style={{color: 'white'}}
-                onClick={async () =>
-                    dispatch(fetchTokenAsync({
-                        client_id: clientID,
-                        client_secret_id: clientSecretID
-                    }))
-                }
+        <div className={loginPageStyle['header']}>
+            <img height={70} src={SpotifyHeaderLogo} alt={'Spotify logo'}></img>
+        </div>
+        <h1>Log in to Spotify</h1>
 
-        >Submit
-        </button>
+        <form onSubmit={() => {
+
+            dispatch(fetchTokenAsync({
+                client_id: clientID,
+                client_secret_id: clientSecretID
+            }))
+
+        }}>
+            <div>
+                <label>Client ID</label>
+                <input maxLength={255} type={'text'}
+                       value={clientID}
+                       onChange={(e) => setClientID(e.target.value)}
+                ></input>
+            </div>
+
+            <div>
+                <label>Client Secret ID</label>
+                <input
+                    value={clientSecretID}
+                    onChange={(e) => setClientSecretID(e.target.value)}
+                    type={'password'}
+                    maxLength={255}
+
+                ></input>
+            </div>
+
+
+            <button type="submit">Log In</button>
+
+        </form>
     </div>
 }
 

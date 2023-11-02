@@ -1,0 +1,88 @@
+.login-form-wrapper {
+    background: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    gap: 50px;
+
+    .header{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: black;
+        padding: 30px;
+
+    }
+
+    & h1 {
+        font-size: 2.8rem;
+        border-bottom: 1px solid #302f2f;
+        text-align: center;
+        padding: 30px 80px 20px;
+    }
+
+    & form {
+        display: flex;
+        justify-content: left;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 20px;
+
+        & label {
+            color: white;
+            font-family: 'Gotham Medium', sans-serif;
+            font-size: 0.8rem
+
+
+        }
+
+        & div {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        & input {
+            color: white;
+            font-family: 'Gotham Medium', sans-serif;
+            font-weight: lighter;
+            font-size: 1rem;
+
+            border-radius: 3px;
+            border: 1px solid #302f2f;
+            height: 40px;
+            background-color: #121212;
+            padding-left: 10px;
+        }
+
+        & input:hover{
+            border: 1px solid white;
+        }
+
+        & input:focus{
+            border: 2px solid #b3b3b3;
+        }
+
+
+        & button {
+            background-color: #1ed760;
+            border-radius: 30px;
+            width: 100%;
+            color: black;
+            font-family: 'Gotham Medium', sans-serif;
+            font-size: 1.2rem;
+            height: 50px;
+            margin-top: 30px;
+
+        }
+
+         & button:hover {
+                scale: 1.02
+            }
+    }
+}
