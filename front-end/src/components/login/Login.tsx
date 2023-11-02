@@ -1,7 +1,6 @@
 import {useState} from "react";
 import {fetchTokenAsync} from "../../store/features/spotiUserSlice.ts";
 import {useAppDispatch} from "../../store/hooks.ts";
-import appStyle from "../../app.module.css"
 
 export function LoginPage() {
     const dispatch = useAppDispatch();
@@ -12,17 +11,6 @@ export function LoginPage() {
     if (window.location.hash.includes("#")) {
         dispatch(fetchTokenAsync({}))
 
-        return (
-
-            <img
-                className={appStyle["loading-anim"]}
-                src={"/spotify_web.png"}
-                width={100}
-                height={100}
-                alt={"Loading animation"}
-            ></img>
-
-        );
     }
 
 
