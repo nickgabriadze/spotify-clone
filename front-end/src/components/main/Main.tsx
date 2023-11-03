@@ -114,7 +114,7 @@ export function Main({height}: { height: number }) {
                                     onClick={() => {
                                         localStorage.clear()
                                         dispatch(setUserControlActions({
-                                            userAction: 'User logged out'
+                                            userAction: 'USER_LOGOUT'
                                         }))
                                     }
                                 }>Log Out</button>}

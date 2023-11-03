@@ -11,6 +11,7 @@ import LoginPage from "./components/login/Login.tsx";
 
 export function App() {
     const access = useAppSelector((state) => state.spotiUserReducer.spotiToken);
+    const userControlActions = useAppSelector(s => s.navigationReducer.userControlActions);
 
     const dispatch = useAppDispatch();
 
@@ -22,6 +23,16 @@ export function App() {
             })
         );
     })
+
+
+
+
+    useEffect(() => {
+        if(userControlActions[userControlActions.length - 1] === "USER_LOGOUT"){
+            localStorage.clear();
+            console.clear()
+        }
+    }, [userControlActions.length]);
 
 
     const [windowInnerHeight, setWindowInnerHeight] = useState<number>(window.innerHeight - 120);

@@ -38,6 +38,8 @@ export function LikedSongs({tracks}: { tracks: { added_at: string, track: PlayLi
         updateSavedTracks();
 
     }, [accessToken, libraryActions.length]);
+
+    document.title = 'Liked Songs'
     return <section className={playlistPageStyle['playlist-page-wrapper']}>
         <div className={playlistPageStyle['general-info-wrapper']}>
             <div className={playlistPageStyle['img-placement']}>
