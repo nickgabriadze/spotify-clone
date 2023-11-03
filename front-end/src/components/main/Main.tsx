@@ -5,7 +5,7 @@ import searchBarStyle from "../search/components/search-bar/searchBar.module.css
 import Left from "../search/components/search-bar/icons/left.svg";
 import Right from "../search/components/search-bar/icons/right.svg";
 import Queue from "./components/queue/Queue.tsx";
-import {ReactNode, useEffect, useState} from "react";
+import {ReactNode, useEffect, useRef, useState} from "react";
 import Home from "./components/home/Home.tsx";
 import {Me} from "../../types/me.ts";
 import getMe from "../../api/getMe.ts";
@@ -13,7 +13,7 @@ import SearchBar from "../search/components/search-bar/searchBar.tsx";
 import Searchables from "../search/components/searchables/searchables.tsx";
 import {setUserInformation} from "../../store/features/spotiUserSlice.ts";
 import AlbumPage from "./components/album/AlbumPage.tsx";
-import {navigateToDirection, setUserControlActions} from "../../store/features/navigationSlice.ts";
+import {navigateToDirection, setUserControlActions, setWindowItems} from "../../store/features/navigationSlice.ts";
 import ArtistPage from "./components/artist/ArtistPage.tsx";
 import {CategoryPage} from "./components/browsingCategory/category.tsx";
 import PlaylistPage from "./components/playlist/PlaylistPage.tsx";
@@ -27,6 +27,18 @@ export function Main({height}: { height: number }) {
     const navOption = useAppSelector((state) => state.navigationReducer.navTo);
     const searching = useAppSelector((state) => state.navigationReducer.searchQuery);
     const dispatch = useAppDispatch();
+    const mainRef = useRef<HTMLDivElement>(null)
+
+
+    useEffect(() => {
+        const setStuff = () => dispatch(setWindowItems(Math.floor(Number(mainRef?.current?.offsetWidth) / 200)))
+
+        window.addEventListener('resize', setStuff)
+
+        return () => window.removeEventListener('resize', setStuff);
+
+    }, [mainRef, mainRef?.current?.offsetWidth]);
+
     const navigation: {
         [key: string]: (data: any) => ReactNode
     } = {
@@ -39,6 +51,10 @@ export function Main({height}: { height: number }) {
         "LikedSongs": (tracks: any[]) => <LikedSongs tracks={tracks}/>,
         "BrowsingCategory": (categoryStuff: string[]) => <CategoryPage categoryStuff={categoryStuff}/>
     }
+
+    useEffect(() => {
+
+    }, [mainRef]);
     useEffect(() => {
         const fetchMyData = async () => {
             try {
@@ -62,7 +78,9 @@ export function Main({height}: { height: number }) {
 
     const componentObject = PageNavigation.pageHistory[PageNavigation.currentPageIndex]
     return (
-        <main className={mainStyle['main-container']} style={{height: `${height}px`}}>
+        <main
+            ref={mainRef}
+            className={mainStyle['main-container']} style={{height: `${height}px`}}>
             <div
                 className={mainStyle['header-container']}
                 style={navOption === 'Search' ? {

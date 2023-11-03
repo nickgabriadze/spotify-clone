@@ -16,6 +16,7 @@ interface Navigation {
     navTo: NavTo;
     searchQuery: string;
     typing: boolean;
+    windowItems: number,
     searchOption: Option;
     queueEmpty: boolean
     currentlyPlayingSong: {
@@ -48,6 +49,7 @@ const initialState: Navigation = {
     searchQuery: "",
     typing: false,
     searchOption: "All",
+    windowItems: 5,
     currentlyPlayingSong: {
         artistID: "None",
         songID: "None",
@@ -78,257 +80,262 @@ const initialState: Navigation = {
 const navigationSlice = createSlice({
     name: "Navigation Slice",
     initialState,
-    reducers: {
-        setSomethingIsFullScreen: (state, action: { payload: boolean }) => {
-            return {
-                ...state,
-                somethingIsFullScreen: action.payload
-            }
-        },
-        addLibraryAction: (state, action: { payload: string }) => {
-            if (state.libraryActions.length > 50) {
+    reducers:
+        {
+            setWindowItems: (state, action: { payload: number }) => {
+                return {...state, windowItems: action.payload}
+            },
+
+            setSomethingIsFullScreen: (state, action: { payload: boolean }) => {
                 return {
                     ...state,
-                    libraryActions: [action.payload]
+                    somethingIsFullScreen: action.payload
                 }
-            } else {
-                return {
-                    ...state,
-                    libraryActions: [...state.libraryActions, action.payload]
+            },
+            addLibraryAction: (state, action: { payload: string }) => {
+                if (state.libraryActions.length > 50) {
+                    return {
+                        ...state,
+                        libraryActions: [action.payload]
+                    }
+                } else {
+                    return {
+                        ...state,
+                        libraryActions: [...state.libraryActions, action.payload]
+                    }
                 }
-            }
-        },
+            },
 
-        navigateToDirection: (state, action: { payload: "BACK" | "FORWARD", causedByError?: boolean }) => {
+            navigateToDirection: (state, action: { payload: "BACK" | "FORWARD", causedByError?: boolean }) => {
 
 
-            if (action.payload === "BACK" && state.pageNavigation.currentPageIndex > 0) {
-                if (action.causedByError) {
+                if (action.payload === "BACK" && state.pageNavigation.currentPageIndex > 0) {
+                    if (action.causedByError) {
+                        return {
+                            ...state,
+
+                            pageNavigation: {
+                                ...state.pageNavigation,
+                                pageHistory: [...state.pageNavigation.pageHistory.slice(0, -1)],
+                                currentPageIndex: state.pageNavigation.currentPageIndex - 1
+
+                            }
+                        }
+                    }
                     return {
                         ...state,
 
                         pageNavigation: {
                             ...state.pageNavigation,
-                            pageHistory: [...state.pageNavigation.pageHistory.slice(0, -1)],
                             currentPageIndex: state.pageNavigation.currentPageIndex - 1
 
                         }
                     }
                 }
-                return {
-                    ...state,
+                if (action.payload === "FORWARD" && state.pageNavigation.currentPageIndex < state.pageNavigation.pageHistory.length - 1) {
+                    return {
+                        ...state,
 
-                    pageNavigation: {
-                        ...state.pageNavigation,
-                        currentPageIndex: state.pageNavigation.currentPageIndex - 1
+                        pageNavigation: {
+                            ...state.pageNavigation,
+                            currentPageIndex: state.pageNavigation.currentPageIndex + 1
 
+                        }
                     }
                 }
-            }
-            if (action.payload === "FORWARD" && state.pageNavigation.currentPageIndex < state.pageNavigation.pageHistory.length - 1) {
-                return {
-                    ...state,
+            },
 
-                    pageNavigation: {
-                        ...state.pageNavigation,
-                        currentPageIndex: state.pageNavigation.currentPageIndex + 1
+            addReactComponentToNavigation: (state, action: { payload: { componentName: string, props?: any } }) => {
 
+
+                if (action.payload.componentName === "Home") {
+                    return {
+                        ...state,
+                        pageNavigation: {
+                            ...state.pageNavigation,
+                            pageHistory: [{
+                                component: "Home",
+                                props: null
+                            }],
+                            currentPageIndex: 0
+
+                        }
                     }
                 }
-            }
-        },
 
-        addReactComponentToNavigation: (state, action: { payload: { componentName: string, props?: any } }) => {
+                if (action.payload.componentName === 'Queue' &&
+                    state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].component === 'Queue') {
+
+                    return {
+                        ...state,
+                        pageNavigation: {
+                            ...state.pageNavigation,
+                            currentPageIndex: state.pageNavigation.pageHistory.length - 1
+                        }
+                    }
+                }
+
+                if (action.payload.componentName === 'Search' &&
+                    state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].component === 'Search') {
+
+                    return {
+                        ...state,
+                        pageNavigation: {
+                            ...state.pageNavigation,
+                            currentPageIndex: state.pageNavigation.pageHistory.length - 1
+                        }
+                    }
+                }
+
+                if (state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].props &&
+                    action.payload.props &&
+                    state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].props === action.payload.props) {
+
+                    return {
+                        ...state,
+                        pageNavigation: {
+                            ...state.pageNavigation,
+                            currentPageIndex: state.pageNavigation.pageHistory.length - 1
+                        }
+                    }
+                }
 
 
-            if (action.payload.componentName === "Home") {
+                if (state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].props &&
+                    action.payload.props
+                    && state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].props === action.payload.props
+                    &&
+                    state.pageNavigation.currentPageIndex === state.pageNavigation.pageHistory.length - 1
+                ) {
+                    return;
+                }
+
+
                 return {
                     ...state,
                     pageNavigation: {
                         ...state.pageNavigation,
-                        pageHistory: [{
-                            component: "Home",
-                            props: null
+                        pageHistory: [...state.pageNavigation.pageHistory, {
+                            component: action.payload.componentName,
+                            props: action.payload.props
                         }],
-                        currentPageIndex: 0
+                        currentPageIndex: state.pageNavigation.pageHistory.length
 
                     }
                 }
-            }
+            },
 
-            if (action.payload.componentName === 'Queue' &&
-                state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].component === 'Queue') {
-
-                return {
-                    ...state,
-                    pageNavigation: {
-                        ...state.pageNavigation,
-                        currentPageIndex: state.pageNavigation.pageHistory.length - 1
-                    }
-                }
-            }
-
-            if (action.payload.componentName === 'Search' &&
-                state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].component === 'Search') {
-
-                return {
-                    ...state,
-                    pageNavigation: {
-                        ...state.pageNavigation,
-                        currentPageIndex: state.pageNavigation.pageHistory.length - 1
-                    }
-                }
-            }
-
-            if (state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].props &&
-                action.payload.props &&
-                state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].props === action.payload.props) {
-
-                return {
-                    ...state,
-                    pageNavigation: {
-                        ...state.pageNavigation,
-                        currentPageIndex: state.pageNavigation.pageHistory.length - 1
-                    }
-                }
-            }
-
-
-            if (state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].props &&
-                action.payload.props
-                && state.pageNavigation.pageHistory[state.pageNavigation.pageHistory.length - 1].props === action.payload.props
-                &&
-                state.pageNavigation.currentPageIndex === state.pageNavigation.pageHistory.length - 1
-            ) {
-                return;
-            }
-
-
-            return {
-                ...state,
-                pageNavigation: {
-                    ...state.pageNavigation,
-                    pageHistory: [...state.pageNavigation.pageHistory, {
-                        component: action.payload.componentName,
-                        props: action.payload.props
-                    }],
-                    currentPageIndex: state.pageNavigation.pageHistory.length
-
-                }
-            }
-        },
-
-        setSearchOption: (
-            state,
-            action: {
-                payload: {
-                    option: Option;
-                };
-            }
-        ) => {
-            return {
-                ...state,
-                searchOption: action.payload.option,
-            };
-        },
-        setNavTo: (
-            state,
-            action: {
-                payload: {
-                    navTo: NavTo;
-                };
-            }
-        ) => {
-            return {
-                ...state,
-                navTo: action.payload.navTo,
-            };
-        },
-        setQueueEmpty: (state, action: { payload: { empty: boolean } }) => {
-            return {
-                ...state,
-                queueEmpty: action.payload.empty
-            }
-        },
-        setTyping: (
-            state,
-            action: {
-                payload: {
-                    typing: boolean;
-                };
-            }
-        ) => {
-            return {
-                ...state,
-                typing: action.payload.typing,
-            };
-        },
-
-        setSearchQuery: (
-            state,
-            action: {
-                payload: {
-                    searchQuery: string;
-                };
-            }
-        ) => {
-            return {
-                ...state,
-                searchQuery: action.payload.searchQuery,
-            };
-        },
-
-        setCurrentlyPlayingSong: (
-            state,
-            action: {
-                payload: {
-                    currentlyPlayingSong: {
-                        artistID: string;
-                        songID: string,
-                        albumID: string,
-                        isPlaying: boolean | null,
-                        context: {
-                            type: string,
-                            href: string,
-                            external_urls: {
-                                spotify: string
-                            },
-                            uri: string
-                        } | null
+            setSearchOption: (
+                state,
+                action: {
+                    payload: {
+                        option: Option;
                     };
+                }
+            ) => {
+                return {
+                    ...state,
+                    searchOption: action.payload.option,
                 };
-            }
-        ) => {
-            return {
-                ...state,
-                currentlyPlayingSong: action.payload.currentlyPlayingSong,
-            };
-        },
+            },
+            setNavTo: (
+                state,
+                action: {
+                    payload: {
+                        navTo: NavTo;
+                    };
+                }
+            ) => {
+                return {
+                    ...state,
+                    navTo: action.payload.navTo,
+                };
+            },
+            setQueueEmpty: (state, action: { payload: { empty: boolean } }) => {
+                return {
+                    ...state,
+                    queueEmpty: action.payload.empty
+                }
+            },
+            setTyping: (
+                state,
+                action: {
+                    payload: {
+                        typing: boolean;
+                    };
+                }
+            ) => {
+                return {
+                    ...state,
+                    typing: action.payload.typing,
+                };
+            },
 
-        setUserControlActions: (
-            state,
-            action: {
-                payload: {
-                    userAction: string | "Nullify";
-                };
-            }
-        ) => {
-            if (action.payload.userAction === "Nullify") {
+            setSearchQuery: (
+                state,
+                action: {
+                    payload: {
+                        searchQuery: string;
+                    };
+                }
+            ) => {
                 return {
                     ...state,
-                    userControlActions: [],
+                    searchQuery: action.payload.searchQuery,
                 };
-            } else {
+            },
+
+            setCurrentlyPlayingSong: (
+                state,
+                action: {
+                    payload: {
+                        currentlyPlayingSong: {
+                            artistID: string;
+                            songID: string,
+                            albumID: string,
+                            isPlaying: boolean | null,
+                            context: {
+                                type: string,
+                                href: string,
+                                external_urls: {
+                                    spotify: string
+                                },
+                                uri: string
+                            } | null
+                        };
+                    };
+                }
+            ) => {
                 return {
                     ...state,
-                    userControlActions: [
-                        ...state.userControlActions,
-                        action.payload.userAction,
-                    ],
+                    currentlyPlayingSong: action.payload.currentlyPlayingSong,
                 };
-            }
+            },
+
+            setUserControlActions: (
+                state,
+                action: {
+                    payload: {
+                        userAction: string | "Nullify";
+                    };
+                }
+            ) => {
+                if (action.payload.userAction === "Nullify") {
+                    return {
+                        ...state,
+                        userControlActions: [],
+                    };
+                } else {
+                    return {
+                        ...state,
+                        userControlActions: [
+                            ...state.userControlActions,
+                            action.payload.userAction,
+                        ],
+                    };
+                }
+            },
         },
-    },
 });
 
 export const {
@@ -340,6 +347,7 @@ export const {
     addReactComponentToNavigation,
     navigateToDirection,
     addLibraryAction,
+    setWindowItems,
     setSomethingIsFullScreen
 } = navigationSlice.actions;
 export default navigationSlice.reducer;

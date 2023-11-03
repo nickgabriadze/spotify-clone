@@ -35,14 +35,16 @@ export function TopItems() {
                     getTopArtists[1],
                     getTopArtists[0]
                 ]);
-                console.log()
+
             } catch (err) {
 
             } finally {
                 setDataLoading(false)
             }
         }
+        if(access !== 'pending'){
         fetchTops();
+        }
 
     }, [access])
     const dispatch = useAppDispatch();
@@ -116,7 +118,7 @@ export function TopItems() {
                             </button>
 
 
-                        </div>}                       
+                        </div>}
                 </div>
             </div>)}
     </div>
