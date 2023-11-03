@@ -153,7 +153,9 @@
 
     .featured-grid, .new-releases-grid {
         display: grid;
-        grid-template-columns: repeat(5, minmax(0, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+
+        overflow-y: hidden;
         overflow-x: scroll;
         gap: 20px;
         width: 100%;

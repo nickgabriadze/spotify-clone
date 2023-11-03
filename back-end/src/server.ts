@@ -85,7 +85,8 @@ app.get("/callback", async (req, res) => {
 app.get("/refresh_token", async (req, res) => {
 
     const refresh_token = req.query.q;
-
+    const CLIENT_ID = req.query.cid
+    const CLIENT_SECRET_ID = req.query.sid;
 
     const authOptions = {
         url: "https://accounts.spotify.com/api/token",

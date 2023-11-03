@@ -31,6 +31,9 @@ export function LoginPage() {
                 client_secret_id: clientSecretID
             }))
 
+            localStorage.setItem('CID', `${clientID}`)
+            localStorage.setItem('SID', `${clientSecretID}`)
+
         }}>
             <div>
                 <label htmlFor="Client ID">Client ID</label>

@@ -14,7 +14,9 @@ axiosInstance.interceptors.request.use(async (config) => {
         if (currentTime - issued_at > 3600) {
 
             const fetchAccessToken = await getRefreshedToken(
-                String(localStorage.getItem("refresh_token"))
+                String(localStorage.getItem("refresh_token")),
+                String(localStorage.getItem("CID")),
+                String(localStorage.getItem("SID"))
             );
 
             localStorage.setItem("issued_at", (new Date().getTime() / 1000).toString());
