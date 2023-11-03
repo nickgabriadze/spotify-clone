@@ -32,6 +32,8 @@ export function CategoryPage({categoryStuff}: {categoryStuff: string[] }) {
     }, [accessToken, categoryID]);
 
 
+
+    document.title = `Explore / ${categoryFullName}`
     return <section
         className={categoryStyle['category-wrapper']}
 

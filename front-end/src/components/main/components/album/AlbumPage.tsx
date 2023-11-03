@@ -72,6 +72,7 @@ export function AlbumPage({albumID}: { albumID: string }) {
     }, [accessToken, albumID]);
 
     if (!dataLoading && albumData?.albumTracks.length !== 0) {
+        document.title = `${albumData?.album.name} • ${albumData?.album.artists[0].name}`
         const albumDate = new Date(String(albumData?.album.release_date))
         const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
         const releaseDate = months[Number(albumDate.getMonth())].concat(" ").concat(String(albumDate.getDate()).concat(", ").concat(String(albumDate.getFullYear())))

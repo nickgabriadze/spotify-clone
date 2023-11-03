@@ -1,6 +1,5 @@
-
-import { useAppSelector } from "../../../../store/hooks";
-import { ArtistsRes } from "../each-search-component/Artists/Artists";
+import {useAppSelector} from "../../../../store/hooks";
+import {ArtistsRes} from "../each-search-component/Artists/Artists";
 import PlaylistsRes from "../each-search-component/Playlists/Playlists";
 import AlbumsRes from "../each-search-component/Albums/Albums";
 import SongsRes from "../each-search-component/Songs/Songs";
@@ -9,36 +8,40 @@ import AllResults from "../each-search-component/All/All.tsx";
 
 export function SearchResult() {
 
-  const searchStuff = useAppSelector((state) => state.navigationReducer);
- 
+    const searchStuff = useAppSelector((state) => state.navigationReducer);
 
 
+    if (searchStuff.searchOption === 'Artists') {
+        document.title = `Search / Artists`
+        return <ArtistsRes artistsName={searchStuff.searchQuery}/>
+    }
 
-  if(searchStuff.searchOption === 'Artists'){
-    return <ArtistsRes artistsName={searchStuff.searchQuery} />
-  }
+    if (searchStuff.searchOption === 'Playlists') {
+        document.title = `Search / Playlists`
+        return <PlaylistsRes playlistName={searchStuff.searchQuery}/>
+    }
 
-  if(searchStuff.searchOption === 'Playlists'){
-    return <PlaylistsRes playlistName={searchStuff.searchQuery} />
-  }
+    if (searchStuff.searchOption === "Albums") {
+        document.title = `Search / Albums`
+        return <AlbumsRes albumName={searchStuff.searchQuery}/>
+    }
 
-  if(searchStuff.searchOption === "Albums"){
-    return <AlbumsRes albumName={searchStuff.searchQuery} />
-  }
+    if (searchStuff.searchOption === 'Songs') {
+        document.title = `Search / Songs`
+        return <SongsRes songName={searchStuff.searchQuery}/>
+    }
 
-  if(searchStuff.searchOption === 'Songs'){
-    return <SongsRes songName={searchStuff.searchQuery} />
-  }
+    if (searchStuff.searchOption === 'Podcasts & Shows') {
+        document.title = `Search / Podcasts & Shows`
+        return <PodcastsShows podcastShowName={searchStuff.searchQuery}/>
+    }
 
-  if(searchStuff.searchOption === 'Podcasts & Shows'){
-    return <PodcastsShows podcastShowName={searchStuff.searchQuery} />
-  }
+    document.title = 'Search / All';
+    /* For all things combined */
+    return (
 
-
-  /* For all things combined */
-  return (
-   <AllResults searchQuery={searchStuff.searchQuery}/>
-  );
+        <AllResults searchQuery={searchStuff.searchQuery}/>
+    );
 }
 
 export default SearchResult;

@@ -119,6 +119,7 @@ export function StreamController({
                     <img alt="Shuffle" src={shuffleState ? ShuffleOn : Shuffle} width={20}></img>
                 </button>
                 <button
+
                     onClick={async () => {
                         await PlayPrevious(accessToken);
                         dispatch(
@@ -128,7 +129,7 @@ export function StreamController({
                         );
                     }}
                 >
-                    <img alt="Skip Previous" src={SkipPrevious} width={30}></img>
+                    <img alt="Skip Previous"  className={playerStyle['play-buttons']} src={SkipPrevious} width={30}></img>
                 </button>
                 <button
                     onClick={async () => {
@@ -146,6 +147,7 @@ export function StreamController({
                     }}
                 >
                     <img
+                        className={playerStyle['play-pause-btn']}
                         alt="Play/Pause"
                         src={currentlyPlaying?.is_playing ? Pause : Play}
                         width={40}
@@ -167,7 +169,7 @@ export function StreamController({
 
                     }}
                 >
-                    <img alt="Skip Next" src={SkipNext} width={30}></img>
+                    <img alt="Skip Next"  className={playerStyle['play-buttons']} src={SkipNext} width={30}></img>
                 </button>
                 <button
                     onClick={async () => {

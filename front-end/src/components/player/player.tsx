@@ -22,7 +22,7 @@ export function Player() {
     const dispatch = useAppDispatch();
     const userActions = useAppSelector(state => state.navigationReducer.userControlActions);
     const [playbackStateInformation, setPlaybackStateInformation] = useState<PlaybackState>();
-
+    const currentPage = useAppSelector(s => s.navigationReducer.pageNavigation.pageHistory)
     const fetchCurrentData = useCallback(async () => {
 
         try {
@@ -145,9 +145,12 @@ export function Player() {
         document.title = "Spotify Clone";
         return <PlayerSkeleton/>;
     } else {
-        document.title = currentlyPlaying?.item ? String(currentlyPlaying?.item?.name)
+
+        if(currentPage[currentPage.length - 1].component === "Home"){
+             document.title = currentlyPlaying?.item ? String(currentlyPlaying?.item?.name)
             .concat(" • ")
             .concat(String(currentlyPlaying?.item?.artists.map((each) => each.name).join(", "))) : 'Spotify Clone';
+        }
 
         return (
             <section className={playerStyle["player"]}>

@@ -108,6 +108,7 @@ export function PlaylistPage({playlistID}: { playlistID: string }) {
 
     if (playListData === undefined && playlistLoading) return <></>
 
+    document.title = `${playListData?.name} by ${playListData?.owner.display_name}`
 
     return <section className={playlistPageStyle['playlist-page-wrapper']}>
         <div className={playlistPageStyle['general-info-wrapper']}>

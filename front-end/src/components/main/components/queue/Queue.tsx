@@ -49,6 +49,7 @@ export function Queue() {
     const noNewSongsInQueue = queueData?.queue.filter((song) => song.id !== queueData?.currently_playing?.id).length === 0;
     const dispatch = useAppDispatch();
     const everyNewTrackIsFromTheSameArtist = queueData?.queue.every((track) => track.artists.filter(eachArtist => eachArtist?.id === queueData?.currently_playing?.artists[0]?.id)[0]?.id === queueData?.currently_playing?.artists[0]?.id)
+    document.title= "Queue"
     return <section className={queueStyle['queue-wrapper']}>
 
         <div className={queueStyle['queue']}>

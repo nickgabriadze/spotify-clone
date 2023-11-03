@@ -58,6 +58,8 @@ export function ArtistPage({artistID}: { artistID: string }) {
     }, [artistID, accessToken, country]);
 
     if(loading) return <></>
+
+    document.title = `Artist / ${artistData?.name}`
     return <section className={artistPageStyle['artist-page-wrapper']}>
 
 

@@ -127,7 +127,10 @@ export function Library({divHeight}: { divHeight: number }) {
                     <div className={libraryStyle['playlist-album-info']}>
                         <div className={libraryStyle['main-info']}>
                             <div className={libraryStyle['playlist-album-name']}><p
-                                style={{width: pTagWidth, color: currentlyPlaying?.context?.uri === me?.uri.concat(':collection') ? '#1ed760' : '#FFFFFF'}}>Liked Songs</p></div>
+                                style={{
+                                    width: pTagWidth,
+                                    color: currentlyPlaying?.context?.uri === me?.uri.concat(':collection') ? '#1ed760' : '#FFFFFF'
+                                }}>Liked Songs</p></div>
                             <div className={libraryStyle['type-owner']}>
                                 <p style={{width: pTagWidth}}>Playlist
                                     • {`${likedSongsAvailable} ${likedSongsAvailable > 1 ? 'songs' : 'song'}`}</p>
@@ -135,11 +138,11 @@ export function Library({divHeight}: { divHeight: number }) {
                             </div>
 
                         </div>
-                          <div
-                                className={libraryStyle['active-indicator']}>{currentlyPlaying?.context?.uri === me?.uri.concat(':collection') &&
-                                <img alt={'Active Item'} src={Active}
-                                     width={25} height={25}></img>}
-                            </div>
+                        <div
+                            className={libraryStyle['active-indicator']}>{currentlyPlaying?.context?.uri === me?.uri.concat(':collection') &&
+                            <img alt={'Active Item'} src={Active}
+                                 width={25} height={25}></img>}
+                        </div>
                     </div>
                 </li>
             }
@@ -164,8 +167,8 @@ export function Library({divHeight}: { divHeight: number }) {
                             <div className={libraryStyle['main-info']}>
                                 <div className={libraryStyle['playlist-album-name']}><p
                                     style={{
-                                        width: currentlyPlaying.albumID === eachAlbum?.id ? pTagWidth - 30 : pTagWidth,
-                                        color: currentlyPlaying.albumID === eachAlbum?.id ? '#1ed760' : '#FFFFFF'
+                                        width: currentlyPlaying?.context?.uri === eachAlbum?.uri ? pTagWidth - 30 : pTagWidth,
+                                        color: currentlyPlaying?.context?.uri === eachAlbum?.uri ? '#1ed760' : '#FFFFFF'
                                     }}>{eachAlbum.name}</p></div>
                                 <div className={libraryStyle['type-owner']}>
                                     <p style={{width: pTagWidth}}>{eachAlbum.type[0].toUpperCase().concat(eachAlbum.type.slice(1,))} • {eachAlbum.artists.map(each => each.name).join(', ')}</p>
@@ -173,7 +176,7 @@ export function Library({divHeight}: { divHeight: number }) {
                                 </div>
                             </div>
                             <div
-                                className={libraryStyle['active-indicator']}>{currentlyPlaying.albumID === eachAlbum?.id &&
+                                className={libraryStyle['active-indicator']}>{currentlyPlaying?.context?.uri === eachAlbum?.uri &&
                                 <img alt={'Active Item'} src={Active}
                                      width={25} height={25}></img>}
                             </div>
@@ -203,8 +206,8 @@ export function Library({divHeight}: { divHeight: number }) {
                             <div className={libraryStyle['main-info']}>
                                 <div className={libraryStyle['playlist-album-name']}><p
                                     style={{
-                                        width: currentlyPlaying?.context?.uri === eachPlaylist.uri ? pTagWidth - 30 : pTagWidth,
-                                        color: currentlyPlaying?.context?.uri === eachPlaylist.uri ? '#1ed760' : '#FFFFFF'
+                                        width: currentlyPlaying?.context?.uri === eachPlaylist?.uri ? pTagWidth - 30 : pTagWidth,
+                                        color: currentlyPlaying?.context?.uri === eachPlaylist?.uri ? '#1ed760' : '#FFFFFF'
                                     }}>{eachPlaylist.name}</p></div>
                                 <div className={libraryStyle['type-owner']}>
                                     <p style={{width: pTagWidth}}>{eachPlaylist.type[0].toUpperCase().concat(eachPlaylist.type.slice(1,))} • {eachPlaylist.owner.display_name}</p>

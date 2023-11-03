@@ -17,6 +17,7 @@ export function Search() {
         }
     }, [searchStuff.searchQuery.trim().length]);
 
+    document.title = 'Search & Explore'
     return (
         <section style={{height: '100%', width: '100%'}}>
             <div style={{ height: '100%', width: '100%'}}>
