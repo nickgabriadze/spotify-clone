@@ -39,6 +39,7 @@ export function ArtistPage({artistID}: { artistID: string }) {
         const fetchArtist = async () => {
             try {
                 setLoading(true)
+                setShowMore(false)
                 const artistData = (await getArtist(accessToken, artistID)).data;
                 setArtistData(artistData)
                 const topTracks = (await getArtistsPopularTracks(accessToken, artistID, country)).data.tracks

@@ -10,7 +10,6 @@ export function FeaturedInCountry() {
     const userInfo = useAppSelector((state) => state.spotiUserReducer.userInformation)?.country;
     const [featuredData, setFeaturedData] = useState<{ message: string, playlists: Playlist[] }>({message: '', playlists: []})
     const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
-    const itemQuantity = useAppSelector(s => s.navigationReducer.windowItems)
 
     useEffect(() => {
         const getFeaturedOnes = async () => {
@@ -33,7 +32,7 @@ export function FeaturedInCountry() {
         return <section className={homepageStyle['featured-wrapper']}>
             <h2>Editor's picks</h2>
             <div className={homepageStyle['featured-grid']}>
-                {featuredData.playlists?.slice(0,itemQuantity).map((eachPlaylist, i) => <PlayListCard key={i} eachPlaylist={eachPlaylist}/>)}
+                {featuredData.playlists?.slice(0,5).map((eachPlaylist, i) => <PlayListCard key={i} eachPlaylist={eachPlaylist}/>)}
             </div>
         </section>
     }else{
@@ -41,7 +40,7 @@ export function FeaturedInCountry() {
           <h2 className={homepageStyle['featured-message-skeleton']}>
           </h2>
             <div className={homepageStyle['featured-grid']}>
-                {Array.from({length: itemQuantity}).map((_, i) => <PlaylistCardSkeleton key={i} />)}
+                {Array.from({length: 5}).map((_, i) => <PlaylistCardSkeleton key={i} />)}
 
             </div>
         </section>
