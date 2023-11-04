@@ -19,6 +19,7 @@ import {addReactComponentToNavigation} from "../../store/features/navigationSlic
 import getSavedArtists from "../../api/library/getSavedArtists.ts";
 import PlayResumeStreaming from "../../api/player/playResumeStreaming.ts";
 import Active from "./icons/lib-active.svg";
+import {Artist} from "../../types/artist.ts";
 
 export function Library({divHeight}: { divHeight: number }) {
     const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
@@ -29,6 +30,7 @@ export function Library({divHeight}: { divHeight: number }) {
         albumItems: [],
         playlistItems: []
     })
+    const [filteringOptions, setFilteringOptions] = useState<{ type: string, chosen: boolean }[]>([])
     const me = useAppSelector(me => me.spotiUserReducer.userInformation);
     const [likedSongsAvailable, setLikedSongsAvailable] = useState<number>(0)
     const [libraryLoading, setLibraryLoading] = useState<boolean>(true);
@@ -38,9 +40,11 @@ export function Library({divHeight}: { divHeight: number }) {
         added_at: string,
         track: Track
     }[]>([])
-
+    const [savedArtists, setSavedArtists] = useState<Artist[]>([])
     const widthPref = useRef<HTMLParagraphElement>(null);
     const [pTagWidth, setPTagWidth] = useState<number>(150);
+
+
     const dispatch = useAppDispatch()
     useEffect(() => {
 
@@ -63,6 +67,7 @@ export function Library({divHeight}: { divHeight: number }) {
                 const reqAlbums = await getSavedAlbums(accessToken);
                 const albumsData = reqAlbums.data.items;
                 const savedArtists = await getSavedArtists(accessToken);
+
                 const reqPlaylists = await getSavedPlaylists(accessToken);
                 const playlistsData = reqPlaylists.data.items;
                 const savedSongItems: {
@@ -76,11 +81,29 @@ export function Library({divHeight}: { divHeight: number }) {
                 dispatch(setUserSavedAlbumIDs(albumsData.map(e => e.album)));
                 const savedSongsAvailability = savedSongItems.length;
                 setLikedSongsAvailable(savedSongsAvailability)
+                setSavedArtists(savedArtists.data.artists.items)
                 setUserSavedTracks(savedSongItems)
                 setLibData({
                     albumItems: albumsData,
                     playlistItems: playlistsData
                 })
+
+                const filteringOptions = [];
+
+                if (Number(albumsData.length) > 0) {
+                    filteringOptions.push({type: 'Albums', chosen: false});
+                }
+
+                if (savedArtists.data.artists.items.length > 0) {
+                    filteringOptions.push({type: 'Artists', chosen: false});
+                }
+
+                if (playlistsData.length > 0) {
+                    filteringOptions.push({type: 'Playlists', chosen: false});
+                }
+
+                setFilteringOptions(filteringOptions);
+
             } catch (err) {
 
             } finally {
@@ -93,6 +116,7 @@ export function Library({divHeight}: { divHeight: number }) {
         }
     }, [accessToken, libraryActions.length]);
 
+
     return <section className={libraryStyle['lib-wrapper']}
 
                     ref={widthPref}
@@ -102,13 +126,55 @@ export function Library({divHeight}: { divHeight: number }) {
             <p>Your Library</p>
         </div>
 
+        {!libraryLoading && <div className={libraryStyle['filtering-options']}>{filteringOptions.map(eachOption => <div
+            key={eachOption.type}
+
+            onClick={() => {
+                const mappedNew = filteringOptions.map(e => {
+                    if (e.type === eachOption.type) {
+                        if (e.chosen) {
+                            return {
+                                ...e,
+                                chosen: false
+                            }
+                        } else {
+                            return {
+                                ...e,
+                                chosen: true
+                            }
+                        }
+                    }
+                    return {
+                        ...e,
+                        chosen: false
+                    }
+
+                })
+                setFilteringOptions(mappedNew)
+            }
+            }
+            style={{backgroundColor: eachOption.chosen ? 'white' : '#232323'}}
+        >
+            <button
+                style={{color: eachOption.chosen ? 'black' : 'white'}}
+
+            >{eachOption.type}</button>
+        </div>)}</div>
+        }
+
+
         {/* Albums and saved playlists */}
 
 
         <div className={libraryStyle['library-stuff']}
              style={{height: divHeight}}
         >
-            {likedSongsAvailable > 0 && (!libraryLoading) &&
+            {likedSongsAvailable > 0 && (!libraryLoading)
+                && (filteringOptions.filter(e => e.chosen)[0]?.type === 'Playlists' || filteringOptions.every(e => {
+                    if (!e.chosen) {
+                        return true;
+                    }
+                })) &&
                 <li
                     onDoubleClick={async () => {
                         await PlayResumeStreaming(accessToken, String(me?.uri).concat(':collection'), undefined)
@@ -146,10 +212,59 @@ export function Library({divHeight}: { divHeight: number }) {
                     </div>
                 </li>
             }
+
+            {(!libraryLoading) && (filteringOptions.filter(e => e.chosen)[0]?.type === 'Artists' || filteringOptions.every(e => {
+                    if (!e.chosen) {
+                        return true;
+                    }
+                })) &&
+
+                savedArtists.map((eachArtist, i) => <li
+                    className={libraryStyle['listed-playlist-album']}
+                    onClick={() => {
+                        dispatch(addReactComponentToNavigation({
+                            componentName: 'Artist',
+                            props: eachArtist?.id
+                        }))
+                    }}
+                    onDoubleClick={async () => {
+                        await PlayResumeStreaming(accessToken, eachArtist.uri, undefined)
+                    }}
+                    key={i}>
+                    <img
+                        style={{
+                            borderRadius: '100%'
+                        }}
+                        src={eachArtist.images[0].url} width={50} height={50} alt={"Playlist Image"}></img>
+                    <div className={libraryStyle['playlist-album-info']}>
+                        <div className={libraryStyle['main-info']}>
+                            <div className={libraryStyle['playlist-album-name']}><p
+                                style={{
+                                    width: currentlyPlaying?.context?.uri === eachArtist?.uri ? pTagWidth - 30 : pTagWidth,
+                                    color: currentlyPlaying?.context?.uri === eachArtist?.uri ? '#1ed760' : '#FFFFFF'
+                                }}>{eachArtist.name}</p></div>
+                            <div className={libraryStyle['type-owner']}>
+                                <p style={{width: pTagWidth}}>{eachArtist.type[0].toUpperCase().concat(eachArtist.type.slice(1,))}</p>
+
+                            </div>
+                        </div>
+                        <div
+                            className={libraryStyle['active-indicator']}>{currentlyPlaying?.context?.uri === eachArtist?.uri &&
+                            <img alt={'Active Item'} src={Active}
+                                 width={25} height={25}></img>}
+                        </div>
+
+                    </div>
+                </li>)}
+
             {libraryLoading ?
                 Array.from({length: 3}).map((_, i) => <LibraryItemSkeleton key={i}/>)
                 :
-                libData.albumItems.map(each => each.album).map((eachAlbum, i) =>
+                (!libraryLoading) && (filteringOptions.filter(e => e.chosen)[0]?.type === 'Albums' || filteringOptions.every(e => {
+                    if (!e.chosen) {
+                        return true;
+                    }
+                })) && libData.albumItems.map(each => each.album).map((eachAlbum, i) =>
                     <li
                         className={libraryStyle['listed-playlist-album']}
                         onClick={() => {
@@ -188,7 +303,11 @@ export function Library({divHeight}: { divHeight: number }) {
             {libraryLoading ?
                 Array.from({length: 2}).map((_, i) => <LibraryItemSkeleton key={i}/>)
                 :
-                libData.playlistItems.map((eachPlaylist, i) =>
+                (!libraryLoading) && (filteringOptions.filter(e => e.chosen)[0]?.type === 'Playlists' || filteringOptions.every(e => {
+                    if (!e.chosen) {
+                        return true;
+                    }
+                })) && libData.playlistItems.map((eachPlaylist, i) =>
 
                     <li
                         className={libraryStyle['listed-playlist-album']}

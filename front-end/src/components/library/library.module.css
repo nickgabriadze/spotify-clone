@@ -10,7 +10,29 @@
 
 
 }
+.filtering-options{
+    display: flex;
+    width: 100%;
+    padding-top: 10px;
+    padding-left: 10px;
+    gap: 10px;
+    cursor: pointer;
 
+    & div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        padding: 10px 5px;
+        border-radius: 20px;
+
+      & button {  color: white;   font-size: 12px;  font-family: 'Gotham Medium', sans-serif;}
+    }
+
+    & div:active{
+        scale: 0.95;
+    }
+}
 .library-title {
     display: flex;
     align-items: center;
