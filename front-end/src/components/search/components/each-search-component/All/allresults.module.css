@@ -51,7 +51,7 @@
 
         }
 
-        & div:hover{
+        & div:hover {
             scale: 1.03
         }
     }
@@ -80,10 +80,12 @@
         color: white;
         width: 100%;
     }
+
     & img {
         border-radius: 5px;
-        box-shadow: 0 8px 8px rgba(0,0,0,.3);
+        box-shadow: 0 8px 8px rgba(0, 0, 0, .3);
     }
+
     .track-artist-type {
         display: flex;
         flex-direction: row;
@@ -128,7 +130,7 @@
         color: white;
     }
 
-    .top-songs-box{
+    .top-songs-box {
         display: flex;
         flex-direction: column;
 
@@ -136,13 +138,15 @@
         align-items: center;
 
     }
-    .top-song{
+
+    .top-song {
         display: flex;
         justify-content: space-between;
         width: 100%;
         padding: 10px;
         align-items: center;
-        .song-img-details{
+
+        .song-img-details {
             display: flex;
             gap: 15px;
 
@@ -152,46 +156,50 @@
 
             font-size: 14px;
             width: 60%;
-            .song-details{
+
+            .song-details {
                 display: flex;
                 flex-direction: column;
                 justify-content: space-around;
                 gap: 8px;
 
 
-                & a:hover{
+                & a:hover {
                     text-decoration: underline;
                     cursor: pointer;
                 }
             }
 
 
-            .interactive-album-img{
+            .interactive-album-img {
                 position: relative;
 
-                .play-button{
+                .play-button {
                     position: absolute;
                     right: 0;
                     top: 0;
                 }
             }
-            .song-artists{
+
+            .song-artists {
                 display: flex;
                 gap: 5px;
 
-                .song-artists-box{
+                .song-artists-box {
                     display: flex;
                     white-space: nowrap;
                     gap: 4px;
                     width: 30vw;
                     overflow: hidden;
                     text-overflow: ellipsis;
-                    }
+                }
+
                 & a:hover {
                     text-decoration: underline;
                     cursor: pointer;
                 }
-                & a{
+
+                & a {
                     color: #b3b3b3;
                     font-weight: bold;
                     font-size: 14px;
@@ -204,17 +212,19 @@
             }
         }
 
-        .duration{
+        .duration {
             color: #a7a7a7;
             font-family: "Gotham Light", sans-serif;
             font-weight: bold;
             font-size: 14px;
 
         }
-        .heart{
+
+        .heart {
             width: 30px;
         }
-        .song-duration-heart{
+
+        .song-duration-heart {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -242,24 +252,24 @@
     .top-artists, .top-albums, .top-playlists, .top-podcasts, .top-episodes {
         display: grid;
         gap: 20px;
-        grid-template-columns: repeat(5,  minmax(0, 1fr));
+        grid-template-columns: repeat(5, minmax(0, 1fr));
         overflow-x: scroll;
 
     }
 
-    & ::-webkit-scrollbar{
+    & ::-webkit-scrollbar {
         display: none;
     }
 
 }
 
-.top-episodes::-webkit-scrollbar{
+.top-episodes::-webkit-scrollbar {
     display: none;
 }
 
 /* Each top episode from reusables */
 
-.top-episode-wrapper{
+.top-episode-wrapper {
     display: flex;
     flex-direction: column;
     background-color: #181818;
@@ -278,16 +288,18 @@
         justify-content: space-between;
         height: 100%;
     }
-    .top-episode-image-wrapper{
+
+    .top-episode-image-wrapper {
         width: 100%;
         height: 100%;
     }
 
-    .top-e-image-main{
+    .top-e-image-main {
         width: 100%;
         height: 1fr;
     }
-    .top-episode-image{
+
+    .top-episode-image {
         padding: 0 15px 0 15px;
         position: relative;
 
@@ -298,7 +310,7 @@
 
         }
 
-        .top-episode-show-image{
+        .top-episode-show-image {
             position: absolute;
             z-index: 2;
             left: 10px;
@@ -306,18 +318,18 @@
         }
     }
 
-    .top-episode-name{
+    .top-episode-name {
         color: white;
         padding: 0 0 4px;
         font-size: 14px;
     }
 
-    .top-episode-explicit-or-details{
+    .top-episode-explicit-or-details {
         display: flex;
         gap: 10px;
         align-items: center;
 
-        & p{
+        & p {
             color: #b3b3b3;
             font-size: 11px;
             padding: 8px 0 0;
@@ -330,6 +342,47 @@
 
 }
 
-.top-episode-wrapper:hover{
+.top-episode-wrapper:hover {
     background-color: #302f2f;
+}
+
+@media only screen and (width < 1000px) {
+    .first-row {
+        flex-direction: column;
+        width: 100%;
+
+    }
+
+    .top-result-wrapper {
+        width: 80%;
+
+        .top-track-box {
+            & img {
+                width: 150px;
+                height: 150px;
+            }
+        }
+
+        .track-hover-button {
+            & div {
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        .track-name {
+            font-size: 2rem;
+        }
+
+        .track-artist-type{
+            & a {
+                font-size: 20px;
+            }
+        }
+    }
+
+    .top-songs-wrapper {
+        width: 100%;
+    }
+
 }
