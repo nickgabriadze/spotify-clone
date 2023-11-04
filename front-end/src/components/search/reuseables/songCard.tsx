@@ -132,7 +132,12 @@ export const SongCard = forwardRef(function SongCard(props: {
                         <p style={{width: '10px', color: '#b3b3b3'}}>{n}</p>}
                     </div>
                 }
-                <div className={songsStyle["img-title-artists"]}>
+                <div className={songsStyle["img-title-artists"]}
+
+                style={{
+                    marginLeft: forAlbum ? '10px': '5%'
+                }}
+                >
                     {!forAlbum && <div className={songsStyle["album-img"]}>
                         {eachTrack?.album.images[0]?.url ? <img
                                 src={eachTrack?.album.images[0]?.url}
