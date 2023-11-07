@@ -49,11 +49,11 @@ export function ArtistPage({artistID}: { artistID: string }) {
                     uri: String(artistData?.uri)
 
                 }))
-            }else{
-                 dispatch(setWhatsInView({
+            } else {
+                dispatch(setWhatsInView({
                     pageName: 'None',
                     pageItemName: 'None',
-                     uri: 'None'
+                    uri: 'None'
                 }))
             }
 
@@ -66,9 +66,10 @@ export function ArtistPage({artistID}: { artistID: string }) {
 
         return () => artistPageRef?.current?.parentNode?.parentNode ? artistPageRef?.current?.parentNode?.parentNode.removeEventListener('scroll', duringScroll) : undefined
 
-    }, [playBtnRef.current, artistPageRef.current]);
+    }, [playBtnRef.current, artistPageRef.current, artistID]);
 
     useEffect(() => {
+
         const fetchArtist = async () => {
             try {
                 setLoading(true)
@@ -81,7 +82,7 @@ export function ArtistPage({artistID}: { artistID: string }) {
                 const discoTime = (await getArtistsAlbums(accessToken, artistID, ['album', 'single', 'compilation']))
                 setDiscography(discoTime)
                 setDiscoWhich(Object.keys(discoTime[0]).toString())
-
+                document.title = `Artist / ${artistData?.name}`
             } catch (err) {
 
             } finally {
@@ -93,7 +94,7 @@ export function ArtistPage({artistID}: { artistID: string }) {
 
     if (loading) return <></>
 
-    document.title = `Artist / ${artistData?.name}`
+
     return <section className={artistPageStyle['artist-page-wrapper']}
                     ref={artistPageRef}
     >

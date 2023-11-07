@@ -69,7 +69,7 @@ export function PlaylistPage({playlistID}: { playlistID: string }) {
 
         return () => playlistPageRef?.current?.parentNode?.parentNode ? playlistPageRef?.current?.parentNode?.parentNode.removeEventListener('scroll', duringScroll) : undefined
 
-    }, [playBtnRef.current, playlistPageRef.current]);
+    }, [playBtnRef.current, playlistPageRef.current, playlistID]);
 
     useEffect(() => {
         const getPlayListData = async () => {
