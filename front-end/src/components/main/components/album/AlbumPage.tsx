@@ -37,13 +37,20 @@ export function AlbumPage({albumID}: { albumID: string }) {
     const playBtnRef = useRef<HTMLDivElement>(null)
     const albumPageRef = useRef<HTMLDivElement>(null)
 
+
+    useEffect(() => {
+        if (!currentlyPlaying.isPlaying && albumData?.album.id) {
+            document.title = `Album / ${albumData?.album?.name}`
+        }
+    }, [currentlyPlaying.isPlaying, albumData?.album?.id]);
+
     useEffect(() => {
 
         const duringScroll = () => {
 
             if (!checkInView(playBtnRef)) {
                 dispatch(setWhatsInView({
-                    pageName: 'Artist',
+                    pageName: 'Album',
                     pageItemName: String(albumData?.album.name),
                     uri: String(albumData?.album.uri)
 

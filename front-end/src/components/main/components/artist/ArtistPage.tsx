@@ -69,6 +69,12 @@ export function ArtistPage({artistID}: { artistID: string }) {
     }, [playBtnRef.current, artistPageRef.current, artistID]);
 
     useEffect(() => {
+        if(!currentlyPlaying.isPlaying && artistData?.id){
+            document.title = `Artist / ${artistData?.name}`
+        }
+    }, [currentlyPlaying.isPlaying, artistData?.id]);
+
+    useEffect(() => {
 
         const fetchArtist = async () => {
             try {
@@ -82,7 +88,7 @@ export function ArtistPage({artistID}: { artistID: string }) {
                 const discoTime = (await getArtistsAlbums(accessToken, artistID, ['album', 'single', 'compilation']))
                 setDiscography(discoTime)
                 setDiscoWhich(Object.keys(discoTime[0]).toString())
-                document.title = `Artist / ${artistData?.name}`
+
             } catch (err) {
 
             } finally {

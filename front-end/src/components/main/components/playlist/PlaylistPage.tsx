@@ -38,7 +38,7 @@ export function PlaylistPage({playlistID}: { playlistID: string }) {
     });
 
     const [tracksLoading, setTracksLoading] = useState<boolean>(true);
-     const playBtnRef = useRef<HTMLDivElement>(null)
+    const playBtnRef = useRef<HTMLDivElement>(null)
     const playlistPageRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
@@ -47,7 +47,7 @@ export function PlaylistPage({playlistID}: { playlistID: string }) {
 
             if (!checkInView(playBtnRef)) {
                 dispatch(setWhatsInView({
-                    pageName: 'Artist',
+                    pageName: 'Playlist',
                     pageItemName: String(playListData?.name),
                     uri: String(playListData?.uri)
 
@@ -70,6 +70,12 @@ export function PlaylistPage({playlistID}: { playlistID: string }) {
         return () => playlistPageRef?.current?.parentNode?.parentNode ? playlistPageRef?.current?.parentNode?.parentNode.removeEventListener('scroll', duringScroll) : undefined
 
     }, [playBtnRef.current, playlistPageRef.current, playlistID]);
+
+    useEffect(() => {
+        if (!currentlyPlaying.isPlaying && playListData?.id) {
+            document.title = `${playListData?.name} by ${playListData?.owner.display_name}`
+        }
+    }, [currentlyPlaying.isPlaying, playListData?.id]);
 
     useEffect(() => {
         const getPlayListData = async () => {
@@ -141,12 +147,11 @@ export function PlaylistPage({playlistID}: { playlistID: string }) {
         [accessToken, playlistTracks.next, tracksLoading, playlistID]
     );
 
-    if (playListData === undefined && playlistLoading) return <></>
+    if (playlistLoading) return <></>
 
-    document.title = `${playListData?.name} by ${playListData?.owner.display_name}`
 
     return <section className={playlistPageStyle['playlist-page-wrapper']}
-    ref={playlistPageRef}
+                    ref={playlistPageRef}
     >
         <div className={playlistPageStyle['general-info-wrapper']}>
             {playListData?.images[0]?.url && <div className={playlistPageStyle['img-placement']}>
@@ -168,7 +173,7 @@ export function PlaylistPage({playlistID}: { playlistID: string }) {
         </div>
         <div className={albumStyle['play-save']}>
             <div
-            ref={playBtnRef}
+                ref={playBtnRef}
             >
                 <button
 
@@ -269,7 +274,8 @@ export function PlaylistPage({playlistID}: { playlistID: string }) {
                 } else {
                     return <SongCard
                         ref={i === playlistTracks.data.length - 1 ? lastSong : null}
-                        playlistTrackAddedDate={typeof plTrack === "object" ? plTrack.added_at : undefined} forPlaylist={true}
+                        playlistTrackAddedDate={typeof plTrack === "object" ? plTrack.added_at : undefined}
+                        forPlaylist={true}
                         eachTrack={typeof plTrack === "object" ? plTrack.track : undefined} n={i + 1} key={i}
                         accessToken={accessToken}/>
                 }

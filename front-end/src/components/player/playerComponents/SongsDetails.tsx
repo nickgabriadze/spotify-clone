@@ -22,6 +22,7 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
     const artistNameRef = useRef<HTMLDivElement>(null)
     const savedSongs = useAppSelector((state) => state.spotiUserReducer.userSaved.userSavedSongIDs);
     const [currentSaved, setCurrentSaved] = useState<boolean>(false)
+
     useEffect(() => {
         setCurrentSaved(
             savedSongs.includes(String((currentlyPlaying?.item?.id)))

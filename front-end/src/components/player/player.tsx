@@ -143,7 +143,11 @@ export function Player() {
     if (noDataAvailable) {
         return <PlayerSkeleton/>;
     } else {
-
+        if (currentlyPlaying?.is_playing) {
+            document.title = currentlyPlaying?.item ? String(currentlyPlaying?.item?.name)
+                .concat(" • ")
+                .concat(String(currentlyPlaying?.item?.artists.map((each) => each.name).join(", "))) : 'Spotify Clone';
+        }
 
 
         return (
