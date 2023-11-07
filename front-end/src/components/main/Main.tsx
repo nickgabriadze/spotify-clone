@@ -159,7 +159,7 @@ export function Main({height}: { height: number }) {
                                         <img
                                             alt={"Pause image"}
 
-                                            src={Pause} width={30} height={30}></img>
+                                            src={Pause} width={40} height={40}></img>
                                     </div>
                                 ) : (
                                     <div>
