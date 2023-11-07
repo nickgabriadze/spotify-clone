@@ -53,9 +53,6 @@ export function Main({height}: { height: number }) {
     }
 
     useEffect(() => {
-
-    }, [mainRef]);
-    useEffect(() => {
         const fetchMyData = async () => {
             try {
                 const req = await getMe(access);
@@ -71,10 +68,10 @@ export function Main({height}: { height: number }) {
 
         fetchMyData();
     }, [access, dispatch]);
-
+    const whatsInView = useAppSelector(s => s.spotiUserReducer.whatsInViewForPlay);
 
     const PageNavigation = useAppSelector(state => state.navigationReducer.pageNavigation);
-    const [displayLogOut, setDisplayLogut] = useState<boolean>(false)
+    const [displayLogOut, setDisplayLogout] = useState<boolean>(false)
 
     const componentObject = PageNavigation.pageHistory[PageNavigation.currentPageIndex]
     return (
@@ -120,6 +117,7 @@ export function Main({height}: { height: number }) {
                         </button>
 
                         {componentObject.component === 'Search' && <SearchBar/>}
+                        {whatsInView.pageName === 'Artist' && whatsInView.pageItemName}
                     </div>
 
                     <div className={searchBarStyle["install-profile"]}>
@@ -139,9 +137,9 @@ export function Main({height}: { height: number }) {
                                 <button
                                     onClick={() => {
 
-                                        setDisplayLogut((prev) => !prev)
+                                        setDisplayLogout((prev) => !prev)
                                         const timeout = setTimeout(() => {
-                                            setDisplayLogut(false)
+                                            setDisplayLogout(false)
 
                                             return () => clearTimeout(timeout)
                                         }, 3000)

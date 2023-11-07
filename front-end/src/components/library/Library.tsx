@@ -56,7 +56,7 @@ export function Library({divHeight}: { divHeight: number }) {
         resize()
 
         return () => window.removeEventListener('resize', resize)
-    }, [widthPref, pTagWidth]);
+    }, [widthPref]);
 
 
     useEffect(() => {

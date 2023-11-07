@@ -57,7 +57,12 @@ interface SpotiUser {
         userSavedAlbumIDs: string[],
         userSavedArtistIDs: string[],
         userSavedPlaylistIDs: string[]
-    }
+    },
+    whatsInViewForPlay: {
+        pageName: string,
+        pageItemName: string
+    },
+    mainRef: HTMLElement | null
 }
 
 const initialState: SpotiUser = {
@@ -74,13 +79,38 @@ const initialState: SpotiUser = {
         userSavedAlbumIDs: [],
         userSavedArtistIDs: [],
         userSavedPlaylistIDs: []
-    }
+    },
+    whatsInViewForPlay: {
+        pageName: 'None',
+        pageItemName: 'None'
+    },
+    mainRef: null
 };
 
 const spotiUserSlice = createSlice({
     name: "Spoti User Slice",
     initialState,
     reducers: {
+        setMainRef: (state, action: {payload: HTMLElement}) => {
+          return {
+              ...state,
+              mainRef: action.payload
+          }
+        },
+        setWhatsInView: (state, action: { payload: {
+            pageName: string,
+                pageItemName: string
+            } }) => {
+
+            return {
+                ...state,
+                whatsInViewForPlay: {
+                    pageName: action.payload.pageName,
+                    pageItemName: action.payload.pageItemName
+                }
+            }
+        }
+        ,
         setUserSavedPlaylistIDs: (state, action: { payload: Playlist[] }) => {
 
             return {
@@ -225,7 +255,9 @@ export const {
     setUserSavedArtistIDs,
     setUsersSavedSongIDs,
     setUserSavedAlbumIDs,
-    setUserSavedPlaylistIDs
+    setUserSavedPlaylistIDs,
+    setMainRef,
+    setWhatsInView
 } = spotiUserSlice.actions;
 
 export default spotiUserSlice.reducer;

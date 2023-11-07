@@ -1,5 +1,5 @@
 import {Artist} from "../../../../types/artist.ts";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import getArtist from "../../../../api/search/getArtist.ts";
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks.ts";
 import artistPageStyle from './artistpage.module.css'
@@ -20,6 +20,8 @@ import AlbumCard from "../../../search/reuseables/albumCard.tsx";
 import {Album} from "../../../../types/album.ts";
 import AppearsOn from "./components/AppearsOn.tsx";
 import FansAlsoLike from "./components/FansAlsoLike.tsx";
+import {checkInView} from "../../../utils/checkInView.ts";
+import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
 
 export function ArtistPage({artistID}: { artistID: string }) {
     const [artistData, setArtistData] = useState<Artist>();
@@ -33,7 +35,37 @@ export function ArtistPage({artistID}: { artistID: string }) {
     const [discography, setDiscography] = useState<{ [key: string]: any }[]>([]);
     const [discoWhich, setDiscoWhich] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
+    const playBtnRef = useRef<HTMLDivElement>(null)
+    const artistPageRef = useRef<HTMLDivElement>(null)
 
+    useEffect(() => {
+
+        const duringScroll = () => {
+
+            if (!checkInView(playBtnRef)) {
+                dispatch(setWhatsInView({
+                    pageName: 'Artist',
+                    pageItemName: String(artistData?.name)
+
+                }))
+            }else{
+                 dispatch(setWhatsInView({
+                    pageName: 'None',
+                    pageItemName: 'None'
+
+                }))
+            }
+
+        }
+
+
+        if (artistPageRef?.current?.parentNode?.parentNode) {
+            artistPageRef?.current?.parentNode?.parentNode.addEventListener('scroll', duringScroll)
+        }
+
+        return () => artistPageRef?.current?.parentNode?.parentNode ? artistPageRef?.current?.parentNode?.parentNode.removeEventListener('scroll', duringScroll) : undefined
+
+    }, [playBtnRef.current, artistPageRef.current]);
 
     useEffect(() => {
         const fetchArtist = async () => {
@@ -51,17 +83,19 @@ export function ArtistPage({artistID}: { artistID: string }) {
 
             } catch (err) {
 
-            }finally {
+            } finally {
                 setLoading(false)
             }
         }
         fetchArtist();
     }, [artistID, accessToken, country]);
 
-    if(loading) return <></>
+    if (loading) return <></>
 
     document.title = `Artist / ${artistData?.name}`
-    return <section className={artistPageStyle['artist-page-wrapper']}>
+    return <section className={artistPageStyle['artist-page-wrapper']}
+                    ref={artistPageRef}
+    >
 
 
         <div className={artistPageStyle['artist-general-info']}>
@@ -88,7 +122,9 @@ export function ArtistPage({artistID}: { artistID: string }) {
         </div>
 
         <div className={artistPageStyle['play-follow']}>
-            <div className={artistPageStyle['play-button']}>
+            <div className={artistPageStyle['play-button']}
+                 ref={playBtnRef}
+            >
                 <button
                     onClick={async () => {
                         if (currentlyPlaying.artistID === artistData?.id) {
