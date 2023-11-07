@@ -1,7 +1,7 @@
 import albumStyle from "./albumpage.module.css";
 import {Track} from "../../../../types/track.ts";
 import {Album, AlbumWithTracks} from "../../../../types/album.ts";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks.ts";
 import getAlbum from "../../../../api/search/getAlbum.ts";
 import getAlbumTracks from "../../../../api/main/album/getAlbumTracks.ts";
@@ -22,6 +22,8 @@ import Duration from "../../../search/components/each-search-component/icons/dur
 import {SongCard} from "../../../search/reuseables/songCard.tsx";
 import getArtistAlbums from "../../../../api/main/album/getArtistAlbums.ts";
 import AlbumCard from "../../../search/reuseables/albumCard.tsx";
+import {checkInView} from "../../../utils/checkInView.ts";
+import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
 
 export function AlbumPage({albumID}: { albumID: string }) {
     const [albumData, setAlbumData] = useState<{ album: AlbumWithTracks, albumTracks: Track[] }>();
@@ -32,6 +34,38 @@ export function AlbumPage({albumID}: { albumID: string }) {
     const albumIsSaved = useAppSelector(s => s.spotiUserReducer.userSaved.userSavedAlbumIDs).includes(albumID)
     const [artistAlbums, setArtistAlbums] = useState<Album[]>([]);
     const [onFullScreen, setOnFullScreen] = useState<boolean>(false);
+    const playBtnRef = useRef<HTMLDivElement>(null)
+    const albumPageRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+
+        const duringScroll = () => {
+
+            if (!checkInView(playBtnRef)) {
+                dispatch(setWhatsInView({
+                    pageName: 'Artist',
+                    pageItemName: String(albumData?.album.name),
+                    uri: String(albumData?.album.uri)
+
+                }))
+            } else {
+                dispatch(setWhatsInView({
+                    pageName: 'None',
+                    pageItemName: 'None',
+                    uri: 'None'
+                }))
+            }
+
+        }
+
+
+        if (albumPageRef?.current?.parentNode?.parentNode) {
+            albumPageRef?.current?.parentNode?.parentNode.addEventListener('scroll', duringScroll)
+        }
+
+        return () => albumPageRef?.current?.parentNode?.parentNode ? albumPageRef?.current?.parentNode?.parentNode.removeEventListener('scroll', duringScroll) : undefined
+
+    }, [playBtnRef.current, albumPageRef.current]);
 
 
     useEffect(() => {
@@ -77,7 +111,7 @@ export function AlbumPage({albumID}: { albumID: string }) {
         const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
         const releaseDate = months[Number(albumDate.getMonth())].concat(" ").concat(String(albumDate.getDate()).concat(", ").concat(String(albumDate.getFullYear())))
         return <section className={albumStyle['album-page-wrapper']}
-
+                        ref={albumPageRef}
         >
             <div className={albumStyle['album-main-info']}
             >
@@ -143,9 +177,9 @@ export function AlbumPage({albumID}: { albumID: string }) {
 
             <div className={albumStyle['play-track-list']}>
                 <div className={albumStyle['play-save']}>
-                    <div>
+                    <div
+                        ref={playBtnRef}>
                         <button
-
                             className={albumStyle["album-hover-button"]}
                             onClick={async () => {
                                 if (currentlyPlaying.albumID === albumID) {

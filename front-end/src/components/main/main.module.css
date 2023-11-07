@@ -67,3 +67,28 @@
     align-items: center;
 
 }
+
+.fast-access{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    & h1{
+        width: 30vw;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}
+
+.play-button{
+    padding-left: 20px;
+   & button{
+       width: 50px;
+       height: 50px;
+        & img {
+            background-color: #1ed760;
+
+        }
+   }
+}

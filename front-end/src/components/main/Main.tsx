@@ -18,6 +18,11 @@ import ArtistPage from "./components/artist/ArtistPage.tsx";
 import {CategoryPage} from "./components/browsingCategory/category.tsx";
 import PlaylistPage from "./components/playlist/PlaylistPage.tsx";
 import {LikedSongs} from "./components/playlist/LikedSongs.tsx";
+import PlayResumeStreaming from "../../api/player/playResumeStreaming.ts";
+import PauseStreaming from "../../api/player/pauseStreaming.ts";
+import artistPageStyle from "./components/artist/artistpage.module.css";
+import Pause from "../search/components/each-search-component/Playlists/icons/pause.svg";
+import Play from "../search/components/each-search-component/Playlists/icons/play.svg";
 
 
 export function Main({height}: { height: number }) {
@@ -69,7 +74,7 @@ export function Main({height}: { height: number }) {
         fetchMyData();
     }, [access, dispatch]);
     const whatsInView = useAppSelector(s => s.spotiUserReducer.whatsInViewForPlay);
-
+    const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong)
     const PageNavigation = useAppSelector(state => state.navigationReducer.pageNavigation);
     const [displayLogOut, setDisplayLogout] = useState<boolean>(false)
 
@@ -117,7 +122,54 @@ export function Main({height}: { height: number }) {
                         </button>
 
                         {componentObject.component === 'Search' && <SearchBar/>}
-                        {whatsInView.pageName === 'Artist' && whatsInView.pageItemName}
+                        {whatsInView.pageName !== 'None' &&
+                            <div className={mainStyle['fast-access']}
+                            ><div className={mainStyle['play-button']}><button
+                                onClick={async () => {
+                                    if (currentlyPlaying?.context?.uri === whatsInView.uri) {
+                                        if (!currentlyPlaying.isPlaying) {
+                                            await PlayResumeStreaming(access);
+                                            dispatch(
+                                                setUserControlActions({
+                                                    userAction: "Play",
+                                                })
+                                            );
+                                        } else {
+                                            await PauseStreaming(access);
+                                            dispatch(
+                                                setUserControlActions({
+                                                    userAction: "Pause",
+                                                })
+                                            );
+                                        }
+                                    } else {
+                                        await PlayResumeStreaming(access, whatsInView.uri);
+                                        dispatch(
+                                            setUserControlActions({
+                                                userAction: "Play",
+                                            })
+                                        );
+                                    }
+                                }}
+                                className={artistPageStyle["artist-hover-button"]}
+                            >
+                                {currentlyPlaying?.context?.uri === whatsInView.uri &&
+                                currentlyPlaying.isPlaying ? (
+                                    <div>
+                                        <img
+                                            alt={"Pause image"}
+
+                                            src={Pause} width={30} height={30}></img>
+                                    </div>
+                                ) : (
+                                    <div>
+
+                                        <img alt={"Play image"} src={Play} width={50} height={50}></img>
+                                    </div>
+                                )}
+                            </button></div>
+                            <h1>{whatsInView.pageItemName}</h1>
+                            </div>}
                     </div>
 
                     <div className={searchBarStyle["install-profile"]}>
@@ -126,14 +178,14 @@ export function Main({height}: { height: number }) {
                         ) : (
                             <div className={mainStyle['user-icon-log-out-wrapper']}>
                                 {displayLogOut && <button
-                                     className={mainStyle['log-out-btn']}
+                                    className={mainStyle['log-out-btn']}
                                     onClick={() => {
                                         localStorage.clear()
                                         dispatch(setUserControlActions({
                                             userAction: 'USER_LOGOUT'
                                         }))
                                     }
-                                }>Log Out</button>}
+                                    }>Log Out</button>}
                                 <button
                                     onClick={() => {
 

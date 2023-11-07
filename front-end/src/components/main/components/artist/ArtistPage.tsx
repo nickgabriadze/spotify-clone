@@ -45,14 +45,15 @@ export function ArtistPage({artistID}: { artistID: string }) {
             if (!checkInView(playBtnRef)) {
                 dispatch(setWhatsInView({
                     pageName: 'Artist',
-                    pageItemName: String(artistData?.name)
+                    pageItemName: String(artistData?.name),
+                    uri: String(artistData?.uri)
 
                 }))
             }else{
                  dispatch(setWhatsInView({
                     pageName: 'None',
-                    pageItemName: 'None'
-
+                    pageItemName: 'None',
+                     uri: 'None'
                 }))
             }
 

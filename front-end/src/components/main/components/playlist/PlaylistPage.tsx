@@ -18,6 +18,8 @@ import Duration from "../../../search/components/each-search-component/icons/dur
 import {SongCard} from "../../../search/reuseables/songCard.tsx";
 import SongCardSkeleton from "../../../../skeletons/songCardSkeleton.tsx";
 import axiosInstance from "../../../../axios.ts";
+import {checkInView} from "../../../utils/checkInView.ts";
+import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
 
 
 export function PlaylistPage({playlistID}: { playlistID: string }) {
@@ -36,6 +38,39 @@ export function PlaylistPage({playlistID}: { playlistID: string }) {
     });
 
     const [tracksLoading, setTracksLoading] = useState<boolean>(true);
+     const playBtnRef = useRef<HTMLDivElement>(null)
+    const playlistPageRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+
+        const duringScroll = () => {
+
+            if (!checkInView(playBtnRef)) {
+                dispatch(setWhatsInView({
+                    pageName: 'Artist',
+                    pageItemName: String(playListData?.name),
+                    uri: String(playListData?.uri)
+
+                }))
+            } else {
+                dispatch(setWhatsInView({
+                    pageName: 'None',
+                    pageItemName: 'None',
+                    uri: 'None'
+                }))
+            }
+
+        }
+
+
+        if (playlistPageRef?.current?.parentNode?.parentNode) {
+            playlistPageRef?.current?.parentNode?.parentNode.addEventListener('scroll', duringScroll)
+        }
+
+        return () => playlistPageRef?.current?.parentNode?.parentNode ? playlistPageRef?.current?.parentNode?.parentNode.removeEventListener('scroll', duringScroll) : undefined
+
+    }, [playBtnRef.current, playlistPageRef.current]);
+
     useEffect(() => {
         const getPlayListData = async () => {
             try {
@@ -110,7 +145,9 @@ export function PlaylistPage({playlistID}: { playlistID: string }) {
 
     document.title = `${playListData?.name} by ${playListData?.owner.display_name}`
 
-    return <section className={playlistPageStyle['playlist-page-wrapper']}>
+    return <section className={playlistPageStyle['playlist-page-wrapper']}
+    ref={playlistPageRef}
+    >
         <div className={playlistPageStyle['general-info-wrapper']}>
             {playListData?.images[0]?.url && <div className={playlistPageStyle['img-placement']}>
                 <img title={playListData?.name} alt="Playlist image"
@@ -130,7 +167,9 @@ export function PlaylistPage({playlistID}: { playlistID: string }) {
             </div>
         </div>
         <div className={albumStyle['play-save']}>
-            <div>
+            <div
+            ref={playBtnRef}
+            >
                 <button
 
                     className={albumStyle["album-hover-button"]}

@@ -60,7 +60,8 @@ interface SpotiUser {
     },
     whatsInViewForPlay: {
         pageName: string,
-        pageItemName: string
+        pageItemName: string,
+        uri: string
     },
     mainRef: HTMLElement | null
 }
@@ -82,7 +83,8 @@ const initialState: SpotiUser = {
     },
     whatsInViewForPlay: {
         pageName: 'None',
-        pageItemName: 'None'
+        pageItemName: 'None',
+        uri: 'None'
     },
     mainRef: null
 };
@@ -99,14 +101,16 @@ const spotiUserSlice = createSlice({
         },
         setWhatsInView: (state, action: { payload: {
             pageName: string,
-                pageItemName: string
+                pageItemName: string,
+                uri: string
             } }) => {
 
             return {
                 ...state,
                 whatsInViewForPlay: {
                     pageName: action.payload.pageName,
-                    pageItemName: action.payload.pageItemName
+                    pageItemName: action.payload.pageItemName,
+                    uri: action.payload.uri
                 }
             }
         }
