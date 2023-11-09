@@ -44,35 +44,35 @@ export function AlbumPage({albumID}: { albumID: string }) {
         }
     }, [currentlyPlaying.isPlaying, albumData?.album?.id]);
 
-    useEffect(() => {
-
-        const duringScroll = () => {
-
-            if (!checkInView(playBtnRef)) {
-                dispatch(setWhatsInView({
-                    pageName: 'Album',
-                    pageItemName: String(albumData?.album.name),
-                    uri: String(albumData?.album.uri)
-
-                }))
-            } else {
-                dispatch(setWhatsInView({
-                    pageName: 'None',
-                    pageItemName: 'None',
-                    uri: 'None'
-                }))
-            }
-
-        }
-
-
-        if (albumPageRef?.current?.parentNode?.parentNode) {
-            albumPageRef?.current?.parentNode?.parentNode.addEventListener('scroll', duringScroll)
-        }
-
-        return () => albumPageRef?.current?.parentNode?.parentNode ? albumPageRef?.current?.parentNode?.parentNode.removeEventListener('scroll', duringScroll) : undefined
-
-    }, [playBtnRef.current, albumPageRef.current, albumID]);
+    // useEffect(() => {
+    //
+    //     const duringScroll = () => {
+    //
+    //         if (!checkInView(playBtnRef)) {
+    //             dispatch(setWhatsInView({
+    //                 pageName: 'Album',
+    //                 pageItemName: String(albumData?.album.name),
+    //                 uri: String(albumData?.album.uri)
+    //
+    //             }))
+    //         } else {
+    //             dispatch(setWhatsInView({
+    //                 pageName: 'None',
+    //                 pageItemName: 'None',
+    //                 uri: 'None'
+    //             }))
+    //         }
+    //
+    //     }
+    //
+    //
+    //     if (albumPageRef?.current?.parentNode?.parentNode) {
+    //         albumPageRef?.current?.parentNode?.parentNode.addEventListener('scroll', duringScroll)
+    //     }
+    //
+    //     return () => albumPageRef?.current?.parentNode?.parentNode ? albumPageRef?.current?.parentNode?.parentNode.removeEventListener('scroll', duringScroll) : undefined
+    //
+    // }, [playBtnRef.current, albumPageRef.current, albumID]);
 
 
     useEffect(() => {
@@ -112,7 +112,7 @@ export function AlbumPage({albumID}: { albumID: string }) {
         getAlbumInformation()
     }, [accessToken, albumID]);
 
-    if (!dataLoading && albumData?.albumTracks.length !== 0) {
+    if (!dataLoading  && albumData && albumData?.albumTracks.length !== 0) {
         const albumDate = new Date(String(albumData?.album.release_date))
         const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
         const releaseDate = months[Number(albumDate.getMonth())].concat(" ").concat(String(albumDate.getDate()).concat(", ").concat(String(albumDate.getFullYear())))
