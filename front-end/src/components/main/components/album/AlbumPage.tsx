@@ -1,7 +1,7 @@
 import albumStyle from "./albumpage.module.css";
 import {Track} from "../../../../types/track.ts";
 import {Album, AlbumWithTracks} from "../../../../types/album.ts";
-import {useEffect, useRef, useState} from "react";
+import {RefObject, useEffect, useRef, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks.ts";
 import getAlbum from "../../../../api/search/getAlbum.ts";
 import getAlbumTracks from "../../../../api/main/album/getAlbumTracks.ts";
@@ -25,7 +25,7 @@ import AlbumCard from "../../../search/reuseables/albumCard.tsx";
 import {checkInView} from "../../../utils/checkInView.ts";
 import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
 
-export function AlbumPage({albumID, mainRef}: { albumID: string, mainRef: any }) {
+export function AlbumPage({albumID, mainRef}: { albumID: string, mainRef: RefObject<HTMLDivElement> }) {
     const [albumData, setAlbumData] = useState<{ album: AlbumWithTracks, albumTracks: Track[] }>();
     const accessToken = useAppSelector(state => state.spotiUserReducer.spotiToken.accessToken);
     const [dataLoading, setDataLoading] = useState<boolean>(true);
@@ -66,11 +66,11 @@ export function AlbumPage({albumID, mainRef}: { albumID: string, mainRef: any })
         }
 
 
-        if (mainRef) {
+        if (mainRef.current) {
             mainRef.current.addEventListener('scroll', duringScroll)
         }
 
-        return () => mainRef.current.removeEventListener('scroll', duringScroll)
+        return () => mainRef.current?.removeEventListener('scroll', duringScroll)
 
     }, [playBtnRef.current, albumPageRef.current, albumID]);
 

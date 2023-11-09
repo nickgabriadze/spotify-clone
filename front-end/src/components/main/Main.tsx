@@ -5,7 +5,7 @@ import searchBarStyle from "../search/components/search-bar/searchBar.module.css
 import Left from "../search/components/search-bar/icons/left.svg";
 import Right from "../search/components/search-bar/icons/right.svg";
 import Queue from "./components/queue/Queue.tsx";
-import {ReactNode, useEffect, useRef, useState} from "react";
+import {ReactNode, RefObject, useEffect, useRef, useState} from "react";
 import Home from "./components/home/Home.tsx";
 import {Me} from "../../types/me.ts";
 import getMe from "../../api/getMe.ts";
@@ -50,9 +50,9 @@ export function Main({height}: { height: number }) {
         "Search": () => <Search/>,
         "Home": () => <Home/>,
         "Queue": () => <Queue/>,
-        "Album": (ID: string, mainRef: any) => <AlbumPage albumID={ID} mainRef={mainRef}/>,
-        "Artist": (ID: string, mainRef: any) => <ArtistPage artistID={ID} mainRef={mainRef}/>,
-        "Playlist": (ID: string, mainRef: any) => <PlaylistPage playlistID={ID} mainRef={mainRef}/>,
+        "Album": (ID: string, mainRef: RefObject<HTMLDivElement>) => <AlbumPage albumID={ID} mainRef={mainRef}/>,
+        "Artist": (ID: string, mainRef: RefObject<HTMLDivElement>) => <ArtistPage artistID={ID} mainRef={mainRef}/>,
+        "Playlist": (ID: string, mainRef: RefObject<HTMLDivElement>) => <PlaylistPage playlistID={ID} mainRef={mainRef}/>,
         "LikedSongs": (tracks: any[]) => <LikedSongs tracks={tracks}/>,
         "BrowsingCategory": (categoryStuff: string[]) => <CategoryPage categoryStuff={categoryStuff}/>
     }

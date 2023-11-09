@@ -1,6 +1,6 @@
 import NoPlaylistImage from "../../../search/components/each-search-component/icons/no-playlist-pic.webp";
 import playlistPageStyle from './playlistpage.module.css';
-import {useCallback, useEffect, useRef, useState} from "react";
+import {RefObject, useCallback, useEffect, useRef, useState} from "react";
 import getPlaylist from "../../../../api/search/getPlaylist.ts";
 import {FullPlayList, PlayListTrackObject} from "../../../../types/playlist.ts";
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks.ts";
@@ -22,7 +22,7 @@ import {checkInView} from "../../../utils/checkInView.ts";
 import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
 
 
-export function PlaylistPage({playlistID, mainRef}: { playlistID: string, mainRef: any }) {
+export function PlaylistPage({playlistID, mainRef}: { playlistID: string, mainRef: RefObject<HTMLDivElement> }) {
     const [playListData, setPlayListData] = useState<FullPlayList>();
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken);
     const dispatch = useAppDispatch();
@@ -60,14 +60,13 @@ export function PlaylistPage({playlistID, mainRef}: { playlistID: string, mainRe
                 }))
             }
 
-
         }
 
 
         if (mainRef.current) {
             mainRef.current.addEventListener('scroll', duringScroll)
         }
-        return () => mainRef.current.removeEventListener('scroll', duringScroll)
+        return () =>  mainRef.current?.removeEventListener('scroll', duringScroll)
 
 
     }, [playBtnRef.current, playlistPageRef.current, playlistID]);

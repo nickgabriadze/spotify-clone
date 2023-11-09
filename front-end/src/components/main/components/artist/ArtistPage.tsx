@@ -1,5 +1,5 @@
 import {Artist} from "../../../../types/artist.ts";
-import {useEffect, useRef, useState} from "react";
+import {RefObject, useEffect, useRef, useState} from "react";
 import getArtist from "../../../../api/search/getArtist.ts";
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks.ts";
 import artistPageStyle from './artistpage.module.css'
@@ -23,7 +23,7 @@ import FansAlsoLike from "./components/FansAlsoLike.tsx";
 import {checkInView} from "../../../utils/checkInView.ts";
 import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
 
-export function ArtistPage({artistID, mainRef}: { artistID: string, mainRef:any}) {
+export function ArtistPage({artistID, mainRef}: { artistID: string, mainRef:RefObject<HTMLDivElement>}) {
     const [artistData, setArtistData] = useState<Artist>();
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken);
     const dispatch = useAppDispatch();
@@ -64,7 +64,7 @@ export function ArtistPage({artistID, mainRef}: { artistID: string, mainRef:any}
        if (mainRef.current) {
             mainRef.current.addEventListener('scroll', duringScroll)
         }
-        return () => mainRef.current.removeEventListener('scroll', duringScroll)
+        return () => mainRef.current?.removeEventListener('scroll', duringScroll)
 
 
     }, [playBtnRef.current, artistPageRef.current, artistID]);
