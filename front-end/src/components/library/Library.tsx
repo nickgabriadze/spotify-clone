@@ -300,7 +300,7 @@ export function Library({divHeight}: { divHeight: number }) {
                     </li>
                 )}
 
-            {libraryLoading ?
+            {libraryLoading  && libData.playlistItems.length === 0 ?
                 Array.from({length: 2}).map((_, i) => <LibraryItemSkeleton key={i}/>)
                 :
                 (!libraryLoading) && (filteringOptions.filter(e => e.chosen)[0]?.type === 'Playlists' || filteringOptions.every(e => {

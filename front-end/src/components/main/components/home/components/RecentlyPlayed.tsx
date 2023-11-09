@@ -13,6 +13,7 @@ export function RecentlyPlayed() {
     const [recentlyPlayedData, setRecentlyPlayedData] = useState<string[]>();
     const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
     const [recentlyLoading, setRecentlyLoading] = useState<boolean>(true);
+    const numberOfItems = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown);
 
     useEffect(() => {
         const fetchRecent = async () => {
@@ -42,7 +43,7 @@ export function RecentlyPlayed() {
         return <section className={homepageStyle['recently-played-section']}>
             <h2>Recently played</h2>
             <div className={homepageStyle['recent-section']}>
-                {recentlyPlayedData?.slice(0,5).map((recent, i) => {
+                {recentlyPlayedData?.slice(0,numberOfItems).map((recent, i) => {
                     const contextType = recent.split('/');
                     const type = contextType[contextType.length - 2]
                     const id = contextType[contextType?.length - 1]
@@ -63,7 +64,7 @@ export function RecentlyPlayed() {
         return <section className={homepageStyle['recently-played-section']}>
             <h2 className={homepageStyle['recent-section-title-skeleton']}></h2>
             <div className={homepageStyle['recent-section']}>
-                {Array.from({length: 5}).map((_, i) =>
+                {Array.from({length: numberOfItems}).map((_, i) =>
                     <AlbumCardSkeleton key={i}/>
                 )}
             </div>

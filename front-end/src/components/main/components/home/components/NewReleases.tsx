@@ -9,7 +9,7 @@ export function NewReleases() {
     const accessToken = useAppSelector(state => state.spotiUserReducer.spotiToken.accessToken);
     const country = useAppSelector(state => state.spotiUserReducer?.userInformation?.country);
     const [newReleasesData, setNewReleasesData] = useState<Album[]>([]);
-    const itemQuantity = useAppSelector(s => s.navigationReducer.windowItems)
+    const itemQuantity = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown)
 
     useEffect(() => {
         const newReleases = async () => {

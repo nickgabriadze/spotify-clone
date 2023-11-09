@@ -23,6 +23,8 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
     const [resultsLoading, setResultsLoading] = useState<boolean>(true);
     const [episodesData, setEpisodesData] = useState<EpisodeWithShow[]>([]);
     const [episodeDataLoading, setEpisodeDataLoading] = useState<boolean>(true)
+    const itemQuantity = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown)
+
     useEffect
     (() => {
         const fetchAll = async () => {
@@ -72,8 +74,8 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
             <div className={allResultsStyle['top-artists-wrapper']}>
                 <h2>Artists</h2>
                 <div className={allResultsStyle['top-artists']}>
-                    {resultsLoading ? Array.from({length: 5}).map((_, i) => <ArtistCardSkeleton
-                        key={i}/>) : allResultsData?.artists.items.slice(0, 5).map((eachArtist, i) => <ArtistCard
+                    {resultsLoading ? Array.from({length: itemQuantity}).map((_, i) => <ArtistCardSkeleton
+                        key={i}/>) : allResultsData?.artists.items.slice(0, itemQuantity).map((eachArtist, i) => <ArtistCard
                         eachArtist={eachArtist} key={i}/>)}
                 </div>
             </div>}
@@ -82,8 +84,8 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
             <div className={allResultsStyle['top-albums-wrapper']}>
                 <h2>Albums</h2>
                 <div className={allResultsStyle['top-albums']}>
-                    {resultsLoading ? Array.from({length: 5}).map((_, i) => <AlbumCardSkeleton
-                        key={i}/>) : allResultsData?.albums.items.slice(0, 5).map((eachAlbum, i) => <AlbumCard
+                    {resultsLoading ? Array.from({length: itemQuantity}).map((_, i) => <AlbumCardSkeleton
+                        key={i}/>) : allResultsData?.albums.items.slice(0, itemQuantity).map((eachAlbum, i) => <AlbumCard
                         eachAlbum={eachAlbum} key={i}/>)}
                 </div>
             </div>
@@ -93,8 +95,8 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
             <div className={allResultsStyle['top-playlists-wrapper']}>
                 <h2>Playlists</h2>
                 <div className={allResultsStyle['top-playlists']}>
-                    {resultsLoading ? Array.from({length: 5}).map((_, i) => <PlaylistCardSkeleton
-                        key={i}/>) : allResultsData?.playlists.items.slice(0, 5).map((eachPlaylist, i) => <PlaylistCard
+                    {resultsLoading ? Array.from({length: itemQuantity}).map((_, i) => <PlaylistCardSkeleton
+                        key={i}/>) : allResultsData?.playlists.items.slice(0, itemQuantity).map((eachPlaylist, i) => <PlaylistCard
                         eachPlaylist={eachPlaylist} key={i}/>)}
                 </div>
             </div>
@@ -104,8 +106,8 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
             <div className={allResultsStyle['top-podcasts-wrapper']}>
                 <h2>Podcasts</h2>
                 <div className={allResultsStyle['top-podcasts']}>
-                    {resultsLoading ? Array.from({length: 5}).map((_, i) => <PlaylistCardSkeleton
-                        key={i}/>) : allResultsData?.shows.items.slice(0, 5).map((eachShowPodcast, i) =>
+                    {resultsLoading ? Array.from({length: itemQuantity}).map((_, i) => <PlaylistCardSkeleton
+                        key={i}/>) : allResultsData?.shows.items.slice(0, itemQuantity).map((eachShowPodcast, i) =>
                         <ShowPodcastCard
                             eachShowPodcast={eachShowPodcast} key={i}/>)}
                 </div>
@@ -116,9 +118,9 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
             <div className={allResultsStyle['top-episodes-wrapper']}>
                 <h2>Episodes</h2>
                 <div className={allResultsStyle['top-episodes']}>
-                    {episodeDataLoading || resultsLoading ? Array.from({length: 5}).map((_, i) =>
+                    {episodeDataLoading || resultsLoading ? Array.from({length: itemQuantity}).map((_, i) =>
                             <TopEpisodeCardSkeleton key={i}/>) :
-                        episodesData.slice(0, 5).map((eachEpisode, i) => <TopEpisodeCard eachEpisode={eachEpisode}
+                        episodesData.slice(0, itemQuantity).map((eachEpisode, i) => <TopEpisodeCard eachEpisode={eachEpisode}
                                                                                          key={i}/>)
                     }
                 </div>

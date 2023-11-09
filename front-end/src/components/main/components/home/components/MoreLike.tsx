@@ -14,6 +14,7 @@ export function MoreLikeArtists() {
         artistID: string,
         likeArtist: Artist[]
     }[]>([])
+    const numberOfItems = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown);
 
     useEffect(() => {
         const fetchMoreLike = async () => {
@@ -40,7 +41,7 @@ export function MoreLikeArtists() {
             <div key={numbering} className={homepageStyle['like-section']}>
                 <h2>More Like {eachArtist.artistName}</h2>
                 <div className={homepageStyle['related-artists']}>
-                    {eachArtist.likeArtist.slice(0,5) .map((eachLike, i) => <ArtistCard eachArtist={eachLike} key={i}/>)}
+                    {eachArtist.likeArtist.slice(0,numberOfItems) .map((eachLike, i) => <ArtistCard eachArtist={eachLike} key={i}/>)}
                 </div>
             </div>
         )
@@ -50,7 +51,7 @@ export function MoreLikeArtists() {
                 <h2 className={homepageStyle['like-to-skeleton']}>
                 </h2>
                 <div className={homepageStyle['related-artists']}>
-                    {Array.from({length: 5}).map((_, i) => <ArtistCardSkeleton key={i}/>)}
+                    {Array.from({length: numberOfItems}).map((_, i) => <ArtistCardSkeleton key={i}/>)}
                 </div>
             </div>
         )

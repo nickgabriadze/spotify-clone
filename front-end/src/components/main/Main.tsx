@@ -13,7 +13,7 @@ import SearchBar from "../search/components/search-bar/searchBar.tsx";
 import Searchables from "../search/components/searchables/searchables.tsx";
 import {setUserInformation, setWhatsInView} from "../../store/features/spotiUserSlice.ts";
 import AlbumPage from "./components/album/AlbumPage.tsx";
-import {navigateToDirection, setUserControlActions, setWindowItems} from "../../store/features/navigationSlice.ts";
+import {navigateToDirection, setUserControlActions} from "../../store/features/navigationSlice.ts";
 import ArtistPage from "./components/artist/ArtistPage.tsx";
 import {CategoryPage} from "./components/browsingCategory/category.tsx";
 import PlaylistPage from "./components/playlist/PlaylistPage.tsx";
@@ -23,6 +23,7 @@ import PauseStreaming from "../../api/player/pauseStreaming.ts";
 import artistPageStyle from "./components/artist/artistpage.module.css";
 import Pause from "../search/components/each-search-component/Playlists/icons/pause.svg";
 import Play from "../search/components/each-search-component/Playlists/icons/play.svg";
+import {useUpdateNumberOfItems} from "./hooks/useNumberOfItems.ts";
 
 
 export function Main({height}: { height: number }) {
@@ -33,16 +34,9 @@ export function Main({height}: { height: number }) {
     const searching = useAppSelector((state) => state.navigationReducer.searchQuery);
     const dispatch = useAppDispatch();
     const mainRef = useRef<HTMLDivElement>(null)
+    useUpdateNumberOfItems();
 
 
-    useEffect(() => {
-        const setStuff = () => dispatch(setWindowItems(Math.floor(Number(mainRef?.current?.offsetWidth) / 200)))
-
-        window.addEventListener('resize', setStuff)
-
-        return () => window.removeEventListener('resize', setStuff);
-
-    }, [mainRef, mainRef?.current?.offsetWidth]);
 
     const navigation: {
         [key: string]: (data: any, mainRef?: any) => ReactNode

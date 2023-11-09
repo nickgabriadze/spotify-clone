@@ -252,7 +252,7 @@
     .top-artists, .top-albums, .top-playlists, .top-podcasts, .top-episodes {
         display: grid;
         gap: 20px;
-        grid-template-columns: repeat(5, minmax(0, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
         overflow-x: scroll;
 
     }
