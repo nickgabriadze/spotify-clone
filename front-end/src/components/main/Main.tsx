@@ -11,7 +11,7 @@ import {Me} from "../../types/me.ts";
 import getMe from "../../api/getMe.ts";
 import SearchBar from "../search/components/search-bar/searchBar.tsx";
 import Searchables from "../search/components/searchables/searchables.tsx";
-import {setUserInformation} from "../../store/features/spotiUserSlice.ts";
+import {setUserInformation, setWhatsInView} from "../../store/features/spotiUserSlice.ts";
 import AlbumPage from "./components/album/AlbumPage.tsx";
 import {navigateToDirection, setUserControlActions, setWindowItems} from "../../store/features/navigationSlice.ts";
 import ArtistPage from "./components/artist/ArtistPage.tsx";
@@ -35,7 +35,6 @@ export function Main({height}: { height: number }) {
     const mainRef = useRef<HTMLDivElement>(null)
 
 
-
     useEffect(() => {
         const setStuff = () => dispatch(setWindowItems(Math.floor(Number(mainRef?.current?.offsetWidth) / 200)))
 
@@ -51,9 +50,9 @@ export function Main({height}: { height: number }) {
         "Search": () => <Search/>,
         "Home": () => <Home/>,
         "Queue": () => <Queue/>,
-        "Album": (ID: string, mainRef:any) => <AlbumPage albumID={ID} mainRef={mainRef}/>,
-        "Artist": (ID: string, mainRef:any) => <ArtistPage artistID={ID}  mainRef={mainRef}/>,
-        "Playlist": (ID: string, mainRef:any) => <PlaylistPage playlistID={ID} mainRef={mainRef}/>,
+        "Album": (ID: string, mainRef: any) => <AlbumPage albumID={ID} mainRef={mainRef}/>,
+        "Artist": (ID: string, mainRef: any) => <ArtistPage artistID={ID} mainRef={mainRef}/>,
+        "Playlist": (ID: string, mainRef: any) => <PlaylistPage playlistID={ID} mainRef={mainRef}/>,
         "LikedSongs": (tracks: any[]) => <LikedSongs tracks={tracks}/>,
         "BrowsingCategory": (categoryStuff: string[]) => <CategoryPage categoryStuff={categoryStuff}/>
     }
@@ -81,6 +80,14 @@ export function Main({height}: { height: number }) {
 
     const componentObject = PageNavigation.pageHistory[PageNavigation.currentPageIndex]
 
+
+    useEffect(() => {
+        dispatch(setWhatsInView({
+            pageName: 'None',
+            pageItemName: 'None',
+            uri: 'None'
+        }))
+    }, [PageNavigation.pageHistory.length]);
 
     return (
         <main
@@ -127,51 +134,54 @@ export function Main({height}: { height: number }) {
                         {componentObject.component === 'Search' && <SearchBar/>}
                         {whatsInView.pageName !== 'None' &&
                             <div className={mainStyle['fast-access']}
-                            ><div className={mainStyle['play-button']}><button
-                                onClick={async () => {
-                                    if (currentlyPlaying?.context?.uri === whatsInView.uri) {
-                                        if (!currentlyPlaying.isPlaying) {
-                                            await PlayResumeStreaming(access);
-                                            dispatch(
-                                                setUserControlActions({
-                                                    userAction: "Play",
-                                                })
-                                            );
-                                        } else {
-                                            await PauseStreaming(access);
-                                            dispatch(
-                                                setUserControlActions({
-                                                    userAction: "Pause",
-                                                })
-                                            );
-                                        }
-                                    } else {
-                                        await PlayResumeStreaming(access, whatsInView.uri);
-                                        dispatch(
-                                            setUserControlActions({
-                                                userAction: "Play",
-                                            })
-                                        );
-                                    }
-                                }}
-                                className={artistPageStyle["artist-hover-button"]}
                             >
-                                {currentlyPlaying?.context?.uri === whatsInView.uri &&
-                                currentlyPlaying.isPlaying ? (
-                                    <div>
-                                        <img
-                                            alt={"Pause image"}
+                                <div className={mainStyle['play-button']}>
+                                    <button
+                                        onClick={async () => {
+                                            if (currentlyPlaying?.context?.uri === whatsInView.uri) {
+                                                if (!currentlyPlaying.isPlaying) {
+                                                    await PlayResumeStreaming(access);
+                                                    dispatch(
+                                                        setUserControlActions({
+                                                            userAction: "Play",
+                                                        })
+                                                    );
+                                                } else {
+                                                    await PauseStreaming(access);
+                                                    dispatch(
+                                                        setUserControlActions({
+                                                            userAction: "Pause",
+                                                        })
+                                                    );
+                                                }
+                                            } else {
+                                                await PlayResumeStreaming(access, whatsInView.uri);
+                                                dispatch(
+                                                    setUserControlActions({
+                                                        userAction: "Play",
+                                                    })
+                                                );
+                                            }
+                                        }}
+                                        className={artistPageStyle["artist-hover-button"]}
+                                    >
+                                        {currentlyPlaying?.context?.uri === whatsInView.uri &&
+                                        currentlyPlaying.isPlaying ? (
+                                            <div>
+                                                <img
+                                                    alt={"Pause image"}
 
-                                            src={Pause} width={40} height={40}></img>
-                                    </div>
-                                ) : (
-                                    <div>
+                                                    src={Pause} width={40} height={40}></img>
+                                            </div>
+                                        ) : (
+                                            <div>
 
-                                        <img alt={"Play image"} src={Play} width={50} height={50}></img>
-                                    </div>
-                                )}
-                            </button></div>
-                            <h1>{whatsInView.pageItemName}</h1>
+                                                <img alt={"Play image"} src={Play} width={50} height={50}></img>
+                                            </div>
+                                        )}
+                                    </button>
+                                </div>
+                                <h1>{whatsInView.pageItemName}</h1>
                             </div>}
                     </div>
 
