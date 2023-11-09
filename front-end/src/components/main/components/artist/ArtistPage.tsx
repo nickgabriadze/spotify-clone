@@ -23,7 +23,7 @@ import FansAlsoLike from "./components/FansAlsoLike.tsx";
 import {checkInView} from "../../../utils/checkInView.ts";
 import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
 
-export function ArtistPage({artistID}: { artistID: string }) {
+export function ArtistPage({artistID, mainRef}: { artistID: string, mainRef:any}) {
     const [artistData, setArtistData] = useState<Artist>();
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken);
     const dispatch = useAppDispatch();
@@ -38,35 +38,36 @@ export function ArtistPage({artistID}: { artistID: string }) {
     const playBtnRef = useRef<HTMLDivElement>(null)
     const artistPageRef = useRef<HTMLDivElement>(null)
 
-    // useEffect(() => {
-    //
-    //     const duringScroll = () => {
-    //
-    //         if (!checkInView(playBtnRef)) {
-    //             dispatch(setWhatsInView({
-    //                 pageName: 'Artist',
-    //                 pageItemName: String(artistData?.name),
-    //                 uri: String(artistData?.uri)
-    //
-    //             }))
-    //         } else {
-    //             dispatch(setWhatsInView({
-    //                 pageName: 'None',
-    //                 pageItemName: 'None',
-    //                 uri: 'None'
-    //             }))
-    //         }
-    //
-    //     }
-    //
-    //
-    //     if (artistPageRef?.current?.parentNode?.parentNode) {
-    //         artistPageRef?.current?.parentNode?.parentNode.addEventListener('scroll', duringScroll)
-    //     }
-    //
-    //     return () => artistPageRef?.current?.parentNode?.parentNode ? artistPageRef?.current?.parentNode?.parentNode.removeEventListener('scroll', duringScroll) : undefined
-    //
-    // }, [playBtnRef.current, artistPageRef.current, artistID]);
+    useEffect(() => {
+
+        const duringScroll = () => {
+
+            if (!checkInView(playBtnRef)) {
+                dispatch(setWhatsInView({
+                    pageName: 'Artist',
+                    pageItemName: String(artistData?.name),
+                    uri: String(artistData?.uri)
+
+                }))
+            } else {
+                dispatch(setWhatsInView({
+                    pageName: 'None',
+                    pageItemName: 'None',
+                    uri: 'None'
+                }))
+            }
+
+
+        }
+
+
+       if (mainRef.current) {
+            mainRef.current.addEventListener('scroll', duringScroll)
+        }
+        return () => mainRef.current.removeEventListener('scroll', duringScroll)
+
+
+    }, [playBtnRef.current, artistPageRef.current, artistID]);
 
     useEffect(() => {
         if(!currentlyPlaying.isPlaying && artistData?.id){

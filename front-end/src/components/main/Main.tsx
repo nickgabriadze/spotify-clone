@@ -35,6 +35,7 @@ export function Main({height}: { height: number }) {
     const mainRef = useRef<HTMLDivElement>(null)
 
 
+
     useEffect(() => {
         const setStuff = () => dispatch(setWindowItems(Math.floor(Number(mainRef?.current?.offsetWidth) / 200)))
 
@@ -45,14 +46,14 @@ export function Main({height}: { height: number }) {
     }, [mainRef, mainRef?.current?.offsetWidth]);
 
     const navigation: {
-        [key: string]: (data: any) => ReactNode
+        [key: string]: (data: any, mainRef?: any) => ReactNode
     } = {
         "Search": () => <Search/>,
         "Home": () => <Home/>,
         "Queue": () => <Queue/>,
-        "Album": (ID: string) => <AlbumPage albumID={ID}/>,
-        "Artist": (ID: string) => <ArtistPage artistID={ID}/>,
-        "Playlist": (ID: string) => <PlaylistPage playlistID={ID}/>,
+        "Album": (ID: string, mainRef:any) => <AlbumPage albumID={ID} mainRef={mainRef}/>,
+        "Artist": (ID: string, mainRef:any) => <ArtistPage artistID={ID}  mainRef={mainRef}/>,
+        "Playlist": (ID: string, mainRef:any) => <PlaylistPage playlistID={ID} mainRef={mainRef}/>,
         "LikedSongs": (tracks: any[]) => <LikedSongs tracks={tracks}/>,
         "BrowsingCategory": (categoryStuff: string[]) => <CategoryPage categoryStuff={categoryStuff}/>
     }
@@ -72,13 +73,15 @@ export function Main({height}: { height: number }) {
         };
 
         fetchMyData();
-    }, [access, dispatch]);
+    }, [access]);
     const whatsInView = useAppSelector(s => s.spotiUserReducer.whatsInViewForPlay);
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong)
     const PageNavigation = useAppSelector(state => state.navigationReducer.pageNavigation);
     const [displayLogOut, setDisplayLogout] = useState<boolean>(false)
 
     const componentObject = PageNavigation.pageHistory[PageNavigation.currentPageIndex]
+
+
     return (
         <main
             ref={mainRef}
@@ -208,7 +211,7 @@ export function Main({height}: { height: number }) {
                 {componentObject.component === 'Search' && searching.trim().length > 0 ? <Searchables/> : ""}
             </div>
 
-            <div>{navigation[componentObject.component](componentObject.props)}</div>
+            <div>{navigation[componentObject.component](componentObject.props, mainRef)}</div>
 
         </main>
 

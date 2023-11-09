@@ -22,7 +22,7 @@ import {checkInView} from "../../../utils/checkInView.ts";
 import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
 
 
-export function PlaylistPage({playlistID}: { playlistID: string }) {
+export function PlaylistPage({playlistID, mainRef}: { playlistID: string, mainRef: any }) {
     const [playListData, setPlayListData] = useState<FullPlayList>();
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken);
     const dispatch = useAppDispatch();
@@ -41,35 +41,36 @@ export function PlaylistPage({playlistID}: { playlistID: string }) {
     const playBtnRef = useRef<HTMLDivElement>(null)
     const playlistPageRef = useRef<HTMLDivElement>(null)
 
-    // useEffect(() => {
-    //
-    //     const duringScroll = () => {
-    //
-    //         if (!checkInView(playBtnRef)) {
-    //             dispatch(setWhatsInView({
-    //                 pageName: 'Playlist',
-    //                 pageItemName: String(playListData?.name),
-    //                 uri: String(playListData?.uri)
-    //
-    //             }))
-    //         } else {
-    //             dispatch(setWhatsInView({
-    //                 pageName: 'None',
-    //                 pageItemName: 'None',
-    //                 uri: 'None'
-    //             }))
-    //         }
-    //
-    //     }
-    //
-    //
-    //     if (playlistPageRef?.current?.parentNode?.parentNode) {
-    //         playlistPageRef?.current?.parentNode?.parentNode.addEventListener('scroll', duringScroll)
-    //     }
-    //
-    //     return () => playlistPageRef?.current?.parentNode?.parentNode ? playlistPageRef?.current?.parentNode?.parentNode.removeEventListener('scroll', duringScroll) : undefined
-    //
-    // }, [playBtnRef.current, playlistPageRef.current, playlistID]);
+    useEffect(() => {
+
+        const duringScroll = () => {
+
+            if (!checkInView(playBtnRef)) {
+                dispatch(setWhatsInView({
+                    pageName: 'Playlist',
+                    pageItemName: String(playListData?.name),
+                    uri: String(playListData?.uri)
+
+                }))
+            } else {
+                dispatch(setWhatsInView({
+                    pageName: 'None',
+                    pageItemName: 'None',
+                    uri: 'None'
+                }))
+            }
+
+
+        }
+
+
+        if (mainRef.current) {
+            mainRef.current.addEventListener('scroll', duringScroll)
+        }
+        return () => mainRef.current.removeEventListener('scroll', duringScroll)
+
+
+    }, [playBtnRef.current, playlistPageRef.current, playlistID]);
 
     useEffect(() => {
         if (!currentlyPlaying.isPlaying && playListData?.id) {
