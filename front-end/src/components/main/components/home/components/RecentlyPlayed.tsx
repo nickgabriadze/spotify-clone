@@ -42,7 +42,12 @@ export function RecentlyPlayed() {
 
         return <section className={homepageStyle['recently-played-section']}>
             <h2>Recently played</h2>
-            <div className={homepageStyle['recent-section']}>
+            <div className={homepageStyle['recent-section']}
+            style={{
+                display: 'grid',
+                gridTemplateColumns: `repeat(${numberOfItems}, minmax(0, 1fr)`
+            }}
+            >
                 {recentlyPlayedData?.slice(0,numberOfItems).map((recent, i) => {
                     const contextType = recent.split('/');
                     const type = contextType[contextType.length - 2]

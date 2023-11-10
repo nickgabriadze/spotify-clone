@@ -5,9 +5,9 @@ import {useAppSelector} from "../../../../../store/hooks.ts";
 import AlbumCard from "../../../../search/reuseables/albumCard.tsx";
 import {Album} from "../../../../../types/album.ts";
 
-export function AppearsOn({artistID} : {artistID: string}) {
-        const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken);
-
+export function AppearsOn({artistID}: { artistID: string }) {
+    const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken);
+    const numberOfItems = useAppSelector(s=> s.spotiUserReducer.numberOfItemsToBeShown)
     const [appearingAlbums, setAppearingAlbums] = useState<Album[]>([]);
 
     useEffect(() => {
@@ -15,7 +15,7 @@ export function AppearsOn({artistID} : {artistID: string}) {
             try {
                 const appearingOn = (await getArtistsAlbums(accessToken, artistID, ['appears_on']))[0];
                 setAppearingAlbums(appearingOn['appears_on'])
-            }catch(err){
+            } catch (err) {
 
             }
         }
@@ -23,11 +23,10 @@ export function AppearsOn({artistID} : {artistID: string}) {
     }, [accessToken, artistID]);
 
 
-
-    return appearingAlbums.length > 0 &&  <section className={artistPageStyle['appears_on']}>
+    return appearingAlbums.length > 0 && <section className={artistPageStyle['appears_on']}>
         <h2>Appears On</h2>
         <div className={artistPageStyle['appears_on-albums-list']}>
-            {appearingAlbums.map((album, i) => <AlbumCard eachAlbum={album} key={i}/>)}
+            {appearingAlbums.slice(0, numberOfItems).map((album, i) => <AlbumCard eachAlbum={album} key={i}/>)}
         </div>
     </section>
 

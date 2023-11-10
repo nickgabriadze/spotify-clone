@@ -70,8 +70,8 @@ export function PlaylistCard({eachPlaylist, playlistDescription}: {
                     }
 
                 ></img>
-            </div>
-            {hoveringOver && (
+
+                 {hoveringOver && (
                 <button
                     onClick={async () => {
                         if (currentlyPlaying?.context?.uri === eachPlaylist?.uri) {
@@ -110,11 +110,14 @@ export function PlaylistCard({eachPlaylist, playlistDescription}: {
                     </div>
                 ) : (
                     <div>
-                        <img alt={"Play icon"} src={Play} width={60} height={60}></img>
+
+                        <img alt={"Play icon"} src={Play} width={200} height={200}></img>
                     </div>
                 )}
                 </button>
             )}
+            </div>
+
             <div className={playlistsStyle["playlist-details"]}>
                 <a
                     onClick={() => {

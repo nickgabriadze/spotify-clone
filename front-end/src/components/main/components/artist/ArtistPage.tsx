@@ -37,6 +37,7 @@ export function ArtistPage({artistID, mainRef}: { artistID: string, mainRef:RefO
     const [loading, setLoading] = useState<boolean>(true);
     const playBtnRef = useRef<HTMLDivElement>(null)
     const artistPageRef = useRef<HTMLDivElement>(null)
+    const numberOfItems = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown);
 
     useEffect(() => {
 
@@ -245,7 +246,7 @@ export function ArtistPage({artistID, mainRef}: { artistID: string, mainRef:RefO
             </div>
 
             <div
-                className={artistPageStyle['disco-albums-list']}>{discography.filter(e => Object.keys(e).toString() === discoWhich)[0][discoWhich].map((chosenGroup: Album, i: number) =>
+                className={artistPageStyle['disco-albums-list']}>{discography.filter(e => Object.keys(e).toString() === discoWhich)[0][discoWhich].slice(0, numberOfItems).map((chosenGroup: Album, i: number) =>
                 <AlbumCard eachAlbum={chosenGroup} key={i}/>)
             }</div>
 

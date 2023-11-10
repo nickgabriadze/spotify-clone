@@ -2,7 +2,7 @@
 
 .artists-wrapper {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 20px;
     padding: 10px;
     height: 100%;
@@ -31,18 +31,22 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
 
 }
 
 .artist-img {
     width: fit-content;
     height: fit-content;
+
 }
 
 .artist-img img {
     border-radius: 100%;
-    width: 10vw;
-    height: 10vw;
+    width: 100%;
+
+    height: 100%;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
     display: flex;
     justify-content: center;
@@ -98,7 +102,8 @@
     margin-left: 50%;
     margin-top: 50%;
     animation: pop-up-button-animation-artists 200ms linear;
-
+    width: 35%;
+    height: 35%;
     & div:hover {
         scale: 1.03
     }
@@ -107,8 +112,8 @@
 }
 
 .artist-hover-button div img {
-    width: 3.5vw;
-    height: 3.5vw;
+       width: 100%;
+    height: 100%;
     background-color: #1ed760;
     border-radius: 100%;
     display: flex;

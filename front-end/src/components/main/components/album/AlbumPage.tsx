@@ -36,7 +36,7 @@ export function AlbumPage({albumID, mainRef}: { albumID: string, mainRef: RefObj
     const [onFullScreen, setOnFullScreen] = useState<boolean>(false);
     const playBtnRef = useRef<HTMLDivElement>(null)
     const albumPageRef = useRef<HTMLDivElement>(null)
-
+    const numberOfItems = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown);
 
     useEffect(() => {
         if (!currentlyPlaying.isPlaying && albumData?.album.id) {
@@ -290,7 +290,7 @@ export function AlbumPage({albumID, mainRef}: { albumID: string, mainRef: RefObj
             <div className={albumStyle['more-from-artist']}>
                 <h2>More by {albumData?.album.artists[0].name}</h2>
                 <div className={albumStyle['displayed-albums']}>
-                    {artistAlbums.map((eachAlbum) => <AlbumCard eachAlbum={eachAlbum} key={eachAlbum.id}/>)}
+                    {artistAlbums.slice(0, numberOfItems).map((eachAlbum) => <AlbumCard eachAlbum={eachAlbum} key={eachAlbum.id}/>)}
                 </div>
             </div>
         </section>

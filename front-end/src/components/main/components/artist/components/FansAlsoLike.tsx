@@ -8,6 +8,7 @@ import artistPageStyle from "../artistpage.module.css";
 export function FansAlsoLike({artistID}: { artistID: string }) {
     const [fansAlsoLike, setFansAlsoLike] = useState<Artist[]>([]);
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken);
+    const numberOfItems = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown);
 
     useEffect(() => {
         const getThoseOnes = async () => {
@@ -25,7 +26,7 @@ export function FansAlsoLike({artistID}: { artistID: string }) {
     return fansAlsoLike.length > 0 && <section className={artistPageStyle['fans-also-like']}>
         <h2>Fans Also Like</h2>
         <div className={artistPageStyle['related-artists-list']}>
-            {fansAlsoLike.slice(0, 5).map((eachArtist, i) => <ArtistCard
+            {fansAlsoLike.slice(0, numberOfItems).map((eachArtist, i) => <ArtistCard
                 eachArtist={eachArtist} key={i}/>)}
         </div>
     </section>

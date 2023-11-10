@@ -106,10 +106,9 @@
 }
 
 .recent-section {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
-
+    display: flex;
     width: 100%;
+    flex-direction: row;
     gap: 20px;
 
 }

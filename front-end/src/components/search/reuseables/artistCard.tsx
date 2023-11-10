@@ -77,62 +77,62 @@ export function ArtistCard({eachArtist}: { eachArtist: Artist | undefined }) {
                             className={artistsStyle["no-artist-img"]}
                             draggable={false}
                             src={NoArtistImage}
-                            width={150}
-                            height={150}
+
                             alt={"Artist image placeholder"}
                         ></img>
                     )}
                 </div>
-            </div>
-
-            {hoveringOver && (
-                <button
-                    onClick={async () => {
-                        if (currentlyPlaying.artistID === eachArtist?.id) {
-                            if (!currentlyPlaying.isPlaying) {
-                                await PlayResumeStreaming(accessToken);
+                {hoveringOver && (
+                    <button
+                        onClick={async () => {
+                            if (currentlyPlaying.artistID === eachArtist?.id) {
+                                if (!currentlyPlaying.isPlaying) {
+                                    await PlayResumeStreaming(accessToken);
+                                    dispatch(
+                                        setUserControlActions({
+                                            userAction: "Play Artist",
+                                        })
+                                    );
+                                } else {
+                                    await PauseStreaming(accessToken);
+                                    dispatch(
+                                        setUserControlActions({
+                                            userAction: "Pause Artist",
+                                        })
+                                    );
+                                }
+                            } else {
+                                await PlayResumeStreaming(accessToken, eachArtist?.uri);
                                 dispatch(
                                     setUserControlActions({
                                         userAction: "Play Artist",
                                     })
                                 );
-                            } else {
-                                await PauseStreaming(accessToken);
-                                dispatch(
-                                    setUserControlActions({
-                                        userAction: "Pause Artist",
-                                    })
-                                );
                             }
-                        } else {
-                            await PlayResumeStreaming(accessToken, eachArtist?.uri);
-                            dispatch(
-                                setUserControlActions({
-                                    userAction: "Play Artist",
-                                })
-                            );
-                        }
-                    }}
-                    className={artistsStyle["artist-hover-button"]}
-                >
-                    {currentlyPlaying.artistID === eachArtist?.id &&
-                    currentlyPlaying.isPlaying ? (
-                        <div>
-                            <img
-                                alt={"Pause image"}
-                                style={{
-                                    padding: '10px'
-                                }}
-                                src={Pause} width={30} height={30}></img>
-                        </div>
-                    ) : (
-                        <div>
+                        }}
+                        className={artistsStyle["artist-hover-button"]}
+                    >
+                        {currentlyPlaying?.context?.uri === eachArtist?.uri &&
+                        currentlyPlaying.isPlaying ? (
+                            <div>
+                                <img
+                                    style={{padding: '10px'}}
+                                    alt={"Pause icon"} src={Pause} width={40} height={40}></img>
+                            </div>
+                        ) : (
 
-                            <img alt={"Play image"} src={Play} width={50} height={50}></img>
-                        </div>
-                    )}
-                </button>
-            )}
+                            <div>
+                                <img
+
+                                    alt={"Pause icon"} src={Play} width={100} height={100}></img>
+                            </div>
+
+                        )}
+                    </button>
+                )}
+            </div>
+
+
             <div className={artistsStyle["artist-info"]}
                  onClick={() => {
                      dispatch(addReactComponentToNavigation({

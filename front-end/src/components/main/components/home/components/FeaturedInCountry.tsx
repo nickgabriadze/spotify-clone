@@ -4,7 +4,6 @@ import getFeaturedInCountry from "../../../../../api/main/home/getFeaturedInCoun
 import {Playlist} from "../../../../../types/playlist.ts";
 import homepageStyle from "../homepage.module.css";
 import PlayListCard from "../../../../search/reuseables/playListCard.tsx";
-import PlaylistCardSkeleton from "../../../../../skeletons/playlistCardSekeleton.tsx";
 
 export function FeaturedInCountry() {
     const userInfo = useAppSelector((state) => state.spotiUserReducer.userInformation)?.country;
@@ -17,7 +16,7 @@ export function FeaturedInCountry() {
             try {
                 const featuredOnes = await getFeaturedInCountry(accessToken, userInfo);
                 const data = featuredOnes.data;
-                setFeaturedData({message: featuredOnes.data.message, playlists: data.playlists.items.slice(0, 5)});
+                setFeaturedData({message: featuredOnes.data.message, playlists: data.playlists.items});
             } catch (err) {
                 console.log(err)
             }
@@ -32,17 +31,9 @@ export function FeaturedInCountry() {
     if (featuredData.playlists?.length !== 0) {
         return <section className={homepageStyle['featured-wrapper']}>
             <h2>Editor's picks</h2>
-            <div className={homepageStyle['featured-grid']}>
+            <div className={homepageStyle['featured-grid']}
+            >
                 {featuredData.playlists?.slice(0,numberOfItems).map((eachPlaylist, i) => <PlayListCard key={i} eachPlaylist={eachPlaylist}/>)}
-            </div>
-        </section>
-    }else{
-        return <section className={homepageStyle['featured-wrapper']}>
-          <h2 className={homepageStyle['featured-message-skeleton']}>
-          </h2>
-            <div className={homepageStyle['featured-grid']}>
-                {Array.from({length: numberOfItems}).map((_, i) => <PlaylistCardSkeleton key={i} />)}
-
             </div>
         </section>
     }
