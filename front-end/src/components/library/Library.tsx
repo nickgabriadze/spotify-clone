@@ -111,7 +111,7 @@ export function Library({divHeight}: { divHeight: number }) {
             }
         }
 
-        if (accessToken !== undefined && accessToken !== 'pending') {
+        if (localStorage.getItem('access_token') !== undefined && accessToken !== 'pending') {
             fetchPlaylistsAlbums()
         }
     }, [accessToken, libraryActions.length]);

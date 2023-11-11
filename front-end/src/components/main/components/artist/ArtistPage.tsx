@@ -23,7 +23,7 @@ import FansAlsoLike from "./components/FansAlsoLike.tsx";
 import {checkInView} from "../../../utils/checkInView.ts";
 import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
 
-export function ArtistPage({artistID, mainRef}: { artistID: string, mainRef:RefObject<HTMLDivElement>}) {
+export function ArtistPage({artistID, mainRef}: { artistID: string, mainRef: RefObject<HTMLDivElement> }) {
     const [artistData, setArtistData] = useState<Artist>();
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken);
     const dispatch = useAppDispatch();
@@ -62,7 +62,7 @@ export function ArtistPage({artistID, mainRef}: { artistID: string, mainRef:RefO
         }
 
 
-       if (mainRef.current) {
+        if (mainRef.current) {
             mainRef.current.addEventListener('scroll', duringScroll)
         }
         return () => mainRef.current?.removeEventListener('scroll', duringScroll)
@@ -71,7 +71,7 @@ export function ArtistPage({artistID, mainRef}: { artistID: string, mainRef:RefO
     }, [playBtnRef.current, artistPageRef.current, artistID]);
 
     useEffect(() => {
-        if(!currentlyPlaying.isPlaying && artistData?.id){
+        if (!currentlyPlaying.isPlaying && artistData?.id) {
             document.title = `Artist / ${artistData?.name}`
         }
     }, [currentlyPlaying.isPlaying, artistData?.id]);
@@ -246,7 +246,9 @@ export function ArtistPage({artistID, mainRef}: { artistID: string, mainRef:RefO
             </div>
 
             <div
-                className={artistPageStyle['disco-albums-list']}>{discography.filter(e => Object.keys(e).toString() === discoWhich)[0][discoWhich].slice(0, numberOfItems).map((chosenGroup: Album, i: number) =>
+                className={artistPageStyle['disco-albums-list']}
+            style={{gridTemplateColumns: `repeat(${numberOfItems}, minmax(0, 1fr)`}}
+            >{discography.filter(e => Object.keys(e).toString() === discoWhich)[0][discoWhich].slice(0, numberOfItems).map((chosenGroup: Album, i: number) =>
                 <AlbumCard eachAlbum={chosenGroup} key={i}/>)
             }</div>
 

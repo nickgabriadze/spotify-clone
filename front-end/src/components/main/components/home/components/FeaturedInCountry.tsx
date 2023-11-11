@@ -14,6 +14,7 @@ export function FeaturedInCountry() {
     useEffect(() => {
         const getFeaturedOnes = async () => {
             try {
+
                 const featuredOnes = await getFeaturedInCountry(accessToken, userInfo);
                 const data = featuredOnes.data;
                 setFeaturedData({message: featuredOnes.data.message, playlists: data.playlists.items});

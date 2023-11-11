@@ -21,10 +21,11 @@ export function TopItems() {
 
     useEffect(() => {
         const fetchTops = async () => {
+
             try {
                 setDataLoading(true)
-                const getTopArtists: Artist[] = (await getUsersTopItems(access, 'artists', 'medium_term', 3)).data.items;
-                const getTopTracks: Track[] = (await getUsersTopItems(access, 'tracks', "medium_term", 3)).data.items;
+                const getTopArtists: Artist[] = (await getUsersTopItems(access, 'artists', 'short_term', 3)).data.items;
+                const getTopTracks: Track[] = (await getUsersTopItems(access, 'tracks', "short_term", 3)).data.items;
                 const tracksMappedToAlbums = getTopTracks.map(eachTopTrack => eachTopTrack.album);
 
                 setTopItemsData([
@@ -42,9 +43,10 @@ export function TopItems() {
                 setDataLoading(false)
             }
         }
-        if(access !== 'pending'){
-        fetchTops();
+        if (localStorage.getItem('access_token') !== undefined) {
+            fetchTops()
         }
+
 
     }, [access])
     const dispatch = useAppDispatch();

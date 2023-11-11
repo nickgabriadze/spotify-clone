@@ -83,14 +83,16 @@ export function Player() {
     }, [access.accessToken, dispatch]);
 
     useEffect(() => {
-            fetchCurrentData();
-            if (userActions.length > 50) {
-                dispatch(setUserControlActions({
-                    userAction: 'Nullify'
-                }))
-            } else {
+            if (localStorage.getItem('access_token') !== undefined) {
                 fetchCurrentData();
+                if (userActions.length > 50) {
+                    dispatch(setUserControlActions({
+                        userAction: 'Nullify'
+                    }))
+                } else {
+                    fetchCurrentData();
 
+                }
             }
         },
         [fetchCurrentData, dispatch, userActions.length])

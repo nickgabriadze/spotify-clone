@@ -10,7 +10,6 @@ import {useEffect} from "react";
 export function Home() {
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong.isPlaying)
     const time = new Date().getHours();
-    const accessToken = useAppSelector(a => a.spotiUserReducer.spotiToken.accessToken)
     const timeFrame = () => {
         if (time >= 0 && time <= 12) {
             return "morning"
@@ -31,9 +30,10 @@ export function Home() {
             document.title = "Home"
         }
     }, [currentlyPlaying]);
+
     return <section className={homepageStyle['homepage-wrapper']}>
         <h1 className={homepageStyle['greeting-message']}>Good {timeFrame()}</h1>
-        {localStorage.getItem('access_token') !== undefined && accessToken !== 'pending' && <TopItems/>}
+        {localStorage.getItem('access_token') !== undefined && <TopItems/>}
         <FeaturedInCountry/>
         <RecentlyPlayed/>
         <NewReleases/>
