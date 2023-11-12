@@ -17,6 +17,7 @@ export function NewReleases() {
                 const reqNew = (await getNewReleases(accessToken, country)).data.albums.items;
 
                 setNewReleasesData(reqNew);
+
             }catch(err){
 
             }
@@ -28,6 +29,10 @@ export function NewReleases() {
     }, [accessToken, country]);
 
     if(newReleasesData.length === 0){
+        return;
+    }
+
+    if(newReleasesData.every(i => i === null)){
         return;
     }
 
