@@ -7,7 +7,7 @@ import Player from "./components/player/player";
 import Main from "./components/main/Main.tsx";
 import Library from "./components/library/Library.tsx";
 import LoginPage from "./components/login/Login.tsx";
-
+import validateToken from "./components/utils/validateToken.ts";
 
 
 export function App() {
@@ -51,19 +51,25 @@ export function App() {
     }, []);
 
 
-
-
     useEffect(() => {
         if (localStorage.getItem('access_token')
             &&
             localStorage.getItem('refresh_token')
         ) {
+            const updateAccessToken = async () => {
 
-            dispatch(updateCredentials({
-                access_token: String(localStorage.getItem('access_token')),
-                refresh_token: String(localStorage.getItem('refresh_token')),
-                issued_at: Number(localStorage.getItem('issued_at'))
-            }))
+                const newToken = await validateToken();
+
+                dispatch(updateCredentials({
+                        access_token: newToken,
+                        refresh_token: String(localStorage.getItem('refresh_token')),
+                        issued_at: Number(localStorage.getItem('issued_at'))
+                    }
+                ))
+            }
+
+            updateAccessToken();
+
         }
     }, []);
 
@@ -72,7 +78,7 @@ export function App() {
         return <LoginPage/>
     }
 
-    if(access.accessToken !== 'unavailable' && access.refresh_token !== 'unavailable') {
+    if (access.accessToken !== 'unavailable' && access.refresh_token !== 'unavailable') {
 
 
         return (
