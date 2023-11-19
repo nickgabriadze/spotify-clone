@@ -39,7 +39,13 @@ export function LikedSongs({tracks}: { tracks: { added_at: string, track: PlayLi
 
     }, [accessToken, libraryActions.length]);
 
-    document.title = 'Liked Songs'
+
+    useEffect(() => {
+        if (!currentlyPlaying.isPlaying) {
+            document.title = `Liked Songs`
+        }
+    }, [currentlyPlaying.isPlaying]);
+
     return <section className={playlistPageStyle['playlist-page-wrapper']}>
         <div className={playlistPageStyle['general-info-wrapper']}>
             <div className={playlistPageStyle['img-placement']}>
