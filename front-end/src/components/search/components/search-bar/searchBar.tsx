@@ -2,7 +2,7 @@ import searchBarStyle from "./searchBar.module.css";
 import SearchUnfilledGrey from "../../../navigation/icons/search-unfilled-grey.svg";
 import SearchUnfilled from "../../../navigation/icons/search-unfilled.svg";
 import closeSearch from "../../../navigation/icons/close-search.svg";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks";
 import {
@@ -12,12 +12,23 @@ import {
 
 
 export function SearchBar() {
+    const [userSearchingQ, setUserSearchingQ] = useState<string>('')
     const searchStuff = useAppSelector((state) => state.navigationReducer);
     const dispatchSearch = useAppDispatch();
     const [onElementFocus, setOnElementFocus] = useState<boolean>(false);
 
     // const [err, setErr] = useState<string | unknown>();
 
+    useEffect(() => {
+        const timeOutToSetQuery = setTimeout(() => {
+            dispatchSearch(
+                setSearchQuery({
+                    searchQuery: userSearchingQ
+                })
+            )
+        }, 500)
+        return () => clearTimeout(timeOutToSetQuery)
+    }, [userSearchingQ]);
 
     return (
         <div className={searchBarStyle["search-bar"]}>
@@ -74,13 +85,10 @@ export function SearchBar() {
                                 }}
                                 name="Search song field"
                                 placeholder="What do you want to listen to?"
-                                value={searchStuff.searchQuery}
-                                onChange={(e) =>
-                                    dispatchSearch(
-                                        setSearchQuery({
-                                            searchQuery: e.target.value,
-                                        })
-                                    )
+                                value={userSearchingQ}
+                                onChange={(e) => {
+                                    setUserSearchingQ(e.target.value)
+                                }
                                 }
                             ></input>
                             {searchStuff.searchQuery.length === 0 ? (

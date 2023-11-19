@@ -8,6 +8,7 @@ import {setSearchOption} from "../../store/features/navigationSlice.ts";
 export function Search() {
     const searchStuff = useAppSelector((state) => state.navigationReducer);
     const appDispatch = useAppDispatch();
+    const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong);
 
     useEffect(() => {
         if (searchStuff.searchQuery.trim().length === 0) {
@@ -17,7 +18,11 @@ export function Search() {
         }
     }, [searchStuff.searchQuery.trim().length]);
 
-    document.title = 'Search & Explore'
+    useEffect(() => {
+        if(!currentlyPlaying.isPlaying){
+             document.title = 'Search & Explore'
+        }
+    }, [currentlyPlaying.isPlaying]);
     return (
         <section style={{height: '100%', width: '100%'}}>
             <div style={{ height: '100%', width: '100%'}}>

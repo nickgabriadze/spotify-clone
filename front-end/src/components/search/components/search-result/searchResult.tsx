@@ -11,6 +11,8 @@ export function SearchResult() {
     const searchStuff = useAppSelector((state) => state.navigationReducer);
 
 
+
+
     if (searchStuff.searchOption === 'Artists') {
         document.title = `Search / Artists`
         return <ArtistsRes artistsName={searchStuff.searchQuery}/>
@@ -36,7 +38,6 @@ export function SearchResult() {
         return <PodcastsShows podcastShowName={searchStuff.searchQuery}/>
     }
 
-    document.title = 'Search / All';
     /* For all things combined */
     return (
 
