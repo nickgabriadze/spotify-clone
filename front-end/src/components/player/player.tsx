@@ -23,67 +23,67 @@ export function Player() {
     const userActions = useAppSelector(state => state.navigationReducer.userControlActions);
     const [playbackStateInformation, setPlaybackStateInformation] = useState<PlaybackState>();
     const fetchCurrentData = useCallback(async () => {
+        if (access.accessToken !== 'pending' && localStorage.getItem('access_token') !== undefined) {
+            try {
+                const devices = await getDevices(access.accessToken);
+                const devicesData = devices.data;
 
-        try {
-            const devices = await getDevices(access.accessToken);
-            const devicesData = devices.data;
+                setDevices(devicesData);
+                const req = await getCurrentlyPlaying(access.accessToken);
+                const data = req.data;
+                const requestPlaybackState = await getPlaybackState(access.accessToken);
+                const playbackStateData = requestPlaybackState.data;
 
-            setDevices(devicesData);
-            const req = await getCurrentlyPlaying(access.accessToken);
-            const data = req.data;
-            const requestPlaybackState = await getPlaybackState(access.accessToken);
-            const playbackStateData = requestPlaybackState.data;
+                if (req.status === 204) {
+                    setNoDataAvailable(true);
+                    const prevData = window.localStorage.getItem('previousSong')
+                    if (prevData) {
+                        const currentlyPlayingSong: {
+                            artistID: string,
+                            songID: string,
+                            albumID: string,
+                            isPlaying: boolean | null,
+                            context: {
+                                type: string,
+                                href: string,
+                                external_urls: {
+                                    spotify: string
+                                },
+                                uri: string
+                            }
+                        } = JSON.parse(prevData);
 
-            if (req.status === 204) {
-                setNoDataAvailable(true);
-                const prevData = window.localStorage.getItem('previousSong')
-                if (prevData) {
-                    const currentlyPlayingSong: {
-                        artistID: string,
-                        songID: string,
-                        albumID: string,
-                        isPlaying: boolean | null,
-                        context: {
-                            type: string,
-                            href: string,
-                            external_urls: {
-                                spotify: string
-                            },
-                            uri: string
-                        }
-                    } = JSON.parse(prevData);
+                        dispatch(setCurrentlyPlayingSong({
+                            currentlyPlayingSong
+                        }))
+                    }
+                } else {
+                    setCurrentlyPlaying(data);
+
+                    setNoDataAvailable(false);
+                    setPlaybackStateInformation(playbackStateData)
+                    window.localStorage.setItem('previousSong', JSON.stringify({
+                        type: data.item.type, id: data.item.id
+                    }))
+
 
                     dispatch(setCurrentlyPlayingSong({
-                        currentlyPlayingSong
+                        currentlyPlayingSong: {
+                            artistID: data.item.artists[0].id,
+                            albumID: data.item.album.id,
+                            songID: data.item.id,
+                            isPlaying: data.is_playing,
+                            context: data.context
+                        }
                     }))
                 }
-            } else {
-                setCurrentlyPlaying(data);
-
-                setNoDataAvailable(false);
-                setPlaybackStateInformation(playbackStateData)
-                window.localStorage.setItem('previousSong', JSON.stringify({
-                    type: data.item.type, id: data.item.id
-                }))
-
-
-                dispatch(setCurrentlyPlayingSong({
-                    currentlyPlayingSong: {
-                        artistID: data.item.artists[0].id,
-                        albumID: data.item.album.id,
-                        songID: data.item.id,
-                        isPlaying: data.is_playing,
-                        context: data.context
-                    }
-                }))
+            } catch (_) {
             }
-        } catch (_) {
         }
-
     }, [access.accessToken, dispatch]);
 
     useEffect(() => {
-            if (localStorage.getItem('access_token') !== undefined) {
+            if (localStorage.getItem('access_token')) {
                 fetchCurrentData();
                 if (userActions.length > 50) {
                     dispatch(setUserControlActions({
@@ -136,7 +136,11 @@ export function Player() {
         };
 
 
-        const fetcher = setInterval(() => fetchCurrent(), 3000);
+        const fetcher = setInterval(() =>{
+            if(localStorage.getItem('access_token')){
+                 fetchCurrent()
+            }
+        }, 3000);
 
         return () => clearInterval(fetcher)
     }, [access, dispatch])

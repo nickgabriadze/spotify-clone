@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import { setToken, updateCredentials} from "./store/features/spotiUserSlice";
+import {setToken, updateCredentials} from "./store/features/spotiUserSlice";
 import {useAppDispatch, useAppSelector} from "./store/hooks";
 import appStyle from "./app.module.css";
 import Navigation from "./components/navigation/navigation";
@@ -7,6 +7,7 @@ import Player from "./components/player/player";
 import Main from "./components/main/Main.tsx";
 import Library from "./components/library/Library.tsx";
 import LoginPage from "./components/login/Login.tsx";
+
 
 
 export function App() {
@@ -25,12 +26,10 @@ export function App() {
     })
 
 
-
-
     useEffect(() => {
-        if(userControlActions[userControlActions.length - 1] === "USER_LOGOUT"){
+        if (userControlActions[userControlActions.length - 1] === "USER_LOGOUT") {
             localStorage.clear();
-            console.clear()
+
         }
     }, [userControlActions.length]);
 
@@ -52,13 +51,14 @@ export function App() {
     }, []);
 
 
+
+
     useEffect(() => {
-        if (!(localStorage.getItem('access_token') === null
-            ||
-            localStorage.getItem('refresh_token') === null ||
-            localStorage.getItem('refresh_token') === 'undefined'
-            || localStorage.getItem('access_token') === 'undefined')
-        ){
+        if (localStorage.getItem('access_token')
+            &&
+            localStorage.getItem('refresh_token')
+        ) {
+
             dispatch(updateCredentials({
                 access_token: String(localStorage.getItem('access_token')),
                 refresh_token: String(localStorage.getItem('refresh_token')),
@@ -67,34 +67,14 @@ export function App() {
         }
     }, []);
 
-    if(localStorage.getItem('access_token') === null
-            ||
-            localStorage.getItem('refresh_token') === null ||
-            localStorage.getItem('refresh_token') === 'undefined'
-            || localStorage.getItem('access_token') === 'undefined')
-    {
-        return <LoginPage />
+    if (localStorage.getItem('access_token') === null || localStorage.getItem('access_token') === 'undefined') {
+
+        return <LoginPage/>
     }
 
-     if ((access.accessToken === 'unavailable'
-            && access.refresh_token === 'unavailable')
-        ||
-        (access.accessToken === 'pending'
-            && access.refresh_token === 'pending')
+    if(access.accessToken !== 'unavailable' && access.refresh_token !== 'unavailable') {
 
-    ) {
-        return (
 
-            <img
-                className={appStyle["loading-anim"]}
-                src={"/spotify_web.png"}
-                width={100}
-                height={100}
-                alt={"Loading animation"}
-            ></img>
-
-        );
-    }
         return (
             <div className={appStyle["application-wrapper"]}
             >
@@ -116,10 +96,7 @@ export function App() {
 
             </div>
         );
-
-
-
-
+    }
 
 
 }

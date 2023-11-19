@@ -65,7 +65,9 @@ export function Main({height}: { height: number }) {
             }
         };
 
-        fetchMyData();
+       if(localStorage.getItem('access_token')){
+            fetchMyData();
+       }
     }, [access]);
     const whatsInView = useAppSelector(s => s.spotiUserReducer.whatsInViewForPlay);
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong)

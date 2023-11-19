@@ -15,8 +15,6 @@ export function LoginPage() {
 
     }
 
-
-
     return <div className={loginPageStyle['login-form-wrapper']}>
 
         <div className={loginPageStyle['header']}>
@@ -25,7 +23,7 @@ export function LoginPage() {
         <h1>Log in to Spotify</h1>
 
         <form onSubmit={(e) => {
-                e.preventDefault();
+            e.preventDefault();
             dispatch(fetchTokenAsync({
                 client_id: clientID,
                 client_secret_id: clientSecretID
@@ -38,7 +36,7 @@ export function LoginPage() {
             <div>
                 <label htmlFor="Client ID">Client ID</label>
                 <input
-                     required={true}
+                    required={true}
                     id={"Client ID"}
                     maxLength={255} type={'text'}
                     value={clientID}

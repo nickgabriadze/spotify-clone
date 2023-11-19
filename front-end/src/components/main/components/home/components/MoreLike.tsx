@@ -31,7 +31,9 @@ export function MoreLikeArtists() {
             setRelatedArtists(relatedOnes)
         }
 
-        fetchMoreLike();
+        if(localStorage.getItem('access_token')){
+            fetchMoreLike();
+        }
     }, [accessToken])
 
 

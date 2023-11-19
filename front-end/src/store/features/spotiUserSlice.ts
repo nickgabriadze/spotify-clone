@@ -36,6 +36,7 @@ export const fetchTokenAsync = createAsyncThunk(
                 }).reduce((acc, obj) => ({...acc, ...obj}), {});
 
             history.replaceState({}, document.title, window.location.pathname)
+
             return access
         }
 
@@ -181,6 +182,8 @@ const spotiUserSlice = createSlice({
                     refresh_token: string
                 }
             }) => {
+
+
                 return {
                     ...state,
                     spotiToken: {
@@ -273,7 +276,6 @@ export const {
     setUsersSavedSongIDs,
     setUserSavedAlbumIDs,
     setUserSavedPlaylistIDs,
-    setMainRef,
     setNumberOfItemsToBeShown,
     setWhatsInView
 } = spotiUserSlice.actions;

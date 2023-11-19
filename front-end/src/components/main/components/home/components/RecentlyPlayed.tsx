@@ -31,7 +31,9 @@ export function RecentlyPlayed() {
                 setRecentlyLoading(false)
             }
         }
-        fetchRecent();
+        if(localStorage.getItem('access_token')){
+            fetchRecent();
+        }
     }, [])
 
     if (recentlyPlayedData?.length === 0) {

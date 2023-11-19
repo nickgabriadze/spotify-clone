@@ -11,27 +11,34 @@ axiosInstance.interceptors.request.use(async (config) => {
 
         const issued_at = Number(localStorage.getItem("issued_at"));
 
-        if (currentTime - issued_at > 3600) {
+        if (localStorage.getItem("refresh_token") &&
+            localStorage.getItem("CID") &&
+            localStorage.getItem("SID")){
+            if (currentTime - issued_at > 3600) {
 
-            const fetchAccessToken = await getRefreshedToken(
-                String(localStorage.getItem("refresh_token")),
-                String(localStorage.getItem("CID")),
-                String(localStorage.getItem("SID"))
-            );
+                const fetchAccessToken = await getRefreshedToken(
+                    String(localStorage.getItem("refresh_token")),
+                    String(localStorage.getItem("CID")),
+                    String(localStorage.getItem("SID"))
+                );
 
-            localStorage.setItem("issued_at", (new Date().getTime() / 1000).toString());
 
-            localStorage.setItem("access_token", `${fetchAccessToken.data}`);
-            window.dispatchEvent(new Event('localStorageChange'));
-            config.headers.Authorization = `Bearer ${fetchAccessToken.data}`;
-            return config;
+                localStorage.setItem("issued_at", (new Date().getTime() / 1000).toString());
 
-        } else {
-            return config;
+                localStorage.setItem("access_token", `${fetchAccessToken.data}`);
+                window.dispatchEvent(new Event('localStorageChange'));
+                config.headers.Authorization = `Bearer ${fetchAccessToken.data}`;
+                return config;
+
+            } else {
+                return config;
+            }
         }
-    } catch (err) {
+
+    } catch (_) {
 
     }
+
     return config
 });
 
