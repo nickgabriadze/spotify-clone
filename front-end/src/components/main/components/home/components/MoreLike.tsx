@@ -42,7 +42,8 @@ export function MoreLikeArtists() {
         return relatedArtists.map((eachArtist, numbering) =>
             <div key={numbering} className={homepageStyle['like-section']}>
                 <h2>More Like {eachArtist.artistName}</h2>
-                <div className={homepageStyle['related-artists']}>
+                <div className={homepageStyle['related-artists']}
+                 style={{gridTemplateColumns: `repeat(${numberOfItems}, minmax(0, 1fr)`}}>
                     {eachArtist.likeArtist.slice(0,numberOfItems) .map((eachLike, i) => <ArtistCard eachArtist={eachLike} key={i}/>)}
                 </div>
             </div>
@@ -52,7 +53,8 @@ export function MoreLikeArtists() {
             <div key={numbering} className={homepageStyle['like-section']}>
                 <h2 className={homepageStyle['like-to-skeleton']}>
                 </h2>
-                <div className={homepageStyle['related-artists']}>
+                <div className={homepageStyle['related-artists']}
+                 style={{gridTemplateColumns: `repeat(${numberOfItems}, minmax(0, 1fr)`}}>
                     {Array.from({length: numberOfItems}).map((_, i) => <ArtistCardSkeleton key={i}/>)}
                 </div>
             </div>

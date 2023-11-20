@@ -25,7 +25,9 @@ export function AppearsOn({artistID}: { artistID: string }) {
 
     return appearingAlbums.length > 0 && <section className={artistPageStyle['appears_on']}>
         <h2>Appears On</h2>
-        <div className={artistPageStyle['appears_on-albums-list']}>
+        <div className={artistPageStyle['appears_on-albums-list']}
+          style={{gridTemplateColumns: `repeat(${numberOfItems}, minmax(0, 1fr)`}}
+        >
             {appearingAlbums.slice(0, numberOfItems).map((album, i) => <AlbumCard eachAlbum={album} key={i}/>)}
         </div>
     </section>

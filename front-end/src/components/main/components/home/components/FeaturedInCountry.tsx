@@ -33,6 +33,7 @@ export function FeaturedInCountry() {
         return <section className={homepageStyle['featured-wrapper']}>
             <h2>Editor's picks</h2>
             <div className={homepageStyle['featured-grid']}
+                   style={{gridTemplateColumns: `repeat(${numberOfItems}, minmax(0, 1fr)`}}
             >
                 {featuredData.playlists?.slice(0,numberOfItems).map((eachPlaylist, i) => <PlayListCard key={i} eachPlaylist={eachPlaylist}/>)}
             </div>

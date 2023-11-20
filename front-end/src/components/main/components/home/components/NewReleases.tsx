@@ -10,6 +10,7 @@ export function NewReleases() {
     const country = useAppSelector(state => state.spotiUserReducer?.userInformation?.country);
     const [newReleasesData, setNewReleasesData] = useState<Album[]>([]);
     const itemQuantity = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown)
+    const numberOfItems = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown);
 
     useEffect(() => {
         const newReleases = async () => {
@@ -38,7 +39,8 @@ export function NewReleases() {
 
     return <section className={homepageStyle['new-releases']}>
         <h2>New Releases</h2>
-        <div className={homepageStyle['new-releases-grid']}>
+        <div className={homepageStyle['new-releases-grid']}
+          style={{gridTemplateColumns: `repeat(${numberOfItems}, minmax(0, 1fr)`}}>
             {newReleasesData.slice(0, itemQuantity).map((eachAlbum, i) => <AlbumCard eachAlbum={eachAlbum} key={i} />)}
         </div>
     </section>
