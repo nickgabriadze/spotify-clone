@@ -222,6 +222,7 @@ export function Main({height}: {
                 {componentObject.component === 'Search' && searching.trim().length > 0 ? <Searchables/> : ""}
             </div>
 
+            <div>
             <Routes>
                 <Route path={'/'} element={<Home/>}/>
                 <Route path={'/search'} element={<Search/>}>
@@ -235,7 +236,7 @@ export function Main({height}: {
                 {/*<Route path={'/collection/tracks'} element={<LikedSongs />} />*/}
 
             </Routes>
-
+</div>
         </main>
 
 
