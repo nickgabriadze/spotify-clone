@@ -26,6 +26,7 @@ import {
     Route,
     Routes,
 } from "react-router-dom";
+import Category from "./components/browsingCategory/category.tsx";
 
 
 export function Main({height}: {
@@ -223,11 +224,14 @@ export function Main({height}: {
 
             <Routes>
                 <Route path={'/'} element={<Home/>}/>
-                <Route path={'/search'} element={<Search/>}/>
+                <Route path={'/search'} element={<Search/>}>
+
+                </Route>
+                <Route path={'/genre/:genreID'} element={<Category/>}/>
                 <Route path={'/artist/:artistID'} element={<ArtistPage mainRef={mainRef}/>}/>
                 <Route path={'/queue'} element={<Queue/>}/>
-                <Route path={'/album/:albumID'} element={<AlbumPage mainRef={mainRef}/>} />
-                <Route path={'/playlist/:playlistID'} element={<PlaylistPage mainRef={mainRef} />} />
+                <Route path={'/album/:albumID'} element={<AlbumPage mainRef={mainRef}/>}/>
+                <Route path={'/playlist/:playlistID'} element={<PlaylistPage mainRef={mainRef}/>}/>
                 {/*<Route path={'/collection/tracks'} element={<LikedSongs />} />*/}
 
             </Routes>
