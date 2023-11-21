@@ -24,14 +24,16 @@ import getArtistAlbums from "../../../../api/main/album/getArtistAlbums.ts";
 import AlbumCard from "../../../search/reuseables/albumCard.tsx";
 import {checkInView} from "../../../utils/checkInView.ts";
 import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
+import {useParams} from "react-router-dom";
 
-export function AlbumPage({albumID, mainRef}: { albumID: string, mainRef: RefObject<HTMLDivElement> }) {
+export function AlbumPage({ mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
+    const {albumID} = useParams();
     const [albumData, setAlbumData] = useState<{ album: AlbumWithTracks, albumTracks: Track[] }>();
     const accessToken = useAppSelector(state => state.spotiUserReducer.spotiToken.accessToken);
     const [dataLoading, setDataLoading] = useState<boolean>(true);
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong)
     const dispatch = useAppDispatch();
-    const albumIsSaved = useAppSelector(s => s.spotiUserReducer.userSaved.userSavedAlbumIDs).includes(albumID)
+    const albumIsSaved = useAppSelector(s => s.spotiUserReducer.userSaved.userSavedAlbumIDs).includes(String(albumID))
     const [artistAlbums, setArtistAlbums] = useState<Album[]>([]);
     const [onFullScreen, setOnFullScreen] = useState<boolean>(false);
     const playBtnRef = useRef<HTMLDivElement>(null)
@@ -96,8 +98,8 @@ export function AlbumPage({albumID, mainRef}: { albumID: string, mainRef: RefObj
         const getAlbumInformation = async () => {
             try {
                 setDataLoading(true)
-                const album = (await getAlbum(accessToken, albumID)).data;
-                const tracks: Track[] = (await getAlbumTracks(accessToken, albumID)).data.items;
+                const album = (await getAlbum(accessToken, String(albumID))).data;
+                const tracks: Track[] = (await getAlbumTracks(accessToken, String(albumID))).data.items;
                 setAlbumData({
                     album: album,
                     albumTracks: tracks
@@ -233,12 +235,12 @@ export function AlbumPage({albumID, mainRef}: { albumID: string, mainRef: RefObj
                             <button
                                 onClick={async () => {
                                     if (albumIsSaved) {
-                                        const req = await removeAlbumForCurrentUser(accessToken, albumID)
+                                        const req = await removeAlbumForCurrentUser(accessToken, String(albumID))
                                         if (req.status === 200) {
                                             dispatch(addLibraryAction("User removed Album from Library"))
                                         }
                                     } else {
-                                        const req = await saveAlbumForCurrentUser(accessToken, albumID)
+                                        const req = await saveAlbumForCurrentUser(accessToken, String(albumID))
                                         if (req.status === 200) {
                                             dispatch(addLibraryAction("User added Album to Library"))
                                         }

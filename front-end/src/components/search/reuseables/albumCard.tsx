@@ -10,6 +10,7 @@ import PauseStreaming from "../../../api/player/pauseStreaming";
 import NoAlbumPicture from "../components/each-search-component/icons/no-album-pic.svg"
 import getAlbum from "../../../api/search/getAlbum.ts";
 import AlbumCardSkeleton from "../../../skeletons/albumCardSkeleton.tsx";
+import {Link} from "react-router-dom";
 
 
 export function AlbumCardApi({albumID}: { albumID: string }) {
@@ -50,7 +51,7 @@ export function AlbumCard({eachAlbum}: { eachAlbum: Album | undefined }) {
              onMouseOver={() => setHoveringOver(true)}
              onMouseOut={() => setHoveringOver(false)}>
             <div className={albumsStyle['album-inner-content']}>
-                <div className={albumsStyle["album-img"]}
+                <Link to={`/album/${eachAlbum?.id}`}><div className={albumsStyle["album-img"]}
                      onClick={() => {
                          dispatch(addReactComponentToNavigation({
                              componentName: String(eachAlbum?.type.slice(0, 1).toUpperCase().concat(eachAlbum?.type.slice(1,))),
@@ -75,6 +76,7 @@ export function AlbumCard({eachAlbum}: { eachAlbum: Album | undefined }) {
                             draggable={false}
                             alt="Album Picture"></img>}
                 </div>
+                </Link>
 
                 {hoveringOver && (
                     <button
@@ -121,7 +123,7 @@ export function AlbumCard({eachAlbum}: { eachAlbum: Album | undefined }) {
                         )}
                     </button>
                 )}
-                <div className={albumsStyle["album-details"]}
+                <Link to={`/album/${eachAlbum?.id}`}><div className={albumsStyle["album-details"]}
                      onClick={() => {
                          dispatch(addReactComponentToNavigation({
                              componentName: String(eachAlbum?.type.slice(0, 1).toUpperCase().concat(eachAlbum?.type.slice(1,))),
@@ -129,11 +131,11 @@ export function AlbumCard({eachAlbum}: { eachAlbum: Album | undefined }) {
                          }))
                      }}
                 >
-                    <a>
+                    <h1>
                         {Number(eachAlbum?.name?.length) > 15
                             ? eachAlbum?.name.slice(0, 16).concat("...")
                             : eachAlbum?.name}
-                    </a>
+                    </h1>
                     <p>
                         {String(eachAlbum?.release_date).slice(0, 4)} •{" "}
                         {Number(eachAlbum?.artists?.map((each) => each.name).join(", ").length) > 15
@@ -145,6 +147,7 @@ export function AlbumCard({eachAlbum}: { eachAlbum: Album | undefined }) {
                             : eachAlbum?.artists.map((each) => each.name).join(", ")}
                     </p>
                 </div>
+                </Link>
             </div>
         </div>
     );

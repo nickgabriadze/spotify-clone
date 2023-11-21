@@ -10,6 +10,7 @@ import getPlaylist from "../../../api/search/getPlaylist.ts";
 import PlaylistCardSkeleton from "../../../skeletons/playlistCardSekeleton.tsx";
 import PauseStreaming from "../../../api/player/pauseStreaming.ts";
 import Pause from "../components/each-search-component/Playlists/icons/pause.svg";
+import {Link} from "react-router-dom";
 
 
 export function PlaylistCardApi({playlistID}: { playlistID: string }) {
@@ -53,7 +54,7 @@ export function PlaylistCard({eachPlaylist, playlistDescription}: {
             onMouseOver={() => setHoveringOver(true)}
             onMouseOut={() => setHoveringOver(false)}
         >
-            <div className={playlistsStyle["playlist-img"]}
+            <Link to={`/playlist/${eachPlaylist?.id}`}><div className={playlistsStyle["playlist-img"]}
             >
                 <img
                     onClick={() => {
@@ -116,10 +117,10 @@ export function PlaylistCard({eachPlaylist, playlistDescription}: {
                 )}
                 </button>
             )}
-            </div>
+            </div></Link>
 
-            <div className={playlistsStyle["playlist-details"]}>
-                <a
+            <Link to={`/playlist/${eachPlaylist?.id}`}><div className={playlistsStyle["playlist-details"]}>
+                <h1
                     onClick={() => {
                         dispatch(addReactComponentToNavigation({
                             componentName: 'Playlist',
@@ -130,7 +131,7 @@ export function PlaylistCard({eachPlaylist, playlistDescription}: {
                     {Number(eachPlaylist?.name?.length) > 15
                         ? eachPlaylist?.name.slice(0, 16).concat("...")
                         : eachPlaylist?.name}
-                </a>
+                </h1>
                 {!playlistDescription ? <p
                     onClick={() => {
                         dispatch(addReactComponentToNavigation({
@@ -147,6 +148,7 @@ export function PlaylistCard({eachPlaylist, playlistDescription}: {
                     Number(eachPlaylist?.description.length) > 15 ? eachPlaylist?.description.slice(0, 20).concat("...")
                         : eachPlaylist?.description.toString()}</p>}
             </div>
+            </Link>
         </div>
     );
 }

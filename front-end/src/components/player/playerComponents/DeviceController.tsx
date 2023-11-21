@@ -13,6 +13,7 @@ import SmartphoneDevice from "../icons/smartphone-device.svg";
 import TVDevice from "../icons/tv-device.svg";
 import LaptopDevice from '../icons/laptop-device.svg'
 import switchActiveDevice from "../../../api/player/switchActiveDevice.ts";
+import {Link} from "react-router-dom";
 
 
 export function DeviceController({devices,}: {
@@ -71,7 +72,7 @@ export function DeviceController({devices,}: {
 
     return (
         <div className={playerStyle["devices-volume"]}>
-            <button
+            <Link to={'/queue'}><button
                 onClick={() => {
                     dispatch(addReactComponentToNavigation({
                         componentName: "Queue",
@@ -83,6 +84,7 @@ export function DeviceController({devices,}: {
                 filter: `${currentPage === 'Queue' ? 'invert(10%) sepia(60%) saturate(800%) hue-rotate(83deg) brightness(95%) contrast(80%)': 'initial'}`
             }}
             ><img src={Queue} width={23} style={{marginRight: '3px'}} alt="Song Queue icon"></img></button>
+            </Link>
             <div className={playerStyle['devices-triangle']}
 
 

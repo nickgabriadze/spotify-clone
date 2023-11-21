@@ -8,6 +8,7 @@ import SearchUnfilledGrey from "./icons/search-unfilled-grey.svg";
 import HomeUnfilledGrey from "./icons/home-unfilled-grey.svg";
 import {useAppDispatch, useAppSelector} from "../../store/hooks";
 import {addReactComponentToNavigation} from "../../store/features/navigationSlice.ts";
+import {Link} from "react-router-dom";
 
 
 export function Navigation() {
@@ -17,8 +18,9 @@ export function Navigation() {
     const pageNav = useAppSelector(state => state.navigationReducer.pageNavigation)
     const currentPage = pageNav.pageHistory[pageNav.currentPageIndex].component
     return (
+
         <section className={navigationStyle["nav-box"]}>
-            <div
+            <Link to={'/'}><div
                 className={navigationStyle["home-box"]}
                 onMouseEnter={() => setNavHover("Home")}
                 onMouseLeave={() => setNavHover("none")}
@@ -41,8 +43,10 @@ export function Navigation() {
                     alt={'Home icon'}></img>
                 <h4 style={currentPage === 'Home' ? {color: "white"} : {}}>Home</h4>
             </div>
+            </Link>
 
-            <div
+           <Link to={'/search'}>
+               <div
                   className={navigationStyle["search-box"]}
                   onClick={() => {
                        dispatchNavigation(addReactComponentToNavigation({componentName: "Search", props: null}))
@@ -65,6 +69,7 @@ export function Navigation() {
                 ></img>
                 <h4 style={currentPage === 'Search'? {color: "white"} : {}}>Search</h4>
             </div>
+               </Link>
         </section>
     );
 }

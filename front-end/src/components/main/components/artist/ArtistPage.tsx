@@ -22,12 +22,14 @@ import AppearsOn from "./components/AppearsOn.tsx";
 import FansAlsoLike from "./components/FansAlsoLike.tsx";
 import {checkInView} from "../../../utils/checkInView.ts";
 import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
+import {useParams} from "react-router-dom";
 
-export function ArtistPage({artistID, mainRef}: { artistID: string, mainRef: RefObject<HTMLDivElement> }) {
+export function ArtistPage({ mainRef}: {  mainRef: RefObject<HTMLDivElement> }) {
+    const {artistID} = useParams();
     const [artistData, setArtistData] = useState<Artist>();
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken);
     const dispatch = useAppDispatch();
-    const isArtistSaved = useAppSelector(s => s.spotiUserReducer.userSaved.userSavedArtistIDs).includes(artistID)
+    const isArtistSaved = useAppSelector(s => s.spotiUserReducer.userSaved.userSavedArtistIDs).includes(String(artistID))
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong)
     const country = String(useAppSelector(s => s.spotiUserReducer.userInformation?.country));
     const [artistTopTracks, setArtistTopTracks] = useState<Track[]>([])
@@ -82,12 +84,12 @@ export function ArtistPage({artistID, mainRef}: { artistID: string, mainRef: Ref
             try {
                 setLoading(true)
                 setShowMore(false)
-                const artistData = (await getArtist(accessToken, artistID)).data;
+                const artistData = (await getArtist(accessToken, String(artistID))).data;
                 setArtistData(artistData)
-                const topTracks = (await getArtistsPopularTracks(accessToken, artistID, country)).data.tracks
+                const topTracks = (await getArtistsPopularTracks(accessToken, String(artistID), country)).data.tracks
                 setArtistTopTracks(topTracks)
 
-                const discoTime = (await getArtistsAlbums(accessToken, artistID, ['album', 'single', 'compilation']))
+                const discoTime = (await getArtistsAlbums(accessToken, String(artistID), ['album', 'single', 'compilation']))
                 setDiscography(discoTime)
                 setDiscoWhich(Object.keys(discoTime[0]).toString())
 
@@ -185,13 +187,13 @@ export function ArtistPage({artistID, mainRef}: { artistID: string, mainRef: Ref
                     title={isArtistSaved ? 'Remove artist from Library' : 'Save artist to Library'}
                     onClick={async () => {
                         if (isArtistSaved) {
-                            const req = await removeArtistForCurrentUser(accessToken, artistID)
+                            const req = await removeArtistForCurrentUser(accessToken, String(artistID))
                             if (req.status === 204) {
                                 dispatch(addLibraryAction("User removed Artist from Library"))
                             }
 
                         } else {
-                            const req = await saveArtistForCurrentUser(accessToken, artistID)
+                            const req = await saveArtistForCurrentUser(accessToken, String(artistID))
                             if (req.status === 204) {
                                 dispatch(addLibraryAction("User saved Artist to Library"))
                             }
@@ -255,10 +257,10 @@ export function ArtistPage({artistID, mainRef}: { artistID: string, mainRef: Ref
         </div>}
 
 
-        <FansAlsoLike artistID={artistID}/>
+        <FansAlsoLike artistID={String(artistID)}/>
 
 
-        <AppearsOn artistID={artistID}/>
+        <AppearsOn artistID={String(artistID)}/>
 
     </section>
 }

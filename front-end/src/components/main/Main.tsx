@@ -5,7 +5,7 @@ import searchBarStyle from "../search/components/search-bar/searchBar.module.css
 import Left from "../search/components/search-bar/icons/left.svg";
 import Right from "../search/components/search-bar/icons/right.svg";
 import Queue from "./components/queue/Queue.tsx";
-import {ReactNode, RefObject, useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import Home from "./components/home/Home.tsx";
 import {Me} from "../../types/me.ts";
 import getMe from "../../api/getMe.ts";
@@ -15,18 +15,22 @@ import {setUserInformation, setWhatsInView} from "../../store/features/spotiUser
 import AlbumPage from "./components/album/AlbumPage.tsx";
 import {navigateToDirection, setUserControlActions} from "../../store/features/navigationSlice.ts";
 import ArtistPage from "./components/artist/ArtistPage.tsx";
-import {CategoryPage} from "./components/browsingCategory/category.tsx";
 import PlaylistPage from "./components/playlist/PlaylistPage.tsx";
-import {LikedSongs} from "./components/playlist/LikedSongs.tsx";
 import PlayResumeStreaming from "../../api/player/playResumeStreaming.ts";
 import PauseStreaming from "../../api/player/pauseStreaming.ts";
 import artistPageStyle from "./components/artist/artistpage.module.css";
 import Pause from "../search/components/each-search-component/Playlists/icons/pause.svg";
 import Play from "../search/components/each-search-component/Playlists/icons/play.svg";
 import {useUpdateNumberOfItems} from "./hooks/useNumberOfItems.ts";
+import {
+    Route,
+    Routes,
+} from "react-router-dom";
 
 
-export function Main({height}: { height: number }) {
+export function Main({height}: {
+    height: number
+}) {
     const [userData, setUserData] = useState<Me>();
     const [loading, setLoading] = useState<boolean>(true);
     const access = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken)
@@ -37,19 +41,19 @@ export function Main({height}: { height: number }) {
     useUpdateNumberOfItems();
 
 
-
-    const navigation: {
-        [key: string]: (data: any, mainRef?: any) => ReactNode
-    } = {
-        "Search": () => <Search/>,
-        "Home": () => <Home/>,
-        "Queue": () => <Queue/>,
-        "Album": (ID: string, mainRef: RefObject<HTMLDivElement>) => <AlbumPage albumID={ID} mainRef={mainRef}/>,
-        "Artist": (ID: string, mainRef: RefObject<HTMLDivElement>) => <ArtistPage artistID={ID} mainRef={mainRef}/>,
-        "Playlist": (ID: string, mainRef: RefObject<HTMLDivElement>) => <PlaylistPage playlistID={ID} mainRef={mainRef}/>,
-        "LikedSongs": (tracks: any[]) => <LikedSongs tracks={tracks}/>,
-        "BrowsingCategory": (categoryStuff: string[]) => <CategoryPage categoryStuff={categoryStuff}/>
-    }
+    // const navigation: {
+    //     [key: string]: (data: any, mainRef?: any) => ReactNode
+    // } = {
+    //     "Search": () => <Search/>,
+    //     "Home": () => <Home/>,
+    //     "Queue": () => <Queue/>,
+    //     "Album": (ID: string, mainRef: RefObject<HTMLDivElement>) => <AlbumPage albumID={ID} mainRef={mainRef}/>,
+    //     "Artist": (ID: string, mainRef: RefObject<HTMLDivElement>) => <ArtistPage artistID={ID} mainRef={mainRef}/>,
+    //     "Playlist": (ID: string, mainRef: RefObject<HTMLDivElement>) => <PlaylistPage playlistID={ID}
+    //                                                                                   mainRef={mainRef}/>,
+    //     "LikedSongs": (tracks: any[]) => <LikedSongs tracks={tracks}/>,
+    //     "BrowsingCategory": (categoryStuff: string[]) => <CategoryPage categoryStuff={categoryStuff}/>
+    // }
 
     useEffect(() => {
         const fetchMyData = async () => {
@@ -65,9 +69,9 @@ export function Main({height}: { height: number }) {
             }
         };
 
-       if(localStorage.getItem('access_token')){
+        if (localStorage.getItem('access_token')) {
             fetchMyData();
-       }
+        }
     }, [access]);
     const whatsInView = useAppSelector(s => s.spotiUserReducer.whatsInViewForPlay);
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong)
@@ -217,7 +221,16 @@ export function Main({height}: { height: number }) {
                 {componentObject.component === 'Search' && searching.trim().length > 0 ? <Searchables/> : ""}
             </div>
 
-            <div>{navigation[componentObject.component](componentObject.props, mainRef)}</div>
+            <Routes>
+                <Route path={'/'} element={<Home/>}/>
+                <Route path={'/search'} element={<Search/>}/>
+                <Route path={'/artist/:artistID'} element={<ArtistPage mainRef={mainRef}/>}/>
+                <Route path={'/queue'} element={<Queue/>}/>
+                <Route path={'/album/:albumID'} element={<AlbumPage mainRef={mainRef}/>} />
+                <Route path={'/playlist/:playlistID'} element={<PlaylistPage mainRef={mainRef} />} />
+                {/*<Route path={'/collection/tracks'} element={<LikedSongs />} />*/}
+
+            </Routes>
 
         </main>
 

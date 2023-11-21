@@ -20,14 +20,16 @@ import SongCardSkeleton from "../../../../skeletons/songCardSkeleton.tsx";
 import axiosInstance from "../../../../axios.ts";
 import {checkInView} from "../../../utils/checkInView.ts";
 import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
+import {useParams} from "react-router-dom";
 
 
-export function PlaylistPage({playlistID, mainRef}: { playlistID: string, mainRef: RefObject<HTMLDivElement> }) {
+export function PlaylistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
+    const {playlistID} = useParams();
     const [playListData, setPlayListData] = useState<FullPlayList>();
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken);
     const dispatch = useAppDispatch();
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong);
-    const playlistSaved = useAppSelector(s => s.spotiUserReducer.userSaved.userSavedPlaylistIDs).includes(playlistID)
+    const playlistSaved = useAppSelector(s => s.spotiUserReducer.userSaved.userSavedPlaylistIDs).includes(String(playlistID))
     const [playlistLoading, setPlaylistLoading] = useState<boolean>(true);
     const [playlistTracks, setPlaylistTracks] = useState<{
         data: Array<PlayListTrackObject | typeof SongCardSkeleton>;
@@ -82,7 +84,7 @@ export function PlaylistPage({playlistID, mainRef}: { playlistID: string, mainRe
             try {
                 setPlaylistLoading(true)
                 setTracksLoading(true)
-                const pl: FullPlayList = (await getPlaylist(accessToken, playlistID)).data;
+                const pl: FullPlayList = (await getPlaylist(accessToken, String(playlistID))).data;
                 setPlayListData(pl)
                 setPlaylistTracks(prev => {
                     return {
@@ -224,12 +226,12 @@ export function PlaylistPage({playlistID, mainRef}: { playlistID: string, mainRe
                     <button
                         onClick={async () => {
                             if (playlistSaved) {
-                                const req = await unfollowPlaylistForCurrentUser(accessToken, playlistID)
+                                const req = await unfollowPlaylistForCurrentUser(accessToken, String(playlistID))
                                 if (req.status === 200) {
                                     dispatch(addLibraryAction("User removed Playlist from Library"))
                                 }
                             } else {
-                                const req = await followPlaylistForCurrentUser(accessToken, playlistID)
+                                const req = await followPlaylistForCurrentUser(accessToken, String(playlistID))
                                 if (req.status === 200) {
                                     dispatch(addLibraryAction("User added Playlist to Library"))
                                 }

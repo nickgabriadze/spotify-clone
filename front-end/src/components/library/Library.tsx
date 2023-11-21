@@ -20,6 +20,7 @@ import getSavedArtists from "../../api/library/getSavedArtists.ts";
 import PlayResumeStreaming from "../../api/player/playResumeStreaming.ts";
 import Active from "./icons/lib-active.svg";
 import {Artist} from "../../types/artist.ts";
+import {Link} from "react-router-dom";
 
 export function Library({divHeight}: { divHeight: number }) {
     const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
@@ -175,42 +176,45 @@ export function Library({divHeight}: { divHeight: number }) {
                         return true;
                     }
                 })) &&
-                <li
-                    onDoubleClick={async () => {
-                        await PlayResumeStreaming(accessToken, String(me?.uri).concat(':collection'), undefined)
-                    }}
-                    onClick={() => {
-                        dispatch(addReactComponentToNavigation({
-                            componentName: 'LikedSongs',
-                            props: useSavedTracks
-                        }))
-                    }}
-                    className={libraryStyle['listed-playlist-album']}
-                >
-                    <div className={libraryStyle['liked-songs-icon-wrapper']}>
-                        <img src={HeartIcon} width={50} height={50} alt={"Playlist Image"}></img>
-                    </div>
-                    <div className={libraryStyle['playlist-album-info']}>
-                        <div className={libraryStyle['main-info']}>
-                            <div className={libraryStyle['playlist-album-name']}><p
-                                style={{
-                                    width: pTagWidth,
-                                    color: currentlyPlaying?.context?.uri === me?.uri.concat(':collection') ? '#1ed760' : '#FFFFFF'
-                                }}>Liked Songs</p></div>
-                            <div className={libraryStyle['type-owner']}>
-                                <p style={{width: pTagWidth}}>Playlist
-                                    • {`${likedSongsAvailable} ${likedSongsAvailable > 1 ? 'songs' : 'song'}`}</p>
+                <div><Link to={"/collection/tracks"}>
+                    <div
+                        onDoubleClick={async () => {
+                            await PlayResumeStreaming(accessToken, String(me?.uri).concat(':collection'), undefined)
+                        }}
+                        onClick={() => {
+                            dispatch(addReactComponentToNavigation({
+                                componentName: 'LikedSongs',
+                                props: useSavedTracks
+                            }))
+                        }}
+                        className={libraryStyle['listed-playlist-album']}
+                    >
+                        <div className={libraryStyle['liked-songs-icon-wrapper']}>
+                            <img src={HeartIcon} width={50} height={50} alt={"Playlist Image"}></img>
+                        </div>
+                        <div className={libraryStyle['playlist-album-info']}>
+                            <div className={libraryStyle['main-info']}>
+                                <div className={libraryStyle['playlist-album-name']}><p
+                                    style={{
+                                        width: pTagWidth,
+                                        color: currentlyPlaying?.context?.uri === me?.uri.concat(':collection') ? '#1ed760' : '#FFFFFF'
+                                    }}>Liked Songs</p></div>
+                                <div className={libraryStyle['type-owner']}>
+                                    <p style={{width: pTagWidth}}>Playlist
+                                        • {`${likedSongsAvailable} ${likedSongsAvailable > 1 ? 'songs' : 'song'}`}</p>
+
+                                </div>
 
                             </div>
-
-                        </div>
-                        <div
-                            className={libraryStyle['active-indicator']}>{currentlyPlaying?.context?.uri === me?.uri.concat(':collection') &&
-                            <img alt={'Active Item'} src={Active}
-                                 width={25} height={25}></img>}
+                            <div
+                                className={libraryStyle['active-indicator']}>{currentlyPlaying?.context?.uri === me?.uri.concat(':collection') &&
+                                <img alt={'Active Item'} src={Active}
+                                     width={25} height={25}></img>}
+                            </div>
                         </div>
                     </div>
-                </li>
+                </Link>
+                </div>
             }
 
             {(!libraryLoading) && (filteringOptions.filter(e => e.chosen)[0]?.type === 'Artists' || filteringOptions.every(e => {
@@ -219,43 +223,46 @@ export function Library({divHeight}: { divHeight: number }) {
                     }
                 })) &&
 
-                savedArtists.map((eachArtist, i) => <li
-                    className={libraryStyle['listed-playlist-album']}
-                    onClick={() => {
-                        dispatch(addReactComponentToNavigation({
-                            componentName: 'Artist',
-                            props: eachArtist?.id
-                        }))
-                    }}
-                    onDoubleClick={async () => {
-                        await PlayResumeStreaming(accessToken, eachArtist.uri, undefined)
-                    }}
-                    key={i}>
-                    <img
-                        style={{
-                            borderRadius: '100%'
+                savedArtists.map((eachArtist, i) => <div key={i}><Link to={`/artist/${eachArtist?.id}`}>
+                    <div
+                        className={libraryStyle['listed-playlist-album']}
+                        onClick={() => {
+                            dispatch(addReactComponentToNavigation({
+                                componentName: 'Artist',
+                                props: eachArtist?.id
+                            }))
                         }}
-                        src={eachArtist.images[0].url} width={50} height={50} alt={"Playlist Image"}></img>
-                    <div className={libraryStyle['playlist-album-info']}>
-                        <div className={libraryStyle['main-info']}>
-                            <div className={libraryStyle['playlist-album-name']}><p
-                                style={{
-                                    width: currentlyPlaying?.context?.uri === eachArtist?.uri ? pTagWidth - 30 : pTagWidth,
-                                    color: currentlyPlaying?.context?.uri === eachArtist?.uri ? '#1ed760' : '#FFFFFF'
-                                }}>{eachArtist.name}</p></div>
-                            <div className={libraryStyle['type-owner']}>
-                                <p style={{width: pTagWidth}}>{eachArtist.type[0].toUpperCase().concat(eachArtist.type.slice(1,))}</p>
+                        onDoubleClick={async () => {
+                            await PlayResumeStreaming(accessToken, eachArtist.uri, undefined)
+                        }}
+                        key={i}>
+                        <img
+                            style={{
+                                borderRadius: '100%'
+                            }}
+                            src={eachArtist.images[0].url} width={50} height={50} alt={"Playlist Image"}></img>
+                        <div className={libraryStyle['playlist-album-info']}>
+                            <div className={libraryStyle['main-info']}>
+                                <div className={libraryStyle['playlist-album-name']}><p
+                                    style={{
+                                        width: currentlyPlaying?.context?.uri === eachArtist?.uri ? pTagWidth - 30 : pTagWidth,
+                                        color: currentlyPlaying?.context?.uri === eachArtist?.uri ? '#1ed760' : '#FFFFFF'
+                                    }}>{eachArtist.name}</p></div>
+                                <div className={libraryStyle['type-owner']}>
+                                    <p style={{width: pTagWidth}}>{eachArtist.type[0].toUpperCase().concat(eachArtist.type.slice(1,))}</p>
 
+                                </div>
                             </div>
-                        </div>
-                        <div
-                            className={libraryStyle['active-indicator']}>{currentlyPlaying?.context?.uri === eachArtist?.uri &&
-                            <img alt={'Active Item'} src={Active}
-                                 width={25} height={25}></img>}
-                        </div>
+                            <div
+                                className={libraryStyle['active-indicator']}>{currentlyPlaying?.context?.uri === eachArtist?.uri &&
+                                <img alt={'Active Item'} src={Active}
+                                     width={25} height={25}></img>}
+                            </div>
 
+                        </div>
                     </div>
-                </li>)}
+                </Link>
+                </div>)}
 
             {libraryLoading ?
                 Array.from({length: 3}).map((_, i) => <LibraryItemSkeleton key={i}/>)
@@ -265,42 +272,45 @@ export function Library({divHeight}: { divHeight: number }) {
                         return true;
                     }
                 })) && libData.albumItems.map(each => each.album).map((eachAlbum, i) =>
-                    <li
-                        className={libraryStyle['listed-playlist-album']}
-                        onClick={() => {
-                            dispatch(addReactComponentToNavigation({
-                                componentName: 'Album',
-                                props: eachAlbum?.id
-                            }))
-                        }}
-                        onDoubleClick={async () => {
-                            await PlayResumeStreaming(accessToken, eachAlbum.uri, undefined)
-                        }}
-                        key={i}>
-                        <img src={eachAlbum.images[0].url} width={50} height={50} alt={"Playlist Image"}></img>
-                        <div className={libraryStyle['playlist-album-info']}>
-                            <div className={libraryStyle['main-info']}>
-                                <div className={libraryStyle['playlist-album-name']}><p
-                                    style={{
-                                        width: currentlyPlaying?.context?.uri === eachAlbum?.uri ? pTagWidth - 30 : pTagWidth,
-                                        color: currentlyPlaying?.context?.uri === eachAlbum?.uri ? '#1ed760' : '#FFFFFF'
-                                    }}>{eachAlbum.name}</p></div>
-                                <div className={libraryStyle['type-owner']}>
-                                    <p style={{width: pTagWidth}}>{eachAlbum.type[0].toUpperCase().concat(eachAlbum.type.slice(1,))} • {eachAlbum.artists.map(each => each.name).join(', ')}</p>
+                    <div key={i}><Link to={`/album/${eachAlbum?.id}`}>
+                        <div
+                            className={libraryStyle['listed-playlist-album']}
+                            onClick={() => {
+                                dispatch(addReactComponentToNavigation({
+                                    componentName: 'Album',
+                                    props: eachAlbum?.id
+                                }))
+                            }}
+                            onDoubleClick={async () => {
+                                await PlayResumeStreaming(accessToken, eachAlbum.uri, undefined)
+                            }}
+                        >
+                            <img src={eachAlbum.images[0].url} width={50} height={50} alt={"Playlist Image"}></img>
+                            <div className={libraryStyle['playlist-album-info']}>
+                                <div className={libraryStyle['main-info']}>
+                                    <div className={libraryStyle['playlist-album-name']}><p
+                                        style={{
+                                            width: currentlyPlaying?.context?.uri === eachAlbum?.uri ? pTagWidth - 30 : pTagWidth,
+                                            color: currentlyPlaying?.context?.uri === eachAlbum?.uri ? '#1ed760' : '#FFFFFF'
+                                        }}>{eachAlbum.name}</p></div>
+                                    <div className={libraryStyle['type-owner']}>
+                                        <p style={{width: pTagWidth}}>{eachAlbum.type[0].toUpperCase().concat(eachAlbum.type.slice(1,))} • {eachAlbum.artists.map(each => each.name).join(', ')}</p>
 
+                                    </div>
                                 </div>
-                            </div>
-                            <div
-                                className={libraryStyle['active-indicator']}>{currentlyPlaying?.context?.uri === eachAlbum?.uri &&
-                                <img alt={'Active Item'} src={Active}
-                                     width={25} height={25}></img>}
-                            </div>
+                                <div
+                                    className={libraryStyle['active-indicator']}>{currentlyPlaying?.context?.uri === eachAlbum?.uri &&
+                                    <img alt={'Active Item'} src={Active}
+                                         width={25} height={25}></img>}
+                                </div>
 
+                            </div>
                         </div>
-                    </li>
+                    </Link>
+                    </div>
                 )}
 
-            {libraryLoading  && libData.playlistItems.length === 0 ?
+            {libraryLoading && libData.playlistItems.length === 0 ?
                 Array.from({length: 2}).map((_, i) => <LibraryItemSkeleton key={i}/>)
                 :
                 (!libraryLoading) && (filteringOptions.filter(e => e.chosen)[0]?.type === 'Playlists' || filteringOptions.every(e => {
@@ -309,36 +319,40 @@ export function Library({divHeight}: { divHeight: number }) {
                     }
                 })) && libData.playlistItems.map((eachPlaylist, i) =>
 
-                    <li
-                        className={libraryStyle['listed-playlist-album']}
-                        onClick={() => {
-                            dispatch(addReactComponentToNavigation({
-                                componentName: 'Playlist',
-                                props: eachPlaylist?.id
-                            }))
-                        }}
-                        onDoubleClick={async () => {
-                            await PlayResumeStreaming(accessToken, eachPlaylist.uri, undefined)
-                        }} key={i}>
-                        <img src={eachPlaylist.images[0].url} width={50} height={50} alt={"Playlist Image"}></img>
-                        <div className={libraryStyle['playlist-album-info']}>
-                            <div className={libraryStyle['main-info']}>
-                                <div className={libraryStyle['playlist-album-name']}><p
-                                    style={{
-                                        width: currentlyPlaying?.context?.uri === eachPlaylist?.uri ? pTagWidth - 30 : pTagWidth,
-                                        color: currentlyPlaying?.context?.uri === eachPlaylist?.uri ? '#1ed760' : '#FFFFFF'
-                                    }}>{eachPlaylist.name}</p></div>
-                                <div className={libraryStyle['type-owner']}>
-                                    <p style={{width: pTagWidth}}>{eachPlaylist.type[0].toUpperCase().concat(eachPlaylist.type.slice(1,))} • {eachPlaylist.owner.display_name}</p>
+                    <div key={i}>
+                        <Link to={`/playlist/${eachPlaylist?.id}`}>
+                            <div
+                                className={libraryStyle['listed-playlist-album']}
+                                onClick={() => {
+                                    dispatch(addReactComponentToNavigation({
+                                        componentName: 'Playlist',
+                                        props: eachPlaylist?.id
+                                    }))
+                                }}
+                                onDoubleClick={async () => {
+                                    await PlayResumeStreaming(accessToken, eachPlaylist.uri, undefined)
+                                }}>
+                                <img src={eachPlaylist.images[0].url} width={50} height={50} alt={"Playlist Image"}></img>
+                                <div className={libraryStyle['playlist-album-info']}>
+                                    <div className={libraryStyle['main-info']}>
+                                        <div className={libraryStyle['playlist-album-name']}><p
+                                            style={{
+                                                width: currentlyPlaying?.context?.uri === eachPlaylist?.uri ? pTagWidth - 30 : pTagWidth,
+                                                color: currentlyPlaying?.context?.uri === eachPlaylist?.uri ? '#1ed760' : '#FFFFFF'
+                                            }}>{eachPlaylist.name}</p></div>
+                                        <div className={libraryStyle['type-owner']}>
+                                            <p style={{width: pTagWidth}}>{eachPlaylist.type[0].toUpperCase().concat(eachPlaylist.type.slice(1,))} • {eachPlaylist.owner.display_name}</p>
 
+                                        </div>
+                                    </div>
+                                    <div
+                                        className={libraryStyle['active-indicator']}>{currentlyPlaying?.context?.uri === eachPlaylist.uri &&
+                                        <img alt={'Active Item'} src={Active}
+                                             width={25} height={25}></img>}</div>
                                 </div>
                             </div>
-                            <div
-                                className={libraryStyle['active-indicator']}>{currentlyPlaying?.context?.uri === eachPlaylist.uri &&
-                                <img alt={'Active Item'} src={Active}
-                                     width={25} height={25}></img>}</div>
-                        </div>
-                    </li>)
+                        </Link>
+                    </div>)
             }
         </div>
 
