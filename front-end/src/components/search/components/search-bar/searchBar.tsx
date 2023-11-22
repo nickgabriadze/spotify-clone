@@ -15,7 +15,7 @@ export function SearchBar() {
     const params = useParams();
     const destructured = Object.values(params).toString().split('/')[2] === 'undefined' ? 'all' : Object.values(params).toString().split('/')[2]
     const weAreSearchingFor = Object.values(params).toString().split('/')[1]
-    const [userSearchingQ, setUserSearchingQ] = useState<string>(weAreSearchingFor);
+    const [userSearchingQ, setUserSearchingQ] = useState<string>(weAreSearchingFor || '');
     const searchStuff = useAppSelector((state) => state.navigationReducer);
     const dispatchSearch = useAppDispatch();
     const [onElementFocus, setOnElementFocus] = useState<boolean>(false);
@@ -86,9 +86,7 @@ export function SearchBar() {
                                 }
                                 }
                             ></input>
-                            {searchStuff.searchQuery.length === 0 ? (
-                                ""
-                            ) : (
+                            {userSearchingQ.length === 0 &&
                                 <img
                                     alt={'Delete/Close search icon'}
                                     src={closeSearch}
@@ -101,7 +99,7 @@ export function SearchBar() {
                                     height={24}
                                 ></img>
 
-                            )}
+                            }
                         </div>
                     </div>
 

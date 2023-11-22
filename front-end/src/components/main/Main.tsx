@@ -112,6 +112,7 @@ export function Main({height}: {
 
                             onClick={() => {
                                 dispatch(navigateToDirection("BACK"))
+                                window.history.back();
                             }}
                         >
                             <img
@@ -121,6 +122,8 @@ export function Main({height}: {
                         <button style={{marginLeft: "-3px"}}
                                 onClick={() => {
                                     dispatch(navigateToDirection("FORWARD"))
+                                    window.history.forward();
+
                                 }}
                         >
                             <div>
@@ -227,6 +230,7 @@ export function Main({height}: {
 
             <div>
                 <Routes>
+                    <Route path={'*'} element={<Home />}></Route>
                     <Route path={'/'} element={<Home/>}/>
                     <Route path={'/search/*'} element={<Search/>}>
                     </Route>
