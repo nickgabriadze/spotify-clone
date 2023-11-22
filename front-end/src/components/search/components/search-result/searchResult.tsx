@@ -13,13 +13,11 @@ export function SearchResult() {
     const [searchingState, setSearchingState] = useState(query)
     const castedToString = String(searchingState)
 
-    console.log(params)
 
     useEffect(() => {
         setSearchingState(query)
 
     }, [query]);
-
 
     if (params.type === 'artists') {
         document.title = `Search / Artists`
@@ -41,14 +39,12 @@ export function SearchResult() {
         return <SongsRes songName={castedToString}/>
     }
 
-    if (params.type === 'podcastsAndShows') {
+    if (params.type === 'podcastsAndshows') {
         document.title = `Search / Podcasts & Shows`
         return <PodcastsShows podcastShowName={castedToString}/>
     }
-
     /* For all things combined */
     return (
-
         <AllResults searchQuery={castedToString}/>
     );
 }

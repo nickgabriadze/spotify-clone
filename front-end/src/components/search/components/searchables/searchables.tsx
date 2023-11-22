@@ -20,14 +20,8 @@ export function Searchables() {
     const params = useParams();
     const destructuredParams = Object.values(params).toString().split('/')
     const searchingFor = destructuredParams[1]
-    // const values = Object.values(params)[1];
-    // console.log(values)
-    // const [searchingURL, setSearchingURL] = useState<string>(Object.values(params).toString());
-    // useEffect(() => {
-    //     setSearchingURL(Object.values(params).toString())
-    //
-    // }, [Object.values(params).toString()]);
-    const newArray = ['search', searchingFor, searchOptions[0]]
+    console.log(destructuredParams)
+    const newArray = ['search', searchingFor, destructuredParams[2]]
     const [ourUrlGuideArray, setOurUrlGuideArray] = useState<string[]>(newArray)
 
 
@@ -38,14 +32,14 @@ export function Searchables() {
                 <div
 
                     style={
-                        ourUrlGuideArray[2] === option.toLowerCase()
-                    || ourUrlGuideArray[2] === 'podcastsAndshows'
+                        ourUrlGuideArray[2] === option.toLowerCase().split(' ').join('And').replace('&', 'And')
+
                             ? {backgroundColor: "#FFF"}
                             : {}
                     }
                     key={i}
                     onClick={() => {
-                        setOurUrlGuideArray((prev) => [prev[0], prev[1], option.toLowerCase().split(' ').join('And').replace('&', '')])
+                        setOurUrlGuideArray((prev) => [prev[0], prev[1], option.toLowerCase().split(' ').join('And').replace('&', 'And')])
                         if (option.toLowerCase() === 'all') {
                             navigator([ourUrlGuideArray[0], searchingFor, 'all'].join('/'))
                         } else {
@@ -56,7 +50,7 @@ export function Searchables() {
                 >
                     <p
                         style={
-                          {color: `${option.toLowerCase() === ourUrlGuideArray[2] ? 'black': 'white'}`}
+                          {color: `${option.toLowerCase().split(' ').join('And').replace('&', 'And') === ourUrlGuideArray[2] ? 'black': 'white'}`}
                         }
 
                     >

@@ -143,7 +143,7 @@ export function Player() {
         }, 3000);
 
         return () => clearInterval(fetcher)
-    }, [access, dispatch])
+    }, [access.accessToken, dispatch])
 
 
     if (noDataAvailable) {

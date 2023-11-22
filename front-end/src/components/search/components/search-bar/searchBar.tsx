@@ -4,36 +4,27 @@ import SearchUnfilled from "../../../navigation/icons/search-unfilled.svg";
 import closeSearch from "../../../navigation/icons/close-search.svg";
 import {useEffect, useState} from "react";
 
-import {useAppDispatch, useAppSelector} from "../../../../store/hooks";
-import {
-    setSearchQuery,
-} from "../../../../store/features/navigationSlice";
 import {useNavigate, useParams} from "react-router-dom";
 
 
 export function SearchBar() {
     const params = useParams();
-    const destructured = Object.values(params).toString().split('/')[2] === 'undefined' ? 'all' : Object.values(params).toString().split('/')[2]
+    const destructured = Object.values(params).toString().split('/')[2] ? Object.values(params).toString().split('/')[2] : 'all'
     const weAreSearchingFor = Object.values(params).toString().split('/')[1]
     const [userSearchingQ, setUserSearchingQ] = useState<string>(weAreSearchingFor || '');
-    const searchStuff = useAppSelector((state) => state.navigationReducer);
-    const dispatchSearch = useAppDispatch();
     const [onElementFocus, setOnElementFocus] = useState<boolean>(false);
 
     const navigator = useNavigate();
     // const [err, setErr] = useState<string | unknown>();
 
+
     useEffect(() => {
         const timeOutToSetQuery = setTimeout(() => {
-            dispatchSearch(
-                setSearchQuery({
-                    searchQuery: userSearchingQ
-                })
-            )
-
 
             if (userSearchingQ !== '') {
-                navigator(`/search/${userSearchingQ === 'undefined' ? '' : userSearchingQ}/${destructured}`)
+                navigator(`/search/${userSearchingQ === 'undefined' ? '' : userSearchingQ}/${destructured ? destructured : 'all'}`)
+            } else {
+                navigator('/search/')
             }
 
         }, 500)
@@ -86,7 +77,7 @@ export function SearchBar() {
                                 }
                                 }
                             ></input>
-                            {userSearchingQ.length === 0 &&
+                            {userSearchingQ.length !== 0 &&
                                 <img
                                     alt={'Delete/Close search icon'}
                                     src={closeSearch}
