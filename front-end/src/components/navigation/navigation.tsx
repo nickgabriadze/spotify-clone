@@ -45,7 +45,7 @@ export function Navigation() {
             </div>
             </Link>
 
-           <Link to={'/search'}>
+           <Link to={'/search/'}>
                <div
                   className={navigationStyle["search-box"]}
                   onClick={() => {

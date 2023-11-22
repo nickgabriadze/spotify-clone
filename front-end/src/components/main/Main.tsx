@@ -24,7 +24,7 @@ import Play from "../search/components/each-search-component/Playlists/icons/pla
 import {useUpdateNumberOfItems} from "./hooks/useNumberOfItems.ts";
 import {
     Route,
-    Routes,
+    Routes, useParams,
 } from "react-router-dom";
 import Category from "./components/browsingCategory/category.tsx";
 
@@ -36,11 +36,13 @@ export function Main({height}: {
     const [loading, setLoading] = useState<boolean>(true);
     const access = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken)
     const navOption = useAppSelector((state) => state.navigationReducer.navTo);
-    const searching = useAppSelector((state) => state.navigationReducer.searchQuery);
     const dispatch = useAppDispatch();
     const mainRef = useRef<HTMLDivElement>(null)
     useUpdateNumberOfItems();
 
+    const params = useParams();
+    const weAreSearching = Object.values(params).toString().includes('search')
+    const weHaveQuery = String(Object.values(params).toString().split('/')[1]).length !== 0
 
     // const navigation: {
     //     [key: string]: (data: any, mainRef?: any) => ReactNode
@@ -79,7 +81,6 @@ export function Main({height}: {
     const PageNavigation = useAppSelector(state => state.navigationReducer.pageNavigation);
     const [displayLogOut, setDisplayLogout] = useState<boolean>(false)
 
-    const componentObject = PageNavigation.pageHistory[PageNavigation.currentPageIndex]
 
 
     useEffect(() => {
@@ -132,7 +133,7 @@ export function Main({height}: {
                             </div>
                         </button>
 
-                        {componentObject.component === 'Search' && <SearchBar/>}
+                        {weAreSearching && <SearchBar/>}
                         {whatsInView.pageName !== 'None' &&
                             <div className={mainStyle['fast-access']}
                             >
@@ -217,26 +218,27 @@ export function Main({height}: {
                             </div>
 
                         )}
+
                     </div>
+
                 </div>
-                {componentObject.component === 'Search' && searching.trim().length > 0 ? <Searchables/> : ""}
+                 {weAreSearching && weHaveQuery && <Searchables/>}
             </div>
 
             <div>
-            <Routes>
-                <Route path={'/'} element={<Home/>}/>
-                <Route path={'/search'} element={<Search/>}>
+                <Routes>
+                    <Route path={'/'} element={<Home/>}/>
+                    <Route path={'/search/*'} element={<Search/>}>
+                    </Route>
+                    <Route path={'/genre/:genreID'} element={<Category/>}/>
+                    <Route path={'/artist/:artistID'} element={<ArtistPage mainRef={mainRef}/>}/>
+                    <Route path={'/queue'} element={<Queue/>}/>
+                    <Route path={'/album/:albumID'} element={<AlbumPage mainRef={mainRef}/>}/>
+                    <Route path={'/playlist/:playlistID'} element={<PlaylistPage mainRef={mainRef}/>}/>
+                    {/*<Route path={'/collection/tracks'} element={<LikedSongs />} />*/}
 
-                </Route>
-                <Route path={'/genre/:genreID'} element={<Category/>}/>
-                <Route path={'/artist/:artistID'} element={<ArtistPage mainRef={mainRef}/>}/>
-                <Route path={'/queue'} element={<Queue/>}/>
-                <Route path={'/album/:albumID'} element={<AlbumPage mainRef={mainRef}/>}/>
-                <Route path={'/playlist/:playlistID'} element={<PlaylistPage mainRef={mainRef}/>}/>
-                {/*<Route path={'/collection/tracks'} element={<LikedSongs />} />*/}
-
-            </Routes>
-</div>
+                </Routes>
+            </div>
         </main>
 
 

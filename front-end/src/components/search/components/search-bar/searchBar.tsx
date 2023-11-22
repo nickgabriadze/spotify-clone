@@ -7,16 +7,20 @@ import {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks";
 import {
     setSearchQuery,
-    setTyping,
 } from "../../../../store/features/navigationSlice";
+import {useNavigate, useParams} from "react-router-dom";
 
 
 export function SearchBar() {
-    const [userSearchingQ, setUserSearchingQ] = useState<string>('')
+    const params = useParams();
+    const destructured = Object.values(params).toString().split('/')[2] === 'undefined' ? 'all' : Object.values(params).toString().split('/')[2]
+    const weAreSearchingFor = Object.values(params).toString().split('/')[1]
+    const [userSearchingQ, setUserSearchingQ] = useState<string>(weAreSearchingFor);
     const searchStuff = useAppSelector((state) => state.navigationReducer);
     const dispatchSearch = useAppDispatch();
     const [onElementFocus, setOnElementFocus] = useState<boolean>(false);
 
+    const navigator = useNavigate();
     // const [err, setErr] = useState<string | unknown>();
 
     useEffect(() => {
@@ -26,7 +30,15 @@ export function SearchBar() {
                     searchQuery: userSearchingQ
                 })
             )
+
+
+            if (userSearchingQ !== '') {
+                navigator(`/search/${userSearchingQ === 'undefined' ? '' : userSearchingQ}/${destructured}`)
+            }
+
         }, 500)
+
+
         return () => clearTimeout(timeOutToSetQuery)
     }, [userSearchingQ]);
 
@@ -65,29 +77,12 @@ export function SearchBar() {
                             ></img>
                             <input
                                 autoComplete={"off"}
-                                onKeyDown={() => {
-                                    if (searchStuff.typing === false) {
-                                        dispatchSearch(
-                                            setTyping({
-                                                typing: true,
-                                            })
-                                        );
-                                    }
-                                }}
-                                onKeyUp={() => {
-                                    if (searchStuff.typing) {
-                                        dispatchSearch(
-                                            setTyping({
-                                                typing: false,
-                                            })
-                                        );
-                                    }
-                                }}
                                 name="Search song field"
                                 placeholder="What do you want to listen to?"
                                 value={userSearchingQ}
                                 onChange={(e) => {
                                     setUserSearchingQ(e.target.value)
+
                                 }
                                 }
                             ></input>
@@ -97,16 +92,15 @@ export function SearchBar() {
                                 <img
                                     alt={'Delete/Close search icon'}
                                     src={closeSearch}
-                                    onClick={() =>
-                                        dispatchSearch(
-                                            setSearchQuery({
-                                                searchQuery: "",
-                                            })
-                                        )
+                                    onClick={() => {
+                                        setUserSearchingQ('')
+                                        navigator(`/search/`)
+                                    }
                                     }
                                     width={24}
                                     height={24}
                                 ></img>
+
                             )}
                         </div>
                     </div>
@@ -115,6 +109,7 @@ export function SearchBar() {
                 </div>
 
             </div>
+
 
         </div>
     );
