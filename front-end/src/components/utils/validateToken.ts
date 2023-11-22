@@ -17,7 +17,7 @@ export async function validateToken(): Promise<string> {
         localStorage.setItem("access_token", `${fetchedAccessToken}`);
         return fetchedAccessToken
     }else{
-        return localStorage.getItem('access_token');
+        return String(localStorage.getItem('access_token'));
     }
 }
 
