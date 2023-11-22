@@ -14,28 +14,38 @@ import {PlayListTrackObject} from "../../../../types/playlist.ts";
 import {useEffect, useState} from "react";
 import getSavedTracks from "../../../../api/library/getSavedTracks.ts";
 
-export function LikedSongs({tracks}: { tracks: { added_at: string, track: PlayListTrackObject }[] }) {
+export function LikedSongs() {
     const me = useAppSelector(s => s.spotiUserReducer.userInformation);
     const dispatch = useAppDispatch();
-    const [likedTracks, setLikedTracks] = useState<{ added_at: string, track: PlayListTrackObject }[]>(tracks);
+    const [likedTracks, setLikedTracks] = useState<{ added_at: string, track: PlayListTrackObject }[]>([]);
     const libraryActions = useAppSelector(s => s.navigationReducer.libraryActions);
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong);
-
+    const [loading, setLoading] = useState<boolean>(true);
 
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken)
 
     useEffect(() => {
 
         const updateSavedTracks = async () => {
-            const savedSongItems: {
-                added_at: string,
-                track: PlayListTrackObject
-            }[] = (await getSavedTracks(accessToken)).data.items;
+          try {
+              setLoading(true)
+              const savedSongItems: {
+                  added_at: string,
+                  track: PlayListTrackObject
+              }[] = (await getSavedTracks(accessToken)).data.items;
 
-            setLikedTracks(savedSongItems)
+
+              setLikedTracks(savedSongItems)
+          }catch(err){
+
+          }finally {
+               setLoading(false)
+          }
         }
 
         updateSavedTracks();
+
+        return () => setLoading(false)
 
     }, [accessToken, libraryActions.length]);
 
@@ -45,6 +55,10 @@ export function LikedSongs({tracks}: { tracks: { added_at: string, track: PlayLi
             document.title = `Liked Songs`
         }
     }, [currentlyPlaying.isPlaying]);
+
+    if(loading){
+        return;
+    }
 
     return <section className={playlistPageStyle['playlist-page-wrapper']}>
         <div className={playlistPageStyle['general-info-wrapper']}>
@@ -59,7 +73,7 @@ export function LikedSongs({tracks}: { tracks: { added_at: string, track: PlayLi
                 <div className={playlistPageStyle['owner-likes-total-dur']}>
                     <p>{String(me?.display_name)} • </p>
 
-                    <p>{tracks.length} {Number(tracks.length) > 1 ? 'songs' : 'song'}</p>
+                    <p>{likedTracks.length} {Number(likedTracks.length) > 1 ? 'songs' : 'song'}</p>
 
                 </div>
             </div>

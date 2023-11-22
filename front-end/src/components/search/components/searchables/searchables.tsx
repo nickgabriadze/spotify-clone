@@ -20,7 +20,6 @@ export function Searchables() {
     const params = useParams();
     const destructuredParams = Object.values(params).toString().split('/')
     const searchingFor = destructuredParams[1]
-    console.log(destructuredParams)
     const newArray = ['search', searchingFor, destructuredParams[2]]
     const [ourUrlGuideArray, setOurUrlGuideArray] = useState<string[]>(newArray)
 

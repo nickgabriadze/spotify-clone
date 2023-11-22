@@ -27,6 +27,8 @@ import {
     Routes, useParams,
 } from "react-router-dom";
 import Category from "./components/browsingCategory/category.tsx";
+import Error from "../Error.tsx";
+import {LikedSongs} from "./components/playlist/LikedSongs.tsx";
 
 
 export function Main({height}: {
@@ -39,6 +41,7 @@ export function Main({height}: {
     const dispatch = useAppDispatch();
     const mainRef = useRef<HTMLDivElement>(null)
     useUpdateNumberOfItems();
+
 
     const params = useParams();
     const weAreSearching = Object.values(params).toString().includes('search')
@@ -230,7 +233,7 @@ export function Main({height}: {
 
             <div>
                 <Routes>
-                    <Route path={'*'} element={<Home />}></Route>
+                    <Route path={'*'} element={<Error />} />
                     <Route path={'/'} element={<Home/>}/>
                     <Route path={'/search/*'} element={<Search/>}>
                     </Route>
@@ -239,7 +242,7 @@ export function Main({height}: {
                     <Route path={'/queue'} element={<Queue/>}/>
                     <Route path={'/album/:albumID'} element={<AlbumPage mainRef={mainRef}/>}/>
                     <Route path={'/playlist/:playlistID'} element={<PlaylistPage mainRef={mainRef}/>}/>
-                    {/*<Route path={'/collection/tracks'} element={<LikedSongs />} />*/}
+                    <Route path={'/collection/tracks'} element={<LikedSongs />} />
 
                 </Routes>
             </div>

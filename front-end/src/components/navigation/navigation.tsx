@@ -6,15 +6,15 @@ import SearchUnfilled from "./icons/search-unfilled.svg";
 import navigationStyle from "./navigation.module.css";
 import SearchUnfilledGrey from "./icons/search-unfilled-grey.svg";
 import HomeUnfilledGrey from "./icons/home-unfilled-grey.svg";
-import {useAppDispatch, useAppSelector} from "../../store/hooks";
+import {useAppDispatch} from "../../store/hooks";
 import {addReactComponentToNavigation} from "../../store/features/navigationSlice.ts";
 import {Link, useParams} from "react-router-dom";
 
 
 export function Navigation() {
     const navParams = useParams();
-    console.log(navParams);
     const navParamsIncludeSearch = Object.values(navParams).toString().includes('search')
+    const navParamsHome = Object.values(navParams).toString().length === 0
     const [navHover, setNavHover] = useState<string>("none");
     const dispatchNavigation = useAppDispatch();
     return (
@@ -32,7 +32,7 @@ export function Navigation() {
                 <img
                     className={navigationStyle['nav-img']}
                     src={
-                        !navParamsIncludeSearch
+                        navParamsHome
                             ? HomeFilled
                             : navHover === "Home"
                                 ? HomeUnfilled
@@ -41,7 +41,7 @@ export function Navigation() {
 
 
                     alt={'Home icon'}></img>
-                <h4 style={!navParamsIncludeSearch ? {color: "white"} : {}}>Home</h4>
+                <h4 style={navParamsHome ? {color: "white"} : {}}>Home</h4>
             </div>
             </Link>
 
