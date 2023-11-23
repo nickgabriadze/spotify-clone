@@ -13,7 +13,8 @@ import SearchBar from "../search/components/search-bar/searchBar.tsx";
 import Searchables from "../search/components/searchables/searchables.tsx";
 import {setUserInformation, setWhatsInView} from "../../store/features/spotiUserSlice.ts";
 import AlbumPage from "./components/album/AlbumPage.tsx";
-import {navigateToDirection, setUserControlActions} from "../../store/features/navigationSlice.ts";
+import {Route, Routes, useNavigate, useParams} from 'react-router-dom'
+import {setUserControlActions} from "../../store/features/navigationSlice.ts";
 import ArtistPage from "./components/artist/ArtistPage.tsx";
 import PlaylistPage from "./components/playlist/PlaylistPage.tsx";
 import PlayResumeStreaming from "../../api/player/playResumeStreaming.ts";
@@ -22,10 +23,6 @@ import artistPageStyle from "./components/artist/artistpage.module.css";
 import Pause from "../search/components/each-search-component/Playlists/icons/pause.svg";
 import Play from "../search/components/each-search-component/Playlists/icons/play.svg";
 import {useUpdateNumberOfItems} from "./hooks/useNumberOfItems.ts";
-import {
-    Route,
-    Routes, useParams,
-} from "react-router-dom";
 import Category from "./components/browsingCategory/category.tsx";
 import Error from "../Error.tsx";
 import {LikedSongs} from "./components/playlist/LikedSongs.tsx";
@@ -41,25 +38,13 @@ export function Main({height}: {
     const dispatch = useAppDispatch();
     const mainRef = useRef<HTMLDivElement>(null)
     useUpdateNumberOfItems();
+    const navigatePages = useNavigate();
 
 
     const params = useParams();
     const weAreSearching = Object.values(params).toString().includes('search')
     const weHaveQuery = String(Object.values(params).toString().split('/')[1]).length !== 0
 
-    // const navigation: {
-    //     [key: string]: (data: any, mainRef?: any) => ReactNode
-    // } = {
-    //     "Search": () => <Search/>,
-    //     "Home": () => <Home/>,
-    //     "Queue": () => <Queue/>,
-    //     "Album": (ID: string, mainRef: RefObject<HTMLDivElement>) => <AlbumPage albumID={ID} mainRef={mainRef}/>,
-    //     "Artist": (ID: string, mainRef: RefObject<HTMLDivElement>) => <ArtistPage artistID={ID} mainRef={mainRef}/>,
-    //     "Playlist": (ID: string, mainRef: RefObject<HTMLDivElement>) => <PlaylistPage playlistID={ID}
-    //                                                                                   mainRef={mainRef}/>,
-    //     "LikedSongs": (tracks: any[]) => <LikedSongs tracks={tracks}/>,
-    //     "BrowsingCategory": (categoryStuff: string[]) => <CategoryPage categoryStuff={categoryStuff}/>
-    // }
 
     useEffect(() => {
         const fetchMyData = async () => {
@@ -81,18 +66,18 @@ export function Main({height}: {
     }, [access]);
     const whatsInView = useAppSelector(s => s.spotiUserReducer.whatsInViewForPlay);
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong)
-    const PageNavigation = useAppSelector(state => state.navigationReducer.pageNavigation);
     const [displayLogOut, setDisplayLogout] = useState<boolean>(false)
 
 
-
+    const {idx} = window.history.state;
     useEffect(() => {
         dispatch(setWhatsInView({
             pageName: 'None',
             pageItemName: 'None',
             uri: 'None'
         }))
-    }, [PageNavigation.pageHistory.length]);
+    }, [idx]);
+
 
     return (
         <main
@@ -114,18 +99,18 @@ export function Main({height}: {
                         <button
 
                             onClick={() => {
-                                dispatch(navigateToDirection("BACK"))
-                                window.history.back();
+                                if (idx !== 0) {
+                                    navigatePages(-1)
+                                }
                             }}
                         >
                             <img
-                                style={{filter: `${PageNavigation.currentPageIndex === 0 ? `brightness(50%)` : `brightness(100%)`}`}}
+                                style={{filter: `${idx === 0 ? `brightness(50%)` : `brightness(100%)`}`}}
                                 alt={'Left icon'} src={Left} height={32}></img>
                         </button>
                         <button style={{marginLeft: "-3px"}}
                                 onClick={() => {
-                                    dispatch(navigateToDirection("FORWARD"))
-                                    window.history.forward();
+                                    navigatePages(1)
 
                                 }}
                         >
@@ -133,7 +118,7 @@ export function Main({height}: {
 
 
                                 <img
-                                    style={{filter: `${PageNavigation.currentPageIndex === PageNavigation.pageHistory.length - 1 ? `brightness(50%)` : `brightness(100%)`}`}}
+                                    style={{filter: `${idx  ? `brightness(50%)` : `brightness(100%)`}`}}
                                     alt={'Right icon'} src={Right} height={32}></img>
 
                             </div>
@@ -228,21 +213,22 @@ export function Main({height}: {
                     </div>
 
                 </div>
-                 {weAreSearching && weHaveQuery && <Searchables/>}
+                {weAreSearching && weHaveQuery && <Searchables/>}
             </div>
 
             <div>
                 <Routes>
-                    <Route path={'*'} element={<Error />} />
+                    <Route path={'*'} element={<Error/>}/>
                     <Route path={'/'} element={<Home/>}/>
-                    <Route path={'/search/*'} element={<Search/>}>
-                    </Route>
+                    <Route path={'/search/*'} element={<Search/>}/>
                     <Route path={'/genre/:genreID'} element={<Category/>}/>
-                    <Route path={'/artist/:artistID'} element={<ArtistPage mainRef={mainRef}/>}/>
+                    <Route path={'/artist/:artistID'} element={<ArtistPage mainRef={mainRef}/>}>
+                        <Route path={'discography/all'} element={<Search/>}></Route>
+                    </Route>
                     <Route path={'/queue'} element={<Queue/>}/>
                     <Route path={'/album/:albumID'} element={<AlbumPage mainRef={mainRef}/>}/>
                     <Route path={'/playlist/:playlistID'} element={<PlaylistPage mainRef={mainRef}/>}/>
-                    <Route path={'/collection/tracks'} element={<LikedSongs />} />
+                    <Route path={'/collection/tracks'} element={<LikedSongs/>}/>
 
                 </Routes>
             </div>

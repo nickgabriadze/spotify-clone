@@ -105,6 +105,7 @@ export function ArtistPage({ mainRef}: {  mainRef: RefObject<HTMLDivElement> }) 
     if (loading) return <></>
 
 
+
     return <section className={artistPageStyle['artist-page-wrapper']}
                     ref={artistPageRef}
     >
