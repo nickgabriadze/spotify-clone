@@ -22,9 +22,9 @@ import AppearsOn from "./components/AppearsOn.tsx";
 import FansAlsoLike from "./components/FansAlsoLike.tsx";
 import {checkInView} from "../../../utils/checkInView.ts";
 import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
-import {useParams} from "react-router-dom";
+import {Outlet, useParams} from "react-router-dom";
 
-export function ArtistPage({ mainRef}: {  mainRef: RefObject<HTMLDivElement> }) {
+export function ArtistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
     const {artistID} = useParams();
     const [artistData, setArtistData] = useState<Artist>();
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken);
@@ -40,7 +40,7 @@ export function ArtistPage({ mainRef}: {  mainRef: RefObject<HTMLDivElement> }) 
     const playBtnRef = useRef<HTMLDivElement>(null)
     const artistPageRef = useRef<HTMLDivElement>(null)
     const numberOfItems = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown);
-
+    const discographyStuff = useParams();
     useEffect(() => {
 
         const duringScroll = () => {
@@ -250,7 +250,7 @@ export function ArtistPage({ mainRef}: {  mainRef: RefObject<HTMLDivElement> }) 
 
             <div
                 className={artistPageStyle['disco-albums-list']}
-            style={{gridTemplateColumns: `repeat(${numberOfItems}, minmax(0, 1fr)`}}
+                style={{gridTemplateColumns: `repeat(${numberOfItems}, minmax(0, 1fr)`}}
             >{discography.filter(e => Object.keys(e).toString() === discoWhich)[0][discoWhich].slice(0, numberOfItems).map((chosenGroup: Album, i: number) =>
                 <AlbumCard eachAlbum={chosenGroup} key={i}/>)
             }</div>
@@ -264,6 +264,7 @@ export function ArtistPage({ mainRef}: {  mainRef: RefObject<HTMLDivElement> }) 
         <AppearsOn artistID={String(artistID)}/>
 
     </section>
+
 }
 
 

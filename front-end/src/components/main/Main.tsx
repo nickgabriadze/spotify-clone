@@ -222,7 +222,7 @@ export function Main({height}: {
                     <Route path={'/search/*'} element={<Search/>}/>
                     <Route path={'/genre/:genreID'} element={<Category/>}/>
                     <Route path={'/artist/:artistID'} element={<ArtistPage mainRef={mainRef}/>}>
-                        <Route path={'discography/all'} element={<Search/>}></Route>
+                        <Route path={'discography'} element={<Queue />}></Route>
                     </Route>
                     <Route path={'/queue'} element={<Queue/>}/>
                     <Route path={'/album/:albumID'} element={<AlbumPage mainRef={mainRef}/>}/>

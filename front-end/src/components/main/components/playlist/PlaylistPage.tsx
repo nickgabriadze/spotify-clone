@@ -25,6 +25,7 @@ import {useParams} from "react-router-dom";
 
 export function PlaylistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
     const {playlistID} = useParams();
+
     const [playListData, setPlayListData] = useState<FullPlayList>();
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken);
     const dispatch = useAppDispatch();
@@ -78,7 +79,6 @@ export function PlaylistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) 
             document.title = `${playListData?.name} by ${playListData?.owner.display_name}`
         }
     }, [currentlyPlaying.isPlaying, playListData?.id]);
-
     useEffect(() => {
         const getPlayListData = async () => {
             try {
@@ -103,6 +103,7 @@ export function PlaylistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) 
 
         getPlayListData();
     }, [accessToken, playlistID]);
+
     const observing = useRef<null | IntersectionObserver>(null);
     const lastSong = useCallback(
         (node: HTMLDivElement | null) => {
@@ -150,6 +151,8 @@ export function PlaylistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) 
     );
 
     if (playlistLoading) return <></>
+
+    if(playListData === undefined) return <></>
 
 
     return <section className={playlistPageStyle['playlist-page-wrapper']}
