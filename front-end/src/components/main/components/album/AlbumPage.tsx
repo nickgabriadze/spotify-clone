@@ -289,12 +289,17 @@ export function AlbumPage({ mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
                 )}
             </div>
 
-            <div className={albumStyle['more-from-artist']}>
+            {artistAlbums.length > 0 && <div className={albumStyle['more-from-artist']}>
                 <h2>More by {albumData?.album.artists[0].name}</h2>
-                <div className={albumStyle['displayed-albums']}>
-                    {artistAlbums.slice(0, numberOfItems).map((eachAlbum) => <AlbumCard eachAlbum={eachAlbum} key={eachAlbum.id}/>)}
+                <div className={albumStyle['displayed-albums']}
+                     style={{
+                         gridTemplateColumns: `repeat(${numberOfItems}, minmax(0,1fr))`
+                     }}
+                >
+                    {artistAlbums.slice(0, numberOfItems).map((eachAlbum) => <AlbumCard eachAlbum={eachAlbum}
+                                                                                        key={eachAlbum.id}/>)}
                 </div>
-            </div>
+            </div>}
         </section>
     }
 }
