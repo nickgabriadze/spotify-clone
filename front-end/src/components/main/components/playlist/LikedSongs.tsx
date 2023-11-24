@@ -56,9 +56,7 @@ export function LikedSongs() {
         }
     }, [currentlyPlaying.isPlaying]);
 
-    if(loading){
-        return;
-    }
+
 
     return <section className={playlistPageStyle['playlist-page-wrapper']}>
         <div className={playlistPageStyle['general-info-wrapper']}>
@@ -73,7 +71,7 @@ export function LikedSongs() {
                 <div className={playlistPageStyle['owner-likes-total-dur']}>
                     <p>{String(me?.display_name)} • </p>
 
-                    <p>{likedTracks.length} {Number(likedTracks.length) > 1 ? 'songs' : 'song'}</p>
+                    {!loading && <p>{likedTracks.length} {Number(likedTracks.length) > 1 ? 'songs' : 'song'}</p>}
 
                 </div>
             </div>

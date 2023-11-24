@@ -12,6 +12,7 @@ import Pause from "../../Playlists/icons/pause.svg";
 import PauseStreaming from "../../../../../../api/player/pauseStreaming.ts";
 import episodesStyle from "../../PodcastsShows/podcastsShows.module.css";
 import TopResultCardSkeleton from "../../../../../../skeletons/topResultCardSkeleton.tsx";
+import {Link} from "react-router-dom";
 
 export function TopResult({topSong, accessToken, resultsLoading}: { topSong: Track | undefined, accessToken: string, resultsLoading: boolean }) {
     const [hoveringOver, setHoveringOver] = useState<boolean>(false);
@@ -29,19 +30,19 @@ export function TopResult({topSong, accessToken, resultsLoading}: { topSong: Tra
         <div className={allResultsStyle['top-track-box']}
         >
             <div><img src={topSong?.album.images[0]?.url} width={92} alt={"Track image"} height={92}></img></div>
-            <div
-                className={allResultsStyle['track-name']}>{Number(topSong?.name.length) > 19 ? topSong?.name.slice(0, 19).concat('...') : topSong?.name}</div>
+            <Link to={`/album/${topSong?.album?.id}`}
+                className={allResultsStyle['track-name']}>{Number(topSong?.name.length) > 19 ? topSong?.name.slice(0, 19).concat('...') : topSong?.name}</Link>
             <div className={allResultsStyle['track-artist-type']}>
                 {topSong?.explicit ? <div className={episodesStyle['explicit']} style={{fontSize: '8px'}}>E</div> : ''}
 
-                <a
+                <Link to={`/artist/${topSong?.artists[0]?.id}`}
                 onClick={() => {
                          dispatch(addReactComponentToNavigation({
                              componentName: 'Artist',
                              props: topSong?.artists[0]?.id
                          }))
                      }}
-                >{topSong?.artists[0].name}</a>
+                >{topSong?.artists[0].name}</Link>
                 <p>{topSong?.type === 'track' ? 'Song' : topSong?.type}</p>
             </div>
 

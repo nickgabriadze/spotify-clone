@@ -13,7 +13,7 @@ import SearchBar from "../search/components/search-bar/searchBar.tsx";
 import Searchables from "../search/components/searchables/searchables.tsx";
 import {setUserInformation, setWhatsInView} from "../../store/features/spotiUserSlice.ts";
 import AlbumPage from "./components/album/AlbumPage.tsx";
-import {Route, Routes, useNavigate, useParams} from 'react-router-dom'
+import {Route, Routes,  useNavigate, useParams} from 'react-router-dom'
 import {setUserControlActions} from "../../store/features/navigationSlice.ts";
 import ArtistPage from "./components/artist/ArtistPage.tsx";
 import PlaylistPage from "./components/playlist/PlaylistPage.tsx";
@@ -39,7 +39,6 @@ export function Main({height}: {
     const mainRef = useRef<HTMLDivElement>(null)
     useUpdateNumberOfItems();
     const navigatePages = useNavigate();
-
 
     const params = useParams();
     const weAreSearching = Object.values(params).toString().includes('search')
@@ -118,7 +117,7 @@ export function Main({height}: {
 
 
                                 <img
-                                    style={{filter: `${idx  ? `brightness(50%)` : `brightness(100%)`}`}}
+                                    style={{filter: `${window.history.length - 2 === idx  ? `brightness(50%)` : `brightness(100%)`}`}}
                                     alt={'Right icon'} src={Right} height={32}></img>
 
                             </div>

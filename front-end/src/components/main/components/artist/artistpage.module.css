@@ -192,7 +192,6 @@
 
     .appears_on-albums-list, .related-artists-list {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
         gap: 20px;
         overflow-x: scroll;
     }

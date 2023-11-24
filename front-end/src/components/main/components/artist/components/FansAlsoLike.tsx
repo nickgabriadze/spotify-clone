@@ -25,7 +25,10 @@ export function FansAlsoLike({artistID}: { artistID: string }) {
 
     return fansAlsoLike.length > 0 && <section className={artistPageStyle['fans-also-like']}>
         <h2>Fans Also Like</h2>
-        <div className={artistPageStyle['related-artists-list']}>
+        <div className={artistPageStyle['related-artists-list']}
+             style={{
+                 gridTemplateColumns: `repeat(${numberOfItems}, minmax(0, 1fr))`
+             }}>
             {fansAlsoLike.slice(0, numberOfItems).map((eachArtist, i) => <ArtistCard
                 eachArtist={eachArtist} key={i}/>)}
         </div>
