@@ -22,7 +22,7 @@ import AppearsOn from "./components/AppearsOn.tsx";
 import FansAlsoLike from "./components/FansAlsoLike.tsx";
 import {checkInView} from "../../../utils/checkInView.ts";
 import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
-import {Outlet, useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 
 export function ArtistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
     const {artistID} = useParams();
@@ -40,7 +40,6 @@ export function ArtistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
     const playBtnRef = useRef<HTMLDivElement>(null)
     const artistPageRef = useRef<HTMLDivElement>(null)
     const numberOfItems = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown);
-    const discographyStuff = useParams();
     useEffect(() => {
 
         const duringScroll = () => {
@@ -228,7 +227,7 @@ export function ArtistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
 
             <div className={artistPageStyle['disco-header']}>
                 <h1>Discography</h1>
-                <button className={artistPageStyle['see-more-tracks']}><h4>Show all</h4></button>
+                <Link to={`/artist/${artistID}/discography`}><button className={artistPageStyle['see-more-tracks']}><h4>Show all</h4></button></Link>
             </div>
 
             <div className={artistPageStyle['option-disco']}>

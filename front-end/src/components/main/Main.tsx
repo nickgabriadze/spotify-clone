@@ -13,7 +13,7 @@ import SearchBar from "../search/components/search-bar/searchBar.tsx";
 import Searchables from "../search/components/searchables/searchables.tsx";
 import {setUserInformation, setWhatsInView} from "../../store/features/spotiUserSlice.ts";
 import AlbumPage from "./components/album/AlbumPage.tsx";
-import {Route, Routes,  useNavigate, useParams} from 'react-router-dom'
+import {Route, Routes, useNavigate, useParams} from 'react-router-dom'
 import {setUserControlActions} from "../../store/features/navigationSlice.ts";
 import ArtistPage from "./components/artist/ArtistPage.tsx";
 import PlaylistPage from "./components/playlist/PlaylistPage.tsx";
@@ -26,6 +26,7 @@ import {useUpdateNumberOfItems} from "./hooks/useNumberOfItems.ts";
 import Category from "./components/browsingCategory/category.tsx";
 import Error from "../Error.tsx";
 import {LikedSongs} from "./components/playlist/LikedSongs.tsx";
+import ArtistLayout from "./components/artist/ArtistLayout.tsx";
 
 
 export function Main({height}: {
@@ -117,7 +118,7 @@ export function Main({height}: {
 
 
                                 <img
-                                    style={{filter: `${window.history.length - 2 === idx  ? `brightness(50%)` : `brightness(100%)`}`}}
+                                    style={{filter: `${window.history.length - 2 === idx ? `brightness(50%)` : `brightness(100%)`}`}}
                                     alt={'Right icon'} src={Right} height={32}></img>
 
                             </div>
@@ -221,8 +222,9 @@ export function Main({height}: {
                     <Route path={'/'} element={<Home/>}/>
                     <Route path={'/search/*'} element={<Search/>}/>
                     <Route path={'/genre/:genreID'} element={<Category/>}/>
-                    <Route path={'/artist/:artistID'} element={<ArtistPage mainRef={mainRef}/>}>
-                        <Route path={'discography'} element={<Queue />}></Route>
+                    <Route path={'/artist'} element={<ArtistLayout/>}>
+                        <Route path={':artistID'} element={<ArtistPage mainRef={mainRef}/>}/>
+                        <Route path={':artistID/discography'} element={<Queue/>}></Route>
                     </Route>
                     <Route path={'/queue'} element={<Queue/>}/>
                     <Route path={'/album/:albumID'} element={<AlbumPage mainRef={mainRef}/>}/>
