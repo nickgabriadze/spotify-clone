@@ -2,6 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import {Devices} from "../../../types/device";
 import playerStyle from "../player.module.css";
 import Queue from "../icons/queue.svg";
+import CastDevice from "../icons/cast-device.svg"
 import DevicesSVG from "../icons/devices.svg";
 import VolumeUp from "../icons/volume.svg";
 import VolumeOff from "../icons/volume-off.svg";
@@ -27,9 +28,12 @@ export function DeviceController({devices,}: {
         'TV': TVDevice,
         'Smartphone': SmartphoneDevice,
         'Computer': LaptopDevice,
-        'default': DevicesSVG
+        'default': DevicesSVG,
+        "CastVideo": CastDevice
 
     }
+
+
     const [sliderVolume, setSliderVolume] = useState<number>(
         Number(
             devices?.devices?.filter((each) => each.is_active)[0]?.volume_percent
@@ -45,7 +49,7 @@ export function DeviceController({devices,}: {
     const dispatch = useAppDispatch();
     const accessToken = useAppSelector(state => state.spotiUserReducer.spotiToken.accessToken)
     const [showDevices, setShowDevices] = useState<boolean>(false)
- const pageNav = useAppSelector(state => state.navigationReducer.pageNavigation)
+    const pageNav = useAppSelector(state => state.navigationReducer.pageNavigation)
     const currentPage = pageNav.pageHistory[pageNav.currentPageIndex].component
 
     const popupRef = useRef<HTMLDivElement>(null); // Create a ref for the devices-popup
@@ -70,20 +74,23 @@ export function DeviceController({devices,}: {
         };
     }, []);
 
+    const listeningOnDevice = String(devices?.devices.filter(each => each.is_active)[0]?.type)
+    console.log(listeningOnDevice)
     return (
         <div className={playerStyle["devices-volume"]}>
-            <Link to={'/queue'}><button
-                onClick={() => {
-                    dispatch(addReactComponentToNavigation({
-                        componentName: "Queue",
-                        props: null
-                    }))
-                }}
-            style={{
-                padding: '2px 0 2px 0',
-                filter: `${currentPage === 'Queue' ? 'invert(10%) sepia(60%) saturate(800%) hue-rotate(83deg) brightness(95%) contrast(80%)': 'initial'}`
-            }}
-            ><img src={Queue} width={23} style={{marginRight: '3px'}} alt="Song Queue icon"></img></button>
+            <Link to={'/queue'}>
+                <button
+                    onClick={() => {
+                        dispatch(addReactComponentToNavigation({
+                            componentName: "Queue",
+                            props: null
+                        }))
+                    }}
+                    style={{
+                        padding: '2px 0 2px 0',
+                        filter: `${currentPage === 'Queue' ? 'invert(10%) sepia(60%) saturate(800%) hue-rotate(83deg) brightness(95%) contrast(80%)' : 'initial'}`
+                    }}
+                ><img src={Queue} width={23} style={{marginRight: '3px'}} alt="Song Queue icon"></img></button>
             </Link>
             <div className={playerStyle['devices-triangle']}
 
@@ -91,8 +98,9 @@ export function DeviceController({devices,}: {
             ><img
                 className={playerStyle['choose-devices']}
                 onClick={() => setShowDevices((prev) => !prev)}
-                src={deviceImages[String(devices?.devices.filter(each => each.is_active)[0]?.type ? devices?.devices.filter(each => each.is_active)[0]?.type : 'default' )]} width={20} alt="Devices icon"
+                src={deviceImages[listeningOnDevice ? listeningOnDevice : 'default']}
                 ref={devicesIconRef}
+                alt={"Device image"}
 
             ></img>
                 <div className={playerStyle['triangle']}></div>
@@ -116,8 +124,7 @@ export function DeviceController({devices,}: {
                             {devices?.devices.filter(each => !each.is_active).map((eachDevice) =>
                                 <div key={eachDevice.id}
 
-                                     onClick={async () =>
-                                     {
+                                     onClick={async () => {
                                          await switchActiveDevice(accessToken, String(eachDevice?.id), Boolean(currentlyPlayingIsPlaying))
 
                                      }}

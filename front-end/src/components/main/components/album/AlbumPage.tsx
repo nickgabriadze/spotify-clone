@@ -24,7 +24,7 @@ import getArtistAlbums from "../../../../api/main/album/getArtistAlbums.ts";
 import AlbumCard from "../../../search/reuseables/albumCard.tsx";
 import {checkInView} from "../../../utils/checkInView.ts";
 import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 
 export function AlbumPage({ mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
     const {albumID} = useParams();
@@ -169,14 +169,14 @@ export function AlbumPage({ mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
                         <h1>{albumData?.album.name}</h1>
                     </div>
                     <div className={albumStyle['artist-information']}>
-                        <h4 className={albumStyle['artist-name-ry-nos']}><a
+                        <h4 className={albumStyle['artist-name-ry-nos']}><Link to={`/artist/${albumData?.album.artists[0].id}`}
                             onClick={() => {
                                 dispatch(addReactComponentToNavigation({
                                     componentName: 'Artist',
                                     props: albumData?.album?.artists[0]?.id
                                 }))
                             }}
-                        >{albumData?.album.artists[0].name}</a> • {albumDate.getFullYear()} • {albumData?.album.total_tracks} song,
+                        >{albumData?.album.artists[0].name}</Link> • {albumDate.getFullYear()} • {albumData?.album.total_tracks} song,
                         </h4>
                         <p className={albumStyle['album-duration']}>{millisecondsToHhMmSs(Number(albumData?.album.tracks.items.map(e => e.duration_ms).reduce((a, b) => a + b, 0)), true)}</p>
                     </div>

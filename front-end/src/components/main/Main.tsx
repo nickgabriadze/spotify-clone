@@ -27,6 +27,7 @@ import Category from "./components/browsingCategory/category.tsx";
 import Error from "../Error.tsx";
 import {LikedSongs} from "./components/playlist/LikedSongs.tsx";
 import ArtistLayout from "./components/artist/ArtistLayout.tsx";
+import {Discography} from "./components/artist/components/discography/Discography.tsx";
 
 
 export function Main({height}: {
@@ -224,7 +225,8 @@ export function Main({height}: {
                     <Route path={'/genre/:genreID'} element={<Category/>}/>
                     <Route path={'/artist'} element={<ArtistLayout/>}>
                         <Route path={':artistID'} element={<ArtistPage mainRef={mainRef}/>}/>
-                        <Route path={':artistID/discography'} element={<Queue/>}></Route>
+                        <Route path={':artistID/discography'} errorElement={<Error />} element={<Discography />}></Route>
+                        <Route path={':artistID/discography/:type'} element={<Discography />}></Route>
                     </Route>
                     <Route path={'/queue'} element={<Queue/>}/>
                     <Route path={'/album/:albumID'} element={<AlbumPage mainRef={mainRef}/>}/>

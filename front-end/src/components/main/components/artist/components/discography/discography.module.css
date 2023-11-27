@@ -1,0 +1,50 @@
+.disco-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+}
+
+
+.disco-header {
+    & h1 {
+        font-size: 1.5rem;
+
+    }
+
+    padding-left: 10px;
+    padding-right: 10px;
+    top: 70px;
+    position: sticky;
+    z-index: 999;
+    margin: 0;
+    padding-bottom: 15px;
+    background-color: #121212;
+
+    & h1:hover {
+        text-decoration: underline;
+
+    }
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .list-or-grid {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+
+        & img {
+            cursor: pointer;
+            color: #b8b8b8;
+            transition: all 300ms ease-in-out;
+            border-radius: 100%;
+        }
+    }
+}
+
+.disco-layout {
+    padding: 10px;
+}
