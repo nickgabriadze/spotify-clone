@@ -75,7 +75,6 @@ export function DeviceController({devices,}: {
     }, []);
 
     const listeningOnDevice = String(devices?.devices.filter(each => each.is_active)[0]?.type)
-    console.log(listeningOnDevice)
     return (
         <div className={playerStyle["devices-volume"]}>
             <Link to={'/queue'}>

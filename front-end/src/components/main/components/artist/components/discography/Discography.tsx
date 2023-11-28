@@ -3,7 +3,7 @@ import GridViewIcon from "../../icons/grid-view.svg";
 import ListViewIcon from "../../icons/list-view.svg"
 import {Link, useParams} from "react-router-dom";
 import Error from "../../../../../Error.tsx";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useAppSelector} from "../../../../../../store/hooks.ts";
 import getArtistsAlbums from "../../../../../../api/main/artist/getArtistsAlbums.ts";
 import {Album} from "../../../../../../types/album.ts";
@@ -25,12 +25,14 @@ export function Discography() {
     const numberOfItems = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown);
     const fetchAbleTypes = urlParam.type === "all" ? ["album", "single", "compilation"] : [String(urlParam.type)]
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken);
+
+    const dropDownRef = useRef<HTMLDivElement>(null)
     useEffect(() => {
         const getDiscoData = async () => {
             try {
                 const artistAlbums = await getArtistsAlbums(accessToken, String(urlParam.artistID), fetchAbleTypes)
                 setDiscoData(artistAlbums.flatMap(o => Object.values(o)[0]))
-                setOptions(['all', ...artistAlbums.flatMap(o => Object.keys(o)[0])])
+                setOptions(['All', 'Single', 'Compilation', 'Album',])
                 const artistData = (await getArtist(accessToken, String(urlParam.artistID))).data;
                 setArtistData(artistData)
             } catch (err) {
@@ -42,7 +44,25 @@ export function Discography() {
         }
     }, [accessToken, String(urlParam.artistID), urlParam.type]);
 
-    console.log(options)
+    useEffect(() => {
+        const handleClickOutside = (e: any) => {
+            if (dropDownRef.current && !dropDownRef.current.contains(e.target)
+
+            ) {
+
+                if (e.target !== dropDownRef.current) {
+                    setDropDownState("DOWN");
+                }
+            }
+        };
+
+
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     if (!POSSIBLE_TYPES.some(t => t === urlParam.type)) {
         return <Error/>
@@ -89,10 +109,15 @@ export function Discography() {
                     }}
                     src={GridViewIcon} alt={"Grid view icon"} width={25} height={25}/>
             </div>
-
-            <div className={discographyStyle['drop-down-options']}>{dropDownState === "UP" &&
-                <div className={discographyStyle['drop-down-wrapper']}>{
-                    options.filter(o => o !== urlParam.type).map((e, i) => <p key={i}>{e}</p> )
+            <div className={discographyStyle['drop-down-options']}
+                 ref={dropDownRef}
+            >{dropDownState === "UP" &&
+                <div className={discographyStyle['drop-down-wrapper']}
+                >{
+                    options.filter(o => o !== urlParam.type).map((e, i) => <Link
+                        to={`/artist/${artistData?.id}/discography/${e.toLowerCase()}`}><p
+                        style={{color: urlParam.type === e.toLowerCase() ? '#1ed760' : 'white'}}
+                        key={i}>{e}</p></Link>)
                 }</div>}</div>
 
         </header>
