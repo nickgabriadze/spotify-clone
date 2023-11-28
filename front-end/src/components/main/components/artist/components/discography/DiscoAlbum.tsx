@@ -46,7 +46,7 @@ export function DiscoAlbum({album}: { album: Album }) {
             <div className={discographyStyle['disco-meta']}>
                 <div className={discographyStyle['disco-meta-heading']}>
                     <Link to={`/album/${album.id}`}><h1>{album.name}</h1></Link>
-                    <p>{album.type[0].toUpperCase().concat(album.type.slice(1,))} • {new Date(album.release_date).getFullYear()} • {albumTracks.length} {albumTracks.length > 1 ? 'songs' : 'song'}</p>
+                    <p>{album.album_type[0].toUpperCase().concat(album.album_type.slice(1,))} • {new Date(album.release_date).getFullYear()} • {albumTracks.length} {albumTracks.length > 1 ? 'songs' : 'song'}</p>
                 </div>
 
                 <div className={discographyStyle['disco-meta-buttons']}>
