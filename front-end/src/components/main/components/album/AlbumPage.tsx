@@ -190,7 +190,7 @@ export function AlbumPage({ mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
                         <button
                             className={albumStyle["album-hover-button"]}
                             onClick={async () => {
-                                if (currentlyPlaying.albumID === albumID) {
+                                if (String(currentlyPlaying.context?.uri) === albumData?.album.uri) {
                                     if (!currentlyPlaying.isPlaying) {
                                         await PlayResumeStreaming(accessToken);
                                         dispatch(
@@ -216,7 +216,7 @@ export function AlbumPage({ mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
                                 }
                             }}
                         >
-                            {currentlyPlaying.albumID === albumID &&
+                            {String(currentlyPlaying.context?.uri) === albumData.album.uri &&
                             currentlyPlaying.isPlaying ? (
                                 <div>
                                     <img
