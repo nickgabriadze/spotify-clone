@@ -49,12 +49,14 @@ export function Discography() {
 
             <div className={discographyStyle['list-or-grid']}>
                 <img
+                    draggable={false}
                     onClick={() => setListGrid(false)}
-                    style={listGrid ? {filter: `invert(84%) sepia(0%) saturate(0%) hue-rotate(7deg) brightness(88%) contrast(93%)`} : {backgroundColor: '#292929', padding: '5px'}}
+                    style={listGrid ? {filter: `invert(60%) sepia(0%) saturate(0%) hue-rotate(7deg) brightness(100%) contrast(93%)`} : {backgroundColor: '#292929', padding: '5px'}}
                     src={ListViewIcon} alt={"List view icon"} width={25} height={25}/>
                 <img
+                    draggable={false}
                     onClick={() => setListGrid(true)}
-                    style={!listGrid ? {filter: `invert(84%) sepia(0%) saturate(0%) hue-rotate(7deg) brightness(88%) contrast(93%)`} : {backgroundColor: '#292929', padding: '5px'}}
+                    style={!listGrid ? {filter: `invert(60%) sepia(0%) saturate(0%) hue-rotate(7deg) brightness(100%) contrast(93%)`} : {backgroundColor: '#292929', padding: '5px'}}
                     src={GridViewIcon} alt={"Grid view icon"} width={25} height={25}/>
             </div>
 

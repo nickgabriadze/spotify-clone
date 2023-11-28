@@ -226,7 +226,7 @@ export function ArtistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
         {discography.length > 0 && <div className={artistPageStyle['discography-section']}>
 
             <div className={artistPageStyle['disco-header']}>
-                <h1>Discography</h1>
+                <Link to={`/artist/${artistID}/discography/all`}><h1>Discography</h1></Link>
                 <Link to={`/artist/${artistID}/discography/${discoWhich}`}><button className={artistPageStyle['see-more-tracks']}><h4>Show all</h4></button></Link>
             </div>
 
