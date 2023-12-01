@@ -5,7 +5,7 @@ import searchBarStyle from "../search/components/search-bar/searchBar.module.css
 import Left from "../search/components/search-bar/icons/left.svg";
 import Right from "../search/components/search-bar/icons/right.svg";
 import Queue from "./components/queue/Queue.tsx";
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import Home from "./components/home/Home.tsx";
 import {Me} from "../../types/me.ts";
 import getMe from "../../api/getMe.ts";
@@ -38,7 +38,6 @@ export function Main({height}: {
     const access = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken)
     const navOption = useAppSelector((state) => state.navigationReducer.navTo);
     const dispatch = useAppDispatch();
-    const mainRef = useRef<HTMLDivElement>(null)
     useUpdateNumberOfItems();
     const navigatePages = useNavigate();
 
@@ -82,7 +81,6 @@ export function Main({height}: {
 
     return (
         <main
-            ref={mainRef}
             className={mainStyle['main-container']} style={{height: `${height}px`}}>
             <div
                 className={mainStyle['header-container']}
