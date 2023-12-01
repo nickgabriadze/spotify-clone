@@ -1,6 +1,6 @@
 import {Album} from "../../../../../../types/album.ts";
 import {Track} from "../../../../../../types/track.ts";
-import {useEffect, useState} from "react";
+import {forwardRef, Ref, useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../../../../store/hooks.ts";
 import getAlbumTracks from "../../../../../../api/main/album/getAlbumTracks.ts";
 import {SongCard} from "../../../../../search/reuseables/songCard.tsx";
@@ -17,13 +17,15 @@ import saveAlbumForCurrentUser from "../../../../../../api/library/saveAlbumForC
 import PlayResumeStreaming from "../../../../../../api/player/playResumeStreaming.ts";
 import PauseStreaming from "../../../../../../api/player/pauseStreaming.ts";
 
-export function DiscoAlbum({album}: { album: Album }) {
+export const DiscoAlbum = forwardRef(function DiscoAlbum({album}: { album: Album }, refObject: Ref<HTMLAnchorElement>) {
     const [albumTracks, setAlbumTracks] = useState<Track[]>([]);
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken);
     const [tracksLoading, setTracksLoading] = useState<boolean>(true);
     const albumIsSaved = useAppSelector(s => s.spotiUserReducer.userSaved.userSavedAlbumIDs).includes(String(album.id))
     const dispatch = useAppDispatch();
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong);
+
+
     useEffect(() => {
         const fetchTracks = async () => {
             try {
@@ -44,14 +46,16 @@ export function DiscoAlbum({album}: { album: Album }) {
         return
     }
 
-    return <section className={discographyStyle['disco-album-wrapper']}>
+    return <section className={discographyStyle['disco-album-wrapper']}
+
+    >
         <div className={discographyStyle['disco-album-info']}>
             <div className={discographyStyle['disco-album-image']}>
                 <img src={album?.images[0]?.url} alt={"Album image"}></img>
             </div>
             <div className={discographyStyle['disco-meta']}>
                 <div className={discographyStyle['disco-meta-heading']}>
-                    <Link to={`/album/${album.id}`}><h1>{album.name}</h1></Link>
+                    <Link to={`/album/${album.id}`} ref={refObject} placeholder={album.name}>{album.name}</Link>
                     <p>{album.album_type[0].toUpperCase().concat(album.album_type.slice(1,))} • {new Date(album.release_date).getFullYear()} • {albumTracks.length} {albumTracks.length > 1 ? 'songs' : 'song'}</p>
                 </div>
 
@@ -136,4 +140,5 @@ export function DiscoAlbum({album}: { album: Album }) {
                                                       forAlbum={true}/>)}</div>
         </div>
     </section>
-}
+})
+

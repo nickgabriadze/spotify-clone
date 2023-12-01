@@ -4,7 +4,7 @@ import ListViewIcon from "../../icons/list-view.svg"
 import {Link, useParams} from "react-router-dom";
 import Error from "../../../../../Error.tsx";
 import {useEffect, useRef, useState} from "react";
-import {useAppSelector} from "../../../../../../store/hooks.ts";
+import {useAppDispatch, useAppSelector} from "../../../../../../store/hooks.ts";
 import getArtistsAlbums from "../../../../../../api/main/artist/getArtistsAlbums.ts";
 import {Album} from "../../../../../../types/album.ts";
 import {DiscoAlbum} from "./DiscoAlbum.tsx";
@@ -13,6 +13,8 @@ import getArtist from "../../../../../../api/search/getArtist.ts";
 import AlbumCard from "../../../../../search/reuseables/albumCard.tsx";
 import DropDownIcon from './../../icons/drop-down-arrow.svg';
 import DropUpIcon from './../../icons/drop-up-arrow.svg';
+import useIntersectionObserver from "../../../../../utils/useIntersectionObserver.ts";
+import {setWhatsInView} from "../../../../../../store/features/spotiUserSlice.ts";
 
 export function Discography() {
     const [discoData, setDiscoData] = useState<Album[]>([]);
@@ -28,9 +30,34 @@ export function Discography() {
     const dropperText = useRef<HTMLDivElement>(null)
     const dropperImage = useRef<HTMLImageElement>(null)
     const dropDownRef = useRef<HTMLDivElement>(null)
+    const dispatch = useAppDispatch();
+    const [loading, setLoading] = useState<boolean>(true)
+    const observeAlbum = useIntersectionObserver({threshold: 1}, (entries: IntersectionObserverEntry[]) => {
+        if(loading) return;
+        entries.forEach((e: IntersectionObserverEntry) => {
+
+            if (!e.isIntersecting) {
+                    const albumName = String(e.target?.attributes[0].textContent)
+                    const albumURI = "spotify:album:".concat(e.target.attributes[1].value.split('/')[2])
+                    dispatch(setWhatsInView({
+                    pageName: 'Discography',
+                    pageItemName: albumName,
+                    uri: albumURI
+                }))
+            } else {
+                dispatch(setWhatsInView({
+                    pageName: 'None',
+                    pageItemName: 'None',
+                    uri: 'None'
+                }))
+            }
+
+        })
+    }, [loading])
     useEffect(() => {
         const getDiscoData = async () => {
             try {
+                setLoading(true)
                 const artistAlbums = await getArtistsAlbums(accessToken, String(urlParam.artistID), fetchAbleTypes)
                 const allTypes = await getArtistsAlbums(accessToken, String(urlParam.artistID),  ["album", "single", "compilation"])
 
@@ -40,6 +67,8 @@ export function Discography() {
                 setArtistData(artistData)
             } catch (err) {
 
+            }finally {
+                setLoading(false)
             }
         }
         if (POSSIBLE_TYPES.some(t => t === String(urlParam.type))) {
@@ -139,9 +168,9 @@ export function Discography() {
             {discoData.map((eachDisco, i) => {
                     if (listGrid) {
 
-                        return <AlbumCard eachAlbum={eachDisco} key={i}/>
+                        return <AlbumCard  eachAlbum={eachDisco} key={i}/>
                     } else {
-                        return <DiscoAlbum album={eachDisco} key={i}/>
+                        return <DiscoAlbum ref={observeAlbum} album={eachDisco} key={i}/>
                     }
                 }
             )}

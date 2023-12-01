@@ -157,15 +157,16 @@
         flex-direction: column;
         gap: 10px;
 
-        & h1 {
+        & a {
             font-size: 2.2rem;
             max-width: 50vw;
             white-space: nowrap;
             overflow: hidden;
+            color: white;
             text-overflow: ellipsis;
         }
 
-        & h1:hover {
+        & a:hover {
             text-decoration: underline;
         }
 

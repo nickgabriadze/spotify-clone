@@ -1,6 +1,6 @@
 import {Track} from "../../../types/track";
 import songsStyle from "../components/each-search-component/Songs/songs.module.css";
-import {LegacyRef, forwardRef, useState, useEffect} from "react";
+import {forwardRef, useState, useEffect, Ref} from "react";
 import Equaliser from "../../player/icons/device-picker-equaliser.webp"
 import {useAppDispatch, useAppSelector} from "../../../store/hooks";
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
@@ -30,7 +30,7 @@ export const SongCard = forwardRef(function SongCard(props: {
     forArtist?: boolean,
     playlistTrackAddedDate?: String,
     forPlaylist?: boolean
-}, ref: LegacyRef<HTMLDivElement>) {
+}, ref: Ref<HTMLDivElement>) {
     const [currentSaved, setCurrentSaved] = useState<boolean>(false)
     const savedSongs = useAppSelector((state) => state.spotiUserReducer.userSaved.userSavedSongIDs);
 
