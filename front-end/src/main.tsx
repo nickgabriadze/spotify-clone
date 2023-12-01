@@ -9,9 +9,7 @@ import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} fr
 
 const routing = createBrowserRouter(
     createRoutesFromElements(
-        <Route path={'*'}
-
-               element={<App/>} />
+        <Route path={'*'} element={<App/>} />
     )
 )
 ReactDOM.createRoot(document.getElementById('root')!).render(

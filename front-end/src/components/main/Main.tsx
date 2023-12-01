@@ -219,7 +219,6 @@ export function Main({height}: {
 
             <div>
                 <Routes>
-                    <Route path={'*'} element={<Error/>}/>
                     <Route path={'/'} element={<Home/>}/>
                     <Route path={'/search/*'} element={<Search/>}/>
                     <Route path={'/genre/:genreID'} element={<Category/>}/>

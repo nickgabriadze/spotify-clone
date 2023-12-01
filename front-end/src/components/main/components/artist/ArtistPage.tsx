@@ -22,7 +22,7 @@ import AppearsOn from "./components/AppearsOn.tsx";
 import FansAlsoLike from "./components/FansAlsoLike.tsx";
 import {checkInView} from "../../../utils/checkInView.ts";
 import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 
 export function ArtistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
     const {artistID} = useParams();
@@ -39,7 +39,6 @@ export function ArtistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
     const [loading, setLoading] = useState<boolean>(true);
     const playBtnRef = useRef<HTMLDivElement>(null)
     const artistPageRef = useRef<HTMLDivElement>(null)
-    const navigate = useNavigate()
     const numberOfItems = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown);
     useEffect(() => {
 
@@ -94,7 +93,6 @@ export function ArtistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
                 setDiscoWhich(Object.keys(discoTime[0]).toString())
 
             } catch (err) {
-                navigate('/')
             } finally {
                 setLoading(false)
             }
