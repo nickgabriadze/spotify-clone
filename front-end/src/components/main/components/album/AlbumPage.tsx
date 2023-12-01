@@ -1,7 +1,7 @@
 import albumStyle from "./albumpage.module.css";
 import {Track} from "../../../../types/track.ts";
 import {Album, AlbumWithTracks} from "../../../../types/album.ts";
-import {RefObject, useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks.ts";
 import getAlbum from "../../../../api/search/getAlbum.ts";
 import getAlbumTracks from "../../../../api/main/album/getAlbumTracks.ts";
@@ -22,11 +22,11 @@ import Duration from "../../../search/components/each-search-component/icons/dur
 import {SongCard} from "../../../search/reuseables/songCard.tsx";
 import getArtistAlbums from "../../../../api/main/album/getArtistAlbums.ts";
 import AlbumCard from "../../../search/reuseables/albumCard.tsx";
-import {checkInView} from "../../../utils/checkInView.ts";
 import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
 import {Link, useParams} from "react-router-dom";
+import useIntersectionObserver from "../../../utils/useIntersectionObserver.ts";
 
-export function AlbumPage({ mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
+export function AlbumPage() {
     const {albumID} = useParams();
     const [albumData, setAlbumData] = useState<{ album: AlbumWithTracks, albumTracks: Track[] }>();
     const accessToken = useAppSelector(state => state.spotiUserReducer.spotiToken.accessToken);
@@ -36,21 +36,18 @@ export function AlbumPage({ mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
     const albumIsSaved = useAppSelector(s => s.spotiUserReducer.userSaved.userSavedAlbumIDs).includes(String(albumID))
     const [artistAlbums, setArtistAlbums] = useState<Album[]>([]);
     const [onFullScreen, setOnFullScreen] = useState<boolean>(false);
-    const playBtnRef = useRef<HTMLDivElement>(null)
     const albumPageRef = useRef<HTMLDivElement>(null)
     const numberOfItems = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown);
-
+    const [albumLoading, setAlbumLoading] = useState<boolean>(true);
     useEffect(() => {
         if (!currentlyPlaying.isPlaying && albumData?.album.id) {
             document.title = `Album / ${albumData?.album?.name}`
         }
     }, [currentlyPlaying.isPlaying, albumData?.album?.id]);
 
-    useEffect(() => {
-
-        const duringScroll = () => {
-
-            if (!checkInView(playBtnRef)) {
+    const observePlayButton = useIntersectionObserver({threshold: 1}, (entries: IntersectionObserverEntry[]) => {
+        entries.forEach((e: IntersectionObserverEntry) => {
+            if (!e.isIntersecting) {
                 dispatch(setWhatsInView({
                     pageName: 'Album',
                     pageItemName: String(albumData?.album.name),
@@ -65,26 +62,20 @@ export function AlbumPage({ mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
                 }))
             }
 
-        }
-
-
-        if (mainRef.current) {
-            mainRef.current.addEventListener('scroll', duringScroll)
-        }
-
-        return () => mainRef.current?.removeEventListener('scroll', duringScroll)
-
-    }, [playBtnRef.current, albumPageRef.current, albumID]);
+        })
+    }, [albumLoading])
 
 
     useEffect(() => {
         const getOtherAlbums = async () => {
             try {
-
+                setAlbumLoading(true)
                 const artistAlbums = (await getArtistAlbums(accessToken, String(albumData?.album.artists[0].id))).data;
                 setArtistAlbums(artistAlbums.items)
             } catch (err) {
 
+            }finally {
+                setAlbumLoading(false)
             }
         }
 
@@ -186,7 +177,7 @@ export function AlbumPage({ mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
             <div className={albumStyle['play-track-list']}>
                 <div className={albumStyle['play-save']}>
                     <div
-                        ref={playBtnRef}>
+                        ref={observePlayButton}>
                         <button
                             className={albumStyle["album-hover-button"]}
                             onClick={async () => {

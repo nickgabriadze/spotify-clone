@@ -1,6 +1,6 @@
 import NoPlaylistImage from "../../../search/components/each-search-component/icons/no-playlist-pic.webp";
 import playlistPageStyle from './playlistpage.module.css';
-import {RefObject, useCallback, useEffect, useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import getPlaylist from "../../../../api/search/getPlaylist.ts";
 import {FullPlayList, PlayListTrackObject} from "../../../../types/playlist.ts";
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks.ts";
@@ -18,12 +18,12 @@ import Duration from "../../../search/components/each-search-component/icons/dur
 import {SongCard} from "../../../search/reuseables/songCard.tsx";
 import SongCardSkeleton from "../../../../skeletons/songCardSkeleton.tsx";
 import axiosInstance from "../../../../axios.ts";
-import {checkInView} from "../../../utils/checkInView.ts";
 import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
 import {useParams} from "react-router-dom";
+import useIntersectionObserver from "../../../utils/useIntersectionObserver.ts";
 
 
-export function PlaylistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
+export function PlaylistPage() {
     const {playlistID} = useParams();
 
     const [playListData, setPlayListData] = useState<FullPlayList>();
@@ -41,15 +41,12 @@ export function PlaylistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) 
     });
 
     const [tracksLoading, setTracksLoading] = useState<boolean>(true);
-    const playBtnRef = useRef<HTMLDivElement>(null)
     const playlistPageRef = useRef<HTMLDivElement>(null)
 
-    useEffect(() => {
-
-        const duringScroll = () => {
-
-            if (!checkInView(playBtnRef)) {
-                dispatch(setWhatsInView({
+    const observePlayButton = useIntersectionObserver({threshold: 1}, (entries: IntersectionObserverEntry[]) => {
+        entries.forEach((e: IntersectionObserverEntry) => {
+            if (!e.isIntersecting) {
+               dispatch(setWhatsInView({
                     pageName: 'Playlist',
                     pageItemName: String(playListData?.name),
                     uri: String(playListData?.uri)
@@ -63,16 +60,8 @@ export function PlaylistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) 
                 }))
             }
 
-        }
-
-
-        if (mainRef.current) {
-            mainRef.current.addEventListener('scroll', duringScroll)
-        }
-        return () =>  mainRef.current?.removeEventListener('scroll', duringScroll)
-
-
-    }, [playBtnRef.current, playlistPageRef.current, playlistID]);
+        })
+    }, [playlistLoading])
 
     useEffect(() => {
         if (!currentlyPlaying.isPlaying && playListData?.id) {
@@ -85,6 +74,7 @@ export function PlaylistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) 
                 setPlaylistLoading(true)
                 setTracksLoading(true)
                 const pl: FullPlayList = (await getPlaylist(accessToken, String(playlistID))).data;
+
                 setPlayListData(pl)
                 setPlaylistTracks(prev => {
                     return {
@@ -93,8 +83,7 @@ export function PlaylistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) 
                         next: pl?.tracks?.next
                     }
                 })
-            } catch (e) {
-
+            } catch (_) {
             } finally {
                 setPlaylistLoading(false)
                 setTracksLoading(false)
@@ -152,7 +141,7 @@ export function PlaylistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) 
 
     if (playlistLoading) return <></>
 
-    if(playListData === undefined) return <></>
+
 
 
     return <section className={playlistPageStyle['playlist-page-wrapper']}
@@ -178,7 +167,7 @@ export function PlaylistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) 
         </div>
         <div className={albumStyle['play-save']}>
             <div
-                ref={playBtnRef}
+                ref={observePlayButton}
             >
                 <button
 

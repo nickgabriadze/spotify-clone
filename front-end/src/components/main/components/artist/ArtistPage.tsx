@@ -1,5 +1,5 @@
 import {Artist} from "../../../../types/artist.ts";
-import {RefObject, useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import getArtist from "../../../../api/search/getArtist.ts";
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks.ts";
 import artistPageStyle from './artistpage.module.css'
@@ -20,11 +20,11 @@ import AlbumCard from "../../../search/reuseables/albumCard.tsx";
 import {Album} from "../../../../types/album.ts";
 import AppearsOn from "./components/AppearsOn.tsx";
 import FansAlsoLike from "./components/FansAlsoLike.tsx";
-import {checkInView} from "../../../utils/checkInView.ts";
 import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
 import {Link, useParams} from "react-router-dom";
+import useIntersectionObserver from "../../../utils/useIntersectionObserver.ts";
 
-export function ArtistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
+export function ArtistPage() {
     const {artistID} = useParams();
     const [artistData, setArtistData] = useState<Artist>();
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken);
@@ -37,14 +37,12 @@ export function ArtistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
     const [discography, setDiscography] = useState<{ [key: string]: any }[]>([]);
     const [discoWhich, setDiscoWhich] = useState<string>('');
     const [loading, setLoading] = useState<boolean>(true);
-    const playBtnRef = useRef<HTMLDivElement>(null)
     const artistPageRef = useRef<HTMLDivElement>(null)
     const numberOfItems = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown);
-    useEffect(() => {
 
-        const duringScroll = () => {
-
-            if (!checkInView(playBtnRef)) {
+    const observePlayButton = useIntersectionObserver({threshold: 1}, (entries: IntersectionObserverEntry[]) => {
+        entries.forEach((e: IntersectionObserverEntry) => {
+            if (!e.isIntersecting) {
                 dispatch(setWhatsInView({
                     pageName: 'Artist',
                     pageItemName: String(artistData?.name),
@@ -59,17 +57,9 @@ export function ArtistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
                 }))
             }
 
+        })
+    }, [loading])
 
-        }
-
-
-        if (mainRef.current) {
-            mainRef.current.addEventListener('scroll', duringScroll)
-        }
-        return () => mainRef.current?.removeEventListener('scroll', duringScroll)
-
-
-    }, [playBtnRef.current, artistPageRef.current, artistID]);
 
     useEffect(() => {
         if (!currentlyPlaying.isPlaying && artistData?.id) {
@@ -103,7 +93,6 @@ export function ArtistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
     if (loading) return <></>
 
 
-
     return <section className={artistPageStyle['artist-page-wrapper']}
                     ref={artistPageRef}
     >
@@ -134,7 +123,7 @@ export function ArtistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
 
         <div className={artistPageStyle['play-follow']}>
             <div className={artistPageStyle['play-button']}
-                 ref={playBtnRef}
+                 ref={observePlayButton}
             >
                 <button
                     onClick={async () => {
@@ -226,7 +215,9 @@ export function ArtistPage({mainRef}: { mainRef: RefObject<HTMLDivElement> }) {
 
             <div className={artistPageStyle['disco-header']}>
                 <Link to={`/artist/${artistID}/discography/all`}><h1>Discography</h1></Link>
-                <Link to={`/artist/${artistID}/discography/${discoWhich}`}><button className={artistPageStyle['see-more-tracks']}><h4>Show all</h4></button></Link>
+                <Link to={`/artist/${artistID}/discography/${discoWhich}`}>
+                    <button className={artistPageStyle['see-more-tracks']}><h4>Show all</h4></button>
+                </Link>
             </div>
 
             <div className={artistPageStyle['option-disco']}>
