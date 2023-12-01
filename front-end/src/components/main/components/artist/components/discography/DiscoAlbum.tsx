@@ -132,7 +132,7 @@ export function DiscoAlbum({album}: { album: Album }) {
                     ></img>
                 </div>
             </nav>
-            <div>{albumTracks.map((t, i) => <SongCard eachTrack={t} n={i + 1} accessToken={accessToken}
+            <div>{albumTracks.map((t, i) => <SongCard eachTrack={t} n={i + 1} key={i} accessToken={accessToken}
                                                       forAlbum={true}/>)}</div>
         </div>
     </section>

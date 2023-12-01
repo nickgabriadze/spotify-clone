@@ -25,14 +25,17 @@ export function Discography() {
     const numberOfItems = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown);
     const fetchAbleTypes = urlParam.type === "all" ? ["album", "single", "compilation"] : [String(urlParam.type)]
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken);
-
+    const dropperText = useRef<HTMLDivElement>(null)
+    const dropperImage = useRef<HTMLImageElement>(null)
     const dropDownRef = useRef<HTMLDivElement>(null)
     useEffect(() => {
         const getDiscoData = async () => {
             try {
                 const artistAlbums = await getArtistsAlbums(accessToken, String(urlParam.artistID), fetchAbleTypes)
+                const allTypes = await getArtistsAlbums(accessToken, String(urlParam.artistID),  ["album", "single", "compilation"])
+
                 setDiscoData(artistAlbums.flatMap(o => Object.values(o)[0]))
-                setOptions(['All', 'Single', 'Compilation', 'Album',])
+                setOptions(['All', ...allTypes.flatMap(o => Object.keys(o)[0]).map(each => each[0].toUpperCase().concat(each.slice(1, )))])
                 const artistData = (await getArtist(accessToken, String(urlParam.artistID))).data;
                 setArtistData(artistData)
             } catch (err) {
@@ -46,11 +49,13 @@ export function Discography() {
 
     useEffect(() => {
         const handleClickOutside = (e: any) => {
-            if (dropDownRef.current && !dropDownRef.current.contains(e.target)
+            if (dropperText.current && dropperImage.current && dropDownRef.current && !dropDownRef.current.contains(e.target)
 
             ) {
+                if (e.target !== dropperText.current &&
+                    e.target !== dropperImage.current
+                ) {
 
-                if (e.target !== dropDownRef.current) {
                     setDropDownState("DOWN");
                 }
             }
@@ -74,6 +79,7 @@ export function Discography() {
 
             <div className={discographyStyle['list-or-grid']}>
                 <div className={discographyStyle['drop-down-menu']}
+
                      onClick={() => {
                          if (dropDownState === "UP") {
                              setDropDownState("DOWN")
@@ -82,8 +88,8 @@ export function Discography() {
                          }
                      }}
                 >
-                    <p>{String(urlParam.type)[0].toUpperCase().concat(String(urlParam.type).slice(1,))}</p>
-                    <img alt="Dropdown menu icon"
+                    <p ref={dropperText}>{String(urlParam.type)[0].toUpperCase().concat(String(urlParam.type).slice(1,))}</p>
+                    <img ref={dropperImage} alt="Dropdown menu icon"
                          src={dropDownState === "UP" ? DropUpIcon : DropDownIcon} width={30} height={30}></img>
                 </div>
 
@@ -115,9 +121,10 @@ export function Discography() {
                 <div className={discographyStyle['drop-down-wrapper']}
                 >{
                     options.filter(o => o !== urlParam.type).map((e, i) => <Link
+                        key={i}
                         to={`/artist/${artistData?.id}/discography/${e.toLowerCase()}`}><p
                         style={{color: urlParam.type === e.toLowerCase() ? '#1ed760' : 'white'}}
-                        key={i}>{e}</p></Link>)
+                    >{e}</p></Link>)
                 }</div>}</div>
 
         </header>
