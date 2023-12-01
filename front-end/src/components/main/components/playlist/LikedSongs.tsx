@@ -20,7 +20,7 @@ export function LikedSongs() {
     const [likedTracks, setLikedTracks] = useState<{ added_at: string, track: PlayListTrackObject }[]>([]);
     const libraryActions = useAppSelector(s => s.navigationReducer.libraryActions);
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong);
-    const [loading, setLoading] = useState<boolean>(true);
+    const [_, setLoading] = useState<boolean>(true);
 
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken)
 
@@ -68,12 +68,12 @@ export function LikedSongs() {
                 <p className={playlistPageStyle['pl-type']}>{'Playlist'}</p>
                 <h1 className={playlistPageStyle['pl-name']}>Liked Songs</h1>
 
-                <div className={playlistPageStyle['owner-likes-total-dur']}>
+                {me && <div className={playlistPageStyle['owner-likes-total-dur']}>
                     <p>{String(me?.display_name)} • </p>
 
-                    {!loading && <p>{likedTracks.length} {Number(likedTracks.length) > 1 ? 'songs' : 'song'}</p>}
+                    {me && <p>{likedTracks.length} {Number(likedTracks.length) > 1 ? 'songs' : 'song'}</p>}
 
-                </div>
+                </div>}
             </div>
         </div>
         <div className={albumStyle['play-save']}>

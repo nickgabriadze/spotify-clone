@@ -225,8 +225,8 @@ export function Main({height}: {
                     <Route path={'/genre/:genreID'} element={<Category/>}/>
                     <Route path={'/artist'} element={<ArtistLayout/>}>
                         <Route path={':artistID'} element={<ArtistPage mainRef={mainRef}/>}/>
-                        <Route path={':artistID/discography'} errorElement={<Error />} element={<Discography />}></Route>
-                        <Route path={':artistID/discography/:type'} element={<Discography />}></Route>
+                        <Route path={':artistID/discography'} errorElement={<Error/>} element={<Discography/>}></Route>
+                        <Route path={':artistID/discography/:type'} element={<Discography/>}></Route>
                     </Route>
                     <Route path={'/queue'} element={<Queue/>}/>
                     <Route path={'/album/:albumID'} element={<AlbumPage mainRef={mainRef}/>}/>
