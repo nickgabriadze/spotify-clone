@@ -1,7 +1,10 @@
+import {useNavigate} from "react-router-dom";
+
 export function SpotiError() {
-  return (
-    <h6 style={{ color: "#A93226" }}>There is an error, try again later!</h6>
-  );
+  const navigate = useNavigate();
+  navigate('/')
+
+  return <></>
 }
 
 export default SpotiError;

@@ -1,6 +1,6 @@
 import {Track} from "../../../types/track";
 import songsStyle from "../components/each-search-component/Songs/songs.module.css";
-import {LegacyRef, forwardRef, useState, useEffect} from "react";
+import {forwardRef, useState, useEffect, Ref} from "react";
 import Equaliser from "../../player/icons/device-picker-equaliser.webp"
 import {useAppDispatch, useAppSelector} from "../../../store/hooks";
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
@@ -20,6 +20,7 @@ import saveTrackForCurrentUser from "../../../api/library/saveTrackForCurrentUse
 import SavedTrackIcon from "../../player/icons/liked-indicator-heart.svg";
 import Heart from "../../player/icons/heart.svg";
 import {PlayListTrackObject} from "../../../types/playlist.ts";
+import {Link} from "react-router-dom";
 
 export const SongCard = forwardRef(function SongCard(props: {
     eachTrack: Track | PlayListTrackObject | undefined,
@@ -29,7 +30,7 @@ export const SongCard = forwardRef(function SongCard(props: {
     forArtist?: boolean,
     playlistTrackAddedDate?: String,
     forPlaylist?: boolean
-}, ref: LegacyRef<HTMLDivElement>) {
+}, ref: Ref<HTMLDivElement>) {
     const [currentSaved, setCurrentSaved] = useState<boolean>(false)
     const savedSongs = useAppSelector((state) => state.spotiUserReducer.userSaved.userSavedSongIDs);
 
@@ -134,9 +135,9 @@ export const SongCard = forwardRef(function SongCard(props: {
                 }
                 <div className={songsStyle["img-title-artists"]}
 
-                style={{
-                    marginLeft: forAlbum ? '10px': '5%'
-                }}
+                     style={{
+                         marginLeft: forAlbum ? '10px' : '5%'
+                     }}
                 >
                     {!forAlbum && <div className={songsStyle["album-img"]}>
                         {eachTrack?.album?.images[0]?.url ? <img
@@ -165,23 +166,33 @@ export const SongCard = forwardRef(function SongCard(props: {
 
                          }}
                     >
-                        <a
-                            className={songsStyle['track-name']}
-                            onClick={() => {
-                                if (eachTrack?.album?.id) {
-                                    dispatch(addReactComponentToNavigation({
-                                        componentName: 'Album',
-                                        props: eachTrack?.album?.id
-                                    }))
-                                }
-                            }}
-                            style={
+                        {!forAlbum ? <Link to={`/album/${eachTrack?.album?.id}`}
+                                           className={songsStyle['track-name']}
+                                           onClick={() => {
+                                               if (eachTrack?.album?.id) {
+                                                   dispatch(addReactComponentToNavigation({
+                                                       componentName: 'Album',
+                                                       props: eachTrack?.album?.id
+                                                   }))
+                                               }
+                                           }}
+                                           style={
 
-                                {
-                                    width: `${forAlbum ? '55vw' : '26vw'}`,
-                                    color: `${eachTrack?.id === songID ? '#1ed760' : 'white'}`,
-                                    paddingBottom: forArtist && eachTrack?.explicit ? '10px' : '0px'
-                                }}>{eachTrack?.name}</a>
+                                               {
+                                                   width: `${forAlbum ? '55vw' : '26vw'}`,
+                                                   color: `${eachTrack?.id === songID ? '#1ed760' : 'white'}`,
+                                                   paddingBottom: forArtist && eachTrack?.explicit ? '10px' : '0px'
+                                               }}>{eachTrack?.name}</Link>
+                            : <a
+                                    className={songsStyle['track-name']}
+                                    style={
+
+                                        {
+                                            width: `${forAlbum ? '55vw' : '26vw'}`,
+                                            color: `${eachTrack?.id === songID ? '#1ed760' : 'white'}`,
+                                            paddingBottom: forArtist && eachTrack?.explicit ? '10px' : '0px'
+                                        }}>{eachTrack?.name}</a>
+                        }
                         <div
                             className={songsStyle['artists-mapped']}
 
@@ -193,14 +204,14 @@ export const SongCard = forwardRef(function SongCard(props: {
                                 <div className={songsStyle['artists-box']}
                                      style={{width: `${forAlbum ? '55vw' : '25vw'}`}}
                                 >{eachTrack?.artists.map((artist, i) =>
-                                    <a key={i}
-                                       onClick={() => {
+                                    <Link to={`/artist/${artist?.id}`} key={i}
+                                          onClick={() => {
                                            dispatch(addReactComponentToNavigation({
                                                componentName: 'Artist',
                                                props: artist?.id
                                            }))
                                        }}
-                                    >{i === eachTrack.artists.slice(0, 4).length - 1 ? artist.name : `${artist.name}, `}</a>)}</div>
+                                    >{i === eachTrack.artists.slice(0, 4).length - 1 ? artist.name : `${artist.name}, `}</Link>)}</div>
                             }
                         </div>
                     </div>
@@ -216,7 +227,7 @@ export const SongCard = forwardRef(function SongCard(props: {
 
             <div
                 className={songsStyle[`${forPlaylist ? 'date-added-duration-wrapper' : 'normal'}`]}
-            style={forPlaylist === false && forAlbum === false && forArtist === false ? {width:'7vw'}: {}}
+                style={forPlaylist === false && forAlbum === false && forArtist === false ? {width: '7vw'} : {}}
             >
 
                 {forPlaylist && <div className={songsStyle['playlist-track-added_at']}>
@@ -254,6 +265,7 @@ export const SongCard = forwardRef(function SongCard(props: {
                 </div>
             </div>
         </div>
-    );
+    )
+        ;
 })
 

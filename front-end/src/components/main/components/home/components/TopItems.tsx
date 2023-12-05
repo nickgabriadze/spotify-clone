@@ -11,6 +11,7 @@ import PauseStreaming from "../../../../../api/player/pauseStreaming.ts";
 import Pause from "../../../../search/components/each-search-component/Playlists/icons/pause.svg";
 import Play from "../../../../search/components/each-search-component/Playlists/icons/play.svg";
 import UsersTopItemSkeleton from "../../../../../skeletons/usersTopItemSkeleton.tsx";
+import {Link} from "react-router-dom";
 
 export function TopItems() {
     const [topItemsData, setTopItemsData] = useState<(Album | Artist)[]>([]);
@@ -24,8 +25,8 @@ export function TopItems() {
 
             try {
                 setDataLoading(true)
-                const getTopArtists: Artist[] = (await getUsersTopItems(access, 'artists', 'short_term', 3)).data.items;
-                const getTopTracks: Track[] = (await getUsersTopItems(access, 'tracks', "short_term", 3)).data.items;
+                const getTopArtists: Artist[] = (await getUsersTopItems(access, 'artists', 'medium_term', 3)).data.items;
+                const getTopTracks: Track[] = (await getUsersTopItems(access, 'tracks', "medium_term", 3)).data.items;
                 const tracksMappedToAlbums = getTopTracks.map(eachTopTrack => eachTopTrack.album);
 
                 setTopItemsData([
@@ -62,19 +63,24 @@ export function TopItems() {
 
             >
 
-                <div className={homepageStyle['album-picture']}
-                     onClick={() => {
-                         dispatch(addReactComponentToNavigation({
-                             componentName: eachTopItem.type.slice(0, 1).toUpperCase().concat(eachTopItem.type.slice(1,)),
-                             props: eachTopItem.id
-                         }))
-                     }}
-                >
-                    <img src={eachTopItem?.images[0].url} alt={'Album Image'}></img>
-                </div>
+
+                    <Link to={`/${eachTopItem.type}/${eachTopItem.id}`}><div className={homepageStyle['album-picture']}
+                         onClick={() => {
+                             dispatch(addReactComponentToNavigation({
+                                 componentName: eachTopItem.type.slice(0, 1).toUpperCase().concat(eachTopItem.type.slice(1,)),
+                                 props: eachTopItem.id
+                             }))
+                         }}
+                    ><img src={eachTopItem?.images[0].url} alt={'Album Image'}></img>
+                    </div>
+                    </Link>
+
+
+
 
                 <div className={homepageStyle['detail-play']}>
-                    <div className={homepageStyle['top-item-title']}
+                     <Link to={`/${eachTopItem.type}/${eachTopItem.id}`
+                }><div className={homepageStyle['top-item-title']}
                          onClick={() => {
                              dispatch(addReactComponentToNavigation({
                                  componentName: eachTopItem.type.slice(0, 1).toUpperCase().concat(eachTopItem.type.slice(1,)),
@@ -82,6 +88,7 @@ export function TopItems() {
                              }))
                          }}
                     >{eachTopItem?.name}</div>
+                     </Link>
                     {hoveringOverTopItem && hoveringOverTopItem.itemID === eachTopItem?.id &&
                         <div className={homepageStyle['play-button']}>
                             <button

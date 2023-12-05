@@ -4,29 +4,32 @@ import SearchUnfilled from "../../../navigation/icons/search-unfilled.svg";
 import closeSearch from "../../../navigation/icons/close-search.svg";
 import {useEffect, useState} from "react";
 
-import {useAppDispatch, useAppSelector} from "../../../../store/hooks";
-import {
-    setSearchQuery,
-    setTyping,
-} from "../../../../store/features/navigationSlice";
+import {useNavigate, useParams} from "react-router-dom";
 
 
 export function SearchBar() {
-    const [userSearchingQ, setUserSearchingQ] = useState<string>('')
-    const searchStuff = useAppSelector((state) => state.navigationReducer);
-    const dispatchSearch = useAppDispatch();
+    const params = useParams();
+    const destructured = Object.values(params).toString().split('/')[2] ? Object.values(params).toString().split('/')[2] : 'all'
+    const weAreSearchingFor = Object.values(params).toString().split('/')[1]
+    const [userSearchingQ, setUserSearchingQ] = useState<string>(weAreSearchingFor || '');
     const [onElementFocus, setOnElementFocus] = useState<boolean>(false);
 
+    const navigator = useNavigate();
     // const [err, setErr] = useState<string | unknown>();
+
 
     useEffect(() => {
         const timeOutToSetQuery = setTimeout(() => {
-            dispatchSearch(
-                setSearchQuery({
-                    searchQuery: userSearchingQ
-                })
-            )
+
+            if (userSearchingQ !== '') {
+                navigator(`/search/${userSearchingQ === 'undefined' ? '' : userSearchingQ}/${destructured ? destructured : 'all'}`)
+            } else {
+                navigator('/search/')
+            }
+
         }, 500)
+
+
         return () => clearTimeout(timeOutToSetQuery)
     }, [userSearchingQ]);
 
@@ -65,49 +68,29 @@ export function SearchBar() {
                             ></img>
                             <input
                                 autoComplete={"off"}
-                                onKeyDown={() => {
-                                    if (searchStuff.typing === false) {
-                                        dispatchSearch(
-                                            setTyping({
-                                                typing: true,
-                                            })
-                                        );
-                                    }
-                                }}
-                                onKeyUp={() => {
-                                    if (searchStuff.typing) {
-                                        dispatchSearch(
-                                            setTyping({
-                                                typing: false,
-                                            })
-                                        );
-                                    }
-                                }}
                                 name="Search song field"
                                 placeholder="What do you want to listen to?"
                                 value={userSearchingQ}
                                 onChange={(e) => {
                                     setUserSearchingQ(e.target.value)
+
                                 }
                                 }
                             ></input>
-                            {searchStuff.searchQuery.length === 0 ? (
-                                ""
-                            ) : (
+                            {userSearchingQ.length !== 0 &&
                                 <img
                                     alt={'Delete/Close search icon'}
                                     src={closeSearch}
-                                    onClick={() =>
-                                        dispatchSearch(
-                                            setSearchQuery({
-                                                searchQuery: "",
-                                            })
-                                        )
+                                    onClick={() => {
+                                        setUserSearchingQ('')
+                                        navigator(`/search/`)
+                                    }
                                     }
                                     width={24}
                                     height={24}
                                 ></img>
-                            )}
+
+                            }
                         </div>
                     </div>
 
@@ -115,6 +98,7 @@ export function SearchBar() {
                 </div>
 
             </div>
+
 
         </div>
     );

@@ -63,15 +63,14 @@
     background-color: #302f2f;
 }
 
-.each-artist a {
-    font-size: clamp(12px, 2.5vw, 2vh);
+.each-artist h1{
+    font-size: clamp(14px, 2.5vw, 2vh);
     word-wrap: break-word;
     word-break: break-word;
-
     max-width: 150px;
 }
 
-.each-artist a:hover {
+.each-artist h1:hover {
     text-decoration: underline;
     cursor: pointer;
 
@@ -94,6 +93,7 @@
     z-index: 1;
 
 }
+
 
 
 .artist-hover-button {

@@ -6,19 +6,21 @@ import SearchUnfilled from "./icons/search-unfilled.svg";
 import navigationStyle from "./navigation.module.css";
 import SearchUnfilledGrey from "./icons/search-unfilled-grey.svg";
 import HomeUnfilledGrey from "./icons/home-unfilled-grey.svg";
-import {useAppDispatch, useAppSelector} from "../../store/hooks";
+import {useAppDispatch} from "../../store/hooks";
 import {addReactComponentToNavigation} from "../../store/features/navigationSlice.ts";
+import {Link, useParams} from "react-router-dom";
 
 
 export function Navigation() {
-
+    const navParams = useParams();
+    const navParamsIncludeSearch = Object.values(navParams).toString().includes('search')
+    const navParamsHome = Object.values(navParams).toString().length === 0
     const [navHover, setNavHover] = useState<string>("none");
     const dispatchNavigation = useAppDispatch();
-    const pageNav = useAppSelector(state => state.navigationReducer.pageNavigation)
-    const currentPage = pageNav.pageHistory[pageNav.currentPageIndex].component
     return (
+
         <section className={navigationStyle["nav-box"]}>
-            <div
+            <Link to={'/'}><div
                 className={navigationStyle["home-box"]}
                 onMouseEnter={() => setNavHover("Home")}
                 onMouseLeave={() => setNavHover("none")}
@@ -30,7 +32,7 @@ export function Navigation() {
                 <img
                     className={navigationStyle['nav-img']}
                     src={
-                        currentPage === 'Home'
+                        navParamsHome
                             ? HomeFilled
                             : navHover === "Home"
                                 ? HomeUnfilled
@@ -39,10 +41,12 @@ export function Navigation() {
 
 
                     alt={'Home icon'}></img>
-                <h4 style={currentPage === 'Home' ? {color: "white"} : {}}>Home</h4>
+                <h4 style={navParamsHome ? {color: "white"} : {}}>Home</h4>
             </div>
+            </Link>
 
-            <div
+           <Link to={'/search/'}>
+               <div
                   className={navigationStyle["search-box"]}
                   onClick={() => {
                        dispatchNavigation(addReactComponentToNavigation({componentName: "Search", props: null}))
@@ -55,7 +59,7 @@ export function Navigation() {
                     alt={'Search icon'}
                     className={navigationStyle['nav-img']}
                     src={
-                        currentPage === 'Search'
+                       navParamsIncludeSearch
                             ? SearchFilled
                             : navHover === "Search"
                                 ? SearchUnfilled
@@ -63,8 +67,9 @@ export function Navigation() {
                     }
 
                 ></img>
-                <h4 style={currentPage === 'Search'? {color: "white"} : {}}>Search</h4>
+                <h4 style={navParamsIncludeSearch ? {color: "white"} : {}}>Search</h4>
             </div>
+               </Link>
         </section>
     );
 }

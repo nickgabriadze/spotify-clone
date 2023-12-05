@@ -1,0 +1,234 @@
+.disco-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+}
+
+
+.disco-header {
+    & h1 {
+        font-size: 1.5rem;
+
+    }
+
+    padding-left: 10px;
+    padding-right: 10px;
+    top: 70px;
+    position: sticky;
+    z-index: 999;
+    margin: 0;
+    padding-bottom: 15px;
+    background-color: #121212;
+
+    & h1:hover {
+        text-decoration: underline;
+
+    }
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .list-or-grid {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+
+        & img {
+            cursor: pointer;
+            color: #b8b8b8;
+            transition: all 300ms ease-in-out;
+            border-radius: 100%;
+        }
+    }
+}
+
+.disco-layout {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 70px;
+}
+
+.drop-down-menu {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+
+    & p {
+        font-family: 'Gotham Light', sans-serif;
+        font-weight: 600;
+        color: #b8b8b8;
+        font-size: 14px;
+    }
+
+    & > img {
+        filter: invert(60%) sepia(0%) saturate(0%) hue-rotate(7deg) brightness(100%) contrast(93%);
+    }
+
+}
+
+.drop-down-menu:hover {
+    & > img {
+        filter: invert(0%) sepia(0%) saturate(0%) hue-rotate(7deg) brightness(100%) contrast(93%);
+
+    }
+
+    & p {
+        transition: all 300ms ease-in-out;
+        color: white;
+    }
+}
+
+
+.drop-down-options {
+    position: absolute;
+    top: 40px;
+    right: 10px;
+    display: block;
+    width: 140px;
+    background-color: #282828;
+    z-index: 999;
+    border-radius: 4px;
+    box-shadow: 0 16px 24px rgba(0, 0, 0, .3), 0 6px 8px rgba(0, 0, 0, .2);
+
+    .drop-down-wrapper {
+        display: flex;
+        flex-direction: column;
+        padding: 5px;
+
+        & p {
+            padding: 10px;
+            font-size: 12px;
+            font-family: 'Gotham Light', sans-serif;
+            font-weight: bold;
+            border-radius: 3px;
+            cursor: pointer;
+            color: white;
+        }
+
+        & p:hover {
+            background-color: rgba(91, 89, 89, 0.23);
+        }
+    }
+}
+
+/* Disco album style */
+
+.disco-album-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.disco-album-info {
+    display: flex;
+    padding: 0 10px 10px;
+    gap: 20px;
+
+}
+
+.disco-album-image {
+    width: 11vw;
+    height: 11vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & img {
+        width: 100%;
+        height: 100%;
+        aspect-ratio: 1 / 1;
+    }
+}
+
+.disco-meta {
+    display: flex;
+    flex-direction: column;
+    height: 10vw;
+
+    justify-content: space-between;
+
+    .disco-meta-heading {
+
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        & a {
+            font-size: 2.2rem;
+            max-width: 50vw;
+            white-space: nowrap;
+            overflow: hidden;
+            color: white;
+            text-overflow: ellipsis;
+        }
+
+        & a:hover {
+            text-decoration: underline;
+        }
+
+        & p {
+            color: #b8b8b8;
+            font-size: 0.8rem;
+            font-family: 'Gotham Light', sans-serif;
+            font-weight: 600;
+        }
+    }
+
+    .disco-meta-buttons {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+
+        & img:hover {
+            scale: 1.06;
+        }
+
+        & button {
+            margin: 0;
+            padding: 0;
+        }
+
+
+        & img:active {
+            scale: 0.98
+        }
+
+        & img {
+            cursor: pointer;
+        }
+    }
+}
+
+
+.disco-tracks-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.numbering-title-duration {
+    display: flex;
+    justify-content: space-between;
+
+    color: #b8b8b8;
+    padding: 10px 10px 10px;
+    border-bottom: 1px solid rgba(184, 184, 184, 0.11);
+    align-items: center;
+
+    .i-title {
+        display: flex;
+
+        & p {
+            font-family: 'Gotham Light', sans-serif;
+            font-weight: 600;
+        }
+
+        padding-left: 10px;
+        gap: 20px;
+
+    }
+}

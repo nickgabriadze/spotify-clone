@@ -1,6 +1,7 @@
 import {Category} from "../../../types/categories.ts";
 import {useAppDispatch} from "../../../store/hooks.ts";
 import {addReactComponentToNavigation} from "../../../store/features/navigationSlice.ts";
+import {Link} from "react-router-dom";
 
 
 export function BrowsingCategoryCard({
@@ -18,7 +19,7 @@ export function BrowsingCategoryCard({
                         .join(" ")
 
     return (
-        <div
+          <Link to={`/genre/${category.id}`}><div
             style={{
                 cursor: "pointer",
                 backgroundColor: colorHex,
@@ -32,7 +33,7 @@ export function BrowsingCategoryCard({
             }}
             onClick={() => dispatch(addReactComponentToNavigation({componentName: 'BrowsingCategory', props: [category?.id, categoryName]}))}
         >
-            <div >
+          <div>
               <h1 style={{padding: '10px', wordWrap: 'break-word'}}>
                     {categoryName}
                 </h1>
@@ -56,7 +57,9 @@ export function BrowsingCategoryCard({
                     }}
                     alt={"category image"} src={category.icons[0].url} width={100} height={100}></img>
             </div>
+
         </div>
+              </Link>
     );
 }
 

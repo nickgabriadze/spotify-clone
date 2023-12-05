@@ -25,7 +25,7 @@ import AlbumCard from "../../../search/reuseables/albumCard.tsx";
 import {checkInView} from "../../../utils/checkInView.ts";
 import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
 
-export function AlbumPage({albumID, mainRef}: { albumID: string, mainRef: RefObject<HTMLDivElement> }) {
+export function AlbumPage({albumID}: { albumID: string }) {
     const [albumData, setAlbumData] = useState<{ album: AlbumWithTracks, albumTracks: Track[] }>();
     const accessToken = useAppSelector(state => state.spotiUserReducer.spotiToken.accessToken);
     const [dataLoading, setDataLoading] = useState<boolean>(true);
@@ -289,9 +289,7 @@ export function AlbumPage({albumID, mainRef}: { albumID: string, mainRef: RefObj
 
             <div className={albumStyle['more-from-artist']}>
                 <h2>More by {albumData?.album.artists[0].name}</h2>
-                <div className={albumStyle['displayed-albums']}
-                 style={{gridTemplateColumns: `repeat(${numberOfItems}, minmax(0, 1fr)`}}
-                >
+                <div className={albumStyle['displayed-albums']}>
                     {artistAlbums.slice(0, numberOfItems).map((eachAlbum) => <AlbumCard eachAlbum={eachAlbum} key={eachAlbum.id}/>)}
                 </div>
             </div>

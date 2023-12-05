@@ -1,6 +1,6 @@
 import NoPlaylistImage from "../../../search/components/each-search-component/icons/no-playlist-pic.webp";
 import playlistPageStyle from './playlistpage.module.css';
-import {RefObject, useCallback, useEffect, useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import getPlaylist from "../../../../api/search/getPlaylist.ts";
 import {FullPlayList, PlayListTrackObject} from "../../../../types/playlist.ts";
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks.ts";
@@ -18,16 +18,19 @@ import Duration from "../../../search/components/each-search-component/icons/dur
 import {SongCard} from "../../../search/reuseables/songCard.tsx";
 import SongCardSkeleton from "../../../../skeletons/songCardSkeleton.tsx";
 import axiosInstance from "../../../../axios.ts";
-import {checkInView} from "../../../utils/checkInView.ts";
 import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
+import {useParams} from "react-router-dom";
+import useIntersectionObserver from "../../../utils/useIntersectionObserver.ts";
 
 
-export function PlaylistPage({playlistID, mainRef}: { playlistID: string, mainRef: RefObject<HTMLDivElement> }) {
+export function PlaylistPage() {
+    const {playlistID} = useParams();
+
     const [playListData, setPlayListData] = useState<FullPlayList>();
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken);
     const dispatch = useAppDispatch();
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong);
-    const playlistSaved = useAppSelector(s => s.spotiUserReducer.userSaved.userSavedPlaylistIDs).includes(playlistID)
+    const playlistSaved = useAppSelector(s => s.spotiUserReducer.userSaved.userSavedPlaylistIDs).includes(String(playlistID))
     const [playlistLoading, setPlaylistLoading] = useState<boolean>(true);
     const [playlistTracks, setPlaylistTracks] = useState<{
         data: Array<PlayListTrackObject | typeof SongCardSkeleton>;
@@ -38,15 +41,12 @@ export function PlaylistPage({playlistID, mainRef}: { playlistID: string, mainRe
     });
 
     const [tracksLoading, setTracksLoading] = useState<boolean>(true);
-    const playBtnRef = useRef<HTMLDivElement>(null)
     const playlistPageRef = useRef<HTMLDivElement>(null)
 
-    useEffect(() => {
-
-        const duringScroll = () => {
-
-            if (!checkInView(playBtnRef)) {
-                dispatch(setWhatsInView({
+    const observePlayButton = useIntersectionObserver({threshold: 1}, (entries: IntersectionObserverEntry[]) => {
+        entries.forEach((e: IntersectionObserverEntry) => {
+            if (!e.isIntersecting) {
+               dispatch(setWhatsInView({
                     pageName: 'Playlist',
                     pageItemName: String(playListData?.name),
                     uri: String(playListData?.uri)
@@ -60,29 +60,21 @@ export function PlaylistPage({playlistID, mainRef}: { playlistID: string, mainRe
                 }))
             }
 
-        }
-
-
-        if (mainRef.current) {
-            mainRef.current.addEventListener('scroll', duringScroll)
-        }
-        return () =>  mainRef.current?.removeEventListener('scroll', duringScroll)
-
-
-    }, [playBtnRef.current, playlistPageRef.current, playlistID]);
+        })
+    }, [playlistLoading])
 
     useEffect(() => {
         if (!currentlyPlaying.isPlaying && playListData?.id) {
             document.title = `${playListData?.name} by ${playListData?.owner.display_name}`
         }
     }, [currentlyPlaying.isPlaying, playListData?.id]);
-
     useEffect(() => {
         const getPlayListData = async () => {
             try {
                 setPlaylistLoading(true)
                 setTracksLoading(true)
-                const pl: FullPlayList = (await getPlaylist(accessToken, playlistID)).data;
+                const pl: FullPlayList = (await getPlaylist(accessToken, String(playlistID))).data;
+
                 setPlayListData(pl)
                 setPlaylistTracks(prev => {
                     return {
@@ -91,8 +83,7 @@ export function PlaylistPage({playlistID, mainRef}: { playlistID: string, mainRe
                         next: pl?.tracks?.next
                     }
                 })
-            } catch (e) {
-
+            } catch (_) {
             } finally {
                 setPlaylistLoading(false)
                 setTracksLoading(false)
@@ -101,6 +92,7 @@ export function PlaylistPage({playlistID, mainRef}: { playlistID: string, mainRe
 
         getPlayListData();
     }, [accessToken, playlistID]);
+
     const observing = useRef<null | IntersectionObserver>(null);
     const lastSong = useCallback(
         (node: HTMLDivElement | null) => {
@@ -150,6 +142,8 @@ export function PlaylistPage({playlistID, mainRef}: { playlistID: string, mainRe
     if (playlistLoading) return <></>
 
 
+
+
     return <section className={playlistPageStyle['playlist-page-wrapper']}
                     ref={playlistPageRef}
     >
@@ -173,7 +167,7 @@ export function PlaylistPage({playlistID, mainRef}: { playlistID: string, mainRe
         </div>
         <div className={albumStyle['play-save']}>
             <div
-                ref={playBtnRef}
+                ref={observePlayButton}
             >
                 <button
 
@@ -224,12 +218,12 @@ export function PlaylistPage({playlistID, mainRef}: { playlistID: string, mainRe
                     <button
                         onClick={async () => {
                             if (playlistSaved) {
-                                const req = await unfollowPlaylistForCurrentUser(accessToken, playlistID)
+                                const req = await unfollowPlaylistForCurrentUser(accessToken, String(playlistID))
                                 if (req.status === 200) {
                                     dispatch(addLibraryAction("User removed Playlist from Library"))
                                 }
                             } else {
-                                const req = await followPlaylistForCurrentUser(accessToken, playlistID)
+                                const req = await followPlaylistForCurrentUser(accessToken, String(playlistID))
                                 if (req.status === 200) {
                                     dispatch(addLibraryAction("User added Playlist to Library"))
                                 }

@@ -19,6 +19,7 @@ import removeTrackForCurrentUser from "../../../../../../api/library/removeTrack
 import saveTrackForCurrentUser from "../../../../../../api/library/saveTrackForCurrentUser.ts";
 import SavedTrackIcon from "../../../../../player/icons/liked-indicator-heart.svg";
 import Heart from "../../../../../player/icons/heart.svg";
+import {Link} from "react-router-dom";
 
 export function Songs({firstFour, resultsLoading}: { firstFour: Track[] | undefined, resultsLoading: boolean }) {
     const [hoveringOver, setHoveringOver] = useState<string>('none');
@@ -119,14 +120,14 @@ export function Songs({firstFour, resultsLoading}: { firstFour: Track[] | undefi
                                     </div>}
                             </div>
                             <div className={allResultsStyle['song-details']}>
-                                <a
+                                <Link to={`/album/${eachTrack.album?.id}`}
                                     onClick={() => {
                                         dispatch(addReactComponentToNavigation({
                                             componentName: 'Album',
                                             props: eachTrack?.album?.id
                                         }))
                                     }}
-                                >{eachTrack?.name[0].toUpperCase().concat(eachTrack?.name.slice(1,)).length > 30 ? eachTrack?.name[0].toUpperCase().concat(eachTrack?.name.slice(1,)).slice(0, 30).concat('...') : eachTrack?.name[0].toUpperCase().concat(eachTrack?.name.slice(1,))}</a>
+                                >{eachTrack?.name[0].toUpperCase().concat(eachTrack?.name.slice(1,)).length > 30 ? eachTrack?.name[0].toUpperCase().concat(eachTrack?.name.slice(1,)).slice(0, 30).concat('...') : eachTrack?.name[0].toUpperCase().concat(eachTrack?.name.slice(1,))}</Link>
                                 <div className={allResultsStyle['song-artists']}>
                                     {eachTrack?.explicit ?
                                         <div className={episodesStyle['explicit']}
@@ -134,14 +135,14 @@ export function Songs({firstFour, resultsLoading}: { firstFour: Track[] | undefi
                                     <span
                                         className={allResultsStyle['song-artists-box']}
                                     >{eachTrack.artists.slice(0, 4).map((artist, i) =>
-                                        <a key={i}
-                                           onClick={() => {
+                                        <Link to={`/artist/${artist?.id}`} key={i}
+                                              onClick={() => {
                                                dispatch(addReactComponentToNavigation({
                                                    componentName: 'Artist',
                                                    props: artist?.id
                                                }))
                                            }}
-                                        >{i === eachTrack.artists.slice(0, 4).length - 1 ? artist.name : `${artist.name}, `}</a>)}
+                                        >{i === eachTrack.artists.slice(0, 4).length - 1 ? artist.name : `${artist.name}, `}</Link>)}
                                     </span>
                                 </div>
                             </div>
