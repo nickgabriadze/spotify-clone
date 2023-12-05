@@ -141,10 +141,6 @@
     .disco-albums-list {
         display: grid;
 
-        gap: 20px;
-        overflow-x: scroll;
-
-
     }
 
     .disco-albums-list::-webkit-scrollbar {
