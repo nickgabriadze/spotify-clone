@@ -141,6 +141,10 @@
     .disco-albums-list {
         display: grid;
 
+        gap: 20px;
+        overflow-x: scroll;
+
+
     }
 
     .disco-albums-list::-webkit-scrollbar {
@@ -188,6 +192,9 @@
 
     .appears_on-albums-list, .related-artists-list {
         display: grid;
+
+        gap: 20px;
+        overflow-x: scroll;
     }
 
     .appears_on-albums-list::-webkit-scrollbar, .related-artists-list::-webkit-scrollbar {
