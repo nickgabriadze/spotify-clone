@@ -10,7 +10,8 @@ import PauseStreaming from "../../../api/player/pauseStreaming";
 import NoAlbumPicture from "../components/each-search-component/icons/no-album-pic.svg"
 import getAlbum from "../../../api/search/getAlbum.ts";
 import AlbumCardSkeleton from "../../../skeletons/albumCardSkeleton.tsx";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
+
 
 
 export function AlbumCardApi({albumID}: { albumID: string }) {
@@ -44,6 +45,7 @@ export function AlbumCard({eachAlbum}: { eachAlbum: Album | undefined }) {
     const dispatch = useAppDispatch();
     const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
     const currentlyPlaying = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong);
+    const {state} = useLocation();
 
     return (
         <div className={albumsStyle["album-card"]}
@@ -51,13 +53,8 @@ export function AlbumCard({eachAlbum}: { eachAlbum: Album | undefined }) {
              onMouseOver={() => setHoveringOver(true)}
              onMouseOut={() => setHoveringOver(false)}>
             <div className={albumsStyle['album-inner-content']}>
-                <Link to={`/album/${eachAlbum?.id}`}><div className={albumsStyle["album-img"]}
-                     onClick={() => {
-                         dispatch(addReactComponentToNavigation({
-                             componentName: String(eachAlbum?.type.slice(0, 1).toUpperCase().concat(eachAlbum?.type.slice(1,))),
-                             props: eachAlbum?.id
-                         }))
-                     }}
+                <Link to={`/album/${eachAlbum?.id}`} state={state === null ? 0: state+1}><div className={albumsStyle["album-img"]}
+
                 >
                     {eachAlbum?.images[0]?.url ? <img
                             src={eachAlbum?.images[0]?.url}

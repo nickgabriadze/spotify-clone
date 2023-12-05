@@ -10,7 +10,7 @@ import getPlaylist from "../../../api/search/getPlaylist.ts";
 import PlaylistCardSkeleton from "../../../skeletons/playlistCardSekeleton.tsx";
 import PauseStreaming from "../../../api/player/pauseStreaming.ts";
 import Pause from "../components/each-search-component/Playlists/icons/pause.svg";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 
 
 export function PlaylistCardApi({playlistID}: { playlistID: string }) {
@@ -47,6 +47,7 @@ export function PlaylistCard({eachPlaylist, playlistDescription}: {
         (state) => state.spotiUserReducer.spotiToken.accessToken
     );
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong);
+    const {state}  = useLocation();
 
     return (
         <div
@@ -54,7 +55,7 @@ export function PlaylistCard({eachPlaylist, playlistDescription}: {
             onMouseOver={() => setHoveringOver(true)}
             onMouseOut={() => setHoveringOver(false)}
         >
-            <Link to={`/playlist/${eachPlaylist?.id}`}><div className={playlistsStyle["playlist-img"]}
+            <Link to={`/playlist/${eachPlaylist?.id}`} state={state === null ? 0: state+1}><div className={playlistsStyle["playlist-img"]}
             >
                 <img
                     onClick={() => {

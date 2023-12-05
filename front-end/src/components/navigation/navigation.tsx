@@ -17,6 +17,7 @@ export function Navigation() {
     const navParamsHome = Object.values(navParams).toString().length === 0
     const [navHover, setNavHover] = useState<string>("none");
     const dispatchNavigation = useAppDispatch();
+
     return (
 
         <section className={navigationStyle["nav-box"]}>
@@ -48,10 +49,7 @@ export function Navigation() {
            <Link to={'/search/'}>
                <div
                   className={navigationStyle["search-box"]}
-                  onClick={() => {
-                       dispatchNavigation(addReactComponentToNavigation({componentName: "Search", props: null}))
 
-                  }}
                   onMouseEnter={() => setNavHover("Search")}
                   onMouseLeave={() => setNavHover("none")}
             >

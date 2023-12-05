@@ -11,9 +11,9 @@ import {Me} from "../../types/me.ts";
 import getMe from "../../api/getMe.ts";
 import SearchBar from "../search/components/search-bar/searchBar.tsx";
 import Searchables from "../search/components/searchables/searchables.tsx";
-import {setUserInformation, setWhatsInView} from "../../store/features/spotiUserSlice.ts";
+import {setUserInformation} from "../../store/features/spotiUserSlice.ts";
 import AlbumPage from "./components/album/AlbumPage.tsx";
-import {Route, Routes, useNavigate, useParams} from 'react-router-dom'
+import {Route, Routes, useNavigate, useParams, useLocation} from 'react-router-dom'
 import {setUserControlActions} from "../../store/features/navigationSlice.ts";
 import ArtistPage from "./components/artist/ArtistPage.tsx";
 import PlaylistPage from "./components/playlist/PlaylistPage.tsx";
@@ -44,7 +44,7 @@ export function Main({height}: {
     const params = useParams();
     const weAreSearching = Object.values(params).toString().includes('search')
     const weHaveQuery = String(Object.values(params).toString().split('/')[1]).length !== 0
-
+    const location = useLocation();
 
     useEffect(() => {
         const fetchMyData = async () => {
@@ -70,14 +70,7 @@ export function Main({height}: {
 
 
     const {idx} = window.history.state;
-    useEffect(() => {
-        dispatch(setWhatsInView({
-            pageName: 'None',
-            pageItemName: 'None',
-            uri: 'None'
-        }))
-    }, [idx]);
-
+    console.log(location)
 
     return (
         <main
@@ -98,9 +91,8 @@ export function Main({height}: {
                         <button
 
                             onClick={() => {
-                                if (idx !== 0) {
                                     navigatePages(-1)
-                                }
+
                             }}
                         >
                             <img
@@ -117,7 +109,7 @@ export function Main({height}: {
 
 
                                 <img
-                                    style={{filter: `${window.history.length - 2 === idx ? `brightness(50%)` : `brightness(100%)`}`}}
+                                    style={{filter: `${window.history.length - 2 === idx || !Boolean(idx) ? `brightness(50%)` : `brightness(100%)`}`}}
                                     alt={'Right icon'} src={Right} height={32}></img>
 
                             </div>

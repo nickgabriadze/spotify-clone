@@ -88,6 +88,14 @@ export function ArtistPage() {
             }
         }
         fetchArtist();
+
+        return () => {
+              dispatch(setWhatsInView({
+                    pageName: 'None',
+                    pageItemName: 'None',
+                    uri: 'None'
+                }))
+        }
     }, [artistID, accessToken, country]);
 
     if (loading) return <></>
@@ -221,20 +229,20 @@ export function ArtistPage() {
             </div>
 
             <div className={artistPageStyle['option-disco']}>
-                {discography.map((each, i) => <div
+                {discography.map((each, i) => <button
+                    onClick={() => setDiscoWhich(Object.keys(each).toString())}
                     style={{
                         backgroundColor: discoWhich === Object.keys(each).toString() ? 'white' : '#232323',
-
                     }}
                     key={i}>
-                    <button
-                        onClick={() => setDiscoWhich(Object.keys(each).toString())}
+                    <div
+
                     >
                         <p
                             style={{color: discoWhich === Object.keys(each).toString() ? 'black' : '#FFFFFF'}}
                         >{Object.keys(each)[0].slice(0, 1).toUpperCase().concat(Object.keys(each)[0].slice(1,)).concat('s')}</p>
-                    </button>
-                </div>)}
+                    </div>
+                </button>)}
             </div>
 
             <div
