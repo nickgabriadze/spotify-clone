@@ -1,7 +1,7 @@
 import albumStyle from "./albumpage.module.css";
 import {Track} from "../../../../types/track.ts";
 import {Album, AlbumWithTracks} from "../../../../types/album.ts";
-import {RefObject, useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks.ts";
 import getAlbum from "../../../../api/search/getAlbum.ts";
 import getAlbumTracks from "../../../../api/main/album/getAlbumTracks.ts";
@@ -22,33 +22,32 @@ import Duration from "../../../search/components/each-search-component/icons/dur
 import {SongCard} from "../../../search/reuseables/songCard.tsx";
 import getArtistAlbums from "../../../../api/main/album/getArtistAlbums.ts";
 import AlbumCard from "../../../search/reuseables/albumCard.tsx";
-import {checkInView} from "../../../utils/checkInView.ts";
 import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
+import {Link, useParams} from "react-router-dom";
+import useIntersectionObserver from "../../../utils/useIntersectionObserver.ts";
 
-export function AlbumPage({albumID}: { albumID: string }) {
+export function AlbumPage() {
+    const {albumID} = useParams();
     const [albumData, setAlbumData] = useState<{ album: AlbumWithTracks, albumTracks: Track[] }>();
     const accessToken = useAppSelector(state => state.spotiUserReducer.spotiToken.accessToken);
     const [dataLoading, setDataLoading] = useState<boolean>(true);
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong)
     const dispatch = useAppDispatch();
-    const albumIsSaved = useAppSelector(s => s.spotiUserReducer.userSaved.userSavedAlbumIDs).includes(albumID)
+    const albumIsSaved = useAppSelector(s => s.spotiUserReducer.userSaved.userSavedAlbumIDs).includes(String(albumID))
     const [artistAlbums, setArtistAlbums] = useState<Album[]>([]);
     const [onFullScreen, setOnFullScreen] = useState<boolean>(false);
-    const playBtnRef = useRef<HTMLDivElement>(null)
     const albumPageRef = useRef<HTMLDivElement>(null)
     const numberOfItems = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown);
-
+    const [_, setAlbumLoading] = useState<boolean>(true);
     useEffect(() => {
         if (!currentlyPlaying.isPlaying && albumData?.album.id) {
             document.title = `Album / ${albumData?.album?.name}`
         }
     }, [currentlyPlaying.isPlaying, albumData?.album?.id]);
 
-    useEffect(() => {
-
-        const duringScroll = () => {
-
-            if (!checkInView(playBtnRef)) {
+    const observePlayButton = useIntersectionObserver({threshold: 1}, (entries: IntersectionObserverEntry[]) => {
+        entries.forEach((e: IntersectionObserverEntry) => {
+            if (!e.isIntersecting) {
                 dispatch(setWhatsInView({
                     pageName: 'Album',
                     pageItemName: String(albumData?.album.name),
@@ -63,26 +62,20 @@ export function AlbumPage({albumID}: { albumID: string }) {
                 }))
             }
 
-        }
-
-
-        if (mainRef.current) {
-            mainRef.current.addEventListener('scroll', duringScroll)
-        }
-
-        return () => mainRef.current?.removeEventListener('scroll', duringScroll)
-
-    }, [playBtnRef.current, albumPageRef.current, albumID]);
+        })
+    }, [albumData?.album.name])
 
 
     useEffect(() => {
         const getOtherAlbums = async () => {
             try {
-
+                setAlbumLoading(true)
                 const artistAlbums = (await getArtistAlbums(accessToken, String(albumData?.album.artists[0].id))).data;
                 setArtistAlbums(artistAlbums.items)
             } catch (err) {
 
+            }finally {
+                setAlbumLoading(false)
             }
         }
 
@@ -96,8 +89,8 @@ export function AlbumPage({albumID}: { albumID: string }) {
         const getAlbumInformation = async () => {
             try {
                 setDataLoading(true)
-                const album = (await getAlbum(accessToken, albumID)).data;
-                const tracks: Track[] = (await getAlbumTracks(accessToken, albumID)).data.items;
+                const album = (await getAlbum(accessToken, String(albumID))).data;
+                const tracks: Track[] = (await getAlbumTracks(accessToken, String(albumID))).data.items;
                 setAlbumData({
                     album: album,
                     albumTracks: tracks
@@ -167,14 +160,14 @@ export function AlbumPage({albumID}: { albumID: string }) {
                         <h1>{albumData?.album.name}</h1>
                     </div>
                     <div className={albumStyle['artist-information']}>
-                        <h4 className={albumStyle['artist-name-ry-nos']}><a
+                        <h4 className={albumStyle['artist-name-ry-nos']}><Link to={`/artist/${albumData?.album.artists[0].id}`}
                             onClick={() => {
                                 dispatch(addReactComponentToNavigation({
                                     componentName: 'Artist',
                                     props: albumData?.album?.artists[0]?.id
                                 }))
                             }}
-                        >{albumData?.album.artists[0].name}</a> • {albumDate.getFullYear()} • {albumData?.album.total_tracks} song,
+                        >{albumData?.album.artists[0].name}</Link> • {albumDate.getFullYear()} • {albumData?.album.total_tracks} song,
                         </h4>
                         <p className={albumStyle['album-duration']}>{millisecondsToHhMmSs(Number(albumData?.album.tracks.items.map(e => e.duration_ms).reduce((a, b) => a + b, 0)), true)}</p>
                     </div>
@@ -184,11 +177,11 @@ export function AlbumPage({albumID}: { albumID: string }) {
             <div className={albumStyle['play-track-list']}>
                 <div className={albumStyle['play-save']}>
                     <div
-                        ref={playBtnRef}>
+                        ref={observePlayButton}>
                         <button
                             className={albumStyle["album-hover-button"]}
                             onClick={async () => {
-                                if (currentlyPlaying.albumID === albumID) {
+                                if (String(currentlyPlaying.context?.uri) === albumData?.album.uri) {
                                     if (!currentlyPlaying.isPlaying) {
                                         await PlayResumeStreaming(accessToken);
                                         dispatch(
@@ -214,7 +207,7 @@ export function AlbumPage({albumID}: { albumID: string }) {
                                 }
                             }}
                         >
-                            {currentlyPlaying.albumID === albumID &&
+                            {String(currentlyPlaying.context?.uri) === albumData.album.uri &&
                             currentlyPlaying.isPlaying ? (
                                 <div>
                                     <img
@@ -233,12 +226,12 @@ export function AlbumPage({albumID}: { albumID: string }) {
                             <button
                                 onClick={async () => {
                                     if (albumIsSaved) {
-                                        const req = await removeAlbumForCurrentUser(accessToken, albumID)
+                                        const req = await removeAlbumForCurrentUser(accessToken, String(albumID))
                                         if (req.status === 200) {
                                             dispatch(addLibraryAction("User removed Album from Library"))
                                         }
                                     } else {
-                                        const req = await saveAlbumForCurrentUser(accessToken, albumID)
+                                        const req = await saveAlbumForCurrentUser(accessToken, String(albumID))
                                         if (req.status === 200) {
                                             dispatch(addLibraryAction("User added Album to Library"))
                                         }
@@ -287,12 +280,17 @@ export function AlbumPage({albumID}: { albumID: string }) {
                 )}
             </div>
 
-            <div className={albumStyle['more-from-artist']}>
+            {artistAlbums.length > 0 && <div className={albumStyle['more-from-artist']}>
                 <h2>More by {albumData?.album.artists[0].name}</h2>
-                <div className={albumStyle['displayed-albums']}>
-                    {artistAlbums.slice(0, numberOfItems).map((eachAlbum) => <AlbumCard eachAlbum={eachAlbum} key={eachAlbum.id}/>)}
+                <div className={albumStyle['displayed-albums']}
+                     style={{
+                         gridTemplateColumns: `repeat(${numberOfItems}, minmax(0,1fr))`
+                     }}
+                >
+                    {artistAlbums.slice(0, numberOfItems).map((eachAlbum) => <AlbumCard eachAlbum={eachAlbum}
+                                                                                        key={eachAlbum.id}/>)}
                 </div>
-            </div>
+            </div>}
         </section>
     }
 }
