@@ -1,6 +1,6 @@
 import {Album} from "../../../../../../types/album.ts";
 import {Track} from "../../../../../../types/track.ts";
-import {forwardRef, Ref, useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../../../../store/hooks.ts";
 import getAlbumTracks from "../../../../../../api/main/album/getAlbumTracks.ts";
 import {SongCard} from "../../../../../search/reuseables/songCard.tsx";
@@ -16,16 +16,64 @@ import {addLibraryAction, setUserControlActions} from "../../../../../../store/f
 import saveAlbumForCurrentUser from "../../../../../../api/library/saveAlbumForCurrentUser.ts";
 import PlayResumeStreaming from "../../../../../../api/player/playResumeStreaming.ts";
 import PauseStreaming from "../../../../../../api/player/pauseStreaming.ts";
+import {setWhatsInView} from "../../../../../../store/features/spotiUserSlice.ts";
+import SongCardSkeleton from "../../../../../../skeletons/songCardSkeleton.tsx";
 
-export const DiscoAlbum = forwardRef(function DiscoAlbum({album}: { album: Album }, refObject: Ref<HTMLAnchorElement>) {
+export const DiscoAlbum = ({album, index}: { album: Album, index: number }) => {
     const [albumTracks, setAlbumTracks] = useState<Track[]>([]);
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken);
     const [tracksLoading, setTracksLoading] = useState<boolean>(true);
     const albumIsSaved = useAppSelector(s => s.spotiUserReducer.userSaved.userSavedAlbumIDs).includes(String(album.id))
     const dispatch = useAppDispatch();
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong);
+    const albumRef = useRef(null);
+    const [fetchTracksCommand, setFetchTracksCommand] = useState<boolean>(false);
+    useEffect(() => {
+        const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
+            entries.forEach((e) => {
+                if (e.isIntersecting && !fetchTracksCommand) {
+                    setFetchTracksCommand(true)
+                }
+                if(index === 0 && e.isIntersecting){
+                      dispatch(setWhatsInView({
+                        pageName: 'None',
+                        pageItemName: 'None',
+                        uri: 'None'
+                    }))
+                }
+                if (index === 0 && e.isIntersecting && !fetchTracksCommand) {
+                    dispatch(setWhatsInView({
+                        pageName: 'None',
+                        pageItemName: 'None',
+                        uri: 'None'
+                    }))
+                } else {
+                    if (!e.isIntersecting && !tracksLoading) {
+                        dispatch(setWhatsInView({
+                            pageName: 'Discography',
+                            pageItemName: album.name,
+                            uri: album.uri
+                        }))
+                    }
+                }
+            });
+        }, {threshold: 1});
 
+        if (albumRef.current) {
+            observer.observe(albumRef.current);
+        }
 
+        return () => {
+            if (albumRef.current) {
+                observer.unobserve(albumRef.current);
+                dispatch(setWhatsInView({
+                    pageName: 'None',
+                    pageItemName: 'None',
+                    uri: 'None'
+                }))
+            }
+        };
+    }, [album.id, albumRef.current, fetchTracksCommand, tracksLoading]);
     useEffect(() => {
         const fetchTracks = async () => {
             try {
@@ -39,12 +87,20 @@ export const DiscoAlbum = forwardRef(function DiscoAlbum({album}: { album: Album
             }
         }
 
-        fetchTracks()
-    }, [accessToken, album.id]);
+        if (fetchTracksCommand) {
+            fetchTracks()
+        }
 
-    if (tracksLoading) {
-        return
-    }
+        return () => {
+            dispatch(setWhatsInView({
+                    pageName: 'None',
+                    pageItemName: 'None',
+                    uri: 'None'
+                }))
+        }
+    }, [accessToken, album.id, fetchTracksCommand]);
+
+
 
     return <section className={discographyStyle['disco-album-wrapper']}
 
@@ -55,8 +111,8 @@ export const DiscoAlbum = forwardRef(function DiscoAlbum({album}: { album: Album
             </div>
             <div className={discographyStyle['disco-meta']}>
                 <div className={discographyStyle['disco-meta-heading']}>
-                    <Link to={`/album/${album.id}`} ref={refObject} placeholder={album.name}>{album.name}</Link>
-                    <p>{album.album_type[0].toUpperCase().concat(album.album_type.slice(1,))} • {new Date(album.release_date).getFullYear()} • {albumTracks.length} {albumTracks.length > 1 ? 'songs' : 'song'}</p>
+                    <Link to={`/album/${album.id}`} ref={albumRef} placeholder={album.name}>{album.name}</Link>
+                    <p>{album.album_type[0].toUpperCase().concat(album.album_type.slice(1,))} • {new Date(album.release_date).getFullYear()} • {albumTracks.length > 0 ? albumTracks.length : ''} {albumTracks.length > 1 ? 'songs' : 'song'}</p>
                 </div>
 
                 <div className={discographyStyle['disco-meta-buttons']}>
@@ -136,9 +192,12 @@ export const DiscoAlbum = forwardRef(function DiscoAlbum({album}: { album: Album
                     ></img>
                 </div>
             </nav>
-            <div>{albumTracks.map((t, i) => <SongCard eachTrack={t} n={i + 1} key={i} accessToken={accessToken}
-                                                      forAlbum={true}/>)}</div>
-        </div>
-    </section>
-})
+            <div>{albumTracks.length === 0 ? Array.from({length: 10}).map((_, i) => <SongCardSkeleton
+                key={i}/>) : albumTracks.map((t, i) => <SongCard eachTrack={t} n={i + 1} key={i}
+                                                                               accessToken={accessToken}
+                                                                               forAlbum={true}/>
+            )}</div>
+    </div>
+</section>
+}
 

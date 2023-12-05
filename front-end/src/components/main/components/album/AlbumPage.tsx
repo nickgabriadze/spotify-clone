@@ -38,7 +38,7 @@ export function AlbumPage() {
     const [onFullScreen, setOnFullScreen] = useState<boolean>(false);
     const albumPageRef = useRef<HTMLDivElement>(null)
     const numberOfItems = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown);
-    const [albumLoading, setAlbumLoading] = useState<boolean>(true);
+    const [_, setAlbumLoading] = useState<boolean>(true);
     useEffect(() => {
         if (!currentlyPlaying.isPlaying && albumData?.album.id) {
             document.title = `Album / ${albumData?.album?.name}`
@@ -63,7 +63,7 @@ export function AlbumPage() {
             }
 
         })
-    }, [albumLoading])
+    }, [albumData?.album.name])
 
 
     useEffect(() => {

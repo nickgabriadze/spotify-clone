@@ -17,30 +17,36 @@ import getSavedTracks from "../../../../api/library/getSavedTracks.ts";
 export function LikedSongs() {
     const me = useAppSelector(s => s.spotiUserReducer.userInformation);
     const dispatch = useAppDispatch();
-    const [likedTracks, setLikedTracks] = useState<{ added_at: string, track: PlayListTrackObject }[]>([]);
+    const [likedTracks, setLikedTracks] = useState<{
+        added_at: string,
+        track: PlayListTrackObject
+    }[]>([]);
     const libraryActions = useAppSelector(s => s.navigationReducer.libraryActions);
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong);
     const [_, setLoading] = useState<boolean>(true);
 
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken)
 
+
+
     useEffect(() => {
 
+
         const updateSavedTracks = async () => {
-          try {
-              setLoading(true)
-              const savedSongItems: {
-                  added_at: string,
-                  track: PlayListTrackObject
-              }[] = (await getSavedTracks(accessToken)).data.items;
+            try {
+                setLoading(true)
+                const savedSongItems: {
+                    added_at: string,
+                    track: PlayListTrackObject
+                }[] = (await getSavedTracks(accessToken)).data.items;
 
 
-              setLikedTracks(savedSongItems)
-          }catch(err){
+                setLikedTracks(savedSongItems)
+            } catch (err) {
 
-          }finally {
-               setLoading(false)
-          }
+            } finally {
+                setLoading(false)
+            }
         }
 
         updateSavedTracks();
@@ -55,7 +61,6 @@ export function LikedSongs() {
             document.title = `Liked Songs`
         }
     }, [currentlyPlaying.isPlaying]);
-
 
 
     return <section className={playlistPageStyle['playlist-page-wrapper']}>
