@@ -1,11 +1,10 @@
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import queryString from "query-string";
 import {v4} from "uuid";
 import axios from "axios";
 
-dotenv.config();
+
 
 const redirect_uri = "http://localhost:3001/callback";
 
