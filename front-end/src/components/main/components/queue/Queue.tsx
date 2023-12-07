@@ -1,11 +1,10 @@
 import {useEffect, useState} from "react";
 import getSongQueue from "../../../../api/player/getSongQueue.ts";
-import {useAppDispatch, useAppSelector} from "../../../../store/hooks.ts";
+import {useAppSelector} from "../../../../store/hooks.ts";
 import {QueueType} from "../../../../types/queue.ts";
 import queueStyle from "./queue.module.css";
 import SongCardSkeleton from "../../../../skeletons/songCardSkeleton.tsx";
 import {SongCard} from "../../../search/reuseables/songCard.tsx";
-import {addReactComponentToNavigation} from "../../../../store/features/navigationSlice.ts";
 
 export function Queue() {
     const accessToken = useAppSelector(state => state.spotiUserReducer.spotiToken.accessToken)
@@ -47,7 +46,6 @@ export function Queue() {
     }, [accessToken, currentSongId]);
     const allAreFromAlbum = queueData?.queue.every(e => e.album.id === queueData?.currently_playing?.album?.id);
     const noNewSongsInQueue = queueData?.queue.filter((song) => song.id !== queueData?.currently_playing?.id).length === 0;
-    const dispatch = useAppDispatch();
     const everyNewTrackIsFromTheSameArtist = queueData?.queue.every((track) => track.artists.filter(eachArtist => eachArtist?.id === queueData?.currently_playing?.artists[0]?.id)[0]?.id === queueData?.currently_playing?.artists[0]?.id)
     document.title= "Queue"
     return <section className={queueStyle['queue-wrapper']}>
@@ -68,12 +66,7 @@ export function Queue() {
             {!noNewSongsInQueue && <div className={queueStyle['next-up-in-queue']}>
                 <div
                     style={{color: '#b3b3b3'}}>{everyNewTrackIsFromTheSameArtist ?
-                    <div>Next from: <a onClick={() => {
-                        dispatch(addReactComponentToNavigation({
-                            componentName: 'Album',
-                            props: queueData?.currently_playing.album?.id
-                        }))
-                    }}>{allAreFromAlbum ? queueData?.currently_playing.album.name : queueData?.currently_playing.artists[0].name}</a>
+                    <div>Next from: <a>{allAreFromAlbum ? queueData?.currently_playing.album.name : queueData?.currently_playing.artists[0].name}</a>
                     </div> : `Next up`}</div>
                 <div className={queueStyle['upcoming-tracks']}>
                     {queueLoading ? Array.from({length: 30}).map((_, i) => <SongCardSkeleton

@@ -1,17 +1,16 @@
 import categoryStyle from './category.module.css'
 import {useEffect, useState} from "react";
-import {useAppDispatch, useAppSelector} from "../../../../store/hooks.ts";
+import {useAppSelector} from "../../../../store/hooks.ts";
 import getCategoryPlaylist from "../../../../api/main/browsingCategory/getCategoryPlaylist.ts";
 import {Playlists} from "../../../../types/playlist.ts";
 import PlaylistCard from "../../../search/reuseables/playListCard.tsx";
-import {navigateToDirection} from "../../../../store/features/navigationSlice.ts";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 export function CategoryPage() {
     const {genreID} = useParams();
     const [playlistsData, setPlaylistsData] = useState<Playlists>();
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken);
-    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     useEffect(() => {
         const getCategoryPlaylists = async () => {
             try {
@@ -21,7 +20,7 @@ export function CategoryPage() {
 
             } catch (err:any) {
                   if(err.response.status){
-                      dispatch(navigateToDirection("BACK"))
+                     navigate(-1)
                   }
             } finally {
 

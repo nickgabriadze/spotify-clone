@@ -15,7 +15,6 @@ import {
     setUsersSavedSongIDs
 } from "../../store/features/spotiUserSlice.ts";
 import {Track} from "../../types/track.ts";
-import {addReactComponentToNavigation} from "../../store/features/navigationSlice.ts";
 import getSavedArtists from "../../api/library/getSavedArtists.ts";
 import PlayResumeStreaming from "../../api/player/playResumeStreaming.ts";
 import Active from "./icons/lib-active.svg";
@@ -37,7 +36,7 @@ export function Library({divHeight}: { divHeight: number }) {
     const [libraryLoading, setLibraryLoading] = useState<boolean>(true);
     const libraryActions = useAppSelector(s => s.navigationReducer.libraryActions);
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong);
-    const [useSavedTracks, setUserSavedTracks] = useState<{
+    const [_, setUserSavedTracks] = useState<{
         added_at: string,
         track: Track
     }[]>([])
@@ -181,12 +180,7 @@ export function Library({divHeight}: { divHeight: number }) {
                         onDoubleClick={async () => {
                             await PlayResumeStreaming(accessToken, String(me?.uri).concat(':collection'), undefined)
                         }}
-                        onClick={() => {
-                            dispatch(addReactComponentToNavigation({
-                                componentName: 'LikedSongs',
-                                props: useSavedTracks
-                            }))
-                        }}
+
                         className={libraryStyle['listed-playlist-album']}
                     >
                         <div className={libraryStyle['liked-songs-icon-wrapper']}>
@@ -226,12 +220,7 @@ export function Library({divHeight}: { divHeight: number }) {
                 savedArtists.map((eachArtist, i) => <div key={i}><Link to={`/artist/${eachArtist?.id}`}>
                     <div
                         className={libraryStyle['listed-playlist-album']}
-                        onClick={() => {
-                            dispatch(addReactComponentToNavigation({
-                                componentName: 'Artist',
-                                props: eachArtist?.id
-                            }))
-                        }}
+
                         onDoubleClick={async () => {
                             await PlayResumeStreaming(accessToken, eachArtist.uri, undefined)
                         }}
@@ -275,12 +264,7 @@ export function Library({divHeight}: { divHeight: number }) {
                     <div key={i}><Link to={`/album/${eachAlbum?.id}`}>
                         <div
                             className={libraryStyle['listed-playlist-album']}
-                            onClick={() => {
-                                dispatch(addReactComponentToNavigation({
-                                    componentName: 'Album',
-                                    props: eachAlbum?.id
-                                }))
-                            }}
+
                             onDoubleClick={async () => {
                                 await PlayResumeStreaming(accessToken, eachAlbum.uri, undefined)
                             }}
@@ -323,12 +307,6 @@ export function Library({divHeight}: { divHeight: number }) {
                         <Link to={`/playlist/${eachPlaylist?.id}`}>
                             <div
                                 className={libraryStyle['listed-playlist-album']}
-                                onClick={() => {
-                                    dispatch(addReactComponentToNavigation({
-                                        componentName: 'Playlist',
-                                        props: eachPlaylist?.id
-                                    }))
-                                }}
                                 onDoubleClick={async () => {
                                     await PlayResumeStreaming(accessToken, eachPlaylist.uri, undefined)
                                 }}>

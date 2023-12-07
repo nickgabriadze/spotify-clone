@@ -5,7 +5,7 @@ import NoPlaylistImage from "../components/each-search-component/icons/no-playli
 import Play from "../components/each-search-component/Playlists/icons/play.svg";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks";
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
-import {addReactComponentToNavigation, setUserControlActions} from "../../../store/features/navigationSlice";
+import {setUserControlActions} from "../../../store/features/navigationSlice";
 import getPlaylist from "../../../api/search/getPlaylist.ts";
 import PlaylistCardSkeleton from "../../../skeletons/playlistCardSekeleton.tsx";
 import PauseStreaming from "../../../api/player/pauseStreaming.ts";
@@ -58,12 +58,7 @@ export function PlaylistCard({eachPlaylist, playlistDescription}: {
             <Link to={`/playlist/${eachPlaylist?.id}`} state={state === null ? 0: state+1}><div className={playlistsStyle["playlist-img"]}
             >
                 <img
-                    onClick={() => {
-                        dispatch(addReactComponentToNavigation({
-                            componentName: 'Playlist',
-                            props: eachPlaylist?.id
-                        }))
-                    }}
+
                     alt={'Playlist image'}
                     src={
                         eachPlaylist?.images[0]?.url
@@ -122,24 +117,12 @@ export function PlaylistCard({eachPlaylist, playlistDescription}: {
 
             <Link to={`/playlist/${eachPlaylist?.id}`}><div className={playlistsStyle["playlist-details"]}>
                 <h1
-                    onClick={() => {
-                        dispatch(addReactComponentToNavigation({
-                            componentName: 'Playlist',
-                            props: eachPlaylist?.id
-                        }))
-                    }}
                 >
                     {Number(eachPlaylist?.name?.length) > 15
                         ? eachPlaylist?.name.slice(0, 16).concat("...")
                         : eachPlaylist?.name}
                 </h1>
                 {!playlistDescription ? <p
-                    onClick={() => {
-                        dispatch(addReactComponentToNavigation({
-                            componentName: 'Playlist',
-                            props: eachPlaylist?.id
-                        }))
-                    }}
                 >
                     By{" "}
                     {Number(eachPlaylist?.owner.display_name.length) > 15

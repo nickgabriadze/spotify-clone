@@ -1,6 +1,4 @@
 import {Category} from "../../../types/categories.ts";
-import {useAppDispatch} from "../../../store/hooks.ts";
-import {addReactComponentToNavigation} from "../../../store/features/navigationSlice.ts";
 import {Link} from "react-router-dom";
 
 
@@ -12,7 +10,6 @@ export function BrowsingCategoryCard({
     colorHex: string;
 }) {
 
-    const dispatch = useAppDispatch();
     const categoryName = category.name
                         .split("-")
                         .map((letter) => letter[0].toUpperCase().concat(letter.slice(1)))
@@ -31,7 +28,6 @@ export function BrowsingCategoryCard({
                 flexDirection: 'column',
                 position: "relative"
             }}
-            onClick={() => dispatch(addReactComponentToNavigation({componentName: 'BrowsingCategory', props: [category?.id, categoryName]}))}
         >
           <div>
               <h1 style={{padding: '10px', wordWrap: 'break-word'}}>

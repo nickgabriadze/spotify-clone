@@ -36,7 +36,6 @@ export function Main({height}: {
     const [userData, setUserData] = useState<Me>();
     const [loading, setLoading] = useState<boolean>(true);
     const access = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken)
-    const navOption = useAppSelector((state) => state.navigationReducer.navTo);
     const dispatch = useAppDispatch();
     useUpdateNumberOfItems();
     const navigatePages = useNavigate();
@@ -44,8 +43,7 @@ export function Main({height}: {
     const params = useParams();
     const weAreSearching = Object.values(params).toString().includes('search')
     const weHaveQuery = String(Object.values(params).toString().split('/')[1]).length !== 0
-    const location = useLocation();
-
+    const searchingPage = String(Object.values(params)).includes('search')
     useEffect(() => {
         const fetchMyData = async () => {
             try {
@@ -69,19 +67,21 @@ export function Main({height}: {
     const [displayLogOut, setDisplayLogout] = useState<boolean>(false)
 
 
-    const {idx} = window.history.state;
-    console.log(location)
+    const {state} = useLocation();
+
 
     return (
         <main
             className={mainStyle['main-container']} style={{height: `${height}px`}}>
             <div
                 className={mainStyle['header-container']}
-                style={navOption === 'Search' ? {
+                style={searchingPage ? {
                     position: 'sticky',
                     top: '0',
                     zIndex: '9999',
-                    backgroundColor: '#121212'
+                    backgroundColor: '#121212',
+                    paddingTop: '15px',
+                    paddingBottom: '20px'
                 } : {paddingTop: '15px', paddingBottom: '20px'}}
             >
                 <div className={mainStyle['head-of-main']}
@@ -96,7 +96,7 @@ export function Main({height}: {
                             }}
                         >
                             <img
-                                style={{filter: `${idx === 0 ? `brightness(50%)` : `brightness(100%)`}`}}
+                                style={{filter: `${state === 0 ? `brightness(50%)` : `brightness(100%)`}`}}
                                 alt={'Left icon'} src={Left} height={32}></img>
                         </button>
                         <button style={{marginLeft: "-3px"}}
@@ -109,7 +109,7 @@ export function Main({height}: {
 
 
                                 <img
-                                    style={{filter: `${window.history.length - 2 === idx || !Boolean(idx) ? `brightness(50%)` : `brightness(100%)`}`}}
+                                    style={{filter: `${window.history.length - 2 === state || !Boolean(state) ? `brightness(50%)` : `brightness(100%)`}`}}
                                     alt={'Right icon'} src={Right} height={32}></img>
 
                             </div>

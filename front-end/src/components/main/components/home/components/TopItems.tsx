@@ -6,7 +6,7 @@ import {Artist} from "../../../../../types/artist.ts";
 import {Album} from "../../../../../types/album.ts";
 import {Track} from "../../../../../types/track.ts";
 import PlayResumeStreaming from "../../../../../api/player/playResumeStreaming.ts";
-import {addReactComponentToNavigation, setUserControlActions} from "../../../../../store/features/navigationSlice.ts";
+import {setUserControlActions} from "../../../../../store/features/navigationSlice.ts";
 import PauseStreaming from "../../../../../api/player/pauseStreaming.ts";
 import Pause from "../../../../search/components/each-search-component/Playlists/icons/pause.svg";
 import Play from "../../../../search/components/each-search-component/Playlists/icons/play.svg";
@@ -65,12 +65,7 @@ export function TopItems() {
 
 
                     <Link to={`/${eachTopItem.type}/${eachTopItem.id}`}><div className={homepageStyle['album-picture']}
-                         onClick={() => {
-                             dispatch(addReactComponentToNavigation({
-                                 componentName: eachTopItem.type.slice(0, 1).toUpperCase().concat(eachTopItem.type.slice(1,)),
-                                 props: eachTopItem.id
-                             }))
-                         }}
+
                     ><img src={eachTopItem?.images[0].url} alt={'Album Image'}></img>
                     </div>
                     </Link>
@@ -81,12 +76,7 @@ export function TopItems() {
                 <div className={homepageStyle['detail-play']}>
                      <Link to={`/${eachTopItem.type}/${eachTopItem.id}`
                 }><div className={homepageStyle['top-item-title']}
-                         onClick={() => {
-                             dispatch(addReactComponentToNavigation({
-                                 componentName: eachTopItem.type.slice(0, 1).toUpperCase().concat(eachTopItem.type.slice(1,)),
-                                 props: eachTopItem.id
-                             }))
-                         }}
+
                     >{eachTopItem?.name}</div>
                      </Link>
                     {hoveringOverTopItem && hoveringOverTopItem.itemID === eachTopItem?.id &&

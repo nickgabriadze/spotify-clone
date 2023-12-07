@@ -6,7 +6,7 @@ import {useAppDispatch, useAppSelector} from "../../../store/hooks";
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
 import Play from "../components/each-search-component/Playlists/icons/play.svg";
 import Pause from "../components/each-search-component/Playlists/icons/pause.svg";
-import {addReactComponentToNavigation, setUserControlActions} from "../../../store/features/navigationSlice";
+import {setUserControlActions} from "../../../store/features/navigationSlice";
 import PauseStreaming from "../../../api/player/pauseStreaming";
 import getArtist from "../../../api/search/getArtist.ts";
 import ArtistCardSkeleton from "../../../skeletons/artistCardSkeleton.tsx";
@@ -60,12 +60,7 @@ export function ArtistCard({eachArtist}: { eachArtist: Artist | undefined }) {
             <div className={artistsStyle['artist-img-wrapper']}>
                 <Link to={`/artist/${eachArtist?.id}`}>
                     <div className={artistsStyle["artist-img"]}
-                         onClick={() => {
-                             dispatch(addReactComponentToNavigation({
-                                 componentName: 'Artist',
-                                 props: eachArtist?.id
-                             }))
-                         }}
+
                     >
                         {eachArtist?.images[0]?.url ? (
                             <img
@@ -138,12 +133,7 @@ export function ArtistCard({eachArtist}: { eachArtist: Artist | undefined }) {
 
             <Link to={`/artist/${eachArtist?.id}`}>
                 <div className={artistsStyle["artist-info"]}
-                     onClick={() => {
-                         dispatch(addReactComponentToNavigation({
-                             componentName: 'Artist',
-                             props: eachArtist?.id
-                         }))
-                     }}
+
                 >
                     <h1>
                         {Number(eachArtist?.name.length) > 21
