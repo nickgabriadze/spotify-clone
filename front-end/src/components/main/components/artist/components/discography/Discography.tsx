@@ -34,15 +34,6 @@ export function Discography() {
 
 
     useEffect(() => {
-        dispatch(setWhatsInView({
-            pageName: 'None',
-            pageItemName: 'None',
-            uri: 'None'
-        }))
-
-
-    }, [listGrid]);
-    useEffect(() => {
         const getDiscoData = async () => {
             try {
                 setLoading(true)
@@ -63,12 +54,12 @@ export function Discography() {
             getDiscoData()
         }
 
-        return () =>  {
-               dispatch(setWhatsInView({
-            pageName: 'None',
-            pageItemName: 'None',
-            uri: 'None'
-        }))
+        return () => {
+            dispatch(setWhatsInView({
+                pageName: 'None',
+                pageItemName: 'None',
+                uri: 'None'
+            }))
         }
     }, [accessToken, String(urlParam.artistID), urlParam.type]);
 
@@ -98,7 +89,7 @@ export function Discography() {
         return <Error/>
     }
 
-    if(loading){
+    if (loading) {
         return;
     }
 
