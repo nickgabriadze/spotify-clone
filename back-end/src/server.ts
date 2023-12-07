@@ -63,15 +63,15 @@ app.get("/callback", async (req, res) => {
                 }
             );
 
-            const acccess = response.data;
+            const access = response.data;
 
             res.redirect(
-                "http://localhost:5173/#" +
+                "http://localhost:5173/welcome/#" +
                 queryString.stringify({
-                    accessToken: acccess.access_token,
+                    accessToken: access.access_token,
                     token_type: "Bearer",
                     expires_in: 3600,
-                    refresh_token: acccess.refresh_token,
+                    refresh_token: access.refresh_token,
                 })
             );
         } catch (error) {
