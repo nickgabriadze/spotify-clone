@@ -53,6 +53,7 @@ interface SpotiUser {
         refresh_token: string;
     };
     userInformation: Me | null,
+    loggedIn: boolean,
     userSaved: {
         userSavedSongIDs: string[],
         userSavedAlbumIDs: string[],
@@ -76,6 +77,7 @@ const initialState: SpotiUser = {
         issued_at: 0,
         refresh_token: 'unavailable',
     },
+    loggedIn: false,
     userInformation: null,
     userSaved: {
         userSavedSongIDs: [],
@@ -191,7 +193,8 @@ const spotiUserSlice = createSlice({
                         accessToken: action.payload.access_token,
                         refresh_token: action.payload.refresh_token,
                         issued_at: action.payload.issued_at
-                    }
+                    },
+                    loggedIn: true
                 }
             },
             setToken: (
@@ -235,6 +238,8 @@ const spotiUserSlice = createSlice({
                             expires_in: 3600,
                             issued_at: currentTime,
                         },
+                        loggedIn: true
+
                     };
                 }
             );
@@ -262,6 +267,7 @@ const spotiUserSlice = createSlice({
                         refresh_token: "access revoked",
                         expires_in: 0,
                         issued_at: 0,
+                        loggedIn: false
                     },
                 };
             });

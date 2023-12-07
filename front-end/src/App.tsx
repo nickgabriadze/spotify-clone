@@ -6,16 +6,16 @@ import Navigation from "./components/navigation/navigation";
 import Player from "./components/player/player";
 import Main from "./components/main/Main.tsx";
 import Library from "./components/library/Library.tsx";
-import LoginPage from "./components/login/Login.tsx";
 import validateToken from "./components/utils/validateToken.ts";
+import {useNavigate} from "react-router-dom";
 
 
 export function App() {
-    const access = useAppSelector((state) => state.spotiUserReducer.spotiToken);
+    const loggedIn = useAppSelector((state) => state.spotiUserReducer.loggedIn);
     const userControlActions = useAppSelector(s => s.navigationReducer.userControlActions);
 
     const dispatch = useAppDispatch();
-
+    const navigate = useNavigate();
     window.addEventListener('localStorageChange', () => {
 
         dispatch(
@@ -70,15 +70,12 @@ export function App() {
 
             updateAccessToken();
 
+        }else{
+             navigate("/welcome")
         }
     }, []);
 
-    if (localStorage.getItem('access_token') === null || localStorage.getItem('access_token') === 'undefined') {
-
-        return <LoginPage/>
-    }
-
-    if (access.accessToken !== 'unavailable' && access.refresh_token !== 'unavailable') {
+    if (loggedIn) {
 
 
         return (

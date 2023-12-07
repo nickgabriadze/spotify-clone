@@ -1,19 +1,49 @@
-import {useState} from "react";
-import {fetchTokenAsync} from "../../store/features/spotiUserSlice.ts";
-import {useAppDispatch} from "../../store/hooks.ts";
+import {useEffect, useState} from "react";
+import {fetchTokenAsync, updateCredentials} from "../../store/features/spotiUserSlice.ts";
+import {useAppDispatch, useAppSelector} from "../../store/hooks.ts";
 import loginPageStyle from './login-page.module.css';
 import SpotifyHeaderLogo from "./icons/spotify-logo.svg"
+import {useNavigate} from "react-router-dom";
+import validateToken from "../utils/validateToken.ts";
 
 export function LoginPage() {
     const dispatch = useAppDispatch();
     const [clientID, setClientID] = useState<string>('');
     const [clientSecretID, setClientSecretID] = useState<string>('')
+    const loggedIn = useAppSelector(s => s.spotiUserReducer.loggedIn);
+    const navigate = useNavigate();
     document.title = "Spotify Login"
 
-    if (window.location.hash.includes("#")) {
-        dispatch(fetchTokenAsync({}))
+    useEffect(() => {
+        if (localStorage.getItem('access_token')
+            &&
+            localStorage.getItem('refresh_token')
+        ) {
+            const updateAccessToken = async () => {
 
+                const newToken = await validateToken();
+
+                dispatch(updateCredentials({
+                        access_token: newToken,
+                        refresh_token: String(localStorage.getItem('refresh_token')),
+                        issued_at: Number(localStorage.getItem('issued_at'))
+                    }
+                ))
+            }
+
+            updateAccessToken();
+
+        }
+    }, []);
+    if (window.location.hash.includes('#')) {
+        dispatch(fetchTokenAsync({}))
     }
+
+    if(loggedIn){
+        navigate('/')
+    }
+
+
 
     return <div className={loginPageStyle['login-form-wrapper']}>
 

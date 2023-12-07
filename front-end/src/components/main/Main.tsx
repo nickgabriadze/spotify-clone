@@ -69,7 +69,6 @@ export function Main({height}: {
 
     const {state} = useLocation();
 
-
     return (
         <main
             className={mainStyle['main-container']} style={{height: `${height}px`}}>
@@ -181,6 +180,7 @@ export function Main({height}: {
                                         dispatch(setUserControlActions({
                                             userAction: 'USER_LOGOUT'
                                         }))
+                                        navigatePages('/welcome')
                                     }
                                     }>Log Out</button>}
                                 <button

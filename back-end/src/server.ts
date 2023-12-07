@@ -66,7 +66,7 @@ app.get("/callback", async (req, res) => {
             const access = response.data;
 
             res.redirect(
-                "http://localhost:5173/welcome/#" +
+                "http://localhost:5173/welcome#" +
                 queryString.stringify({
                     accessToken: access.access_token,
                     token_type: "Bearer",
