@@ -181,7 +181,9 @@ export function Main({height}: {
                                         dispatch(setUserControlActions({
                                             userAction: 'USER_LOGOUT'
                                         }))
+                                        navigatePages('/welcome')
                                     }
+
                                     }>Log Out</button>}
                                 <button
                                     onClick={() => {

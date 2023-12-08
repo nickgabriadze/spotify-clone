@@ -13,6 +13,8 @@ import {useAppDispatch, useAppSelector} from "../../../../store/hooks.ts";
 import {PlayListTrackObject} from "../../../../types/playlist.ts";
 import {useEffect, useState} from "react";
 import getSavedTracks from "../../../../api/library/getSavedTracks.ts";
+import useIntersectionObserver from "../../../utils/useIntersectionObserver.ts";
+import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
 
 export function LikedSongs() {
     const me = useAppSelector(s => s.spotiUserReducer.userInformation);
@@ -26,7 +28,23 @@ export function LikedSongs() {
     const [_, setLoading] = useState<boolean>(true);
 
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken)
-
+    const buttonToObserve = useIntersectionObserver({threshold: 1}, (entries: IntersectionObserverEntry[]) => {
+        entries.forEach((entry: IntersectionObserverEntry) => {
+            if (entry.isIntersecting) {
+                dispatch(setWhatsInView({
+                    pageName: 'None',
+                    pageItemName: 'None',
+                    uri: 'None'
+                }))
+            } else {
+                dispatch(setWhatsInView({
+                    pageName: 'Liked Songs',
+                    pageItemName: 'Liked Songs',
+                    uri: String(me?.uri.concat(':collection'))
+                }))
+            }
+        })
+    }, [])
 
 
     useEffect(() => {
@@ -51,7 +69,16 @@ export function LikedSongs() {
 
         updateSavedTracks();
 
-        return () => setLoading(false)
+        return () => {
+            setLoading(false)
+
+            dispatch(setWhatsInView({
+                pageName: 'None',
+                pageItemName: 'None',
+                uri: 'None'
+            }))
+
+        }
 
     }, [accessToken, libraryActions.length]);
 
@@ -82,7 +109,7 @@ export function LikedSongs() {
             </div>
         </div>
         <div className={albumStyle['play-save']}>
-            <div>
+            <div ref={buttonToObserve}>
                 <button
 
                     className={albumStyle["album-hover-button"]}

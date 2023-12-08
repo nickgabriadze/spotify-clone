@@ -46,7 +46,7 @@ export function PlaylistPage() {
     const observePlayButton = useIntersectionObserver({threshold: 1}, (entries: IntersectionObserverEntry[]) => {
         entries.forEach((e: IntersectionObserverEntry) => {
             if (!e.isIntersecting) {
-               dispatch(setWhatsInView({
+                dispatch(setWhatsInView({
                     pageName: 'Playlist',
                     pageItemName: String(playListData?.name),
                     uri: String(playListData?.uri)
@@ -91,6 +91,13 @@ export function PlaylistPage() {
         }
 
         getPlayListData();
+        return () => {
+            dispatch(setWhatsInView({
+                pageName: 'None',
+                pageItemName: 'None',
+                uri: 'None'
+            }))
+        }
     }, [accessToken, playlistID]);
 
     const observing = useRef<null | IntersectionObserver>(null);
@@ -140,8 +147,6 @@ export function PlaylistPage() {
     );
 
     if (playlistLoading) return <></>
-
-
 
 
     return <section className={playlistPageStyle['playlist-page-wrapper']}

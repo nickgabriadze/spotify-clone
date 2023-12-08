@@ -67,8 +67,9 @@ export const SongCard = forwardRef(function SongCard(props: {
                          justifyContent: 'space-between',
                          alignItems: 'center'
                      } : {
-                         display: 'grid',
-                         gridTemplateColumns: '1fr 1fr auto'
+                         display: 'flex',
+                          justifyContent: 'space-between',
+                         alignItems: 'center'
                      }
              }
              onDoubleClick={async () => {
