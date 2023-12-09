@@ -24,18 +24,18 @@
 
     display: flex;
     gap: 10px;
-    overflow-x: clip;
-    flex-direction: row;
+
     flex-wrap: wrap;
 
 
-
     .album-picture {
-        height: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
         width: fit-content;
+        height: 70px;
+
+
 
     }
 
@@ -55,9 +55,10 @@
         display: flex;
         gap: 10px;
         cursor: pointer;
-        height: 70px;
+        width: 100%;
+        flex-basis: 270px;
         flex-grow: 1;
-        flex-basis: 300px
+
 
     }
 
