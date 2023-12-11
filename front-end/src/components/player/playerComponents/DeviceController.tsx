@@ -54,7 +54,7 @@ export function DeviceController({devices,}: {
     const devicesIconRef = useRef<HTMLImageElement>(null);
     const params = useParams();
     const isCurrentQueue = Object.values(params).includes('queue')
-    const [previousSliderVolume, setPreviousSliderVolume] = useState<number>(sliderVolume)
+    const [previousSliderVolume, setPreviousSliderVolume] = useState<number>(sliderVolume === 0 ? 30 : sliderVolume)
     useEffect(() => {
         const handleClickOutside = (e: any) => {
             if (popupRef.current && !popupRef.current.contains(e.target)
@@ -75,11 +75,10 @@ export function DeviceController({devices,}: {
         };
     }, []);
 
-    console.log(sliderVolume)
     useEffect(() => {
 
         const handleSliderVolumeTimeout = setTimeout(async () => {
-            await setPlaybackVolume(Number(sliderVolume), accessToken)
+            await setPlaybackVolume(Number(previousSliderVolume), accessToken)
             dispatch(setUserControlActions({
                 userAction: "Set Playback Volume"
             }))
@@ -88,7 +87,7 @@ export function DeviceController({devices,}: {
         return () => {
             clearTimeout(handleSliderVolumeTimeout)
         }
-    }, [sliderVolume]);
+    }, [previousSliderVolume]);
 
     const listeningOnDevice = String(devices?.devices.filter(each => each.is_active)[0]?.type)
     return (
@@ -191,7 +190,7 @@ export function DeviceController({devices,}: {
                 onChange={async (e) => {
                     setSliderVolume(Number(e.target.value));
                     setPreviousSliderVolume(Number(e.target.value))
-                    
+
                 }}
                 type="range"
                 value={String(sliderVolume)}

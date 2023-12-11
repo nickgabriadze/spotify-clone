@@ -79,6 +79,7 @@ export function StreamController({
                 dispatch(setUserControlActions({
                     userAction: 'Seek To Position'
                 }))
+
             }, 500)
 
 
