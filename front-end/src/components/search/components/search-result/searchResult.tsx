@@ -39,7 +39,7 @@ export function SearchResult() {
         return <SongsRes songName={castedToString}/>
     }
 
-    if (params.type === 'podcastsAndshows') {
+    if (params.type === 'podcastsAndShows') {
         document.title = `Search / Podcasts & Shows`
         return <PodcastsShows podcastShowName={castedToString}/>
     }
