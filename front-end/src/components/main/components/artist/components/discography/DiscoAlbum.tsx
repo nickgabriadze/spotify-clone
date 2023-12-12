@@ -26,7 +26,7 @@ export const DiscoAlbum = ({album, index}: { album: Album, index: number }) => {
     const albumIsSaved = useAppSelector(s => s.spotiUserReducer.userSaved.userSavedAlbumIDs).includes(String(album.id))
     const dispatch = useAppDispatch();
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong);
-    const albumRef = useRef(null);
+    const albumRef = useRef<HTMLAnchorElement>(null);
     const [fetchTracksCommand, setFetchTracksCommand] = useState<boolean>(false);
     useEffect(() => {
         const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
@@ -34,14 +34,22 @@ export const DiscoAlbum = ({album, index}: { album: Album, index: number }) => {
                 if (e.isIntersecting && !fetchTracksCommand) {
                     setFetchTracksCommand(true)
                 }
-                if(index === 0 && e.isIntersecting){
-                      dispatch(setWhatsInView({
+
+                if (e.isIntersecting && Number(albumRef?.current?.offsetTop) < 200) {
+                    dispatch(setWhatsInView({
                         pageName: 'None',
                         pageItemName: 'None',
                         uri: 'None'
                     }))
                 }
-                if (index === 0 && e.isIntersecting && !fetchTracksCommand) {
+
+                if (!(albumRef?.current)) {
+                    dispatch(setWhatsInView({
+                        pageName: 'None',
+                        pageItemName: 'None',
+                        uri: 'None'
+                    }))
+                } else if (index === 0 && e.isIntersecting && !fetchTracksCommand) {
                     dispatch(setWhatsInView({
                         pageName: 'None',
                         pageItemName: 'None',
@@ -93,13 +101,12 @@ export const DiscoAlbum = ({album, index}: { album: Album, index: number }) => {
 
         return () => {
             dispatch(setWhatsInView({
-                    pageName: 'None',
-                    pageItemName: 'None',
-                    uri: 'None'
-                }))
+                pageName: 'None',
+                pageItemName: 'None',
+                uri: 'None'
+            }))
         }
     }, [accessToken, album.id, fetchTracksCommand]);
-
 
 
     return <section className={discographyStyle['disco-album-wrapper']}
@@ -194,10 +201,10 @@ export const DiscoAlbum = ({album, index}: { album: Album, index: number }) => {
             </nav>
             <div>{albumTracks.length === 0 ? Array.from({length: 10}).map((_, i) => <SongCardSkeleton
                 key={i}/>) : albumTracks.map((t, i) => <SongCard eachTrack={t} n={i + 1} key={i}
-                                                                               accessToken={accessToken}
-                                                                               forAlbum={true}/>
+                                                                 accessToken={accessToken}
+                                                                 forAlbum={true}/>
             )}</div>
-    </div>
-</section>
+        </div>
+    </section>
 }
 
