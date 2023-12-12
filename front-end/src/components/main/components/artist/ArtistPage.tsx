@@ -21,8 +21,9 @@ import {Album} from "../../../../types/album.ts";
 import AppearsOn from "./components/AppearsOn.tsx";
 import FansAlsoLike from "./components/FansAlsoLike.tsx";
 import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
-import {Link, useParams} from "react-router-dom";
+import {Link, useLocation, useParams} from "react-router-dom";
 import useIntersectionObserver from "../../../utils/useIntersectionObserver.ts";
+import useSearchHistory from "../../hooks/useSearchHistory.ts";
 
 export function ArtistPage() {
     const {artistID} = useParams();
@@ -39,6 +40,8 @@ export function ArtistPage() {
     const [loading, setLoading] = useState<boolean>(true);
     const artistPageRef = useRef<HTMLDivElement>(null)
     const numberOfItems = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown);
+
+    const {state} = useLocation();
 
     const observePlayButton = useIntersectionObserver({threshold: 1}, (entries: IntersectionObserverEntry[]) => {
         entries.forEach((e: IntersectionObserverEntry) => {
@@ -90,13 +93,22 @@ export function ArtistPage() {
         fetchArtist();
 
         return () => {
-              dispatch(setWhatsInView({
-                    pageName: 'None',
-                    pageItemName: 'None',
-                    uri: 'None'
-                }))
+            dispatch(setWhatsInView({
+                pageName: 'None',
+                pageItemName: 'None',
+                uri: 'None'
+            }))
         }
     }, [artistID, accessToken, country]);
+
+    useEffect(() => {
+
+        if (state !== null) {
+            useSearchHistory(state, "SET")
+        }
+
+    }, [])
+
 
     if (loading) return <></>
 

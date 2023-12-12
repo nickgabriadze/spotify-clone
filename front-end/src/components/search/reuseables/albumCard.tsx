@@ -10,8 +10,7 @@ import PauseStreaming from "../../../api/player/pauseStreaming";
 import NoAlbumPicture from "../components/each-search-component/icons/no-album-pic.svg"
 import getAlbum from "../../../api/search/getAlbum.ts";
 import AlbumCardSkeleton from "../../../skeletons/albumCardSkeleton.tsx";
-import {Link, useLocation} from "react-router-dom";
-
+import {Link} from "react-router-dom";
 
 
 export function AlbumCardApi({albumID}: { albumID: string }) {
@@ -40,12 +39,11 @@ export function AlbumCardApi({albumID}: { albumID: string }) {
 }
 
 
-export function AlbumCard({eachAlbum}: { eachAlbum: Album | undefined }) {
+export function AlbumCard({eachAlbum, fromSearch}: { eachAlbum: Album | undefined, fromSearch?: boolean }) {
     const [hoveringOver, setHoveringOver] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
     const currentlyPlaying = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong);
-    const {state} = useLocation();
 
     return (
         <div className={albumsStyle["album-card"]}
@@ -53,26 +51,29 @@ export function AlbumCard({eachAlbum}: { eachAlbum: Album | undefined }) {
              onMouseOver={() => setHoveringOver(true)}
              onMouseOut={() => setHoveringOver(false)}>
             <div className={albumsStyle['album-inner-content']}>
-                <Link to={`/album/${eachAlbum?.id}`} state={state === null ? 0: state+1}><div className={albumsStyle["album-img"]}
+                <Link to={`/album/${eachAlbum?.id}`} state={fromSearch ? {type: 'album', id: eachAlbum?.id} : null}
 
                 >
-                    {eachAlbum?.images[0]?.url ? <img
-                            src={eachAlbum?.images[0]?.url}
-                            draggable={false}
-                            alt="Album Picture"
-                        ></img> :
-                        <img
-                            style={{
-                                backgroundColor: '#302f2f',
-                                padding: '5px',
-                                borderRadius: '5px',
+                    <div className={albumsStyle["album-img"]}
 
-                            }}
-                            src={NoAlbumPicture}
+                    >
+                        {eachAlbum?.images[0]?.url ? <img
+                                src={eachAlbum?.images[0]?.url}
+                                draggable={false}
+                                alt="Album Picture"
+                            ></img> :
+                            <img
+                                style={{
+                                    backgroundColor: '#302f2f',
+                                    padding: '5px',
+                                    borderRadius: '5px',
 
-                            draggable={false}
-                            alt="Album Picture"></img>}
-                </div>
+                                }}
+                                src={NoAlbumPicture}
+
+                                draggable={false}
+                                alt="Album Picture"></img>}
+                    </div>
                 </Link>
 
                 {hoveringOver && (
@@ -120,24 +121,26 @@ export function AlbumCard({eachAlbum}: { eachAlbum: Album | undefined }) {
                         )}
                     </button>
                 )}
-                <Link to={`/album/${eachAlbum?.id}`}><div className={albumsStyle["album-details"]}
-                >
-                    <h1>
-                        {Number(eachAlbum?.name?.length) > 15
-                            ? eachAlbum?.name.slice(0, 16).concat("...")
-                            : eachAlbum?.name}
-                    </h1>
-                    <p>
-                        {String(eachAlbum?.release_date).slice(0, 4)} •{" "}
-                        {Number(eachAlbum?.artists?.map((each) => each.name).join(", ").length) > 15
-                            ? eachAlbum?.artists
-                                .map((each) => each.name)
-                                .join(", ")
-                                .slice(0, 10)
-                                .concat("...")
-                            : eachAlbum?.artists.map((each) => each.name).join(", ")}
-                    </p>
-                </div>
+                <Link to={`/album/${eachAlbum?.id}`}
+                      state={fromSearch ? {type: 'album', id: eachAlbum?.id} : null}>
+                    <div className={albumsStyle["album-details"]}
+                    >
+                        <h1>
+                            {Number(eachAlbum?.name?.length) > 15
+                                ? eachAlbum?.name.slice(0, 16).concat("...")
+                                : eachAlbum?.name}
+                        </h1>
+                        <p>
+                            {String(eachAlbum?.release_date).slice(0, 4)} •{" "}
+                            {Number(eachAlbum?.artists?.map((each) => each.name).join(", ").length) > 15
+                                ? eachAlbum?.artists
+                                    .map((each) => each.name)
+                                    .join(", ")
+                                    .slice(0, 10)
+                                    .concat("...")
+                                : eachAlbum?.artists.map((each) => each.name).join(", ")}
+                        </p>
+                    </div>
                 </Link>
             </div>
         </div>

@@ -2,7 +2,7 @@ import discographyStyle from "./discography.module.css"
 import GridViewIcon from "../../icons/grid-view.svg";
 import ListViewIcon from "../../icons/list-view.svg"
 import {Link, useParams} from "react-router-dom";
-import Error from "../../../../../Error.tsx";
+import Error from "../../../../../Errors/Error.tsx";
 import {useEffect, useRef, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../../../../store/hooks.ts";
 import getArtistsAlbums from "../../../../../../api/main/artist/getArtistsAlbums.ts";

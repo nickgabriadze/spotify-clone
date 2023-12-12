@@ -39,7 +39,7 @@ export function ArtistCardApi({artistID}: { artistID: string }) {
     return loading ? <ArtistCardSkeleton/> : <ArtistCard eachArtist={singleArtist}/>
 }
 
-export function ArtistCard({eachArtist}: { eachArtist: Artist | undefined }) {
+export function ArtistCard({eachArtist, fromSearch}: { eachArtist: Artist | undefined, fromSearch?: boolean }) {
     const [hoveringOver, setHoveringOver] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const currentlyPlaying = useAppSelector(
@@ -58,7 +58,7 @@ export function ArtistCard({eachArtist}: { eachArtist: Artist | undefined }) {
             onMouseOut={() => setHoveringOver(false)}
         >
             <div className={artistsStyle['artist-img-wrapper']}>
-                <Link to={`/artist/${eachArtist?.id}`}>
+                <Link to={`/artist/${eachArtist?.id}`} state={fromSearch ? {type: 'artist', id: eachArtist?.id} : null}>
                     <div className={artistsStyle["artist-img"]}
 
                     >
@@ -80,58 +80,58 @@ export function ArtistCard({eachArtist}: { eachArtist: Artist | undefined }) {
                         )}
                     </div>
                 </Link>
-                    {hoveringOver && (
-                        <button
-                            onClick={async () => {
-                                if (currentlyPlaying.artistID === eachArtist?.id) {
-                                    if (!currentlyPlaying.isPlaying) {
-                                        await PlayResumeStreaming(accessToken);
-                                        dispatch(
-                                            setUserControlActions({
-                                                userAction: "Play Artist",
-                                            })
-                                        );
-                                    } else {
-                                        await PauseStreaming(accessToken);
-                                        dispatch(
-                                            setUserControlActions({
-                                                userAction: "Pause Artist",
-                                            })
-                                        );
-                                    }
-                                } else {
-                                    await PlayResumeStreaming(accessToken, eachArtist?.uri);
+                {hoveringOver && (
+                    <button
+                        onClick={async () => {
+                            if (currentlyPlaying.artistID === eachArtist?.id) {
+                                if (!currentlyPlaying.isPlaying) {
+                                    await PlayResumeStreaming(accessToken);
                                     dispatch(
                                         setUserControlActions({
                                             userAction: "Play Artist",
                                         })
                                     );
+                                } else {
+                                    await PauseStreaming(accessToken);
+                                    dispatch(
+                                        setUserControlActions({
+                                            userAction: "Pause Artist",
+                                        })
+                                    );
                                 }
-                            }}
-                            className={artistsStyle["artist-hover-button"]}
-                        >
-                            {currentlyPlaying?.context?.uri === eachArtist?.uri &&
-                            currentlyPlaying.isPlaying ? (
-                                <div>
-                                    <img
-                                        style={{padding: '10px'}}
-                                        alt={"Pause icon"} src={Pause} width={40} height={40}></img>
-                                </div>
-                            ) : (
+                            } else {
+                                await PlayResumeStreaming(accessToken, eachArtist?.uri);
+                                dispatch(
+                                    setUserControlActions({
+                                        userAction: "Play Artist",
+                                    })
+                                );
+                            }
+                        }}
+                        className={artistsStyle["artist-hover-button"]}
+                    >
+                        {currentlyPlaying?.context?.uri === eachArtist?.uri &&
+                        currentlyPlaying.isPlaying ? (
+                            <div>
+                                <img
+                                    style={{padding: '10px'}}
+                                    alt={"Pause icon"} src={Pause} width={40} height={40}></img>
+                            </div>
+                        ) : (
 
-                                <div>
-                                    <img
+                            <div>
+                                <img
 
-                                        alt={"Pause icon"} src={Play} width={100} height={100}></img>
-                                </div>
+                                    alt={"Pause icon"} src={Play} width={100} height={100}></img>
+                            </div>
 
-                            )}
-                        </button>
-                    )}
+                        )}
+                    </button>
+                )}
             </div>
 
 
-            <Link to={`/artist/${eachArtist?.id}`}>
+            <Link to={`/artist/${eachArtist?.id}`} state={fromSearch ? {type: 'artist', id: eachArtist?.id} : null}>
                 <div className={artistsStyle["artist-info"]}
 
                 >
@@ -147,7 +147,7 @@ export function ArtistCard({eachArtist}: { eachArtist: Artist | undefined }) {
             </Link>
 
         </div>
-);
+    );
 }
 
 export default ArtistCard;

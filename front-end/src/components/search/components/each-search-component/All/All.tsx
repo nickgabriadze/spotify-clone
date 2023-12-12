@@ -16,6 +16,7 @@ import {EpisodeWithShow} from "../../../../../types/episode.ts";
 import getEpisodes from "../../../../../api/search/getEpisodes.ts";
 import TopEpisodeCard from "../../../reuseables/topEpisodeCard.tsx";
 import TopEpisodeCardSkeleton from "../../../../../skeletons/topEpisodeCardSkeleton.tsx";
+import SearchError from "../../../../Errors/SearchError.tsx";
 
 export function AllResults({searchQuery}: { searchQuery: string }) {
     const spotiUserToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
@@ -24,7 +25,7 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
     const [episodesData, setEpisodesData] = useState<EpisodeWithShow[]>([]);
     const [episodeDataLoading, setEpisodeDataLoading] = useState<boolean>(true)
     const itemQuantity = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown)
-
+    const [error, setError] = useState<boolean>(false);
     useEffect
     (() => {
         const fetchAll = async () => {
@@ -34,7 +35,7 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
                 const data = requestAll.data;
                 setAllResultsData(data);
             } catch (e) {
-                console.log(e)
+                setError(true);
             } finally {
                 setResultsLoading(false)
             }
@@ -55,6 +56,7 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
 
             } catch (e) {
                 console.log(e)
+                setError(true)
             } finally {
                 setEpisodeDataLoading(false)
             }
@@ -63,6 +65,10 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
 
     }, [spotiUserToken, searchQuery, resultsLoading]);
 
+
+    if(error){
+        return <SearchError />
+    }
 
     return <div className={allResultsStyle['all-wrapper']}>
         <div className={allResultsStyle['first-row']}>
@@ -76,6 +82,7 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
                 <div className={allResultsStyle['top-artists']}>
                     {resultsLoading ? Array.from({length: itemQuantity}).map((_, i) => <ArtistCardSkeleton
                         key={i}/>) : allResultsData?.artists.items.slice(0, itemQuantity).map((eachArtist, i) => <ArtistCard
+                        fromSearch={true}
                         eachArtist={eachArtist} key={i}/>)}
                 </div>
             </div>}
@@ -86,6 +93,7 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
                 <div className={allResultsStyle['top-albums']}>
                     {resultsLoading ? Array.from({length: itemQuantity}).map((_, i) => <AlbumCardSkeleton
                         key={i}/>) : allResultsData?.albums.items.slice(0, itemQuantity).map((eachAlbum, i) => <AlbumCard
+                        fromSearch={true}
                         eachAlbum={eachAlbum} key={i}/>)}
                 </div>
             </div>
@@ -97,6 +105,7 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
                 <div className={allResultsStyle['top-playlists']}>
                     {resultsLoading ? Array.from({length: itemQuantity}).map((_, i) => <PlaylistCardSkeleton
                         key={i}/>) : allResultsData?.playlists.items.slice(0, itemQuantity).map((eachPlaylist, i) => <PlaylistCard
+                        fromSearch={true}
                         eachPlaylist={eachPlaylist} key={i}/>)}
                 </div>
             </div>

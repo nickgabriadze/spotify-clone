@@ -10,7 +10,7 @@ import getPlaylist from "../../../api/search/getPlaylist.ts";
 import PlaylistCardSkeleton from "../../../skeletons/playlistCardSekeleton.tsx";
 import PauseStreaming from "../../../api/player/pauseStreaming.ts";
 import Pause from "../components/each-search-component/Playlists/icons/pause.svg";
-import {Link, useLocation} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 
 export function PlaylistCardApi({playlistID}: { playlistID: string }) {
@@ -37,9 +37,10 @@ export function PlaylistCardApi({playlistID}: { playlistID: string }) {
     return loading ? <PlaylistCardSkeleton/> : <PlaylistCard eachPlaylist={singlePlayList}/>
 }
 
-export function PlaylistCard({eachPlaylist, playlistDescription}: {
+export function PlaylistCard({eachPlaylist, fromSearch, playlistDescription}: {
     eachPlaylist: Playlist | undefined,
-    playlistDescription?: boolean
+    playlistDescription?: boolean,
+    fromSearch?: boolean
 }) {
     const [hoveringOver, setHoveringOver] = useState<boolean>(false);
     const dispatch = useAppDispatch();
@@ -47,7 +48,6 @@ export function PlaylistCard({eachPlaylist, playlistDescription}: {
         (state) => state.spotiUserReducer.spotiToken.accessToken
     );
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong);
-    const {state}  = useLocation();
 
     return (
         <div
@@ -55,7 +55,9 @@ export function PlaylistCard({eachPlaylist, playlistDescription}: {
             onMouseOver={() => setHoveringOver(true)}
             onMouseOut={() => setHoveringOver(false)}
         >
-            <Link to={`/playlist/${eachPlaylist?.id}`} state={state === null ? 0: state+1}><div className={playlistsStyle["playlist-img"]}
+            <Link to={`/playlist/${eachPlaylist?.id}`}
+             state={fromSearch ? {type: 'playlist', id: eachPlaylist?.id} : null}
+            ><div className={playlistsStyle["playlist-img"]}
             >
                 <img
 
@@ -115,7 +117,9 @@ export function PlaylistCard({eachPlaylist, playlistDescription}: {
             )}
             </div></Link>
 
-            <Link to={`/playlist/${eachPlaylist?.id}`}><div className={playlistsStyle["playlist-details"]}>
+            <Link to={`/playlist/${eachPlaylist?.id}`}
+             state={fromSearch ? {type: 'playlist', id: eachPlaylist?.id} : null}
+            ><div className={playlistsStyle["playlist-details"]}>
                 <h1
                 >
                     {Number(eachPlaylist?.name?.length) > 15

@@ -23,7 +23,7 @@ import Pause from "../search/components/each-search-component/Playlists/icons/pa
 import Play from "../search/components/each-search-component/Playlists/icons/play.svg";
 import {useUpdateNumberOfItems} from "./hooks/useNumberOfItems.ts";
 import Category from "./components/browsingCategory/category.tsx";
-import Error from "../Error.tsx";
+import Error from "../Errors/Error.tsx";
 import {LikedSongs} from "./components/playlist/LikedSongs.tsx";
 import ArtistLayout from "./components/artist/ArtistLayout.tsx";
 import {Discography} from "./components/artist/components/discography/Discography.tsx";

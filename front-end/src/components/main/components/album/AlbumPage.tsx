@@ -23,8 +23,9 @@ import {SongCard} from "../../../search/reuseables/songCard.tsx";
 import getArtistAlbums from "../../../../api/main/album/getArtistAlbums.ts";
 import AlbumCard from "../../../search/reuseables/albumCard.tsx";
 import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
-import {Link, useParams} from "react-router-dom";
+import {Link, useLocation, useParams} from "react-router-dom";
 import useIntersectionObserver from "../../../utils/useIntersectionObserver.ts";
+import useSearchHistory from "../../hooks/useSearchHistory.ts";
 
 export function AlbumPage() {
     const {albumID} = useParams();
@@ -39,11 +40,21 @@ export function AlbumPage() {
     const albumPageRef = useRef<HTMLDivElement>(null)
     const numberOfItems = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown);
     const [_, setAlbumLoading] = useState<boolean>(true);
+    const {state} = useLocation();
+
     useEffect(() => {
         if (!currentlyPlaying.isPlaying && albumData?.album.id) {
             document.title = `Album / ${albumData?.album?.name}`
         }
     }, [currentlyPlaying.isPlaying, albumData?.album?.id]);
+
+    useEffect(() => {
+
+        if (state !== null) {
+            useSearchHistory(state, "SET")
+        }
+
+    }, [])
 
     const observePlayButton = useIntersectionObserver({threshold: 1}, (entries: IntersectionObserverEntry[]) => {
         entries.forEach((e: IntersectionObserverEntry) => {
@@ -74,7 +85,7 @@ export function AlbumPage() {
                 setArtistAlbums(artistAlbums.items)
             } catch (err) {
 
-            }finally {
+            } finally {
                 setAlbumLoading(false)
             }
         }
@@ -105,13 +116,14 @@ export function AlbumPage() {
         getAlbumInformation()
 
         return () => {
-           dispatch(setWhatsInView({
-                    pageName: 'None',
-                    pageItemName: 'None',
-                    uri: 'None'
-                }))
+            dispatch(setWhatsInView({
+                pageName: 'None',
+                pageItemName: 'None',
+                uri: 'None'
+            }))
         }
     }, [accessToken, albumID]);
+
 
     if (!dataLoading && albumData && albumData?.albumTracks.length !== 0) {
         const albumDate = new Date(String(albumData?.album.release_date))
@@ -168,7 +180,8 @@ export function AlbumPage() {
                         <h1>{albumData?.album.name}</h1>
                     </div>
                     <div className={albumStyle['artist-information']}>
-                        <h4 className={albumStyle['artist-name-ry-nos']}><Link to={`/artist/${albumData?.album.artists[0].id}`}
+                        <h4 className={albumStyle['artist-name-ry-nos']}><Link
+                            to={`/artist/${albumData?.album.artists[0].id}`}
 
                         >{albumData?.album.artists[0].name}</Link> • {albumDate.getFullYear()} • {albumData?.album.total_tracks} song,
                         </h4>

@@ -3,13 +3,31 @@
   font-size: 1.5rem;
 }
 
-.browsing-categories-wrapper {
+.browsing-categories-wrapper > .categories {
   display: flex;
   flex-direction: column;
   gap: 30px;
   padding: 15px;
   height: calc(100% + 45px);
   overflow-y: scroll;
+
+}
+.recents{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px;
+
+}
+
+.search-history{
+  display: grid;
+  gap: 20px;
+
+}
+
+.search-history::-webkit-scrollbar{
+  display: none;
 }
 
 .genre-card-grid {

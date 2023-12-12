@@ -15,9 +15,7 @@ export function SearchBar() {
     const [onElementFocus, setOnElementFocus] = useState<boolean>(false);
     const navigator = useNavigate();
     // const [err, setErr] = useState<string | unknown>();
-    console.log(params)
 
-    console.log(weAreSearchingFor)
     useEffect(() => {
         const timeOutToSetQuery = setTimeout(() => {
 

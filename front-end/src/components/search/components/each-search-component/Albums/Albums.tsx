@@ -40,7 +40,7 @@ export function AlbumsRes({ albumName }: { albumName: string }) {
             <AlbumCardSkeleton key={i} />
           ))
         : albumsData?.items.map((eachAlbum) => (
-            <AlbumCard key={eachAlbum.id} eachAlbum={eachAlbum} />
+            <AlbumCard key={eachAlbum.id} eachAlbum={eachAlbum} fromSearch={true} />
           ))}
     </section>
   );

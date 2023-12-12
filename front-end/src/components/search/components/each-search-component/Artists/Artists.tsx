@@ -2,7 +2,7 @@ import getArtists from "../../../../../api/search/getArtists";
 import ArtistCardSkeleton from "../../../../../skeletons/artistCardSkeleton.tsx";
 import { useAppSelector } from "../../../../../store/hooks";
 import { Artists } from "../../../../../types/artist";
-import SpotiError from "../../../../Error";
+import SpotiError from "../../../../Errors/Error.tsx";
 import ArtistCard from "../../../reuseables/artistCard";
 import artistsStyle from "./artists.module.css";
 import { useState, useEffect } from "react";
@@ -40,7 +40,7 @@ export function ArtistsRes({ artistsName }: { artistsName: string }) {
       {artistsLoading
         ? Array.from({ length: 30 }).map((_, i) => <ArtistCardSkeleton key={i} />)
         : artistsData?.items?.map((eachArtist) => (
-            <ArtistCard key={eachArtist.id} eachArtist={eachArtist}/> 
+            <ArtistCard key={eachArtist.id} eachArtist={eachArtist} fromSearch={true}/>
           ))}
     </div>
   );

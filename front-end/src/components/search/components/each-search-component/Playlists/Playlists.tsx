@@ -38,7 +38,9 @@ export function PlaylistsRes({ playlistName }: { playlistName: string }) {
       {playlistsLoading || playlistsError
         ? Array.from({ length: 30 }).map((_, i) => <PlaylistCardSkeleton key={i} />)
         : playlistsData?.items.map((eachPlaylist) => (
-          <PlaylistCard key={eachPlaylist.id} eachPlaylist={eachPlaylist}/>
+          <PlaylistCard key={eachPlaylist.id} eachPlaylist={eachPlaylist}
+          fromSearch={true}
+          />
           ))}
     </section>
   );

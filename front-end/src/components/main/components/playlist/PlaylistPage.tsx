@@ -19,8 +19,9 @@ import {SongCard} from "../../../search/reuseables/songCard.tsx";
 import SongCardSkeleton from "../../../../skeletons/songCardSkeleton.tsx";
 import axiosInstance from "../../../../axios.ts";
 import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
-import {useParams} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import useIntersectionObserver from "../../../utils/useIntersectionObserver.ts";
+import useSearchHistory from "../../hooks/useSearchHistory.ts";
 
 
 export function PlaylistPage() {
@@ -42,6 +43,7 @@ export function PlaylistPage() {
 
     const [tracksLoading, setTracksLoading] = useState<boolean>(true);
     const playlistPageRef = useRef<HTMLDivElement>(null)
+    const {state} = useLocation();
 
     const observePlayButton = useIntersectionObserver({threshold: 1}, (entries: IntersectionObserverEntry[]) => {
         entries.forEach((e: IntersectionObserverEntry) => {
@@ -62,6 +64,14 @@ export function PlaylistPage() {
 
         })
     }, [playlistLoading])
+
+    useEffect(() => {
+
+        if (state !== null) {
+            useSearchHistory(state, "SET")
+        }
+
+    }, [])
 
     useEffect(() => {
         if (!currentlyPlaying.isPlaying && playListData?.id) {
