@@ -4,7 +4,7 @@ import albumsStyle from "../components/each-search-component/Albums/albums.modul
 import {useAppDispatch, useAppSelector} from "../../../store/hooks";
 import Play from "../components/each-search-component/Playlists/icons/play.svg";
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
-import {addReactComponentToNavigation, setUserControlActions} from "../../../store/features/navigationSlice";
+import {setUserControlActions} from "../../../store/features/navigationSlice";
 import Pause from "../components/each-search-component/Playlists/icons/pause.svg";
 import PauseStreaming from "../../../api/player/pauseStreaming";
 import NoAlbumPicture from "../components/each-search-component/icons/no-album-pic.svg"
@@ -121,12 +121,6 @@ export function AlbumCard({eachAlbum}: { eachAlbum: Album | undefined }) {
                     </button>
                 )}
                 <Link to={`/album/${eachAlbum?.id}`}><div className={albumsStyle["album-details"]}
-                     onClick={() => {
-                         dispatch(addReactComponentToNavigation({
-                             componentName: String(eachAlbum?.type.slice(0, 1).toUpperCase().concat(eachAlbum?.type.slice(1,))),
-                             props: eachAlbum?.id
-                         }))
-                     }}
                 >
                     <h1>
                         {Number(eachAlbum?.name?.length) > 15

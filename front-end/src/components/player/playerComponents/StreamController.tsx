@@ -41,6 +41,8 @@ export function StreamController({
             Number(currentlyPlaying?.item?.duration_ms)) *
         100
     );
+    const [seekingPositionTo, setSeekingPositionTo] = useState<number>(pos);
+    const [changingPos, setChangingPos] = useState<boolean>(false)
 
     const repeats: {
         [key: string]: string
@@ -62,28 +64,59 @@ export function StreamController({
             100
         );
 
+
         setDuration(Number(currentlyPlaying?.progress_ms));
+
+
     }, [currentlyPlaying?.progress_ms, currentlyPlaying?.item?.duration_ms]);
 
 
+    useEffect(() => {
+        if (changingPos) {
+            const setSeekTimeout = setTimeout(async () => {
+
+                await SeekToPosition(accessToken, Math.round(Number(currentlyPlaying?.item?.duration_ms) * Number(seekingPositionTo) / 100));
+                dispatch(setUserControlActions({
+                    userAction: 'Seek To Position'
+                }))
+
+            }, 500)
+
+
+            if (changingPos) {
+                setPos(seekingPositionTo)
+                setDuration((Number(currentlyPlaying?.item?.duration_ms) * seekingPositionTo) / 100)
+            }
+            return () => {
+                clearTimeout(setSeekTimeout)
+                setChangingPos(false)
+            }
+        }
+
+    }, [seekingPositionTo]);
 
     useEffect(() => {
-        if (currentlyPlaying?.is_playing) {
-            const timerInterval = setInterval(() => {
-                setPos((duration / Number(currentlyPlaying?.item?.duration_ms)) * 100);
+        if (!changingPos) {
+            if (currentlyPlaying?.is_playing) {
+                const timerInterval = setInterval(() => {
+                    setPos((duration / Number(currentlyPlaying?.item?.duration_ms)) * 100);
+                    setDuration((prev) => prev + 1000);
 
-                setDuration((prev) => prev + 1000);
-            }, 1000);
+                }, 1000);
 
-            if (duration >= Number(currentlyPlaying?.item?.duration_ms)) {
-                dispatch(setUserControlActions({
-                    userAction: 'Retrieve New One'
-                }))
+                if (duration >= Number(currentlyPlaying?.item?.duration_ms)) {
+                    dispatch(setUserControlActions({
+                        userAction: 'Retrieve New One'
+                    }))
+                }
+                return () => {
+                    clearInterval(timerInterval);
+                }
             }
-            return () => clearInterval(timerInterval);
         }
     }, [
         duration,
+        changingPos,
         currentlyPlaying?.item?.duration_ms,
         currentlyPlaying?.progress_ms,
         currentlyPlaying?.is_playing,
@@ -129,7 +162,8 @@ export function StreamController({
                         );
                     }}
                 >
-                    <img alt="Skip Previous"  className={playerStyle['play-buttons']} src={SkipPrevious} width={30}></img>
+                    <img alt="Skip Previous" className={playerStyle['play-buttons']} src={SkipPrevious}
+                         width={30}></img>
                 </button>
                 <button
                     onClick={async () => {
@@ -156,7 +190,7 @@ export function StreamController({
                 <button
                     onClick={() => {
                         const playNextSong = async () => {
-                          await PlayNext(accessToken)
+                            await PlayNext(accessToken)
                         }
 
                         playNextSong()
@@ -169,7 +203,7 @@ export function StreamController({
 
                     }}
                 >
-                    <img alt="Skip Next"  className={playerStyle['play-buttons']} src={SkipNext} width={30}></img>
+                    <img alt="Skip Next" className={playerStyle['play-buttons']} src={SkipNext} width={30}></img>
                 </button>
                 <button
                     onClick={async () => {
@@ -206,26 +240,34 @@ export function StreamController({
                 <p>{millisecondsToMmSs(Number(duration))}</p>
 
                 <input
-                    style={{
-                        background: `linear-gradient(to right, #1ed760 ${pos}%, #4d4d4d ${pos}%)`,
-                    }}
+                    style={
+                        changingPos ?
+                            {
+                                background: `linear-gradient(to right, #1ed760 ${seekingPositionTo}%, #4d4d4d ${seekingPositionTo}%)`,
+                            }
+                            :
+                            {
+                                background: `linear-gradient(to right, #1ed760 ${pos}%, #4d4d4d ${pos}%)`,
+                            }}
 
-                    onChange={async (e) => {
-                        setPos(Number(e.target.value));
-                        await SeekToPosition(accessToken, Math.round(Number(currentlyPlaying?.item?.duration_ms) * Number(e.target.value) / 100));
-                        dispatch(setUserControlActions({
-                            userAction: 'Seek To Position'
-                        }))
-                    }}
+                    onChange={(e) => {
+                        setSeekingPositionTo(Number(e.target.value))
+                        if (!changingPos) {
+                            setChangingPos(true);
+                        }
+                    }
+                    }
                     type="range"
                     value={String(pos)}
                     max={100}
                     min={0}
                 />
-                <p>{currentlyPlaying?.item?.duration_ms ? millisecondsToMmSs(Number(currentlyPlaying?.item?.duration_ms)) : '--:--'}</p>
+                <p>{currentlyPlaying?.item?.duration_ms ? millisecondsToMmSs(Number(currentlyPlaying?.item?.duration_ms)) : '--:--'}
+                </p>
             </div>
         </div>
-    );
+    )
+        ;
 }
 
 export default StreamController;

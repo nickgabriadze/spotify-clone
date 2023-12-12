@@ -5,7 +5,6 @@ import {useEffect, useState} from "react";
 import PlayResumeStreaming from "../../../../../../api/player/playResumeStreaming.ts";
 import {
     addLibraryAction,
-    addReactComponentToNavigation,
     setUserControlActions
 } from "../../../../../../store/features/navigationSlice.ts";
 import PauseStreaming from "../../../../../../api/player/pauseStreaming.ts";
@@ -121,12 +120,7 @@ export function Songs({firstFour, resultsLoading}: { firstFour: Track[] | undefi
                             </div>
                             <div className={allResultsStyle['song-details']}>
                                 <Link to={`/album/${eachTrack.album?.id}`}
-                                    onClick={() => {
-                                        dispatch(addReactComponentToNavigation({
-                                            componentName: 'Album',
-                                            props: eachTrack?.album?.id
-                                        }))
-                                    }}
+
                                 >{eachTrack?.name[0].toUpperCase().concat(eachTrack?.name.slice(1,)).length > 30 ? eachTrack?.name[0].toUpperCase().concat(eachTrack?.name.slice(1,)).slice(0, 30).concat('...') : eachTrack?.name[0].toUpperCase().concat(eachTrack?.name.slice(1,))}</Link>
                                 <div className={allResultsStyle['song-artists']}>
                                     {eachTrack?.explicit ?
@@ -136,12 +130,7 @@ export function Songs({firstFour, resultsLoading}: { firstFour: Track[] | undefi
                                         className={allResultsStyle['song-artists-box']}
                                     >{eachTrack.artists.slice(0, 4).map((artist, i) =>
                                         <Link to={`/artist/${artist?.id}`} key={i}
-                                              onClick={() => {
-                                               dispatch(addReactComponentToNavigation({
-                                                   componentName: 'Artist',
-                                                   props: artist?.id
-                                               }))
-                                           }}
+
                                         >{i === eachTrack.artists.slice(0, 4).length - 1 ? artist.name : `${artist.name}, `}</Link>)}
                                     </span>
                                 </div>

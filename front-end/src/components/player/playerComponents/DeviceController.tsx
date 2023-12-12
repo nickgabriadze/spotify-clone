@@ -8,13 +8,13 @@ import VolumeUp from "../icons/volume.svg";
 import VolumeOff from "../icons/volume-off.svg";
 import setPlaybackVolume from "../../../api/player/setPlaybackVolume";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks";
-import {addReactComponentToNavigation, setUserControlActions} from "../../../store/features/navigationSlice";
+import {setUserControlActions} from "../../../store/features/navigationSlice";
 import DeviceEqualiser from "../icons/device-picker-equaliser.webp"
 import SmartphoneDevice from "../icons/smartphone-device.svg";
 import TVDevice from "../icons/tv-device.svg";
 import LaptopDevice from '../icons/laptop-device.svg'
 import switchActiveDevice from "../../../api/player/switchActiveDevice.ts";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 
 
 export function DeviceController({devices,}: {
@@ -49,11 +49,12 @@ export function DeviceController({devices,}: {
     const dispatch = useAppDispatch();
     const accessToken = useAppSelector(state => state.spotiUserReducer.spotiToken.accessToken)
     const [showDevices, setShowDevices] = useState<boolean>(false)
-    const pageNav = useAppSelector(state => state.navigationReducer.pageNavigation)
-    const currentPage = pageNav.pageHistory[pageNav.currentPageIndex].component
 
-    const popupRef = useRef<HTMLDivElement>(null); // Create a ref for the devices-popup
+    const popupRef = useRef<HTMLDivElement>(null);
     const devicesIconRef = useRef<HTMLImageElement>(null);
+    const params = useParams();
+    const isCurrentQueue = Object.values(params).includes('queue')
+    const [previousSliderVolume, setPreviousSliderVolume] = useState<number>(sliderVolume === 0 ? 30 : sliderVolume)
     useEffect(() => {
         const handleClickOutside = (e: any) => {
             if (popupRef.current && !popupRef.current.contains(e.target)
@@ -74,20 +75,29 @@ export function DeviceController({devices,}: {
         };
     }, []);
 
+    useEffect(() => {
+
+        const handleSliderVolumeTimeout = setTimeout(async () => {
+            await setPlaybackVolume(Number(previousSliderVolume), accessToken)
+            dispatch(setUserControlActions({
+                userAction: "Set Playback Volume"
+            }))
+        }, 500)
+
+        return () => {
+            clearTimeout(handleSliderVolumeTimeout)
+        }
+    }, [previousSliderVolume]);
+
     const listeningOnDevice = String(devices?.devices.filter(each => each.is_active)[0]?.type)
     return (
         <div className={playerStyle["devices-volume"]}>
             <Link to={'/queue'}>
                 <button
-                    onClick={() => {
-                        dispatch(addReactComponentToNavigation({
-                            componentName: "Queue",
-                            props: null
-                        }))
-                    }}
+
                     style={{
                         padding: '2px 0 2px 0',
-                        filter: `${currentPage === 'Queue' ? 'invert(10%) sepia(60%) saturate(800%) hue-rotate(83deg) brightness(95%) contrast(80%)' : 'initial'}`
+                        filter: `${isCurrentQueue ? 'invert(10%) sepia(60%) saturate(800%) hue-rotate(83deg) brightness(95%) contrast(80%)' : 'initial'}`
                     }}
                 ><img src={Queue} width={23} style={{marginRight: '3px'}} alt="Song Queue icon"></img></button>
             </Link>
@@ -149,7 +159,7 @@ export function DeviceController({devices,}: {
                 onClick={async () => {
                     await setPlaybackVolume(Number(
                         devices?.devices.filter((each) => each.is_active)[0]?.volume_percent
-                    ) > 0 ? 0 : sliderVolume, accessToken);
+                    ) > 0 ? 0 : previousSliderVolume, accessToken);
 
 
                     dispatch(setUserControlActions({
@@ -179,11 +189,8 @@ export function DeviceController({devices,}: {
                 }}
                 onChange={async (e) => {
                     setSliderVolume(Number(e.target.value));
+                    setPreviousSliderVolume(Number(e.target.value))
 
-                    await setPlaybackVolume(Number(e.target.value), accessToken)
-                    dispatch(setUserControlActions({
-                        userAction: "Set Playback Volume"
-                    }))
                 }}
                 type="range"
                 value={String(sliderVolume)}

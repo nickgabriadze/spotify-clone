@@ -8,7 +8,7 @@ import getAlbumTracks from "../../../../api/main/album/getAlbumTracks.ts";
 import millisecondsToHhMmSs from "../../../player/msConverter.ts";
 import PlayResumeStreaming from "../../../../api/player/playResumeStreaming.ts";
 import {
-    addLibraryAction, addReactComponentToNavigation,
+    addLibraryAction,
     setUserControlActions
 } from "../../../../store/features/navigationSlice.ts";
 import PauseStreaming from "../../../../api/player/pauseStreaming.ts";
@@ -103,6 +103,14 @@ export function AlbumPage() {
         }
 
         getAlbumInformation()
+
+        return () => {
+           dispatch(setWhatsInView({
+                    pageName: 'None',
+                    pageItemName: 'None',
+                    uri: 'None'
+                }))
+        }
     }, [accessToken, albumID]);
 
     if (!dataLoading && albumData && albumData?.albumTracks.length !== 0) {
@@ -161,12 +169,7 @@ export function AlbumPage() {
                     </div>
                     <div className={albumStyle['artist-information']}>
                         <h4 className={albumStyle['artist-name-ry-nos']}><Link to={`/artist/${albumData?.album.artists[0].id}`}
-                            onClick={() => {
-                                dispatch(addReactComponentToNavigation({
-                                    componentName: 'Artist',
-                                    props: albumData?.album?.artists[0]?.id
-                                }))
-                            }}
+
                         >{albumData?.album.artists[0].name}</Link> • {albumDate.getFullYear()} • {albumData?.album.total_tracks} song,
                         </h4>
                         <p className={albumStyle['album-duration']}>{millisecondsToHhMmSs(Number(albumData?.album.tracks.items.map(e => e.duration_ms).reduce((a, b) => a + b, 0)), true)}</p>

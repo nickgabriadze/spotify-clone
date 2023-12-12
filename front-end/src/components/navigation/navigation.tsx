@@ -6,8 +6,6 @@ import SearchUnfilled from "./icons/search-unfilled.svg";
 import navigationStyle from "./navigation.module.css";
 import SearchUnfilledGrey from "./icons/search-unfilled-grey.svg";
 import HomeUnfilledGrey from "./icons/home-unfilled-grey.svg";
-import {useAppDispatch} from "../../store/hooks";
-import {addReactComponentToNavigation} from "../../store/features/navigationSlice.ts";
 import {Link, useParams} from "react-router-dom";
 
 
@@ -16,7 +14,6 @@ export function Navigation() {
     const navParamsIncludeSearch = Object.values(navParams).toString().includes('search')
     const navParamsHome = Object.values(navParams).toString().length === 0
     const [navHover, setNavHover] = useState<string>("none");
-    const dispatchNavigation = useAppDispatch();
 
     return (
 
@@ -25,10 +22,7 @@ export function Navigation() {
                 className={navigationStyle["home-box"]}
                 onMouseEnter={() => setNavHover("Home")}
                 onMouseLeave={() => setNavHover("none")}
-                onClick={() => {
-                       dispatchNavigation(addReactComponentToNavigation({componentName: "Home", props: null}))
 
-                }}
             >
                 <img
                     className={navigationStyle['nav-img']}
@@ -46,7 +40,7 @@ export function Navigation() {
             </div>
             </Link>
 
-           <Link to={'/search/'}>
+           <Link to={'/search'}>
                <div
                   className={navigationStyle["search-box"]}
 

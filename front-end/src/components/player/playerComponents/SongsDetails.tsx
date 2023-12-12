@@ -7,7 +7,6 @@ import SavedTrackIcon from "../icons/liked-indicator-heart.svg"
 import {useAppSelector} from "../../../store/hooks.ts";
 import {
     addLibraryAction,
-    addReactComponentToNavigation,
 } from "../../../store/features/navigationSlice.ts";
 import {useDispatch} from "react-redux";
 import removeTrackForCurrentUser from "../../../api/library/removeTrackForCurrentUser.ts";
@@ -61,12 +60,6 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
     const dispatch = useDispatch();
     return (<div className={playerStyle["currently-playing-info"]}>
         <Link to={`/album/${currentlyPlaying?.item?.album?.id}`} className={playerStyle["currently-playing-info-album-img"]}
-             onClick={() => {
-                 dispatch(addReactComponentToNavigation({
-                     componentName: 'Album',
-                     props: currentlyPlaying?.item.album?.id
-                 }))
-             }}
         >
             {currentlyPlaying?.item?.album?.images[0]?.url ? <img
                     alt="Album picture"
@@ -90,12 +83,6 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
                 <div
                     className={playerStyle['song-name-artists-details']}>
                     <div className={playerStyle['song-name-box']}
-                         onClick={() => {
-                             dispatch(addReactComponentToNavigation({
-                                 componentName: 'Album',
-                                 props: currentlyPlaying?.item.album?.id
-                             }))
-                         }}
                          onMouseOver={() => setSongNameHover(true)}
                          onMouseOut={() => setSongNameHover(false)}
                     >
@@ -120,12 +107,7 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
                             >
                                 {currentlyPlaying?.item?.artists.map((each, i) => (
                                     <Link to={`/artist/${each?.id}`} key={each.id} className={playerStyle["artists-name"]}
-                                          onClick={() => {
-                                           dispatch(addReactComponentToNavigation({
-                                               componentName: 'Artist',
-                                               props: each?.id
-                                           }))
-                                       }}
+
                                     >
                                         {each.name}
                                         {i === currentlyPlaying.item.artists.length - 1 ? "" : ", "}

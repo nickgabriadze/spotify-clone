@@ -6,7 +6,6 @@ import {useAppDispatch, useAppSelector} from "../../../store/hooks";
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
 import {
     addLibraryAction,
-    addReactComponentToNavigation,
     setUserControlActions
 } from "../../../store/features/navigationSlice";
 import Play from "../components/each-search-component/Songs/icons/play.svg"
@@ -68,8 +67,9 @@ export const SongCard = forwardRef(function SongCard(props: {
                          justifyContent: 'space-between',
                          alignItems: 'center'
                      } : {
-                         display: 'grid',
-                         gridTemplateColumns: '1fr 1fr auto'
+                         display: 'flex',
+                          justifyContent: 'space-between',
+                         alignItems: 'center'
                      }
              }
              onDoubleClick={async () => {
@@ -168,14 +168,7 @@ export const SongCard = forwardRef(function SongCard(props: {
                     >
                         {!forAlbum ? <Link to={`/album/${eachTrack?.album?.id}`}
                                            className={songsStyle['track-name']}
-                                           onClick={() => {
-                                               if (eachTrack?.album?.id) {
-                                                   dispatch(addReactComponentToNavigation({
-                                                       componentName: 'Album',
-                                                       props: eachTrack?.album?.id
-                                                   }))
-                                               }
-                                           }}
+
                                            style={
 
                                                {
@@ -205,12 +198,7 @@ export const SongCard = forwardRef(function SongCard(props: {
                                      style={{width: `${forAlbum ? '55vw' : '25vw'}`}}
                                 >{eachTrack?.artists.map((artist, i) =>
                                     <Link to={`/artist/${artist?.id}`} key={i}
-                                          onClick={() => {
-                                           dispatch(addReactComponentToNavigation({
-                                               componentName: 'Artist',
-                                               props: artist?.id
-                                           }))
-                                       }}
+
                                     >{i === eachTrack.artists.slice(0, 4).length - 1 ? artist.name : `${artist.name}, `}</Link>)}</div>
                             }
                         </div>
