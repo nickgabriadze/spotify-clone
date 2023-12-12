@@ -9,22 +9,22 @@ import {useNavigate, useParams} from "react-router-dom";
 
 export function SearchBar() {
     const params = useParams();
-    const destructured = Object.values(params).toString().split('/')[2] ? Object.values(params).toString().split('/')[2] : 'all'
+    const destructured = ['all', 'albums', 'artists', 'playlists', 'songs', 'podcastsAndShows'].includes(Object.values(params).toString().split('/')[2]) ? Object.values(params).toString().split('/')[2] : 'all'
     const weAreSearchingFor = Object.values(params).toString().split('/')[1]
     const [userSearchingQ, setUserSearchingQ] = useState<string>(weAreSearchingFor || '');
     const [onElementFocus, setOnElementFocus] = useState<boolean>(false);
-
     const navigator = useNavigate();
     // const [err, setErr] = useState<string | unknown>();
+    console.log(params)
 
-
+    console.log(weAreSearchingFor)
     useEffect(() => {
         const timeOutToSetQuery = setTimeout(() => {
 
             if (userSearchingQ !== '') {
                 navigator(`/search/${userSearchingQ === 'undefined' ? '' : userSearchingQ}/${destructured ? destructured : 'all'}`)
             } else {
-                navigator('/search/')
+                navigator('/search')
             }
 
         }, 500)
@@ -32,6 +32,14 @@ export function SearchBar() {
 
         return () => clearTimeout(timeOutToSetQuery)
     }, [userSearchingQ]);
+
+    useEffect(() => {
+
+        if(weAreSearchingFor === undefined){
+            setUserSearchingQ('')
+        }
+
+    }, [weAreSearchingFor]);
 
     return (
         <div className={searchBarStyle["search-bar"]}>
@@ -83,7 +91,7 @@ export function SearchBar() {
                                     src={closeSearch}
                                     onClick={() => {
                                         setUserSearchingQ('')
-                                        navigator(`/search/`)
+                                        navigator(`/search`)
                                     }
                                     }
                                     width={24}

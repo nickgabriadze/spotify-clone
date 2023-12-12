@@ -54,7 +54,7 @@ export function DeviceController({devices,}: {
     const devicesIconRef = useRef<HTMLImageElement>(null);
     const params = useParams();
     const isCurrentQueue = Object.values(params).includes('queue')
-
+    const [previousSliderVolume, setPreviousSliderVolume] = useState<number>(sliderVolume === 0 ? 30 : sliderVolume)
     useEffect(() => {
         const handleClickOutside = (e: any) => {
             if (popupRef.current && !popupRef.current.contains(e.target)
@@ -74,6 +74,20 @@ export function DeviceController({devices,}: {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
+
+    useEffect(() => {
+
+        const handleSliderVolumeTimeout = setTimeout(async () => {
+            await setPlaybackVolume(Number(previousSliderVolume), accessToken)
+            dispatch(setUserControlActions({
+                userAction: "Set Playback Volume"
+            }))
+        }, 500)
+
+        return () => {
+            clearTimeout(handleSliderVolumeTimeout)
+        }
+    }, [previousSliderVolume]);
 
     const listeningOnDevice = String(devices?.devices.filter(each => each.is_active)[0]?.type)
     return (
@@ -145,7 +159,7 @@ export function DeviceController({devices,}: {
                 onClick={async () => {
                     await setPlaybackVolume(Number(
                         devices?.devices.filter((each) => each.is_active)[0]?.volume_percent
-                    ) > 0 ? 0 : sliderVolume, accessToken);
+                    ) > 0 ? 0 : previousSliderVolume, accessToken);
 
 
                     dispatch(setUserControlActions({
@@ -175,11 +189,8 @@ export function DeviceController({devices,}: {
                 }}
                 onChange={async (e) => {
                     setSliderVolume(Number(e.target.value));
+                    setPreviousSliderVolume(Number(e.target.value))
 
-                    await setPlaybackVolume(Number(e.target.value), accessToken)
-                    dispatch(setUserControlActions({
-                        userAction: "Set Playback Volume"
-                    }))
                 }}
                 type="range"
                 value={String(sliderVolume)}

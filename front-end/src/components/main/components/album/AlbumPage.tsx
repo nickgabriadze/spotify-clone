@@ -103,6 +103,14 @@ export function AlbumPage() {
         }
 
         getAlbumInformation()
+
+        return () => {
+           dispatch(setWhatsInView({
+                    pageName: 'None',
+                    pageItemName: 'None',
+                    uri: 'None'
+                }))
+        }
     }, [accessToken, albumID]);
 
     if (!dataLoading && albumData && albumData?.albumTracks.length !== 0) {

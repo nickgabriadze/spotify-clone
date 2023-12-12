@@ -1,5 +1,4 @@
 import mainStyle from "./main.module.css";
-import Search from "../search/search.tsx";
 import {useAppDispatch, useAppSelector} from "../../store/hooks.ts";
 import searchBarStyle from "../search/components/search-bar/searchBar.module.css";
 import Left from "../search/components/search-bar/icons/left.svg";
@@ -28,6 +27,9 @@ import Error from "../Error.tsx";
 import {LikedSongs} from "./components/playlist/LikedSongs.tsx";
 import ArtistLayout from "./components/artist/ArtistLayout.tsx";
 import {Discography} from "./components/artist/components/discography/Discography.tsx";
+import SearchLayout from "../search/layouts/SearchLayout.tsx";
+import BrowsingCategory from "../search/components/browsing-categories/BrowsingCategory.tsx";
+import SearchResult from "../search/components/search-result/searchResult.tsx";
 
 
 export function Main({height}: {
@@ -42,7 +44,7 @@ export function Main({height}: {
 
     const params = useParams();
     const weAreSearching = Object.values(params).toString().includes('search')
-    const weHaveQuery = String(Object.values(params).toString().split('/')[1]).length !== 0
+    const weHaveQuery = String(Object.values(params).toString().split('/')[1]) !== 'undefined'
     const searchingPage = String(Object.values(params)).includes('search')
     useEffect(() => {
         const fetchMyData = async () => {
@@ -90,7 +92,7 @@ export function Main({height}: {
                         <button
 
                             onClick={() => {
-                                    navigatePages(-1)
+                                navigatePages(-1)
 
                             }}
                         >
@@ -182,6 +184,7 @@ export function Main({height}: {
                                         }))
                                         navigatePages('/welcome')
                                     }
+
                                     }>Log Out</button>}
                                 <button
                                     onClick={() => {
@@ -210,16 +213,20 @@ export function Main({height}: {
             <div>
                 <Routes>
                     <Route path={'/'} element={<Home/>}/>
-                    <Route path={'/search/*'} element={<Search/>}/>
+                    <Route path={'/search'} element={<SearchLayout/>}>
+                        <Route path={''} element={<BrowsingCategory/>}></Route>
+                        <Route path={':query/:type'} element={<SearchResult/>}></Route>
+
+                    </Route>
                     <Route path={'/genre/:genreID'} element={<Category/>}/>
                     <Route path={'/artist'} element={<ArtistLayout/>}>
-                        <Route path={':artistID'} element={<ArtistPage />}/>
+                        <Route path={':artistID'} element={<ArtistPage/>}/>
                         <Route path={':artistID/discography'} errorElement={<Error/>} element={<Discography/>}></Route>
                         <Route path={':artistID/discography/:type'} element={<Discography/>}></Route>
                     </Route>
                     <Route path={'/queue'} element={<Queue/>}/>
-                    <Route path={'/album/:albumID'} element={<AlbumPage />}/>
-                    <Route path={'/playlist/:playlistID'} element={<PlaylistPage />}/>
+                    <Route path={'/album/:albumID'} element={<AlbumPage/>}/>
+                    <Route path={'/playlist/:playlistID'} element={<PlaylistPage/>}/>
                     <Route path={'/collection/tracks'} element={<LikedSongs/>}/>
 
                 </Routes>
