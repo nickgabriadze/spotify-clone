@@ -15,8 +15,9 @@ export function SearchBar() {
     const [onElementFocus, setOnElementFocus] = useState<boolean>(false);
     const navigator = useNavigate();
     // const [err, setErr] = useState<string | unknown>();
+    console.log(params)
 
-
+    console.log(weAreSearchingFor)
     useEffect(() => {
         const timeOutToSetQuery = setTimeout(() => {
 
@@ -31,6 +32,14 @@ export function SearchBar() {
 
         return () => clearTimeout(timeOutToSetQuery)
     }, [userSearchingQ]);
+
+    useEffect(() => {
+
+        if(weAreSearchingFor === undefined){
+            setUserSearchingQ('')
+        }
+
+    }, [weAreSearchingFor]);
 
     return (
         <div className={searchBarStyle["search-bar"]}>
