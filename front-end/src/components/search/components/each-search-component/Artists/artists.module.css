@@ -44,7 +44,6 @@
 .artist-img img {
     border-radius: 100%;
     width: 100%;
-
     height: 100%;
     aspect-ratio: 1 / 1;
     object-fit: cover;
@@ -87,6 +86,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+
     gap: 10px;
     margin-top: 20px;
     padding-bottom: 10px;
