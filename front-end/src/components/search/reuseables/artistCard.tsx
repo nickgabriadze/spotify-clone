@@ -1,7 +1,7 @@
 import artistsStyle from "../components/each-search-component/Artists/artists.module.css";
 import {Artist} from "../../../types/artist";
 import NoArtistImage from "../components/each-search-component/icons/no-artist-pic.webp";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks";
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
 import Play from "../components/each-search-component/Playlists/icons/play.svg";
@@ -11,9 +11,15 @@ import PauseStreaming from "../../../api/player/pauseStreaming";
 import getArtist from "../../../api/search/getArtist.ts";
 import ArtistCardSkeleton from "../../../skeletons/artistCardSkeleton.tsx";
 import {Link} from "react-router-dom";
+import CloseIcon from "./../../player/icons/close-icon.svg";
+import useSearchHistory from "../../main/hooks/useSearchHistory.ts";
 
 
-export function ArtistCardApi({artistID}: { artistID: string }) {
+export function ArtistCardApi({artistID, forSearchHistory, searchHistorySetter}: {
+    artistID: string,
+    forSearchHistory?: boolean,
+    searchHistorySetter?: React.Dispatch<React.SetStateAction<{ type: string, id: string }[]>>
+}) {
 
     const [singleArtist, setSingleArtist] = useState<Artist | undefined>();
     const accessToken = useAppSelector(
@@ -36,10 +42,17 @@ export function ArtistCardApi({artistID}: { artistID: string }) {
         getSingleArtist()
     }, [accessToken, artistID]);
 
-    return loading ? <ArtistCardSkeleton/> : <ArtistCard eachArtist={singleArtist}/>
+    return loading ? <ArtistCardSkeleton/> :
+        <ArtistCard forSearchHistory={forSearchHistory} searchHistorySetter={searchHistorySetter}
+                    eachArtist={singleArtist}/>
 }
 
-export function ArtistCard({eachArtist, fromSearch}: { eachArtist: Artist | undefined, fromSearch?: boolean }) {
+export function ArtistCard({eachArtist, fromSearch, forSearchHistory, searchHistorySetter}: {
+    eachArtist: Artist | undefined,
+    fromSearch?: boolean,
+    forSearchHistory?: boolean,
+    searchHistorySetter?: React.Dispatch<React.SetStateAction<{ type: string, id: string }[]>>
+}) {
     const [hoveringOver, setHoveringOver] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const currentlyPlaying = useAppSelector(
@@ -133,7 +146,6 @@ export function ArtistCard({eachArtist, fromSearch}: { eachArtist: Artist | unde
 
             <Link to={`/artist/${eachArtist?.id}`} state={fromSearch ? {type: 'artist', id: eachArtist?.id} : null}>
                 <div className={artistsStyle["artist-info"]}
-
                 >
                     <h1>
                         {Number(eachArtist?.name.length) > 21
@@ -145,6 +157,16 @@ export function ArtistCard({eachArtist, fromSearch}: { eachArtist: Artist | unde
                     </p>
                 </div>
             </Link>
+
+            {forSearchHistory && <div className={artistsStyle['close-search-history-item']}
+                                      onClick={() => {
+                                          searchHistorySetter && searchHistorySetter((prev) => [...prev.filter(e => e.id !== eachArtist?.id)])
+                                          useSearchHistory({type: 'artist', id: String(eachArtist?.id)}, "REMOVE")
+
+                                      }}
+            >
+                <img alt={"Close icon"} src={CloseIcon} width={35} height={35}></img>
+            </div>}
 
         </div>
     );

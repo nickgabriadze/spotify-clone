@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Album} from "../../../types/album";
 import albumsStyle from "../components/each-search-component/Albums/albums.module.css";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks";
@@ -11,9 +11,16 @@ import NoAlbumPicture from "../components/each-search-component/icons/no-album-p
 import getAlbum from "../../../api/search/getAlbum.ts";
 import AlbumCardSkeleton from "../../../skeletons/albumCardSkeleton.tsx";
 import {Link} from "react-router-dom";
+import artistsStyle from "../components/each-search-component/Artists/artists.module.css";
+import CloseIcon from "../../player/icons/close-icon.svg";
+import useSearchHistory from "../../main/hooks/useSearchHistory.ts";
 
 
-export function AlbumCardApi({albumID}: { albumID: string }) {
+export function AlbumCardApi({albumID, forSearchHistory, searchHistorySetter}: {
+    albumID: string,
+    forSearchHistory?: boolean,
+    searchHistorySetter?: React.Dispatch<React.SetStateAction<{ type: string, id: string }[]>>
+}) {
     const [singleAlbum, setSingleAlbum] = useState<Album | undefined>();
     const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
     const [loading, setLoading] = useState<boolean>(true);
@@ -34,12 +41,19 @@ export function AlbumCardApi({albumID}: { albumID: string }) {
         getSingleAlbum();
     }, [accessToken, albumID]);
 
-    return loading ? <AlbumCardSkeleton/> : <AlbumCard eachAlbum={singleAlbum}/>
+    return loading ? <AlbumCardSkeleton/> :
+        <AlbumCard forSearchHistory={forSearchHistory} searchHistorySetter={searchHistorySetter}
+                   eachAlbum={singleAlbum}/>
 
 }
 
 
-export function AlbumCard({eachAlbum, fromSearch}: { eachAlbum: Album | undefined, fromSearch?: boolean }) {
+export function AlbumCard({eachAlbum, fromSearch, forSearchHistory, searchHistorySetter}: {
+    eachAlbum: Album | undefined,
+    fromSearch?: boolean,
+    forSearchHistory?: boolean,
+    searchHistorySetter?: React.Dispatch<React.SetStateAction<{ type: string, id: string }[]>>
+}) {
     const [hoveringOver, setHoveringOver] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
@@ -143,6 +157,15 @@ export function AlbumCard({eachAlbum, fromSearch}: { eachAlbum: Album | undefine
                     </div>
                 </Link>
             </div>
+
+            {forSearchHistory && <div className={artistsStyle['close-search-history-item']}
+                                      onClick={() => {
+                                          searchHistorySetter && searchHistorySetter((prev) => [...prev.filter(e => e.id !== eachAlbum?.id)])
+                                          useSearchHistory({type: 'album', id: String(eachAlbum?.id)}, "REMOVE")
+
+                                      }}>
+                <img alt={"Close icon"} src={CloseIcon} width={35} height={35}></img>
+            </div>}
         </div>
     );
 }
