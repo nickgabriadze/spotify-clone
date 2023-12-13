@@ -21,7 +21,11 @@ export function BrowsingCategory() {
     const [genres, setGenres] = useState<Category[]>(Array.from({length: 50}));
     const [genresError, setGenresError] = useState<string | unknown>("");
     const numberOfItems = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown);
-    const [searchHistory, setSearchHistory] = useState<{ type: string, id: string }[]>([]);
+    const [searchHistory, setSearchHistory] = useState<{
+        type: string,
+        id: string
+    }[]>(useSearchHistory(null, "GET"))
+
     useEffect(() => {
         const controller = new AbortController();
 
@@ -55,35 +59,34 @@ export function BrowsingCategory() {
     }, [accessToken]);
 
 
-    useEffect(() => {
-        setSearchHistory(useSearchHistory(null, "GET"));
-    }, []);
-
     return (
         <section className={browsingCategoryStyle["browsing-categories-wrapper"]}
         >
 
-            <div className={browsingCategoryStyle['recents']}>
-                <h1>Recent Searches</h1>
+            {searchHistory.length !== 0 && <div className={browsingCategoryStyle['recents']}>
+                <h1 className={browsingCategoryStyle['browsing-categories-header']}>Recent Searches</h1>
                 <div className={browsingCategoryStyle['search-history']}
                      style={{gridTemplateColumns: `repeat(${numberOfItems}, minmax(0, 1fr))`}}>
                     {searchHistory.slice(0, numberOfItems).map(e => {
                             switch (e.type) {
                                 case 'artist':
-                                    return <ArtistCardApi key={e.id} artistID={e.id}/>
+                                    return <ArtistCardApi searchHistorySetter={setSearchHistory} key={e.id}
+                                                          forSearchHistory={true} artistID={e.id}/>
                                 case 'album':
-                                    return <AlbumCardApi key={e.id} albumID={e.id}/>
+                                    return <AlbumCardApi searchHistorySetter={setSearchHistory} key={e.id}
+                                                         forSearchHistory={true} albumID={e.id}/>
                                 case 'playlist':
-                                    return <PlaylistCardApi key={e.id} playlistID={e.id}/>
+                                    return <PlaylistCardApi searchHistorySetter={setSearchHistory} key={e.id}
+                                                            forSearchHistory={true} playlistID={e.id}/>
                             }
 
                         }
                     )}
                 </div>
-            </div>
+            </div>}
 
             <div className={browsingCategoryStyle['categories']}>
-                <h1>Browse all</h1>
+                <h1 className={browsingCategoryStyle['browsing-categories-header']}>Browse all</h1>
                 <div className={browsingCategoryStyle["genre-card-grid"]}>
                     {genres.slice(0, 50).map((eachCategory, i) => {
                             if ((genresLoading || genresError)) {

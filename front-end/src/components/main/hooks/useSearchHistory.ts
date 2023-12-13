@@ -9,7 +9,7 @@ export function useSearchHistory(state: {
 
     if (action === "SET" && state === null) return [];
     const localStorageSearchHistory = window.localStorage.getItem('search_history');
-    console.log(localStorageSearchHistory)
+
     if (action === "GET") {
         if (localStorageSearchHistory === null || localStorageSearchHistory.trim().length === 0) return [];
         else {
