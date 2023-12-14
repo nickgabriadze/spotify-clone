@@ -30,6 +30,7 @@ import {Discography} from "./components/artist/components/discography/Discograph
 import SearchLayout from "../search/layouts/SearchLayout.tsx";
 import BrowsingCategory from "../search/components/browsing-categories/BrowsingCategory.tsx";
 import SearchResult from "../search/components/search-result/searchResult.tsx";
+import RecentSearches from "../search/components/browsing-categories/RecentSearches.tsx";
 
 
 export function Main({height}: {
@@ -41,9 +42,11 @@ export function Main({height}: {
     const dispatch = useAppDispatch();
     useUpdateNumberOfItems();
     const navigatePages = useNavigate();
+    const {pathname, state} = useLocation();
 
     const params = useParams();
-    const weAreSearching = Object.values(params).toString().includes('search')
+
+    const weAreSearching = pathname.includes('/search')
     const weHaveQuery = String(Object.values(params).toString().split('/')[1]) !== 'undefined'
     const searchingPage = String(Object.values(params)).includes('search')
     useEffect(() => {
@@ -68,8 +71,6 @@ export function Main({height}: {
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong)
     const [displayLogOut, setDisplayLogout] = useState<boolean>(false)
 
-
-    const {state} = useLocation();
 
     return (
         <main
@@ -218,6 +219,7 @@ export function Main({height}: {
                         <Route path={':query/:type'} element={<SearchResult/>}></Route>
 
                     </Route>
+                    <Route path={'/recent-searches'} element={<RecentSearches/>}/>
                     <Route path={'/genre/:genreID'} element={<Category/>}/>
                     <Route path={'/artist'} element={<ArtistLayout/>}>
                         <Route path={':artistID'} element={<ArtistPage/>}/>

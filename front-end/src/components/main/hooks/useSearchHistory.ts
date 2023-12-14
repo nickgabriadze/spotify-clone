@@ -1,7 +1,7 @@
 export function useSearchHistory(state: {
     type: string,
     id: string
-} | null, action: "SET" | "GET" | "REMOVE"): {
+} | null, action: "SET" | "GET" | "REMOVE" | "RESET"): {
     type: string,
     id: string
 }[] {
@@ -25,7 +25,7 @@ export function useSearchHistory(state: {
     }
 
     if (action === "SET") {
-        if (localStorageSearchHistory === null || localStorageSearchHistory.trim().length === 0){
+        if (localStorageSearchHistory === null || localStorageSearchHistory.trim().length === 0) {
             window.localStorage.setItem('search_history', JSON.stringify(state))
         } else {
             const items = localStorageSearchHistory.split("|").map(e => JSON.parse(e));
@@ -42,6 +42,10 @@ export function useSearchHistory(state: {
         const items = localStorageSearchHistory.split("|").map(e => JSON.parse(e));
         window.localStorage.setItem("search_history", (items.filter(e => e.id !== state?.id).map(o => `{"type":"${o.type}", "id":"${o.id}"}`).join("|")));
 
+    }
+
+    if (action === "RESET") {
+        window.localStorage.setItem("search_history", '')
     }
 
     return [];

@@ -1,38 +1,44 @@
 .browsing-categories-wrapper .browsing-categories-header {
-  color: white;
-  font-size: 1.5rem;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.browsing-categories-header:hover {
+    text-decoration: underline;
 }
 
 .browsing-categories-wrapper > .categories {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  padding: 15px;
-  height: calc(100% + 45px);
-  overflow-y: scroll;
-
-}
-.recents{
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 15px;
+    height: calc(100% + 45px);
+    overflow-y: scroll;
 
 }
 
-.search-history{
-  display: grid;
-  gap: 20px;
+.recents {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px;
+
 
 }
 
-.search-history::-webkit-scrollbar{
-  display: none;
+.search-history {
+    display: grid;
+    gap: 20px;
+
+}
+
+.search-history::-webkit-scrollbar {
+    display: none;
 }
 
 .genre-card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 30px;
 
 }

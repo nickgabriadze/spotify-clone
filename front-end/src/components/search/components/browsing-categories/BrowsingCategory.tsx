@@ -10,6 +10,7 @@ import useSearchHistory from "../../../main/hooks/useSearchHistory.ts";
 import {ArtistCardApi} from "../../reuseables/artistCard.tsx";
 import {AlbumCardApi} from "../../reuseables/albumCard.tsx";
 import {PlaylistCardApi} from "../../reuseables/playListCard.tsx";
+import {Link} from "react-router-dom";
 
 export function BrowsingCategory() {
     const [colors, setColors] = useState<string[]>([])
@@ -64,25 +65,27 @@ export function BrowsingCategory() {
         >
 
             {searchHistory.length !== 0 && <div className={browsingCategoryStyle['recents']}>
-                <h1 className={browsingCategoryStyle['browsing-categories-header']}>Recent Searches</h1>
-                <div className={browsingCategoryStyle['search-history']}
-                     style={{gridTemplateColumns: `repeat(${numberOfItems}, minmax(0, 1fr))`}}>
-                    {searchHistory.slice(0, numberOfItems).map(e => {
-                            switch (e.type) {
-                                case 'artist':
-                                    return <ArtistCardApi searchHistorySetter={setSearchHistory} key={e.id}
-                                                          forSearchHistory={true} artistID={e.id}/>
-                                case 'album':
-                                    return <AlbumCardApi searchHistorySetter={setSearchHistory} key={e.id}
-                                                         forSearchHistory={true} albumID={e.id}/>
-                                case 'playlist':
-                                    return <PlaylistCardApi searchHistorySetter={setSearchHistory} key={e.id}
-                                                            forSearchHistory={true} playlistID={e.id}/>
-                            }
+                <Link to={'/recent-searches'}><h1 className={browsingCategoryStyle['browsing-categories-header']}>Recent
+                    Searches</h1></Link>
+                    <div className={browsingCategoryStyle['search-history']}
+                         style={{gridTemplateColumns: `repeat(${numberOfItems}, minmax(0, 1fr))`}}>
+                        {searchHistory.slice(0, numberOfItems).map(e => {
+                                switch (e.type) {
+                                    case 'artist':
+                                        return <ArtistCardApi searchHistorySetter={setSearchHistory} key={e.id}
+                                                              forSearchHistory={true} artistID={e.id}/>
+                                    case 'album':
+                                        return <AlbumCardApi searchHistorySetter={setSearchHistory} key={e.id}
+                                                             forSearchHistory={true} albumID={e.id}/>
+                                    case 'playlist':
+                                        return <PlaylistCardApi searchHistorySetter={setSearchHistory} key={e.id}
+                                                                forSearchHistory={true} playlistID={e.id}/>
+                                }
 
-                        }
-                    )}
-                </div>
+                            }
+                        )}
+                    </div>
+
             </div>}
 
             <div className={browsingCategoryStyle['categories']}>
