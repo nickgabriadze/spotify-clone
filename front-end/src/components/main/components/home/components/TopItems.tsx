@@ -64,21 +64,21 @@ export function TopItems() {
             >
 
 
-                    <Link to={`/${eachTopItem.type}/${eachTopItem.id}`}><div className={homepageStyle['album-picture']}
+                <Link to={`/${eachTopItem.type}/${eachTopItem.id}`}>
+                    <div className={homepageStyle['album-picture']}
 
                     ><img src={eachTopItem?.images[0].url} alt={'Album Image'}></img>
                     </div>
-                    </Link>
-
-
+                </Link>
 
 
                 <div className={homepageStyle['detail-play']}>
-                     <Link to={`/${eachTopItem.type}/${eachTopItem.id}`
-                }><div className={homepageStyle['top-item-title']}
+                    <Link to={`/${eachTopItem.type}/${eachTopItem.id}`
+                    }>
+                        <div className={homepageStyle['top-item-title']}
 
-                    >{eachTopItem?.name}</div>
-                     </Link>
+                        >{eachTopItem?.name}</div>
+                    </Link>
                     {hoveringOverTopItem && hoveringOverTopItem.itemID === eachTopItem?.id &&
                         <div className={homepageStyle['play-button']}>
                             <button
@@ -111,7 +111,7 @@ export function TopItems() {
                                     }
                                 }}
                             >{(currentlyPlaying.albumID === String(eachTopItem?.id) || currentlyPlaying.artistID === String(eachTopItem?.id)) && currentlyPlaying.isPlaying === true ?
-                                <div><img src={Pause} width={30} height={30} alt={'Pause Button Image'}></img></div>
+                                <div><img src={Pause} width={50} height={50} style={{padding:'10px'}} alt={'Pause Button Image'}></img></div>
                                 :
                                 <div><img src={Play} width={50} height={50} alt={'Play Button Image'}></img></div>
                             }
