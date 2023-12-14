@@ -11,33 +11,25 @@ export function SearchBar() {
     const params = useParams();
     const destructured = ['all', 'albums', 'artists', 'playlists', 'songs', 'podcastsAndShows'].includes(Object.values(params).toString().split('/')[2]) ? Object.values(params).toString().split('/')[2] : 'all'
     const weAreSearchingFor = Object.values(params).toString().split('/')[1]
-    const [userSearchingQ, setUserSearchingQ] = useState<string>(weAreSearchingFor || '');
+    const [userSearchingQ, setUserSearchingQ] = useState<string>(weAreSearchingFor === undefined ? '' : String(weAreSearchingFor));
     const [onElementFocus, setOnElementFocus] = useState<boolean>(false);
     const navigator = useNavigate();
     // const [err, setErr] = useState<string | unknown>();
-
+    const [focused, setFocused] = useState<boolean>(false);
     useEffect(() => {
         const timeOutToSetQuery = setTimeout(() => {
-            if(weAreSearchingFor !== undefined) {
-                if (userSearchingQ !== '') {
-                    navigator(`/search/${userSearchingQ === 'undefined' ? '' : userSearchingQ}/${destructured ? destructured : 'all'}`)
-                } else {
-                    navigator('/search')
-                }
+            if (userSearchingQ !== '') {
+                navigator(`/search/${userSearchingQ === 'undefined' ? '' : userSearchingQ}/${destructured ? destructured : 'all'}`)
+            }
+            if (userSearchingQ.length === 0 && focused) {
+                navigator('/search')
             }
         }, 500)
 
 
         return () => clearTimeout(timeOutToSetQuery)
-    }, [userSearchingQ, weAreSearchingFor]);
+    }, [userSearchingQ, focused]);
 
-    useEffect(() => {
-
-        if(weAreSearchingFor === undefined){
-            setUserSearchingQ('')
-        }
-
-    }, [weAreSearchingFor]);
 
     return (
         <div className={searchBarStyle["search-bar"]}>
@@ -77,11 +69,11 @@ export function SearchBar() {
                                 name="Search song field"
                                 placeholder="What do you want to listen to?"
                                 value={userSearchingQ}
-                                onChange={(e) => {
+                                onChange={(e) =>
                                     setUserSearchingQ(e.target.value)
-
                                 }
-                                }
+                                onFocus={() => setFocused(true)}
+                                onBlur={() => setFocused(false)}
                             ></input>
                             {userSearchingQ.length !== 0 &&
                                 <img

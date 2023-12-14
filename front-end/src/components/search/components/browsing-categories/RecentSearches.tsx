@@ -4,14 +4,20 @@ import {ArtistCardApi} from "../../reuseables/artistCard.tsx";
 import {AlbumCardApi} from "../../reuseables/albumCard.tsx";
 import {PlaylistCardApi} from "../../reuseables/playListCard.tsx";
 import {useAppSelector} from "../../../../store/hooks.ts";
+import {useNavigate} from "react-router-dom";
 
 export function RecentSearches() {
+
     const numberOfItemsTobeShown = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown);
     const [searchHistory, setSearchHistory] = useState<{
         type: string,
         id: string
     }[]>(useSearchHistory(null, "GET"))
+    const navigator = useNavigate();
 
+    if(searchHistory.length === 0){
+        navigator('/search')
+    }
 
     return <div style={{display: 'flex', flexDirection: 'column', gap: '20px', padding: '10px'}}>
         <div style={{display: 'flex', justifyContent:'space-between', alignItems: 'center'}}><h1 style={{fontSize: '1.5rem'}}>Recent Searches</h1>
@@ -19,6 +25,7 @@ export function RecentSearches() {
             onClick={() => {
                 setSearchHistory([]);
                 useSearchHistory(null, "RESET")
+                navigator('/search')
             }}
             >Clear recent searches</button></p>
         </div>
