@@ -18,18 +18,18 @@ export function SearchBar() {
 
     useEffect(() => {
         const timeOutToSetQuery = setTimeout(() => {
-
-            if (userSearchingQ !== '') {
-                navigator(`/search/${userSearchingQ === 'undefined' ? '' : userSearchingQ}/${destructured ? destructured : 'all'}`)
-            } else {
-                navigator('/search')
+            if(weAreSearchingFor !== undefined) {
+                if (userSearchingQ !== '') {
+                    navigator(`/search/${userSearchingQ === 'undefined' ? '' : userSearchingQ}/${destructured ? destructured : 'all'}`)
+                } else {
+                    navigator('/search')
+                }
             }
-
         }, 500)
 
 
         return () => clearTimeout(timeOutToSetQuery)
-    }, [userSearchingQ]);
+    }, [userSearchingQ, weAreSearchingFor]);
 
     useEffect(() => {
 
