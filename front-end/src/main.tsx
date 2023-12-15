@@ -12,7 +12,6 @@ const routing = createBrowserRouter(
     createRoutesFromElements(
         <Route>
             <Route path={'/welcome'} element={<LoginPage/>}></Route>
-
             <Route path={'*'} element={<App/>}/>
         </Route>
     )

@@ -59,6 +59,7 @@ export function BrowsingCategory() {
         return () => controller.abort();
     }, [accessToken]);
 
+    if(genresLoading) return;
 
     return (
         <section className={browsingCategoryStyle["browsing-categories-wrapper"]}
@@ -89,7 +90,7 @@ export function BrowsingCategory() {
             </div>}
 
             <div className={browsingCategoryStyle['categories']}>
-                <h1 className={browsingCategoryStyle['browsing-categories-header']}>Browse all</h1>
+                <h1>Browse all</h1>
                 <div className={browsingCategoryStyle["genre-card-grid"]}>
                     {genres.slice(0, 50).map((eachCategory, i) => {
                             if ((genresLoading || genresError)) {

@@ -15,6 +15,9 @@
     height: calc(100% + 45px);
     overflow-y: scroll;
 
+    & h1 {
+        font-size: 1.5rem;
+    }
 }
 
 .recents {
@@ -42,3 +45,4 @@
     gap: 30px;
 
 }
+
