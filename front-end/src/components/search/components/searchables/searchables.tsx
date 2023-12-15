@@ -21,6 +21,7 @@ export function Searchables() {
     useEffect(() => {
         setOurUrlGuideArray((prev) => [prev[0], prev[1], Object.values(params).toString().split('/')[2]])
     }, [params]);
+
     return (
         <div className={searchAblesStyle["search-options"]}>
             {searchOptions.map((option, i) => (
@@ -37,6 +38,7 @@ export function Searchables() {
                     onClick={() => {
                         setOurUrlGuideArray((prev) => [prev[0], prev[1], option])
                         navigator([ourUrlGuideArray[0], searchingFor, option].join('/'))
+                        console.log(option)
                     }}
                     className={searchAblesStyle["each-option"]}
                 >

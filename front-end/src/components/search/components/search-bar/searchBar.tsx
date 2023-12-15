@@ -4,7 +4,7 @@ import SearchUnfilled from "../../../navigation/icons/search-unfilled.svg";
 import closeSearch from "../../../navigation/icons/close-search.svg";
 import {useEffect, useState} from "react";
 
-import {useNavigate, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 
 
 export function SearchBar() {
@@ -16,20 +16,23 @@ export function SearchBar() {
     const navigator = useNavigate();
     // const [err, setErr] = useState<string | unknown>();
     const [focused, setFocused] = useState<boolean>(false);
+    const {pathname} = useLocation();
+
     useEffect(() => {
         const timeOutToSetQuery = setTimeout(() => {
             if (userSearchingQ !== '') {
-                navigator(`/search/${userSearchingQ === 'undefined' ? '' : userSearchingQ}/${destructured ? destructured : 'all'}`)
+                navigator(`/search/${userSearchingQ === 'undefined' ? '' : userSearchingQ}/${destructured}`)
             }
-            if (userSearchingQ.length === 0 && focused) {
+            if (userSearchingQ.length === 0 && focused && pathname !== '/search') {
                 navigator('/search')
             }
-        }, 500)
 
+        }, 500)
 
         return () => clearTimeout(timeOutToSetQuery)
     }, [userSearchingQ, focused]);
 
+  
 
     return (
         <div className={searchBarStyle["search-bar"]}>
@@ -72,8 +75,16 @@ export function SearchBar() {
                                 onChange={(e) =>
                                     setUserSearchingQ(e.target.value)
                                 }
-                                onFocus={() => setFocused(true)}
-                                onBlur={() => setFocused(false)}
+                                onFocus={() => {
+                                    if (!focused) {
+                                        setFocused(true)
+                                    }
+                                }}
+                                onBlur={() => {
+                                    if (focused) {
+                                        setFocused(false)
+                                    }
+                                }}
                             ></input>
                             {userSearchingQ.length !== 0 &&
                                 <img
