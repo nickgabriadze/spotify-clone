@@ -33,7 +33,7 @@ export function CategoryPage() {
 
 
 
-    document.title = `Explore}`
+    document.title = `Explore`
     return <section
         className={categoryStyle['category-wrapper']}
 
