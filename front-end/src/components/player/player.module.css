@@ -8,9 +8,16 @@ button {
 .player-wrapper {
     padding: 10px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
 
+}
+
+.streaming-devices {
+    display: flex;
+    align-content: center;
+    width: 67.7%;
+    justify-content: space-between;
 }
 
 
@@ -18,16 +25,25 @@ button {
     display: flex;
     align-items: center;
     gap: 15px;
+    width: 34%;
+    height: 100%;
 }
 
 
 .currently-playing-info-album-img {
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+    width: fit-content;
 }
 
 .currently-playing-info-album-img img {
     object-fit: contain;
     border-radius: 3px;
+    width: 55px;
+    height: 55px;
 }
 
 .currently-playing-info-album-img-skeleton {
@@ -73,8 +89,10 @@ button {
     display: flex;
     flex-direction: row;
     gap: 12px;
-    width: 180px;
+    width: 100%;
+    overflow: hidden;
     align-items: center;
+    padding-right: 10px;
 
     .song-info-box-without-heart {
         display: flex;
@@ -82,6 +100,7 @@ button {
         align-items: center;
         overflow: hidden;
         border-radius: 4px;
+
 
         .song-name-artists-details {
             display: flex;
@@ -105,8 +124,7 @@ button {
 
 .song-name-box {
     overflow: hidden;
-
-
+    width: 100%;
 }
 
 .song-name {
@@ -145,18 +163,19 @@ button {
     filter: brightness(50%);
 }
 
-.play-buttons:active{
+.play-buttons:active {
     scale: 0.97
 }
 
-.play-buttons:hover{
+.play-buttons:hover {
     filter: brightness(100%);
 }
 
-.play-pause-btn:hover{
+.play-pause-btn:hover {
     scale: 1.05
 }
-.play-pause-btn:active{
+
+.play-pause-btn:active {
     scale: 0.97
 }
 
@@ -164,13 +183,13 @@ button {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    padding-top: 5px
+    padding-top: 5px;
+    width: 50%
 }
 
 .actual-controls {
     display: flex;
     gap: 5px;
-
     justify-content: center;
     align-items: center;
 }
@@ -180,7 +199,7 @@ button {
     justify-content: space-between;
     align-items: center;
     gap: 10px;
-    width: 400px;
+    width: 100%;
 }
 
 .duration p {
@@ -215,6 +234,7 @@ button {
     flex-direction: row;
     align-items: center;
     gap: 10px;
+    width: 26%;
 
 }
 

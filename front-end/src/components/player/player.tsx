@@ -160,13 +160,13 @@ export function Player() {
             <section className={playerStyle["player"]}>
                 <div className={playerStyle['player-wrapper']}>
                     <SongDetails currentlyPlaying={currentlyPlaying}/>
-                    <StreamController accessToken={access.accessToken}
+                    <div className={playerStyle['streaming-devices']}><StreamController accessToken={access.accessToken}
 
                                       disallows={playbackStateInformation?.actions?.disallows}
                                       playbackShuffle={playbackStateInformation?.shuffle_state}
                                       playbackRepeat={playbackStateInformation?.repeat_state}
                                       currentlyPlaying={currentlyPlaying}/>
-                    <DeviceController devices={noDataAvailable ? undefined : devices}/>
+                        <DeviceController devices={noDataAvailable ? undefined : devices}/></div>
                 </div>
                 <div className={playerStyle['which-device']}>
                     <img

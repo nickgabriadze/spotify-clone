@@ -16,8 +16,8 @@ import {Link} from "react-router-dom";
 export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPlaying | undefined }) {
 
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken);
-    const [songNameHover, setSongNameHover] = useState(false)
-    const [artistNameHover, setArtistNameHover] = useState(false)
+    const [, setSongNameHover] = useState(false)
+    const [, setArtistNameHover] = useState(false)
     const songNameRef = useRef<HTMLAnchorElement>(null)
     const artistNameRef = useRef<HTMLDivElement>(null)
     const savedSongs = useAppSelector((state) => state.spotiUserReducer.userSaved.userSavedSongIDs);
@@ -30,33 +30,7 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
 
     }, [savedSongs.length, currentlyPlaying?.item?.id]);
 
-    useEffect(() => {
-        if (songNameHover) {
 
-            if (Number(songNameRef?.current?.offsetWidth) > 140) {
-                songNameRef?.current?.classList.add('song-name-animation');
-            } else {
-                songNameRef?.current?.classList.remove('song-name-animation');
-
-            }
-        } else {
-            songNameRef?.current?.classList.remove('song-name-animation');
-        }
-
-        if (artistNameHover) {
-
-            if (Number(artistNameRef?.current?.children.length) > 2) {
-                artistNameRef?.current?.classList.add('song-name-animation');
-            } else {
-                artistNameRef?.current?.classList.remove('song-name-animation');
-
-            }
-        } else {
-            artistNameRef?.current?.classList.remove('song-name-animation');
-        }
-
-
-    }, [artistNameRef.current, songNameRef.current, currentlyPlaying?.item?.id, songNameHover, artistNameHover])
     const dispatch = useDispatch();
     return (<div className={playerStyle["currently-playing-info"]}>
         <Link to={`/album/${currentlyPlaying?.item?.album?.id}`} className={playerStyle["currently-playing-info-album-img"]}
@@ -65,8 +39,7 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
                     alt="Album picture"
                     draggable={false}
                     src={currentlyPlaying?.item?.album?.images[0]?.url}
-                    height={55}
-                    width={55}
+
                 ></img> :
                 <div className={playerStyle["currently-playing-info-album-img-skeleton"]}></div>
             }
@@ -75,10 +48,7 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
 
         >
             <div className={playerStyle['song-info-box-without-heart']}
-                 style={Number(songNameRef?.current?.offsetWidth) > 140
-                 || Number(artistNameRef?.current?.children.length) > 2
-                     ? {boxShadow: `-10px 0 27px -26px #B3B3B3  inset`, width: '200px'} : {width: 'fit-content'}
-                 }
+
             >
                 <div
                     className={playerStyle['song-name-artists-details']}>
@@ -100,10 +70,7 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
                     >
                         {Number(currentlyPlaying?.item?.artists.length) > 0 ?
                             <div ref={artistNameRef}
-                                 style={{
-                                     width: '200px',
-                                     position: 'relative'
-                                 }}
+
                             >
                                 {currentlyPlaying?.item?.artists.map((each, i) => (
                                     <Link to={`/artist/${each?.id}`} key={each.id} className={playerStyle["artists-name"]}
