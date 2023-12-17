@@ -262,7 +262,7 @@ export function PlaylistPage() {
 
             <div className={playlistPageStyle['date_added_at']}>Date Added</div>
 
-            <div>
+            <div className={playlistPageStyle['duration']}>
                 <img
                     src={Duration}
                     draggable={false}

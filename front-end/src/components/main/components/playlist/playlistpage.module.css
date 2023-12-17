@@ -101,6 +101,7 @@
     display: flex;
     position: sticky;
     top: 85px;
+    width: 100%;
     background-color: #121212;
     flex-direction: row;
     justify-content: space-between;
@@ -111,27 +112,43 @@
 
     .i-title {
         display: flex;
-        gap: 15px;
-        width: 25vw;
+        gap: 20px;
+        width: 50%;
 
     }
 
     .i-album {
-        width: 13vw;
+        width: 30%;
     }
 
     & div {
         font-family: 'Gotham Light', sans-serif;
         font-weight: 600;
     }
+    & .date_added_at {
+        width: 15%;
+    }
+    & .duration{
+        width: 5%;
+        display: flex;
+        justify-content: end;
+    }
 
     color: #b3b3b3;
 }
 
-@media only screen and (width < 1250px){
+@media only screen and (max-width: 1250px){
     .date_added_at{
         display: none;
     }
+
+    .i-title {
+        width: 42% !important;
+    }
+    .i-album {
+        width: 25% !important;
+    }
+
 }
 
 @media only screen and (width < 1000px){

@@ -18,7 +18,6 @@ import ArtistPage from "./components/artist/ArtistPage.tsx";
 import PlaylistPage from "./components/playlist/PlaylistPage.tsx";
 import PlayResumeStreaming from "../../api/player/playResumeStreaming.ts";
 import PauseStreaming from "../../api/player/pauseStreaming.ts";
-import artistPageStyle from "./components/artist/artistpage.module.css";
 import Pause from "../search/components/each-search-component/Playlists/icons/pause.svg";
 import Play from "../search/components/each-search-component/Playlists/icons/play.svg";
 import {useUpdateNumberOfItems} from "./hooks/useNumberOfItems.ts";
@@ -149,20 +148,20 @@ export function Main({height}: {
                                                 );
                                             }
                                         }}
-                                        className={artistPageStyle["artist-hover-button"]}
+
                                     >
                                         {currentlyPlaying?.context?.uri === whatsInView.uri &&
                                         currentlyPlaying.isPlaying ? (
                                             <div>
                                                 <img
                                                     alt={"Pause image"}
-
-                                                    src={Pause} width={40} height={40}></img>
+                                                    style={{padding:'10px'}}
+                                                    src={Pause}></img>
                                             </div>
                                         ) : (
                                             <div>
 
-                                                <img alt={"Play image"} src={Play} width={50} height={50}></img>
+                                                <img alt={"Play image"} src={Play} ></img>
                                             </div>
                                         )}
                                     </button>

@@ -83,7 +83,9 @@ export const SongCard = forwardRef(function SongCard(props: {
              onMouseOut={() => setHoveringOver(false)}
              ref={ref}
         >
-            <div className={songsStyle["general-info"]}>
+            <div className={songsStyle["general-info"]}
+            style={{ width: forAlbum ? '80%': '50%'}}
+            >
 
 
                 {eachTrack?.id === songID && !hoveringOver ?
@@ -136,6 +138,7 @@ export const SongCard = forwardRef(function SongCard(props: {
                 <div className={songsStyle["img-title-artists"]}
 
                      style={{
+
                          marginLeft: forAlbum ? '10px' : '5%'
                      }}
                 >
@@ -161,7 +164,7 @@ export const SongCard = forwardRef(function SongCard(props: {
 
                     <div className={songsStyle["title-artists"]}
                          style={{
-                             width: `${forAlbum ? '55vw' : '25vw'}`,
+                             width: forAlbum ? '100%': '80%',
                              gap: forArtist ? '0px' : '10px',
 
                          }}
@@ -172,7 +175,6 @@ export const SongCard = forwardRef(function SongCard(props: {
                                            style={
 
                                                {
-                                                   width: `${forAlbum ? '55vw' : '26vw'}`,
                                                    color: `${eachTrack?.id === songID ? '#1ed760' : 'white'}`,
                                                    paddingBottom: forArtist && eachTrack?.explicit ? '10px' : '0px'
                                                }}>{eachTrack?.name}</Link>
@@ -181,7 +183,6 @@ export const SongCard = forwardRef(function SongCard(props: {
                                     style={
 
                                         {
-                                            width: `${forAlbum ? '55vw' : '26vw'}`,
                                             color: `${eachTrack?.id === songID ? '#1ed760' : 'white'}`,
                                             paddingBottom: forArtist && eachTrack?.explicit ? '10px' : '0px'
                                         }}>{eachTrack?.name}</a>

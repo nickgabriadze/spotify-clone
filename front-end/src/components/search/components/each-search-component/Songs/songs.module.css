@@ -22,8 +22,9 @@
     top: 129px;
     background-color: #1a1a1a;
 
+
     .album-div {
-        width: 9vw;
+        width: 38%;
     }
 }
 
@@ -38,6 +39,7 @@
 .numbering-title {
     display: flex;
     gap: 15px;
+    width: 50%;
 }
 
 .track-name:hover {
@@ -64,7 +66,7 @@
     display: flex;
     gap: 15px;
     align-items: center;
-
+    width: 50%;
     padding-left: 10px;
     padding-right: 30px;
 }
@@ -72,9 +74,8 @@
 .img-title-artists {
     display: flex;
     gap: 10px;
-    justify-content: space-between;
     align-items: center;
-
+    width: 100%;
 }
 
 
@@ -112,6 +113,9 @@
     font-weight: lighter;
     color: #b3b3b3;
 
+
+
+
 }
 
 .title-artists a {
@@ -138,7 +142,7 @@
     justify-content: left;
     align-items: center;
     font-size: 12px;
-    width: 21vw;
+    width: 30%;
     color: #b3b3b3;
 
 
@@ -157,7 +161,7 @@
     display: flex;
     flex-direction: row;
     gap: 5px;
-
+    width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -229,7 +233,7 @@
 .date-added-duration-wrapper{
     display: flex;
     justify-content: space-between;
-    width: 17.5vw;
+    width: 20%;
     align-items: center;
 }
 

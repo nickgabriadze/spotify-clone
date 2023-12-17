@@ -11,12 +11,12 @@
     scroll-behavior: smooth;
 }
 
-.user-icon-log-out-wrapper{
+.user-icon-log-out-wrapper {
     display: flex;
     align-items: center;
     gap: 20px;
 
-    .log-out-btn{
+    .log-out-btn {
         color: #121212;
         background-color: #1ed760;
         padding: 10px;
@@ -24,24 +24,21 @@
         border-radius: 30px;
     }
 
-    .log-out-btn:hover{
+    .log-out-btn:hover {
 
         scale: 1.05
     }
 
 
-
-    .log-out-btn:active{
+    .log-out-btn:active {
         scale: 0.95;
     }
 }
 
 .head-of-main {
     display: flex;
-    justify-content: space-between;
     height: 50px;
     padding-bottom: 5px;
-
 
 }
 
@@ -51,6 +48,8 @@
     position: sticky;
     top: 0;
     z-index: 999;
+    justify-content: space-between;
+    width: 100%;
     background-color: #121212;
 }
 
@@ -63,32 +62,39 @@
 
 .left-right-nav {
     display: flex;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
+    width: 90%;
+
 
 }
 
-.fast-access{
+.fast-access {
     display: flex;
     align-items: center;
     gap: 10px;
+    overflow: hidden;
 
-    & h1{
-        width: 45vw;
-        white-space: nowrap;
+    & h1 {
+
         text-overflow: ellipsis;
         overflow: hidden;
+        white-space: nowrap;
     }
 }
 
-.play-button{
-    padding-left: 20px;
-   & button{
-       width: 50px;
-       height: 50px;
+.play-button {
+    padding-left: 5px;
+
+    & button {
+        width: 60px;
+        height: 60px;
+
         & img {
             background-color: #1ed760;
+            width: 100%;
+            height: 100%;
 
         }
-   }
+    }
 }

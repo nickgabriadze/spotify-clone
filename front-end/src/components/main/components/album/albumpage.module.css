@@ -116,10 +116,12 @@
             padding-bottom: 10px;
             border-bottom: 1px solid #303030;
             width: 100%;
+
             .i-title{
                 display: flex;
                 gap: 15px;
                 color: #b3b3b3;
+
             }
         }
     }
