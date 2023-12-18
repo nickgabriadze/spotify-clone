@@ -40,6 +40,8 @@ export function SearchBar() {
                 <div className={searchBarStyle['navigation-with-search']}>
                     <div
                         style={{
+                            width: '100%',
+                            maxWidth: '350px',
                             display: 'flex',
                             alignItems: 'center',
                             gap: '5px',

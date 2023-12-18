@@ -155,6 +155,7 @@ export function DeviceController({devices,}: {
                     <div className={playerStyle['available-devices-triangle-indicator']}></div>
                 </div>}
             </div>
+            <div className={playerStyle['volume-controller']}>
             <button
                 onClick={async () => {
                     await setPlaybackVolume(Number(
@@ -198,6 +199,7 @@ export function DeviceController({devices,}: {
                 min={0}
             />
         </div>
+            </div>
     );
 }
 
