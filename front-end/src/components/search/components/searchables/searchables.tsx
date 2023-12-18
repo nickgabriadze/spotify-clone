@@ -1,6 +1,5 @@
 import searchAblesStyle from "./searchables.module.css";
 import {useNavigate, useParams} from "react-router-dom";
-import {useEffect, useState} from "react";
 
 export function Searchables() {
     const searchOptions: string[] = [
@@ -16,11 +15,7 @@ export function Searchables() {
     const params = useParams();
     const destructuredParams= Object.values(params).toString().split('/')
     const searchingFor = destructuredParams[1]
-    const [ourUrlGuideArray, setOurUrlGuideArray] = useState<string[]>(destructuredParams)
 
-    useEffect(() => {
-        setOurUrlGuideArray((prev) => [prev[0], prev[1], Object.values(params).toString().split('/')[2]])
-    }, [params]);
 
     return (
         <div className={searchAblesStyle["search-options"]}>
@@ -29,22 +24,20 @@ export function Searchables() {
                 <div
 
                     style={
-                        ourUrlGuideArray[2] === option
+                        destructuredParams[2] === option
 
                             ? {backgroundColor: "#FFF"}
                             : {}
                     }
                     key={i}
                     onClick={() => {
-                        setOurUrlGuideArray((prev) => [prev[0], prev[1], option])
-                        navigator([ourUrlGuideArray[0], searchingFor, option].join('/'))
-                        console.log(option)
+                        if(destructuredParams[2] !== option) navigator(`/search/${searchingFor}/${option}`)
                     }}
                     className={searchAblesStyle["each-option"]}
                 >
                     <p
                         style={
-                            {color: `${option === ourUrlGuideArray[2] ? 'black' : 'white'}`}
+                            {color: `${option === destructuredParams[2] ? 'black' : 'white'}`}
                         }
 
                     >

@@ -9,7 +9,6 @@ import {useLocation, useNavigate, useParams} from "react-router-dom";
 
 export function SearchBar() {
     const params = useParams();
-    const destructured = ['all', 'albums', 'artists', 'playlists', 'songs', 'podcastsAndShows'].includes(Object.values(params).toString().split('/')[2]) ? Object.values(params).toString().split('/')[2] : 'all'
     const weAreSearchingFor = Object.values(params).toString().split('/')[1]
     const [userSearchingQ, setUserSearchingQ] = useState<string>(weAreSearchingFor === undefined ? '' : String(weAreSearchingFor));
     const [onElementFocus, setOnElementFocus] = useState<boolean>(false);
@@ -17,10 +16,10 @@ export function SearchBar() {
     // const [err, setErr] = useState<string | unknown>();
     const [focused, setFocused] = useState<boolean>(false);
     const {pathname} = useLocation();
-
     useEffect(() => {
         const timeOutToSetQuery = setTimeout(() => {
             if (userSearchingQ !== '') {
+                const destructured = ['all', 'albums', 'artists', 'playlists', 'songs', 'podcastsAndShows'].includes(Object.values(params).toString().split('/')[2]) ? Object.values(params).toString().split('/')[2] : 'all'
                 navigator(`/search/${userSearchingQ === 'undefined' ? '' : userSearchingQ}/${destructured}`)
             }
             if (userSearchingQ.length === 0 && focused && pathname !== '/search') {
@@ -28,11 +27,9 @@ export function SearchBar() {
             }
 
         }, 500)
-
         return () => clearTimeout(timeOutToSetQuery)
-    }, [userSearchingQ, focused]);
+    }, [userSearchingQ, focused, Object.values(params).toString()]);
 
-  
 
     return (
         <div className={searchBarStyle["search-bar"]}>
