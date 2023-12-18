@@ -346,11 +346,19 @@ button {
     }
 
 }
-.volume-controller{
+
+.volume-controller, .volume-controller > button{
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
 
+.volume-controller > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .devices-triangle > .triangle {
@@ -505,13 +513,15 @@ button {
 
 
 @media only screen and (max-width: 600px) {
-   .volume-controller{
-       & > input {display: none;}
-   }
+    .volume-controller {
+        & > input {
+            display: none;
+        }
+    }
 }
 
-@media only screen and (max-width: 520px){
-     .volume-controller{
+@media only screen and (max-width: 520px) {
+    .volume-controller {
         display: none;
-   }
+    }
 }

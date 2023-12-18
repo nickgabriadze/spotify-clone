@@ -15,6 +15,7 @@ import TVDevice from "../icons/tv-device.svg";
 import LaptopDevice from '../icons/laptop-device.svg'
 import switchActiveDevice from "../../../api/player/switchActiveDevice.ts";
 import {Link, useParams} from "react-router-dom";
+import OpenInFullScreen from '../icons/open-full-screen.svg';
 
 
 export function DeviceController({devices,}: {
@@ -156,50 +157,57 @@ export function DeviceController({devices,}: {
                 </div>}
             </div>
             <div className={playerStyle['volume-controller']}>
-            <button
-                onClick={async () => {
-                    await setPlaybackVolume(Number(
-                        devices?.devices.filter((each) => each.is_active)[0]?.volume_percent
-                    ) > 0 ? 0 : previousSliderVolume, accessToken);
+                <div>
+                    <button
+                        onClick={async () => {
+                            await setPlaybackVolume(Number(
+                                devices?.devices.filter((each) => each.is_active)[0]?.volume_percent
+                            ) > 0 ? 0 : previousSliderVolume, accessToken);
 
 
-                    dispatch(setUserControlActions({
-                        userAction: 'Volume On/Off'
-                    }))
-                }}
-            ><img
-                src={
-                    Number(
-                        devices?.devices.filter((each) => each.is_active)[0]?.volume_percent
-                    ) > 0
-                        ? VolumeUp
-                        : VolumeOff
-                }
-                alt="Volume icon"
-                width={22}
-            ></img>
-            </button>
-            <input
-                className={playerStyle["volume-rocker"]}
-                style={{
-                    background: `linear-gradient(to right, #1ed760 ${
-                        sliderVolume
-                    }%, #4d4d4d ${
-                        sliderVolume
-                    }%)`,
-                }}
-                onChange={async (e) => {
-                    setSliderVolume(Number(e.target.value));
-                    setPreviousSliderVolume(Number(e.target.value))
+                            dispatch(setUserControlActions({
+                                userAction: 'Volume On/Off'
+                            }))
+                        }}
+                    ><img
+                        src={
+                            Number(
+                                devices?.devices.filter((each) => each.is_active)[0]?.volume_percent
+                            ) > 0
+                                ? VolumeUp
+                                : VolumeOff
+                        }
+                        alt="Volume icon"
+                        width={22}
+                    ></img>
+                    </button>
+                    <input
+                        className={playerStyle["volume-rocker"]}
+                        style={{
+                            background: `linear-gradient(to right, #1ed760 ${
+                                sliderVolume
+                            }%, #4d4d4d ${
+                                sliderVolume
+                            }%)`,
+                        }}
+                        onChange={async (e) => {
+                            setSliderVolume(Number(e.target.value));
+                            setPreviousSliderVolume(Number(e.target.value))
 
-                }}
-                type="range"
-                value={String(sliderVolume)}
-                max={100}
-                min={0}
-            />
-        </div>
+                        }}
+                        type="range"
+                        value={String(sliderVolume)}
+                        max={100}
+                        min={0}
+                    />
+                </div>
+                <img alt={"Open In FullScreen icon"}
+                     title={'Open in Full Screen'}
+                     onClick={() => document.documentElement.requestFullscreen()} width={18}
+                     src={OpenInFullScreen}></img>
+
             </div>
+        </div>
     );
 }
 
