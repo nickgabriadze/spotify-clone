@@ -14,6 +14,7 @@ import {Link} from "react-router-dom";
 import artistsStyle from "../components/each-search-component/Artists/artists.module.css";
 import CloseIcon from "../../player/icons/close-icon.svg";
 import useSearchHistory from "../../main/hooks/useSearchHistory.ts";
+import useProperNavigationState from "../../utils/useProperNavigationState.ts";
 
 
 export function AlbumCardApi({albumID, forSearchHistory, searchHistorySetter}: {
@@ -65,12 +66,10 @@ export function AlbumCard({eachAlbum, fromSearch, forSearchHistory, searchHistor
              onMouseOver={() => setHoveringOver(true)}
              onMouseOut={() => setHoveringOver(false)}>
             <div className={albumsStyle['album-inner-content']}>
-                <Link to={`/album/${eachAlbum?.id}`} state={fromSearch ? {type: 'album', id: eachAlbum?.id} : null}
+                <Link to={`/album/${eachAlbum?.id}`}
+                      state={useProperNavigationState('album', fromSearch, String(eachAlbum?.id))}>
 
-                >
-                    <div className={albumsStyle["album-img"]}
-
-                    >
+                    <div className={albumsStyle["album-img"]}>
                         {eachAlbum?.images[0]?.url ? <img
                                 src={eachAlbum?.images[0]?.url}
                                 draggable={false}
@@ -136,7 +135,7 @@ export function AlbumCard({eachAlbum, fromSearch, forSearchHistory, searchHistor
                     </button>
                 )}
                 <Link to={`/album/${eachAlbum?.id}`}
-                      state={fromSearch ? {type: 'album', id: eachAlbum?.id} : null}>
+                      state={useProperNavigationState('album', Boolean(fromSearch), String(eachAlbum?.id))}>
                     <div className={albumsStyle["album-details"]}
                     >
                         <h1>

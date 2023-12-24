@@ -42,7 +42,6 @@ export function Main({height}: {
     useUpdateNumberOfItems();
     const navigatePages = useNavigate();
     const {pathname, state} = useLocation();
-
     const params = useParams();
 
     const weAreSearching = pathname.includes('/search')
@@ -110,7 +109,7 @@ export function Main({height}: {
 
 
                                 <img
-                                    style={{filter: `${window.history.length - 2 === state || !Boolean(state) ? `brightness(50%)` : `brightness(100%)`}`}}
+                                    style={{filter: `${state !== null && state.pageNumber === state.totalPages ? `brightness(50%)` : `brightness(100%)`}`}}
                                     alt={'Right icon'} src={Right} height={32}></img>
 
                             </div>
@@ -155,13 +154,13 @@ export function Main({height}: {
                                             <div>
                                                 <img
                                                     alt={"Pause image"}
-                                                    style={{padding:'10px'}}
+                                                    style={{padding: '10px'}}
                                                     src={Pause}></img>
                                             </div>
                                         ) : (
                                             <div>
 
-                                                <img alt={"Play image"} src={Play} ></img>
+                                                <img alt={"Play image"} src={Play}></img>
                                             </div>
                                         )}
                                     </button>

@@ -50,7 +50,7 @@ export function AlbumPage() {
 
     useEffect(() => {
 
-        if (state !== null) {
+        if (state.fromSearch) {
             useSearchHistory(state, "SET")
         }
 

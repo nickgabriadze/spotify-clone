@@ -20,7 +20,7 @@ interface Navigation {
     libraryActions: string[],
     currentSongData: CurrentlyPlaying | null,
     userControlActions: string[];
-    somethingIsFullScreen: boolean
+    somethingIsFullScreen: boolean,
 }
 
 const initialState: Navigation = {
@@ -43,7 +43,7 @@ const initialState: Navigation = {
     libraryActions: [],
     userControlActions: [],
     currentSongData: null,
-    somethingIsFullScreen: false
+    somethingIsFullScreen: false,
 };
 
 const navigationSlice = createSlice({
@@ -141,6 +141,6 @@ export const {
     setCurrentlyPlayingSong,
     setUserControlActions,
     addLibraryAction,
-    setCurrentSongData
+    setCurrentSongData,
 } = navigationSlice.actions;
 export default navigationSlice.reducer;

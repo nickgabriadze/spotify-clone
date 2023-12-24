@@ -44,10 +44,9 @@ export function TopItems() {
                 setDataLoading(false)
             }
         }
-        if (localStorage.getItem('access_token')) {
 
             fetchTops()
-        }
+
 
 
     }, [access])

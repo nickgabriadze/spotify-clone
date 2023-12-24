@@ -33,7 +33,7 @@ export function Home() {
 
     return <section className={homepageStyle['homepage-wrapper']}>
         <h1 className={homepageStyle['greeting-message']}>Good {timeFrame()}</h1>
-        {localStorage.getItem('access_token') !== undefined && <TopItems/>}
+        <TopItems/>
         <FeaturedInCountry/>
         <RecentlyPlayed/>
         <NewReleases/>

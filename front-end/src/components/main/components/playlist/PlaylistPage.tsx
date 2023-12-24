@@ -67,7 +67,7 @@ export function PlaylistPage() {
 
     useEffect(() => {
 
-        if (state !== null) {
+        if (state.fromSearch) {
             useSearchHistory(state, "SET")
         }
 

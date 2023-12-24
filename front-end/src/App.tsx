@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {setToken, updateCredentials} from "./store/features/spotiUserSlice";
+import {setToken, setWindowFullScreen, updateCredentials} from "./store/features/spotiUserSlice";
 import {useAppDispatch, useAppSelector} from "./store/hooks";
 import appStyle from "./app.module.css";
 import Navigation from "./components/navigation/navigation";
@@ -76,15 +76,14 @@ export function App() {
         }
     }, []);
 
-    const [fullScreen, setFullScreen] = useState<boolean>(false);
+    const windowFullScreen = useAppSelector(s => s.spotiUserReducer.windowFullScreen);
 
     useEffect(() => {
         const handleFullScreen = () => {
-            console.log('we are in full screen')
             if (window.innerHeight === screen.height) {
-                setFullScreen(true)
+               dispatch(setWindowFullScreen(true))
             } else {
-                setFullScreen(false)
+                dispatch(setWindowFullScreen(false))
             }
         }
         window.addEventListener('resize', handleFullScreen);
@@ -95,7 +94,7 @@ export function App() {
 
     if (loggedIn) {
 
-        if (fullScreen) {
+        if (windowFullScreen) {
             return <FullScreen currentlyPlayingSong={currentlyPlaying}/>
         } else {
 
