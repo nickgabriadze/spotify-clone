@@ -103,7 +103,7 @@ export function ArtistPage() {
 
     useEffect(() => {
 
-        if (state.fromSearch) {
+        if (state?.fromSearch) {
             useSearchHistory(state, "SET")
         }
 
