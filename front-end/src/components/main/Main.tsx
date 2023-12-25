@@ -10,7 +10,7 @@ import {Me} from "../../types/me.ts";
 import getMe from "../../api/getMe.ts";
 import SearchBar from "../search/components/search-bar/searchBar.tsx";
 import Searchables from "../search/components/searchables/searchables.tsx";
-import {setUserInformation} from "../../store/features/spotiUserSlice.ts";
+import {setLoggedIn, setUserInformation} from "../../store/features/spotiUserSlice.ts";
 import AlbumPage from "./components/album/AlbumPage.tsx";
 import {Route, Routes, useNavigate, useParams, useLocation} from 'react-router-dom'
 import {setUserControlActions} from "../../store/features/navigationSlice.ts";
@@ -68,6 +68,10 @@ export function Main({height}: {
     const whatsInView = useAppSelector(s => s.spotiUserReducer.whatsInViewForPlay);
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong)
     const [displayLogOut, setDisplayLogout] = useState<boolean>(false)
+    const fromLoginPage = useAppSelector(s => s.spotiUserReducer.fromLoginPage)
+
+    const stateIsNull = state === null ? 0 : state.pageNumber;
+        console.log(stateIsNull, window.history, state)
 
 
     return (
@@ -91,12 +95,14 @@ export function Main({height}: {
                         <button
 
                             onClick={() => {
-                                navigatePages(-1)
+                                if (state !== null) {
+                                    navigatePages(-1)
+                                }
 
                             }}
                         >
                             <img
-                                style={{filter: `${state === 0 ? `brightness(50%)` : `brightness(100%)`}`}}
+                                style={{filter: `${state === null ? `brightness(50%)` : `brightness(100%)`}`}}
                                 alt={'Left icon'} src={Left} height={32}></img>
                         </button>
                         <button style={{marginLeft: "-3px"}}
@@ -109,7 +115,7 @@ export function Main({height}: {
 
 
                                 <img
-                                    style={{filter: `${state !== null && state.pageNumber === state.totalPages ? `brightness(50%)` : `brightness(100%)`}`}}
+                                    style={{filter: `${stateIsNull + 2 + fromLoginPage === window.history.length ? `brightness(50%)` : `brightness(100%)`}`}}
                                     alt={'Right icon'} src={Right} height={32}></img>
 
                             </div>
@@ -181,6 +187,7 @@ export function Main({height}: {
                                         dispatch(setUserControlActions({
                                             userAction: 'USER_LOGOUT'
                                         }))
+                                        dispatch(setLoggedIn(false))
                                         navigatePages('/welcome')
                                     }
 

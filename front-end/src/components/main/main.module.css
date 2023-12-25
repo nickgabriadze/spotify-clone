@@ -16,11 +16,13 @@
     align-items: center;
     gap: 20px;
 
+
     .log-out-btn {
         color: #121212;
         background-color: #1ed760;
         padding: 10px;
         font-size: 12px;
+        white-space: nowrap;
         border-radius: 30px;
     }
 

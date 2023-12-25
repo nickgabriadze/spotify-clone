@@ -1,30 +1,37 @@
 import {useEffect, useState} from "react";
-import {setToken, setWindowFullScreen, updateCredentials} from "./store/features/spotiUserSlice";
+import {setToken, setWindowFullScreen} from "./store/features/spotiUserSlice";
 import {useAppDispatch, useAppSelector} from "./store/hooks";
 import appStyle from "./app.module.css";
 import Navigation from "./components/navigation/navigation";
 import Player from "./components/player/player";
 import Main from "./components/main/Main.tsx";
 import Library from "./components/library/Library.tsx";
-import validateToken from "./components/utils/validateToken.ts";
-import {useNavigate} from "react-router-dom";
 import FullScreen from "./components/full-screen/FullScreen.tsx";
+import {useExistingToken} from "./useExistingToken.ts";
 
 
 export function App() {
     const loggedIn = useAppSelector((state) => state.spotiUserReducer.loggedIn);
     const userControlActions = useAppSelector(s => s.navigationReducer.userControlActions);
-
+    useExistingToken()
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
-    window.addEventListener('localStorageChange', () => {
 
-        dispatch(
-            setToken({
-                accessToken: String(localStorage.getItem("access_token"))
-            })
-        );
-    })
+    useEffect(() => {
+        const handleLocalStorageChange = () => {
+
+
+            dispatch(
+                setToken({
+                    accessToken: String(localStorage.getItem("access_token"))
+                })
+            );
+        }
+
+
+        window.addEventListener('localStorageChange', handleLocalStorageChange);
+
+        return () => window.removeEventListener('localStorageChange', handleLocalStorageChange);
+    }, []);
 
 
     useEffect(() => {
@@ -43,6 +50,11 @@ export function App() {
             const newHeight = window.innerHeight;
             setWindowInnerHeight(newHeight - 120);
 
+            if (window.innerHeight === screen.height) {
+                dispatch(setWindowFullScreen(true))
+            } else {
+                dispatch(setWindowFullScreen(false))
+            }
         };
 
         window.addEventListener("resize", updateWindowDimensions);
@@ -52,44 +64,8 @@ export function App() {
     }, []);
 
 
-    useEffect(() => {
-        if (localStorage.getItem('access_token')
-            &&
-            localStorage.getItem('refresh_token')
-        ) {
-            const updateAccessToken = async () => {
-
-                const newToken = await validateToken();
-
-                dispatch(updateCredentials({
-                        access_token: newToken,
-                        refresh_token: String(localStorage.getItem('refresh_token')),
-                        issued_at: Number(localStorage.getItem('issued_at'))
-                    }
-                ))
-            }
-
-            updateAccessToken();
-
-        } else {
-            navigate("/welcome")
-        }
-    }, []);
 
     const windowFullScreen = useAppSelector(s => s.spotiUserReducer.windowFullScreen);
-
-    useEffect(() => {
-        const handleFullScreen = () => {
-            if (window.innerHeight === screen.height) {
-               dispatch(setWindowFullScreen(true))
-            } else {
-                dispatch(setWindowFullScreen(false))
-            }
-        }
-        window.addEventListener('resize', handleFullScreen);
-
-        return () => window.removeEventListener('resize', handleFullScreen);
-    }, []);
 
 
     if (loggedIn) {

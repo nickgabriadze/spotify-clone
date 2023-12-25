@@ -19,13 +19,13 @@ export const fetchTokenAsync = createAsyncThunk(
     async (info: {
         client_id?: string,
         client_secret_id?: string
-    }): Promise<TokenData> => {
+    }) => {
 
         if (!window.location.hash.includes("#")) {
-            return axios.get(`http://localhost:3001/authenticate?client_id=${info.client_id}&client_secret_id=${info.client_secret_id}`,)
+            axios.get(`http://localhost:3001/authenticate?client_id=${info.client_id}&client_secret_id=${info.client_secret_id}`,)
                 .then((res) => (window.location.href = res.data));
         } else {
-            const access = window && window.location.hash
+            return window && window.location.hash
                 .split("#")[1]
                 .split("&")
                 .map((each) => {
@@ -33,12 +33,9 @@ export const fetchTokenAsync = createAsyncThunk(
                     const key = split[0];
                     const value = split[1];
                     return JSON.parse(`{"${key}":"${value}"}`);
-                }).reduce((acc, obj) => ({...acc, ...obj}), {});
-
-            history.replaceState({}, document.title, window.location.pathname)
-
-            return access
+                }).reduce((acc, obj) => ({...acc, ...obj}), {})
         }
+        history.replaceState({}, document.title, window.location.pathname)
 
 
     });
@@ -67,7 +64,8 @@ interface SpotiUser {
     },
     mainRef: HTMLElement | null,
     windowFullScreen: boolean,
-    numberOfItemsToBeShown: number
+    numberOfItemsToBeShown: number,
+    fromLoginPage: 0 | 1
 }
 
 const initialState: SpotiUser = {
@@ -93,7 +91,8 @@ const initialState: SpotiUser = {
     },
     mainRef: null,
     windowFullScreen: false,
-    numberOfItemsToBeShown: Math.floor(window.innerWidth / 250)
+    numberOfItemsToBeShown: Math.floor(window.innerWidth / 250),
+    fromLoginPage: 0
 };
 
 const spotiUserSlice = createSlice({
@@ -101,6 +100,13 @@ const spotiUserSlice = createSlice({
         initialState,
         reducers:
             {
+
+                setLoggedIn: (state, action: { payload: boolean }) => {
+                    return {
+                        ...state,
+                        loggedIn: action.payload
+                    }
+                },
                 setWindowFullScreen: (state, action: { payload: boolean }) => {
                     return {
                         ...state,
@@ -256,7 +262,8 @@ const spotiUserSlice = createSlice({
                                 expires_in: 3600,
                                 issued_at: currentTime,
                             },
-                            loggedIn: true
+
+                            fromLoginPage: 1
 
                         };
                     }
@@ -272,6 +279,7 @@ const spotiUserSlice = createSlice({
                             refresh_token: "pending",
                             expires_in: 0,
                             issued_at: 0,
+                            loggedIn: false
                         },
                     };
                 })
@@ -303,7 +311,8 @@ export const {
     setUserSavedPlaylistIDs,
     setNumberOfItemsToBeShown,
     setWhatsInView,
-    setWindowFullScreen
+    setWindowFullScreen,
+    setLoggedIn
 } = spotiUserSlice.actions;
 
 export default spotiUserSlice.reducer;
