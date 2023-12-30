@@ -62,11 +62,13 @@ export function FullScreen({currentlyPlayingSong}: { currentlyPlayingSong: Curre
         return () => document.removeEventListener('keydown', handleESC)
 
     }, []);
-    if (currentlyPlaying === null) dispatch(setWindowFullScreen(false));
+
+
+    if (fullScreen && currentlyPlaying === null) dispatch(setWindowFullScreen(false));
 
 
     return <section className={fullScreenStyling['full-screen-wrapper']}
-    style={{display: fullScreen ? 'initial' : 'none'}}
+                    style={{display: fullScreen ? 'initial' : 'none'}}
     >
 
         <img draggable={false} className={fullScreenStyling['spotify-logo']} alt={'Spotify logo'} src={SpotifyLOGO}

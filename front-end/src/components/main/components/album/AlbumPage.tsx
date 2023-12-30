@@ -8,7 +8,7 @@ import getAlbumTracks from "../../../../api/main/album/getAlbumTracks.ts";
 import millisecondsToHhMmSs from "../../../player/msConverter.ts";
 import PlayResumeStreaming from "../../../../api/player/playResumeStreaming.ts";
 import {
-    addLibraryAction,
+    addLibraryAction, setNavigationError,
     setUserControlActions
 } from "../../../../store/features/navigationSlice.ts";
 import PauseStreaming from "../../../../api/player/pauseStreaming.ts";
@@ -108,7 +108,7 @@ export function AlbumPage() {
                     albumTracks: tracks
                 })
             } catch (err) {
-
+                dispatch(setNavigationError(true))
             } finally {
                 setDataLoading(false)
             }

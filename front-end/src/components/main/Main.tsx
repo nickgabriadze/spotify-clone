@@ -22,7 +22,6 @@ import Pause from "../search/components/each-search-component/Playlists/icons/pa
 import Play from "../search/components/each-search-component/Playlists/icons/play.svg";
 import {useUpdateNumberOfItems} from "./hooks/useNumberOfItems.ts";
 import Category from "./components/browsingCategory/category.tsx";
-import Error from "../Errors/Error.tsx";
 import {LikedSongs} from "./components/playlist/LikedSongs.tsx";
 import ArtistLayout from "./components/artist/ArtistLayout.tsx";
 import {Discography} from "./components/artist/components/discography/Discography.tsx";
@@ -226,14 +225,16 @@ export function Main({height}: {
                     <Route path={'/recent-searches'} element={<RecentSearches/>}/>
                     <Route path={'/genre/:genreID'} element={<Category/>}/>
                     <Route path={'/artist'} element={<ArtistLayout/>}>
-                        <Route path={':artistID'} element={<ArtistPage/>}/>
-                        <Route path={':artistID/discography'} errorElement={<Error/>} element={<Discography/>}></Route>
+                        <Route path={':artistID'} element={<ArtistPage/> } />
+                        <Route path={':artistID/discography'} element={<Discography/>}></Route>
                         <Route path={':artistID/discography/:type'} element={<Discography/>}></Route>
                     </Route>
                     <Route path={'/queue'} element={<Queue/>}/>
-                    <Route path={'/album/:albumID'} element={<AlbumPage/>}/>
+                    <Route path={'/album/:albumID'}
+                           element={<AlbumPage/>}/>
                     <Route path={'/playlist/:playlistID'} element={<PlaylistPage/>}/>
-                    <Route path={'/collection/tracks'} element={<LikedSongs/>}/>
+                    <Route path={'/collection/tracks'}
+                           element={<LikedSongs/>}/>
 
                 </Routes>
             </div>

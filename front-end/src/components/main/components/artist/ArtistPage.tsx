@@ -4,7 +4,11 @@ import getArtist from "../../../../api/search/getArtist.ts";
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks.ts";
 import artistPageStyle from './artistpage.module.css'
 import PlayResumeStreaming from "../../../../api/player/playResumeStreaming.ts";
-import {addLibraryAction, setUserControlActions} from "../../../../store/features/navigationSlice.ts";
+import {
+    addLibraryAction,
+    setNavigationError,
+    setUserControlActions
+} from "../../../../store/features/navigationSlice.ts";
 import PauseStreaming from "../../../../api/player/pauseStreaming.ts";
 import Pause from "../../../search/components/each-search-component/Playlists/icons/pause.svg";
 import Play from "../../../search/components/each-search-component/Playlists/icons/play.svg";
@@ -86,6 +90,8 @@ export function ArtistPage() {
                 setDiscoWhich(Object.keys(discoTime[0]).toString())
 
             } catch (err) {
+                dispatch(setNavigationError(true))
+
             } finally {
                 setLoading(false)
             }

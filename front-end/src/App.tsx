@@ -8,11 +8,14 @@ import Main from "./components/main/Main.tsx";
 import Library from "./components/library/Library.tsx";
 import FullScreen from "./components/full-screen/FullScreen.tsx";
 import {useExistingToken} from "./useExistingToken.ts";
+import NavigationError from "./components/Errors/NavigationError.tsx";
 
 
 export function App() {
     const loggedIn = useAppSelector((state) => state.spotiUserReducer.loggedIn);
     const userControlActions = useAppSelector(s => s.navigationReducer.userControlActions);
+    const fullScreen = useAppSelector(s => s.spotiUserReducer.windowFullScreen);
+    const navigationError = useAppSelector(s => s.navigationReducer.navigationError);
     useExistingToken()
     const dispatch = useAppDispatch();
 
@@ -72,8 +75,10 @@ export function App() {
 
             return (
                 <>
-                    <FullScreen currentlyPlayingSong={currentlyPlaying}/>
+                    { fullScreen && <FullScreen currentlyPlayingSong={currentlyPlaying}/>}
+                    { navigationError && <NavigationError/>}
                     <div className={appStyle["application-wrapper"]}
+                    style={{display: navigationError || fullScreen ? 'none' : 'block'}}
                     >
 
                         <div className={appStyle['nav-lib-main-wrapper']}

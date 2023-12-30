@@ -1,10 +1,12 @@
-import {useNavigate} from "react-router-dom";
+import {setNavigationError} from "../../store/features/navigationSlice.ts";
+import {useAppDispatch} from "../../store/hooks.ts";
 
 export function SpotiError() {
-  const navigate = useNavigate();
-  navigate('/')
+    const dispatch = useAppDispatch();
 
-  return <></>
+    dispatch(setNavigationError(true))
+
+    return <></>
 }
 
 export default SpotiError;

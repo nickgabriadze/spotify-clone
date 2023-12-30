@@ -1,0 +1,50 @@
+.nav-error-wrapper {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    background-color: #121212;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    z-index: 10000;
+
+
+    & div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+
+        & h1 {
+            font-family: "Gotham Bold", sans-serif;
+            color: white;
+            font-size: 1.8rem;
+        }
+
+        & p {
+            color: #a7a7a7;
+            font-family: 'Gotham Light', sans-serif;
+            font-weight: bold;
+        }
+
+    }
+
+    & a {
+        border-radius: 30px;
+        background-color: white;
+        color: black;
+        text-align: center;
+        border: none;
+        padding: 18px 30px 18px 30px;
+
+
+    }
+
+    & a:hover {
+        scale: 1.08;
+        text-decoration: underline;
+    }
+}

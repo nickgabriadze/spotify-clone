@@ -21,6 +21,7 @@ interface Navigation {
     currentSongData: CurrentlyPlaying | null,
     userControlActions: string[];
     somethingIsFullScreen: boolean,
+    navigationError: boolean
 }
 
 const initialState: Navigation = {
@@ -44,6 +45,7 @@ const initialState: Navigation = {
     userControlActions: [],
     currentSongData: null,
     somethingIsFullScreen: false,
+    navigationError: false
 };
 
 const navigationSlice = createSlice({
@@ -51,6 +53,13 @@ const navigationSlice = createSlice({
     initialState,
     reducers:
         {
+
+            setNavigationError: (state, action:{payload: boolean}) => {
+                return {
+                    ...state,
+                    navigationError: action.payload
+                }
+            },
 
             setCurrentSongData: (state, action:{
                 payload: CurrentlyPlaying
@@ -142,5 +151,6 @@ export const {
     setUserControlActions,
     addLibraryAction,
     setCurrentSongData,
+    setNavigationError
 } = navigationSlice.actions;
 export default navigationSlice.reducer;
