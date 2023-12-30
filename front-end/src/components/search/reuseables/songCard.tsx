@@ -19,7 +19,8 @@ import saveTrackForCurrentUser from "../../../api/library/saveTrackForCurrentUse
 import SavedTrackIcon from "../../player/icons/liked-indicator-heart.svg";
 import Heart from "../../player/icons/heart.svg";
 import {PlayListTrackObject} from "../../../types/playlist.ts";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
+import useProperNavigationState from "../../utils/useProperNavigationState.ts";
 
 export const SongCard = forwardRef(function SongCard(props: {
     eachTrack: Track | PlayListTrackObject | undefined,
@@ -32,7 +33,7 @@ export const SongCard = forwardRef(function SongCard(props: {
 }, ref: Ref<HTMLDivElement>) {
     const [currentSaved, setCurrentSaved] = useState<boolean>(false)
     const savedSongs = useAppSelector((state) => state.spotiUserReducer.userSaved.userSavedSongIDs);
-
+    const loc = useLocation();
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong)
     const {n, eachTrack, accessToken, forAlbum, forPlaylist, playlistTrackAddedDate, forArtist} = props;
     const songID = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong.songID);
@@ -68,7 +69,7 @@ export const SongCard = forwardRef(function SongCard(props: {
                          alignItems: 'center'
                      } : {
                          display: 'flex',
-                          justifyContent: 'space-between',
+                         justifyContent: 'space-between',
                          alignItems: 'center'
                      }
              }
@@ -84,7 +85,7 @@ export const SongCard = forwardRef(function SongCard(props: {
              ref={ref}
         >
             <div className={songsStyle["general-info"]}
-            style={{ width: forAlbum ? '80%': '50%'}}
+                 style={{width: forAlbum ? '80%' : '50%'}}
             >
 
 
@@ -164,12 +165,14 @@ export const SongCard = forwardRef(function SongCard(props: {
 
                     <div className={songsStyle["title-artists"]}
                          style={{
-                             width: forAlbum ? '100%': '80%',
+                             width: forAlbum ? '100%' : '80%',
                              gap: forArtist ? '0px' : '10px',
 
                          }}
                     >
                         {!forAlbum ? <Link to={`/album/${eachTrack?.album?.id}`}
+                                           state={useProperNavigationState(loc, 'album', false, String(eachTrack?.album?.id))}
+
                                            className={songsStyle['track-name']}
 
                                            style={
@@ -179,13 +182,13 @@ export const SongCard = forwardRef(function SongCard(props: {
                                                    paddingBottom: forArtist && eachTrack?.explicit ? '10px' : '0px'
                                                }}>{eachTrack?.name}</Link>
                             : <a
-                                    className={songsStyle['track-name']}
-                                    style={
+                                className={songsStyle['track-name']}
+                                style={
 
-                                        {
-                                            color: `${eachTrack?.id === songID ? '#1ed760' : 'white'}`,
-                                            paddingBottom: forArtist && eachTrack?.explicit ? '10px' : '0px'
-                                        }}>{eachTrack?.name}</a>
+                                    {
+                                        color: `${eachTrack?.id === songID ? '#1ed760' : 'white'}`,
+                                        paddingBottom: forArtist && eachTrack?.explicit ? '10px' : '0px'
+                                    }}>{eachTrack?.name}</a>
                         }
                         <div
                             className={songsStyle['artists-mapped']}
@@ -199,6 +202,7 @@ export const SongCard = forwardRef(function SongCard(props: {
                                      style={{width: `${forAlbum ? '55vw' : '25vw'}`}}
                                 >{eachTrack?.artists.map((artist, i) =>
                                     <Link to={`/artist/${artist?.id}`} key={i}
+                                          state={useProperNavigationState(loc, 'artist', false, String(artist?.id))}
 
                                     >{i === eachTrack.artists.slice(0, 4).length - 1 ? artist.name : `${artist.name}, `}</Link>)}</div>
                             }

@@ -1,5 +1,6 @@
 import searchAblesStyle from "./searchables.module.css";
-import {useNavigate, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
+import useProperNavigationState from "../../../utils/useProperNavigationState.ts";
 
 export function Searchables() {
     const searchOptions: string[] = [
@@ -15,7 +16,7 @@ export function Searchables() {
     const params = useParams();
     const destructuredParams= Object.values(params).toString().split('/')
     const searchingFor = destructuredParams[1]
-
+    const loc = useLocation();
 
     return (
         <div className={searchAblesStyle["search-options"]}>
@@ -31,7 +32,7 @@ export function Searchables() {
                     }
                     key={i}
                     onClick={() => {
-                        if(destructuredParams[2] !== option) navigator(`/search/${searchingFor}/${option}`)
+                        if(destructuredParams[2] !== option) navigator(`/search/${searchingFor}/${option}`, {state: useProperNavigationState(loc, 'search_res_searchable', false, option)})
                     }}
                     className={searchAblesStyle["each-option"]}
                 >

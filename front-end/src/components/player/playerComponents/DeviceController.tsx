@@ -14,8 +14,9 @@ import SmartphoneDevice from "../icons/smartphone-device.svg";
 import TVDevice from "../icons/tv-device.svg";
 import LaptopDevice from '../icons/laptop-device.svg'
 import switchActiveDevice from "../../../api/player/switchActiveDevice.ts";
-import {Link, useParams} from "react-router-dom";
+import {Link, useLocation, useParams} from "react-router-dom";
 import OpenInFullScreen from '../icons/open-full-screen.svg';
+import useProperNavigationState from "../../utils/useProperNavigationState.ts";
 
 
 export function DeviceController({devices,}: {
@@ -50,7 +51,7 @@ export function DeviceController({devices,}: {
     const dispatch = useAppDispatch();
     const accessToken = useAppSelector(state => state.spotiUserReducer.spotiToken.accessToken)
     const [showDevices, setShowDevices] = useState<boolean>(false)
-
+    const loc = useLocation();
     const popupRef = useRef<HTMLDivElement>(null);
     const devicesIconRef = useRef<HTMLImageElement>(null);
     const params = useParams();
@@ -93,7 +94,10 @@ export function DeviceController({devices,}: {
     const listeningOnDevice = String(devices?.devices.filter(each => each.is_active)[0]?.type)
     return (
         <div className={playerStyle["devices-volume"]}>
-            <Link to={'/queue'}>
+            <Link to={'/queue'}
+                  state={useProperNavigationState(loc, 'queue', false, 'queue')}
+
+            >
                 <button
 
                     style={{

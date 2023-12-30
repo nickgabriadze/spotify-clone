@@ -10,7 +10,7 @@ import PauseStreaming from "../../../api/player/pauseStreaming";
 import NoAlbumPicture from "../components/each-search-component/icons/no-album-pic.svg"
 import getAlbum from "../../../api/search/getAlbum.ts";
 import AlbumCardSkeleton from "../../../skeletons/albumCardSkeleton.tsx";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import artistsStyle from "../components/each-search-component/Artists/artists.module.css";
 import CloseIcon from "../../player/icons/close-icon.svg";
 import useSearchHistory from "../../main/hooks/useSearchHistory.ts";
@@ -55,6 +55,7 @@ export function AlbumCard({eachAlbum, fromSearch, forSearchHistory, searchHistor
     forSearchHistory?: boolean,
     searchHistorySetter?: React.Dispatch<React.SetStateAction<{ type: string, id: string }[]>>
 }) {
+    const loc = useLocation();
     const [hoveringOver, setHoveringOver] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
@@ -67,7 +68,7 @@ export function AlbumCard({eachAlbum, fromSearch, forSearchHistory, searchHistor
              onMouseOut={() => setHoveringOver(false)}>
             <div className={albumsStyle['album-inner-content']}>
                 <Link to={`/album/${eachAlbum?.id}`}
-                      state={useProperNavigationState('album', fromSearch, String(eachAlbum?.id))}>
+                      state={useProperNavigationState(loc, 'album', fromSearch, String(eachAlbum?.id))}>
 
                     <div className={albumsStyle["album-img"]}>
                         {eachAlbum?.images[0]?.url ? <img
@@ -135,7 +136,7 @@ export function AlbumCard({eachAlbum, fromSearch, forSearchHistory, searchHistor
                     </button>
                 )}
                 <Link to={`/album/${eachAlbum?.id}`}
-                      state={useProperNavigationState('album', Boolean(fromSearch), String(eachAlbum?.id))}>
+                      state={useProperNavigationState(loc, 'album', Boolean(fromSearch), String(eachAlbum?.id))}>
                     <div className={albumsStyle["album-details"]}
                     >
                         <h1>

@@ -26,6 +26,7 @@ import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
 import {Link, useLocation, useParams} from "react-router-dom";
 import useIntersectionObserver from "../../../utils/useIntersectionObserver.ts";
 import useSearchHistory from "../../hooks/useSearchHistory.ts";
+import useProperNavigationState from "../../../utils/useProperNavigationState.ts";
 
 export function AlbumPage() {
     const {albumID} = useParams();
@@ -40,7 +41,7 @@ export function AlbumPage() {
     const albumPageRef = useRef<HTMLDivElement>(null)
     const numberOfItems = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown);
     const [_, setAlbumLoading] = useState<boolean>(true);
-    const {state} = useLocation();
+    const loc = useLocation();
 
     useEffect(() => {
         if (!currentlyPlaying.isPlaying && albumData?.album.id) {
@@ -50,8 +51,8 @@ export function AlbumPage() {
 
     useEffect(() => {
 
-        if (state?.fromSearch) {
-            useSearchHistory(state, "SET")
+        if (loc.state?.fromSearch) {
+            useSearchHistory(loc.state, "SET")
         }
 
     }, [])
@@ -182,6 +183,7 @@ export function AlbumPage() {
                     <div className={albumStyle['artist-information']}>
                         <h4 className={albumStyle['artist-name-ry-nos']}><Link
                             to={`/artist/${albumData?.album.artists[0].id}`}
+                            state={useProperNavigationState(loc, 'artist', false, String(albumData?.album.artists[0].id))}
 
                         >{albumData?.album.artists[0].name}</Link> • {albumDate.getFullYear()} • {albumData?.album.total_tracks} song,
                         </h4>

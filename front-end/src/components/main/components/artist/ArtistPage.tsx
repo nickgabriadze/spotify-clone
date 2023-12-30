@@ -107,6 +107,8 @@ export function ArtistPage() {
             useSearchHistory(state, "SET")
         }
 
+        console.log(state)
+
     }, [])
 
 

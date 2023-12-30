@@ -5,6 +5,7 @@ import closeSearch from "../../../navigation/icons/close-search.svg";
 import {useEffect, useState} from "react";
 
 import {useLocation, useNavigate, useParams} from "react-router-dom";
+import useProperNavigationState from "../../../utils/useProperNavigationState.ts";
 
 
 export function SearchBar() {
@@ -15,14 +16,14 @@ export function SearchBar() {
     const navigator = useNavigate();
     // const [err, setErr] = useState<string | unknown>();
     const [focused, setFocused] = useState<boolean>(false);
-    const {pathname} = useLocation();
+    const loc = useLocation();
     useEffect(() => {
         const timeOutToSetQuery = setTimeout(() => {
             if (userSearchingQ !== '') {
                 const destructured = ['all', 'albums', 'artists', 'playlists', 'songs', 'podcastsAndShows'].includes(Object.values(params).toString().split('/')[2]) ? Object.values(params).toString().split('/')[2] : 'all'
-                navigator(`/search/${userSearchingQ === 'undefined' ? '' : userSearchingQ}/${destructured}`)
+                navigator(`/search/${userSearchingQ === 'undefined' ? '' : userSearchingQ}/${destructured}`, {state: useProperNavigationState(loc, 'search_res', false, userSearchingQ + "-" + destructured)})
             }
-            if (userSearchingQ.length === 0 && focused && pathname !== '/search') {
+            if (userSearchingQ.length === 0 && focused && loc.pathname !== '/search') {
                 navigator('/search')
             }
 
@@ -91,7 +92,7 @@ export function SearchBar() {
                                     src={closeSearch}
                                     onClick={() => {
                                         setUserSearchingQ('')
-                                        navigator(`/search`)
+                                        navigator(`/search`, {state: useProperNavigationState(loc, 'search_res', false, 'empty_search')})
                                     }
                                     }
                                     width={24}

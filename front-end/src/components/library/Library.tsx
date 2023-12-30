@@ -19,7 +19,8 @@ import getSavedArtists from "../../api/library/getSavedArtists.ts";
 import PlayResumeStreaming from "../../api/player/playResumeStreaming.ts";
 import Active from "./icons/lib-active.svg";
 import {Artist} from "../../types/artist.ts";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
+import useProperNavigationState from "../utils/useProperNavigationState.ts";
 
 export function Library({divHeight}: { divHeight: number }) {
     const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
@@ -30,6 +31,7 @@ export function Library({divHeight}: { divHeight: number }) {
         albumItems: [],
         playlistItems: []
     })
+    const loc = useLocation();
     const [filteringOptions, setFilteringOptions] = useState<{ type: string, chosen: boolean }[]>([])
     const me = useAppSelector(me => me.spotiUserReducer.userInformation);
     const [likedSongsAvailable, setLikedSongsAvailable] = useState<number>(0)
@@ -175,7 +177,10 @@ export function Library({divHeight}: { divHeight: number }) {
                         return true;
                     }
                 })) &&
-                <div><Link to={"/collection/tracks"}>
+                <div><Link to={"/collection/tracks"}
+                           state={useProperNavigationState(loc, 'liked_songs', false, 'collection')}
+
+                >
                     <div
                         onDoubleClick={async () => {
                             await PlayResumeStreaming(accessToken, String(me?.uri).concat(':collection'), undefined)
@@ -217,7 +222,10 @@ export function Library({divHeight}: { divHeight: number }) {
                     }
                 })) &&
 
-                savedArtists.map((eachArtist, i) => <div key={i}><Link to={`/artist/${eachArtist?.id}`}>
+                savedArtists.map((eachArtist, i) => <div key={i}><Link to={`/artist/${eachArtist?.id}`}
+                                                                       state={useProperNavigationState(loc, 'artist', false, String(eachArtist?.id))}
+
+                >
                     <div
                         className={libraryStyle['listed-playlist-album']}
 
@@ -261,7 +269,10 @@ export function Library({divHeight}: { divHeight: number }) {
                         return true;
                     }
                 })) && libData.albumItems.map(each => each.album).map((eachAlbum, i) =>
-                    <div key={i}><Link to={`/album/${eachAlbum?.id}`}>
+                    <div key={i}><Link to={`/album/${eachAlbum?.id}`}
+                                       state={useProperNavigationState(loc, 'album', false, String(eachAlbum?.id))}
+
+                    >
                         <div
                             className={libraryStyle['listed-playlist-album']}
 
@@ -304,7 +315,9 @@ export function Library({divHeight}: { divHeight: number }) {
                 })) && libData.playlistItems.map((eachPlaylist, i) =>
 
                     <div key={i}>
-                        <Link to={`/playlist/${eachPlaylist?.id}`}>
+                        <Link to={`/playlist/${eachPlaylist?.id}`}
+                              state={useProperNavigationState(loc, 'playlist', false, String(eachPlaylist?.id))}
+                        >
                             <div
                                 className={libraryStyle['listed-playlist-album']}
                                 onDoubleClick={async () => {

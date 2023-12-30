@@ -71,7 +71,6 @@ export function Main({height}: {
     const fromLoginPage = useAppSelector(s => s.spotiUserReducer.fromLoginPage)
 
     const stateIsNull = state === null ? 0 : state.pageNumber;
-        console.log(stateIsNull, window.history, state)
 
 
     return (

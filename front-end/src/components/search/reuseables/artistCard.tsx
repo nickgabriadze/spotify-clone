@@ -10,9 +10,10 @@ import {setUserControlActions} from "../../../store/features/navigationSlice";
 import PauseStreaming from "../../../api/player/pauseStreaming";
 import getArtist from "../../../api/search/getArtist.ts";
 import ArtistCardSkeleton from "../../../skeletons/artistCardSkeleton.tsx";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import CloseIcon from "./../../player/icons/close-icon.svg";
 import useSearchHistory from "../../main/hooks/useSearchHistory.ts";
+import useProperNavigationState from "../../utils/useProperNavigationState.ts";
 
 
 export function ArtistCardApi({artistID, forSearchHistory, searchHistorySetter}: {
@@ -53,6 +54,7 @@ export function ArtistCard({eachArtist, fromSearch, forSearchHistory, searchHist
     forSearchHistory?: boolean,
     searchHistorySetter?: React.Dispatch<React.SetStateAction<{ type: string, id: string }[]>>
 }) {
+    const loc = useLocation();
     const [hoveringOver, setHoveringOver] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const currentlyPlaying = useAppSelector(
@@ -71,7 +73,9 @@ export function ArtistCard({eachArtist, fromSearch, forSearchHistory, searchHist
             onMouseOut={() => setHoveringOver(false)}
         >
             <div className={artistsStyle['artist-img-wrapper']}>
-                <Link to={`/artist/${eachArtist?.id}`} state={fromSearch ? {type: 'artist', id: eachArtist?.id} : null}>
+                <Link to={`/artist/${eachArtist?.id}`}
+                      state={useProperNavigationState(loc, 'artist', Boolean(fromSearch), String(eachArtist?.id))}>
+
                     <div className={artistsStyle["artist-img"]}
 
                     >
@@ -144,7 +148,8 @@ export function ArtistCard({eachArtist, fromSearch, forSearchHistory, searchHist
             </div>
 
 
-            <Link to={`/artist/${eachArtist?.id}`} state={fromSearch ? {type: 'artist', id: eachArtist?.id} : null}>
+            <Link to={`/artist/${eachArtist?.id}`}
+                  state={useProperNavigationState(loc, 'artist', Boolean(fromSearch), String(eachArtist?.id))}>
                 <div className={artistsStyle["artist-info"]}
                 >
                     <h1>
