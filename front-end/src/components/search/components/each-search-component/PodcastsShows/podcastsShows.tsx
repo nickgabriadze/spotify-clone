@@ -20,6 +20,7 @@ export function PodcastsShows({podcastShowName}: {
         episodes: Episodes;
     }>();
     const [showsEpisodesLoading, setShowsEpisodesLoading] = useState<boolean>(true)
+    const numberOfItems = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown);
 
     useEffect(() => {
         const fetchEpisodes = async () => {
@@ -30,8 +31,8 @@ export function PodcastsShows({podcastShowName}: {
                 const data = req.data;
 
                 setShowsEpisodes({
-                        shows: data.shows,
-                        episodes: data.episodes,
+                    shows: data.shows,
+                    episodes: data.episodes,
                 });
             } catch (err) {
                 console.log(err);
@@ -44,7 +45,6 @@ export function PodcastsShows({podcastShowName}: {
     }, [podcastShowName, accessToken]);
 
 
-
     return (
         <section style={{
             overflowY: 'scroll',
@@ -53,11 +53,13 @@ export function PodcastsShows({podcastShowName}: {
         }}>
             <div className={podcastsShowsStyle['podcasts-wrapper']}>
                 <div style={{fontSize: '1.3rem', color: 'white', paddingLeft: '10px'}}>Podcasts & Shows</div>
-                <div className={podcastsShowsStyle['podcasts-list']}>
+                <div className={podcastsShowsStyle['podcasts-list']}
+                     style={{'gridTemplateColumns': `repeat(${numberOfItems}, minmax(0, 1fr))`}}
+                >
                     {showsEpisodesLoading ?
-                        Array.from({length: 5}).map((_, i) => <PlaylistCardSkeleton
+                        Array.from({length: numberOfItems}).map((_, i) => <PlaylistCardSkeleton
                             key={i}/>) :
-                        showsEpisodes?.shows.items.slice(0, 5).map((eachShow, i) => {
+                        showsEpisodes?.shows.items.slice(0, numberOfItems).map((eachShow, i) => {
                             return <ShowPodcastCard eachShowPodcast={eachShow} key={i}/>
                         })
                     }
@@ -69,10 +71,10 @@ export function PodcastsShows({podcastShowName}: {
 
                     {
                         showsEpisodesLoading ?
-                            Array.from({length: 30}).map((_, i) => <EpisodeCardSkeleton key={i} />) :
-                        showsEpisodes?.episodes.items.map((eachEpisode, i) => (
-                        <EpisodeCard eachEpisode={eachEpisode} key={i}/>
-                    ))}
+                            Array.from({length: 30}).map((_, i) => <EpisodeCardSkeleton key={i}/>) :
+                            showsEpisodes?.episodes.items.map((eachEpisode, i) => (
+                                <EpisodeCard eachEpisode={eachEpisode} key={i}/>
+                            ))}
                 </div>
             </div>
         </section>
