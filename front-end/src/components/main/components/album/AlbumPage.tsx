@@ -8,7 +8,7 @@ import getAlbumTracks from "../../../../api/main/album/getAlbumTracks.ts";
 import millisecondsToHhMmSs from "../../../player/msConverter.ts";
 import PlayResumeStreaming from "../../../../api/player/playResumeStreaming.ts";
 import {
-    addLibraryAction, setNavigationError,
+    addLibraryAction, setNavigationError, setNavigationHistory,
     setUserControlActions
 } from "../../../../store/features/navigationSlice.ts";
 import PauseStreaming from "../../../../api/player/pauseStreaming.ts";
@@ -183,6 +183,9 @@ export function AlbumPage() {
                     <div className={albumStyle['artist-information']}>
                         <h4 className={albumStyle['artist-name-ry-nos']}><Link
                             to={`/artist/${albumData?.album.artists[0].id}`}
+                            onClick={() => {
+                                dispatch(setNavigationHistory(useProperNavigationState(loc, 'artist', false, String(albumData?.album.artists[0].id)).previousPaths))
+                            }}
                             state={useProperNavigationState(loc, 'artist', false, String(albumData?.album.artists[0].id))}
 
                         >{albumData?.album.artists[0].name}</Link> • {albumDate.getFullYear()} • {albumData?.album.total_tracks} song,

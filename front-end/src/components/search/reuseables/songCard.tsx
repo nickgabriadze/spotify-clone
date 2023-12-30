@@ -5,7 +5,7 @@ import Equaliser from "../../player/icons/device-picker-equaliser.webp"
 import {useAppDispatch, useAppSelector} from "../../../store/hooks";
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
 import {
-    addLibraryAction,
+    addLibraryAction, setNavigationHistory,
     setUserControlActions
 } from "../../../store/features/navigationSlice";
 import Play from "../components/each-search-component/Songs/icons/play.svg"
@@ -47,7 +47,6 @@ export const SongCard = forwardRef(function SongCard(props: {
         )
 
     }, [savedSongs.length, String(eachTrack?.id)]);
-
 
     useEffect(() => {
         if (forPlaylist && playlistTrackAddedDate) {
@@ -172,7 +171,9 @@ export const SongCard = forwardRef(function SongCard(props: {
                     >
                         {!forAlbum ? <Link to={`/album/${eachTrack?.album?.id}`}
                                            state={useProperNavigationState(loc, 'album', false, String(eachTrack?.album?.id))}
-
+                                            onClick={() => {
+                                                dispatch(setNavigationHistory(useProperNavigationState(loc, 'album', false, String(eachTrack?.album?.id)).previousPaths))
+                                            }}
                                            className={songsStyle['track-name']}
 
                                            style={
@@ -202,6 +203,9 @@ export const SongCard = forwardRef(function SongCard(props: {
                                      style={{width: `${forAlbum ? '55vw' : '25vw'}`}}
                                 >{eachTrack?.artists.map((artist, i) =>
                                     <Link to={`/artist/${artist?.id}`} key={i}
+                                          onClick={() => {
+                                                dispatch(setNavigationHistory(useProperNavigationState(loc, 'artist', false, String(artist?.id)).previousPaths))
+                                            }}
                                           state={useProperNavigationState(loc, 'artist', false, String(artist?.id))}
 
                                     >{i === eachTrack.artists.slice(0, 4).length - 1 ? artist.name : `${artist.name}, `}</Link>)}</div>

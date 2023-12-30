@@ -6,7 +6,7 @@ import {useAppDispatch, useAppSelector} from "../../../store/hooks";
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
 import Play from "../components/each-search-component/Playlists/icons/play.svg";
 import Pause from "../components/each-search-component/Playlists/icons/pause.svg";
-import {setUserControlActions} from "../../../store/features/navigationSlice";
+import {setNavigationHistory, setUserControlActions} from "../../../store/features/navigationSlice";
 import PauseStreaming from "../../../api/player/pauseStreaming";
 import getArtist from "../../../api/search/getArtist.ts";
 import ArtistCardSkeleton from "../../../skeletons/artistCardSkeleton.tsx";
@@ -65,6 +65,7 @@ export function ArtistCard({eachArtist, fromSearch, forSearchHistory, searchHist
         (state) => state.spotiUserReducer.spotiToken.accessToken
     );
 
+    const navigationState = useProperNavigationState(loc, 'artist', Boolean(fromSearch), String(eachArtist?.id))
     return (
         <div
             className={artistsStyle["each-artist"]}
@@ -74,7 +75,10 @@ export function ArtistCard({eachArtist, fromSearch, forSearchHistory, searchHist
         >
             <div className={artistsStyle['artist-img-wrapper']}>
                 <Link to={`/artist/${eachArtist?.id}`}
-                      state={useProperNavigationState(loc, 'artist', Boolean(fromSearch), String(eachArtist?.id))}>
+                      onClick={() => {
+                          dispatch(setNavigationHistory(navigationState.previousPaths))
+                      }}
+                      state={navigationState}>
 
                     <div className={artistsStyle["artist-img"]}
 
@@ -149,7 +153,10 @@ export function ArtistCard({eachArtist, fromSearch, forSearchHistory, searchHist
 
 
             <Link to={`/artist/${eachArtist?.id}`}
-                  state={useProperNavigationState(loc, 'artist', Boolean(fromSearch), String(eachArtist?.id))}>
+                  onClick={() => {
+                      dispatch(setNavigationHistory(navigationState.previousPaths))
+                  }}
+                  state={navigationState}>
                 <div className={artistsStyle["artist-info"]}
                 >
                     <h1>

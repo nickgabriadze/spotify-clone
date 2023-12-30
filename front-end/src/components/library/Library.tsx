@@ -21,6 +21,7 @@ import Active from "./icons/lib-active.svg";
 import {Artist} from "../../types/artist.ts";
 import {Link, useLocation} from "react-router-dom";
 import useProperNavigationState from "../utils/useProperNavigationState.ts";
+import {setNavigationHistory} from "../../store/features/navigationSlice.ts";
 
 export function Library({divHeight}: { divHeight: number }) {
     const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
@@ -178,6 +179,9 @@ export function Library({divHeight}: { divHeight: number }) {
                     }
                 })) &&
                 <div><Link to={"/collection/tracks"}
+                           onClick={() => {
+                               dispatch(setNavigationHistory(useProperNavigationState(loc, 'liked_songs', false, 'collection').previousPaths))
+                           }}
                            state={useProperNavigationState(loc, 'liked_songs', false, 'collection')}
 
                 >
@@ -223,6 +227,9 @@ export function Library({divHeight}: { divHeight: number }) {
                 })) &&
 
                 savedArtists.map((eachArtist, i) => <div key={i}><Link to={`/artist/${eachArtist?.id}`}
+                                                                       onClick={() => {
+                                                                           dispatch(setNavigationHistory(useProperNavigationState(loc, 'artist', false, String(eachArtist?.id)).previousPaths))
+                                                                       }}
                                                                        state={useProperNavigationState(loc, 'artist', false, String(eachArtist?.id))}
 
                 >
@@ -270,6 +277,9 @@ export function Library({divHeight}: { divHeight: number }) {
                     }
                 })) && libData.albumItems.map(each => each.album).map((eachAlbum, i) =>
                     <div key={i}><Link to={`/album/${eachAlbum?.id}`}
+                                       onClick={() => {
+                                           dispatch(setNavigationHistory(useProperNavigationState(loc, 'album', false, String(eachAlbum?.id)).previousPaths))
+                                       }}
                                        state={useProperNavigationState(loc, 'album', false, String(eachAlbum?.id))}
 
                     >
@@ -316,6 +326,9 @@ export function Library({divHeight}: { divHeight: number }) {
 
                     <div key={i}>
                         <Link to={`/playlist/${eachPlaylist?.id}`}
+                              onClick={() => {
+                                  dispatch(setNavigationHistory(useProperNavigationState(loc, 'playlist', false, String(eachPlaylist?.id)).previousPaths))
+                              }}
                               state={useProperNavigationState(loc, 'playlist', false, String(eachPlaylist?.id))}
                         >
                             <div

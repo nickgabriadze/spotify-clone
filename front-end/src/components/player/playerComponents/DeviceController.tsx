@@ -8,7 +8,7 @@ import VolumeUp from "../icons/volume.svg";
 import VolumeOff from "../icons/volume-off.svg";
 import setPlaybackVolume from "../../../api/player/setPlaybackVolume";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks";
-import {setUserControlActions} from "../../../store/features/navigationSlice";
+import {setNavigationHistory, setUserControlActions} from "../../../store/features/navigationSlice";
 import DeviceEqualiser from "../icons/device-picker-equaliser.webp"
 import SmartphoneDevice from "../icons/smartphone-device.svg";
 import TVDevice from "../icons/tv-device.svg";
@@ -95,6 +95,9 @@ export function DeviceController({devices,}: {
     return (
         <div className={playerStyle["devices-volume"]}>
             <Link to={'/queue'}
+                  onClick={() => {
+                      dispatch(setNavigationHistory(useProperNavigationState(loc, 'queue', false, 'queue').previousPaths))
+                  }}
                   state={useProperNavigationState(loc, 'queue', false, 'queue')}
 
             >

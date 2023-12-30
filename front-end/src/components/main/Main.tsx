@@ -13,7 +13,7 @@ import Searchables from "../search/components/searchables/searchables.tsx";
 import {setLoggedIn, setUserInformation} from "../../store/features/spotiUserSlice.ts";
 import AlbumPage from "./components/album/AlbumPage.tsx";
 import {Route, Routes, useNavigate, useParams, useLocation} from 'react-router-dom'
-import {setUserControlActions} from "../../store/features/navigationSlice.ts";
+import {setNavigationHistory, setUserControlActions} from "../../store/features/navigationSlice.ts";
 import ArtistPage from "./components/artist/ArtistPage.tsx";
 import PlaylistPage from "./components/playlist/PlaylistPage.tsx";
 import PlayResumeStreaming from "../../api/player/playResumeStreaming.ts";
@@ -67,10 +67,16 @@ export function Main({height}: {
     const whatsInView = useAppSelector(s => s.spotiUserReducer.whatsInViewForPlay);
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong)
     const [displayLogOut, setDisplayLogout] = useState<boolean>(false)
-    const fromLoginPage = useAppSelector(s => s.spotiUserReducer.fromLoginPage)
 
-    const stateIsNull = state === null ? 0 : state.pageNumber;
+    useEffect(() => {
+        const previousPaths = state?.previousPaths || []
+        dispatch(setNavigationHistory(previousPaths))
+    }, []);
 
+
+    const previousPaths = useAppSelector(s => s.navigationReducer.navigationHistory)
+    const pageNumber = state?.pageNumber === undefined ? 0 : state.pageNumber
+        console.log(previousPaths, pageNumber)
 
     return (
         <main
@@ -93,14 +99,14 @@ export function Main({height}: {
                         <button
 
                             onClick={() => {
-                                if (state !== null) {
+                                if (pageNumber !== 0) {
                                     navigatePages(-1)
                                 }
 
                             }}
                         >
                             <img
-                                style={{filter: `${state === null ? `brightness(50%)` : `brightness(100%)`}`}}
+                                style={{filter: `${pageNumber === 0 ? `brightness(50%)` : `brightness(100%)`}`}}
                                 alt={'Left icon'} src={Left} height={32}></img>
                         </button>
                         <button style={{marginLeft: "-3px"}}
@@ -113,7 +119,7 @@ export function Main({height}: {
 
 
                                 <img
-                                    style={{filter: `${stateIsNull + 2 + fromLoginPage === window.history.length ? `brightness(50%)` : `brightness(100%)`}`}}
+                                    style={{filter: `${previousPaths.length === pageNumber ? `brightness(50%)` : `brightness(100%)`}`}}
                                     alt={'Right icon'} src={Right} height={32}></img>
 
                             </div>
@@ -225,7 +231,7 @@ export function Main({height}: {
                     <Route path={'/recent-searches'} element={<RecentSearches/>}/>
                     <Route path={'/genre/:genreID'} element={<Category/>}/>
                     <Route path={'/artist'} element={<ArtistLayout/>}>
-                        <Route path={':artistID'} element={<ArtistPage/> } />
+                        <Route path={':artistID'} element={<ArtistPage/>}/>
                         <Route path={':artistID/discography'} element={<Discography/>}></Route>
                         <Route path={':artistID/discography/:type'} element={<Discography/>}></Route>
                     </Route>

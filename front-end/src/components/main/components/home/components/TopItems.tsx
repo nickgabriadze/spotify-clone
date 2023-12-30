@@ -6,7 +6,7 @@ import {Artist} from "../../../../../types/artist.ts";
 import {Album} from "../../../../../types/album.ts";
 import {Track} from "../../../../../types/track.ts";
 import PlayResumeStreaming from "../../../../../api/player/playResumeStreaming.ts";
-import {setUserControlActions} from "../../../../../store/features/navigationSlice.ts";
+import {setNavigationHistory, setUserControlActions} from "../../../../../store/features/navigationSlice.ts";
 import PauseStreaming from "../../../../../api/player/pauseStreaming.ts";
 import Pause from "../../../../search/components/each-search-component/Playlists/icons/pause.svg";
 import Play from "../../../../search/components/each-search-component/Playlists/icons/play.svg";
@@ -70,6 +70,9 @@ export function TopItems() {
 
 
                 <Link to={`/${eachTopItem.type}/${eachTopItem.id}`}
+                      onClick={() => {
+                          dispatch(setNavigationHistory(useProperNavigationState(loc, eachTopItem.type, false, eachTopItem?.id).previousPaths))
+                      }}
                       state={useProperNavigationState(loc, eachTopItem.type, false, eachTopItem.id)}
                 >
                     <div className={homepageStyle['album-picture']}
@@ -81,6 +84,9 @@ export function TopItems() {
 
                 <div className={homepageStyle['detail-play']}>
                     <Link to={`/${eachTopItem.type}/${eachTopItem.id}`}
+                          onClick={() => {
+                              dispatch(setNavigationHistory(useProperNavigationState(loc, eachTopItem.type, false, eachTopItem?.id).previousPaths))
+                          }}
                           state={useProperNavigationState(loc, eachTopItem.type, false, eachTopItem.id)}
                     >
                         <div className={homepageStyle['top-item-title']}

@@ -4,7 +4,7 @@ import albumsStyle from "../components/each-search-component/Albums/albums.modul
 import {useAppDispatch, useAppSelector} from "../../../store/hooks";
 import Play from "../components/each-search-component/Playlists/icons/play.svg";
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
-import {setUserControlActions} from "../../../store/features/navigationSlice";
+import {setNavigationHistory, setUserControlActions} from "../../../store/features/navigationSlice";
 import Pause from "../components/each-search-component/Playlists/icons/pause.svg";
 import PauseStreaming from "../../../api/player/pauseStreaming";
 import NoAlbumPicture from "../components/each-search-component/icons/no-album-pic.svg"
@@ -60,7 +60,7 @@ export function AlbumCard({eachAlbum, fromSearch, forSearchHistory, searchHistor
     const dispatch = useAppDispatch();
     const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
     const currentlyPlaying = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong);
-
+    const navigationState = useProperNavigationState(loc, 'album', Boolean(fromSearch), String(eachAlbum?.id))
     return (
         <div className={albumsStyle["album-card"]}
 
@@ -68,7 +68,10 @@ export function AlbumCard({eachAlbum, fromSearch, forSearchHistory, searchHistor
              onMouseOut={() => setHoveringOver(false)}>
             <div className={albumsStyle['album-inner-content']}>
                 <Link to={`/album/${eachAlbum?.id}`}
-                      state={useProperNavigationState(loc, 'album', fromSearch, String(eachAlbum?.id))}>
+                      onClick={() => {
+                          dispatch(setNavigationHistory(navigationState.previousPaths))
+                      }}
+                      state={navigationState}>
 
                     <div className={albumsStyle["album-img"]}>
                         {eachAlbum?.images[0]?.url ? <img
@@ -136,7 +139,10 @@ export function AlbumCard({eachAlbum, fromSearch, forSearchHistory, searchHistor
                     </button>
                 )}
                 <Link to={`/album/${eachAlbum?.id}`}
-                      state={useProperNavigationState(loc, 'album', Boolean(fromSearch), String(eachAlbum?.id))}>
+                       onClick={() => {
+                          dispatch(setNavigationHistory(navigationState.previousPaths))
+                      }}
+                      state={navigationState}>
                     <div className={albumsStyle["album-details"]}
                     >
                         <h1>
