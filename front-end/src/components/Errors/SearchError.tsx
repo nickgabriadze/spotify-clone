@@ -18,7 +18,8 @@ export function SearchError() {
     }}>
         <h1>No results found for</h1>
         <h5 style={{
-            wordBreak: 'break-all',
+            wordBreak: 'break-word',
+
         }}>{query}</h5>
         <h1
             style={{
