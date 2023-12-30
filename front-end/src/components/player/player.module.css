@@ -511,6 +511,11 @@ button {
     }
 }
 
+@media only screen and (max-width: 800px){
+    .full-screen-icon{
+        display: none;
+    }
+}
 
 @media only screen and (max-width: 600px) {
     .volume-controller {
@@ -518,6 +523,7 @@ button {
             display: none;
         }
     }
+
 }
 
 @media only screen and (max-width: 520px) {

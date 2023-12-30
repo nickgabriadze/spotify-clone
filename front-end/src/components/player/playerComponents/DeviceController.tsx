@@ -209,6 +209,7 @@ export function DeviceController({devices,}: {
                     />
                 </div>
                 <img alt={"Open In FullScreen icon"}
+                     className={playerStyle['full-screen-icon']}
                      title={'Open in Full Screen'}
                      onClick={() => document.documentElement.requestFullscreen()} width={18}
                      src={OpenInFullScreen}></img>
