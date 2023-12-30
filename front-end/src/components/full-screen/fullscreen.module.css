@@ -2,6 +2,9 @@
     width: 100%;
     height: 100%;
 
+    position: absolute;
+    z-index: 1000;
+    background: black;
 }
 
 .spotify-logo {
@@ -26,7 +29,7 @@
     & .album-img {
         & img {
             bottom: 30%;
-            animation: albumImageTransformationAnimation 1s ease-in-out;
+            animation: albumImageTransformationAnimation 1s forwards ease-in-out;
         }
     }
 
@@ -35,25 +38,27 @@
         flex-direction: column;
         gap: 10px;
 
+
         & h1 {
 
-            white-space: nowrap;
             font-size: 2rem;
-            width: 80%;
+            width: 100%;
+
+            word-wrap: break-word;
+            word-break: break-word;
 
 
         }
 
         & h4 {
             color: #b3b3b3;
+
         }
     }
 }
 
 @keyframes albumInfoTransformationAnimation {
     from {
-
-
         left: 30%;
     }
 
@@ -63,14 +68,18 @@
 }
 
 @keyframes albumImageTransformationAnimation {
+
+
     from {
-       width: 300px;
-        height: 300px;
+        width: 120px;
+        height: 120px;
 
     }
 
     to {
-        width: 120px;
-        height: 120px;
+        width: 300px;
+        height: 300px;
+        border-radius: 10px;
+
     }
 }

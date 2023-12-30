@@ -13,7 +13,7 @@ export function FullScreen({currentlyPlayingSong}: { currentlyPlayingSong: Curre
     const [currentlyPlaying, setCurrentlyPlaying] = useState<CurrentlyPlaying | null>(currentlyPlayingSong);
     const [, setPlaybackStateInformation] = useState<PlaybackState>();
     const access = useAppSelector(s => s.spotiUserReducer.spotiToken)
-
+    const fullScreen = useAppSelector(s => s.spotiUserReducer.windowFullScreen);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -62,12 +62,12 @@ export function FullScreen({currentlyPlayingSong}: { currentlyPlayingSong: Curre
         return () => document.removeEventListener('keydown', handleESC)
 
     }, []);
+    if (currentlyPlaying === null) dispatch(setWindowFullScreen(false));
 
-    if (currentlyPlayingSong === null) {
-        dispatch(setWindowFullScreen(false))
-    }
 
-    return <section className={fullScreenStyling['full-screen-wrapper']}>
+    return <section className={fullScreenStyling['full-screen-wrapper']}
+    style={{display: fullScreen ? 'initial' : 'none'}}
+    >
 
         <img draggable={false} className={fullScreenStyling['spotify-logo']} alt={'Spotify logo'} src={SpotifyLOGO}
              width={80}
@@ -81,6 +81,7 @@ export function FullScreen({currentlyPlayingSong}: { currentlyPlayingSong: Curre
             <div className={fullScreenStyling['song-details']}><h1>{currentlyPlaying?.item.name}</h1>
                 <h4>{currentlyPlaying?.item.artists.map(each => each.name).join(', ')}</h4></div>
         </div>
+
     </section>
 
 }

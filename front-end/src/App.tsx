@@ -41,7 +41,6 @@ export function App() {
         }
     }, [userControlActions.length]);
 
-
     const [windowInnerHeight, setWindowInnerHeight] = useState<number>(window.innerHeight - 120);
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentSongData);
     useEffect(() => {
@@ -49,6 +48,7 @@ export function App() {
         const updateWindowDimensions = () => {
             const newHeight = window.innerHeight;
             setWindowInnerHeight(newHeight - 120);
+
 
             if (window.innerHeight === screen.height) {
                 dispatch(setWindowFullScreen(true))
@@ -65,35 +65,35 @@ export function App() {
 
 
 
-    const windowFullScreen = useAppSelector(s => s.spotiUserReducer.windowFullScreen);
-
 
     if (loggedIn) {
 
-        if (windowFullScreen) {
-            return <FullScreen currentlyPlayingSong={currentlyPlaying}/>
-        } else {
+        {
 
             return (
-                <div className={appStyle["application-wrapper"]}
-                >
-                    <div className={appStyle['nav-lib-main-wrapper']}
-
+                <>
+                    <FullScreen currentlyPlayingSong={currentlyPlaying}/>
+                    <div className={appStyle["application-wrapper"]}
                     >
-                        <div className={appStyle['nav-lib-wrapper']}
-                             style={{height: windowInnerHeight}}
+
+                        <div className={appStyle['nav-lib-main-wrapper']}
 
                         >
-                            <Navigation/>
-                            <Library divHeight={windowInnerHeight - 193}/>
+                            <div className={appStyle['nav-lib-wrapper']}
+                                 style={{height: windowInnerHeight}}
+
+                            >
+                                <Navigation/>
+                                <Library divHeight={windowInnerHeight - 193}/>
+                            </div>
+                            <div className={appStyle['main']}
+                            ><Main height={windowInnerHeight}/></div>
                         </div>
-                        <div className={appStyle['main']}
-                        ><Main height={windowInnerHeight}/></div>
+
+                        <Player/>
+
                     </div>
-
-                    <Player/>
-
-                </div>
+                </>
             );
         }
 
