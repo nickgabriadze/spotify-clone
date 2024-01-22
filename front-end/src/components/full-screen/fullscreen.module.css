@@ -8,11 +8,18 @@
 }
 
 .spotify-logo {
-    position: absolute;
-    left: 5%;
-    opacity: 50%;
-    top: 5%;
 
+    opacity: 50%;
+}
+
+.header-logo-queue {
+    position: relative;
+    display: flex;
+    padding: 20px 50px 50px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .song-info-wrapper {

@@ -7,6 +7,7 @@ import {useAppDispatch, useAppSelector} from "../../store/hooks.ts";
 import SpotifyLOGO from './icons/spotify-icon-black.svg';
 import fullScreenStyling from './fullscreen.module.css';
 import {setWindowFullScreen} from "../../store/features/spotiUserSlice.ts";
+import UpNextInQueue from "./components/UpNext.tsx";
 
 export function FullScreen({currentlyPlayingSong}: { currentlyPlayingSong: CurrentlyPlaying | null }) {
     const [, setNoDataAvailable] = useState(true);
@@ -71,10 +72,13 @@ export function FullScreen({currentlyPlayingSong}: { currentlyPlayingSong: Curre
                     style={{display: fullScreen ? 'initial' : 'none'}}
     >
 
-        <img draggable={false} className={fullScreenStyling['spotify-logo']} alt={'Spotify logo'} src={SpotifyLOGO}
-             width={80}
+        <div className={fullScreenStyling['header-logo-queue']}>
+            <img draggable={false} className={fullScreenStyling['spotify-logo']} alt={'Spotify logo'} src={SpotifyLOGO}
+                 width={100}
 
-             height={80}></img>
+                 height={100}></img>
+            <UpNextInQueue/>
+        </div>
         <div className={fullScreenStyling['song-info-wrapper']}>
             <div className={fullScreenStyling['album-img']}><img src={currentlyPlaying?.item.album.images[0].url}
                                                                  width={120} height={120}
