@@ -8,7 +8,7 @@ import {Devices} from "../../types/device";
 import SongDetails from "./playerComponents/SongsDetails";
 import DeviceController from "./playerComponents/DeviceController";
 import StreamController from "./playerComponents/StreamController";
-import {setCurrentlyPlayingSong, setUserControlActions} from "../../store/features/navigationSlice";
+import {setCurrentlyPlayingSong, setCurrentSongData, setUserControlActions} from "../../store/features/navigationSlice";
 import GraphEQ from "./icons/graphicEq.svg"
 import getPlaybackState from "../../api/player/getPlaybackState.ts";
 import {PlaybackState} from "../../types/playbackState.ts";
@@ -59,7 +59,7 @@ export function Player() {
                     }
                 } else {
                     setCurrentlyPlaying(data);
-
+                    dispatch(setCurrentSongData(data))
                     setNoDataAvailable(false);
                     setPlaybackStateInformation(playbackStateData)
                     window.localStorage.setItem('previousSong', JSON.stringify({
@@ -116,6 +116,7 @@ export function Player() {
                     setNoDataAvailable(true);
                 } else {
                     setCurrentlyPlaying(data);
+                    dispatch(setCurrentSongData(data))
                     setNoDataAvailable(false);
                     setPlaybackStateInformation(playbackStateData)
 
@@ -136,9 +137,9 @@ export function Player() {
         };
 
 
-        const fetcher = setInterval(() =>{
-            if(localStorage.getItem('access_token')){
-                 fetchCurrent()
+        const fetcher = setInterval(() => {
+            if (localStorage.getItem('access_token')) {
+                fetchCurrent()
             }
         }, 3000);
 
@@ -162,10 +163,10 @@ export function Player() {
                     <SongDetails currentlyPlaying={currentlyPlaying}/>
                     <div className={playerStyle['streaming-devices']}><StreamController accessToken={access.accessToken}
 
-                                      disallows={playbackStateInformation?.actions?.disallows}
-                                      playbackShuffle={playbackStateInformation?.shuffle_state}
-                                      playbackRepeat={playbackStateInformation?.repeat_state}
-                                      currentlyPlaying={currentlyPlaying}/>
+                                                                                        disallows={playbackStateInformation?.actions?.disallows}
+                                                                                        playbackShuffle={playbackStateInformation?.shuffle_state}
+                                                                                        playbackRepeat={playbackStateInformation?.repeat_state}
+                                                                                        currentlyPlaying={currentlyPlaying}/>
                         <DeviceController devices={noDataAvailable ? undefined : devices}/></div>
                 </div>
                 <div className={playerStyle['which-device']}>

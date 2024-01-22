@@ -1,29 +1,40 @@
 import {useEffect, useState} from "react";
-import {setToken, updateCredentials} from "./store/features/spotiUserSlice";
+import {setToken, setWindowFullScreen} from "./store/features/spotiUserSlice";
 import {useAppDispatch, useAppSelector} from "./store/hooks";
 import appStyle from "./app.module.css";
 import Navigation from "./components/navigation/navigation";
 import Player from "./components/player/player";
 import Main from "./components/main/Main.tsx";
 import Library from "./components/library/Library.tsx";
-import validateToken from "./components/utils/validateToken.ts";
-import {useNavigate} from "react-router-dom";
+import FullScreen from "./components/full-screen/FullScreen.tsx";
+import {useExistingToken} from "./useExistingToken.ts";
+import NavigationError from "./components/Errors/NavigationError.tsx";
 
 
 export function App() {
     const loggedIn = useAppSelector((state) => state.spotiUserReducer.loggedIn);
     const userControlActions = useAppSelector(s => s.navigationReducer.userControlActions);
-
+    const fullScreen = useAppSelector(s => s.spotiUserReducer.windowFullScreen);
+    const navigationError = useAppSelector(s => s.navigationReducer.navigationError);
+    useExistingToken()
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
-    window.addEventListener('localStorageChange', () => {
 
-        dispatch(
-            setToken({
-                accessToken: String(localStorage.getItem("access_token"))
-            })
-        );
-    })
+    useEffect(() => {
+        const handleLocalStorageChange = () => {
+
+
+            dispatch(
+                setToken({
+                    accessToken: String(localStorage.getItem("access_token"))
+                })
+            );
+        }
+
+
+        window.addEventListener('localStorageChange', handleLocalStorageChange);
+
+        return () => window.removeEventListener('localStorageChange', handleLocalStorageChange);
+    }, []);
 
 
     useEffect(() => {
@@ -33,15 +44,20 @@ export function App() {
         }
     }, [userControlActions.length]);
 
-
     const [windowInnerHeight, setWindowInnerHeight] = useState<number>(window.innerHeight - 120);
-
+    const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentSongData);
     useEffect(() => {
 
         const updateWindowDimensions = () => {
             const newHeight = window.innerHeight;
             setWindowInnerHeight(newHeight - 120);
 
+
+            if (window.innerHeight === screen.height) {
+                dispatch(setWindowFullScreen(true))
+            } else {
+                dispatch(setWindowFullScreen(false))
+            }
         };
 
         window.addEventListener("resize", updateWindowDimensions);
@@ -51,56 +67,42 @@ export function App() {
     }, []);
 
 
-    useEffect(() => {
-        if (localStorage.getItem('access_token')
-            &&
-            localStorage.getItem('refresh_token')
-        ) {
-            const updateAccessToken = async () => {
 
-                const newToken = await validateToken();
-
-                dispatch(updateCredentials({
-                        access_token: newToken,
-                        refresh_token: String(localStorage.getItem('refresh_token')),
-                        issued_at: Number(localStorage.getItem('issued_at'))
-                    }
-                ))
-            }
-
-            updateAccessToken();
-
-        }else{
-             navigate("/welcome")
-        }
-    }, []);
 
     if (loggedIn) {
 
+        {
 
-        return (
-            <div className={appStyle["application-wrapper"]}
-            >
-                <div className={appStyle['nav-lib-main-wrapper']}
-
-                >
-                    <div className={appStyle['nav-lib-wrapper']}
-                         style={{height: windowInnerHeight}}
-
+            return (
+                <>
+                    { fullScreen && <FullScreen currentlyPlayingSong={currentlyPlaying}/>}
+                    { navigationError && <NavigationError/>}
+                    <div className={appStyle["application-wrapper"]}
+                    style={{display: navigationError || fullScreen ? 'none' : 'block'}}
                     >
-                        <Navigation/>
-                        <Library divHeight={windowInnerHeight - 193}/>
+
+                        <div className={appStyle['nav-lib-main-wrapper']}
+
+                        >
+                            <div className={appStyle['nav-lib-wrapper']}
+                                 style={{height: windowInnerHeight}}
+
+                            >
+                                <Navigation/>
+                                <Library divHeight={windowInnerHeight - 193}/>
+                            </div>
+                            <div className={appStyle['main']}
+                            ><Main height={windowInnerHeight}/></div>
+                        </div>
+
+                        <Player/>
+
                     </div>
-                    <div className={appStyle['main']}
-                    ><Main height={windowInnerHeight}/></div>
-                </div>
+                </>
+            );
+        }
 
-                <Player/>
-
-            </div>
-        );
     }
-
 
 }
 

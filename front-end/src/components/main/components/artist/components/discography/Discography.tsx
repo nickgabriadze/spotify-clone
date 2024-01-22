@@ -2,7 +2,6 @@ import discographyStyle from "./discography.module.css"
 import GridViewIcon from "../../icons/grid-view.svg";
 import ListViewIcon from "../../icons/list-view.svg"
 import {Link, useParams} from "react-router-dom";
-import Error from "../../../../../Errors/Error.tsx";
 import {useEffect, useRef, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../../../../store/hooks.ts";
 import getArtistsAlbums from "../../../../../../api/main/artist/getArtistsAlbums.ts";
@@ -14,6 +13,7 @@ import AlbumCard from "../../../../../search/reuseables/albumCard.tsx";
 import DropDownIcon from './../../icons/drop-down-arrow.svg';
 import DropUpIcon from './../../icons/drop-up-arrow.svg';
 import {setWhatsInView} from "../../../../../../store/features/spotiUserSlice.ts";
+import {setNavigationError} from "../../../../../../store/features/navigationSlice.ts";
 
 export function Discography() {
     const [discoData, setDiscoData] = useState<Album[]>([]);
@@ -86,7 +86,7 @@ export function Discography() {
     }, []);
 
     if (!POSSIBLE_TYPES.some(t => t === urlParam.type)) {
-        return <Error/>
+        dispatch(setNavigationError(true))
     }
 
     if (loading) {

@@ -18,7 +18,6 @@ const routing = createBrowserRouter(
 )
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-
         <Provider store={SpotiStore}>
             <RouterProvider router={routing}></RouterProvider>
         </Provider>

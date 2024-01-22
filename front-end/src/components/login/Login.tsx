@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react";
-import {fetchTokenAsync, updateCredentials} from "../../store/features/spotiUserSlice.ts";
+import {fetchTokenAsync} from "../../store/features/spotiUserSlice.ts";
 import {useAppDispatch, useAppSelector} from "../../store/hooks.ts";
 import loginPageStyle from './login-page.module.css';
 import SpotifyHeaderLogo from "./icons/spotify-logo.svg"
 import {useNavigate} from "react-router-dom";
-import validateToken from "../utils/validateToken.ts";
+import {useExistingToken} from "../../useExistingToken.ts";
 
 export function LoginPage() {
     const dispatch = useAppDispatch();
@@ -14,35 +14,20 @@ export function LoginPage() {
     const navigate = useNavigate();
     document.title = "Spotify Login"
 
+    useExistingToken()
+
+
     useEffect(() => {
-        if (localStorage.getItem('access_token')
-            &&
-            localStorage.getItem('refresh_token')
-        ) {
-            const updateAccessToken = async () => {
-
-                const newToken = await validateToken();
-
-                dispatch(updateCredentials({
-                        access_token: newToken,
-                        refresh_token: String(localStorage.getItem('refresh_token')),
-                        issued_at: Number(localStorage.getItem('issued_at'))
-                    }
-                ))
-            }
-
-            updateAccessToken();
-
+        if (window.location.hash.includes("#")) {
+            dispatch(fetchTokenAsync({}))
         }
     }, []);
-    if (window.location.hash.includes('#')) {
-        dispatch(fetchTokenAsync({}))
-    }
 
-    if(loggedIn){
-        navigate('/')
-    }
-
+    useEffect(() => {
+        if (loggedIn) {
+            navigate('/')
+        }
+    }, [loggedIn, navigate]);
 
 
     return <div className={loginPageStyle['login-form-wrapper']}>
@@ -54,13 +39,14 @@ export function LoginPage() {
 
         <form onSubmit={(e) => {
             e.preventDefault();
+
+            localStorage.setItem('CID', `${clientID}`)
+            localStorage.setItem('SID', `${clientSecretID}`)
             dispatch(fetchTokenAsync({
                 client_id: clientID,
                 client_secret_id: clientSecretID
             }))
 
-            localStorage.setItem('CID', `${clientID}`)
-            localStorage.setItem('SID', `${clientSecretID}`)
 
         }}>
             <div>

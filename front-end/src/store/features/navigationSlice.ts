@@ -1,4 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
+import {CurrentlyPlaying} from "../../types/currentlyPlaying.ts";
 
 interface Navigation {
     queueEmpty: boolean
@@ -17,8 +18,11 @@ interface Navigation {
         } | null
     };
     libraryActions: string[],
+    currentSongData: CurrentlyPlaying | null,
     userControlActions: string[];
-    somethingIsFullScreen: boolean
+    somethingIsFullScreen: boolean,
+    navigationError: boolean,
+    navigationHistory: string[]
 }
 
 const initialState: Navigation = {
@@ -40,8 +44,10 @@ const initialState: Navigation = {
     queueEmpty: false,
     libraryActions: [],
     userControlActions: [],
-
-    somethingIsFullScreen: false
+    currentSongData: null,
+    somethingIsFullScreen: false,
+    navigationError: false,
+    navigationHistory: []
 };
 
 const navigationSlice = createSlice({
@@ -49,7 +55,28 @@ const navigationSlice = createSlice({
     initialState,
     reducers:
         {
+            setNavigationHistory:(state, action:{payload: string[]}) => {
+              return {
+                  ...state,
+                  navigationHistory: action.payload
+              }
+            },
+            setNavigationError: (state, action:{payload: boolean}) => {
+                return {
+                    ...state,
+                    navigationError: action.payload
+                }
+            },
 
+            setCurrentSongData: (state, action:{
+                payload: CurrentlyPlaying
+            }) => {
+
+                return {
+                    ...state,
+                    currentSongData: action.payload
+                }
+            },
             addLibraryAction: (state, action: { payload: string }) => {
                 if (state.libraryActions.length > 50) {
                     return {
@@ -130,5 +157,8 @@ export const {
     setCurrentlyPlayingSong,
     setUserControlActions,
     addLibraryAction,
+    setCurrentSongData,
+    setNavigationError,
+    setNavigationHistory
 } = navigationSlice.actions;
 export default navigationSlice.reducer;

@@ -19,13 +19,13 @@ export const fetchTokenAsync = createAsyncThunk(
     async (info: {
         client_id?: string,
         client_secret_id?: string
-    }): Promise<TokenData> => {
+    }) => {
 
         if (!window.location.hash.includes("#")) {
-            return axios.get(`http://localhost:3001/authenticate?client_id=${info.client_id}&client_secret_id=${info.client_secret_id}`,)
+            axios.get(`http://localhost:3001/authenticate?client_id=${info.client_id}&client_secret_id=${info.client_secret_id}`,)
                 .then((res) => (window.location.href = res.data));
         } else {
-            const access = window && window.location.hash
+            return window && window.location.hash
                 .split("#")[1]
                 .split("&")
                 .map((each) => {
@@ -33,12 +33,9 @@ export const fetchTokenAsync = createAsyncThunk(
                     const key = split[0];
                     const value = split[1];
                     return JSON.parse(`{"${key}":"${value}"}`);
-                }).reduce((acc, obj) => ({...acc, ...obj}), {});
-
-            history.replaceState({}, document.title, window.location.pathname)
-
-            return access
+                }).reduce((acc, obj) => ({...acc, ...obj}), {})
         }
+        history.replaceState({}, document.title, window.location.pathname)
 
 
     });
@@ -66,7 +63,9 @@ interface SpotiUser {
         uri: string
     },
     mainRef: HTMLElement | null,
-    numberOfItemsToBeShown: number
+    windowFullScreen: boolean,
+    numberOfItemsToBeShown: number,
+    fromLoginPage: 0 | 1
 }
 
 const initialState: SpotiUser = {
@@ -91,188 +90,216 @@ const initialState: SpotiUser = {
         uri: 'None'
     },
     mainRef: null,
-    numberOfItemsToBeShown: Math.floor(window.innerWidth / 250)
+    windowFullScreen: false,
+    numberOfItemsToBeShown: Math.floor(window.innerWidth / 250),
+    fromLoginPage: 0
 };
 
 const spotiUserSlice = createSlice({
-    name: "Spoti User Slice",
-    initialState,
-    reducers:
-        {
-            setNumberOfItemsToBeShown: (state, action: { payload: number }) => {
-                return {
-                    ...state,
-                    numberOfItemsToBeShown: action.payload
-                }
-            },
+        name: "Spoti User Slice",
+        initialState,
+        reducers:
+            {
 
-            setMainRef: (state, action: { payload: HTMLElement }) => {
-                return {
-                    ...state,
-                    mainRef: action.payload
-                }
-            },
-            setWhatsInView: (state, action: {
-                payload: {
-                    pageName: string,
-                    pageItemName: string,
-                    uri: string
-                }
-            }) => {
-
-                return {
-                    ...state,
-                    whatsInViewForPlay: {
-                        pageName: action.payload.pageName,
-                        pageItemName: action.payload.pageItemName,
-                        uri: action.payload.uri
+                setLoggedIn: (state, action: { payload: boolean }) => {
+                    return {
+                        ...state,
+                        loggedIn: action.payload
+                    }
+                },
+                setWindowFullScreen: (state, action: { payload: boolean }) => {
+                    return {
+                        ...state,
+                        windowFullScreen: action.payload
                     }
                 }
-            }
-            ,
-            setUserSavedPlaylistIDs: (state, action: { payload: Playlist[] }) => {
-
-                return {
-                    ...state,
-                    userSaved: {
-                        ...state.userSaved,
-                        userSavedPlaylistIDs: action.payload.map(a => a.id)
+                ,
+                setNumberOfItemsToBeShown: (state, action: { payload: number }) => {
+                    return {
+                        ...state,
+                        numberOfItemsToBeShown: action.payload
                     }
-                }
-            },
+                },
 
-            setUserSavedArtistIDs: (state, action: { payload: Artist[] }) => {
-
-                return {
-                    ...state,
-                    userSaved: {
-                        ...state.userSaved,
-                        userSavedArtistIDs: action.payload.map(a => a.id)
-                    }
-                }
-            },
-            setUserInformation: (state, action: { payload: Me }) => {
-                return {
-                    ...state,
-                    userInformation: action.payload
-                }
-            },
-            setUserSavedAlbumIDs: (state, action: { payload: Album[] }) => {
-
-                return {
-                    ...state,
-                    userSaved: {
-                        ...state.userSaved,
-                        userSavedAlbumIDs: action.payload.map(a => a.id)
-                    }
-                }
-            },
-            setUsersSavedSongIDs: (state, action: { payload: Track[] }) => {
-                return {
-                    ...state,
-                    userSaved: {
-                        ...state.userSaved,
-                        userSavedSongIDs: action.payload.map(t => t.id)
-                    }
-                }
-            },
-
-            updateCredentials: (state, action: {
-                payload: {
-                    access_token: string,
-                    issued_at: number,
-                    refresh_token: string
-                }
-            }) => {
-
-
-                return {
-                    ...state,
-                    spotiToken: {
-                        ...state.spotiToken,
-                        accessToken: action.payload.access_token,
-                        refresh_token: action.payload.refresh_token,
-                        issued_at: action.payload.issued_at
+                setMainRef:
+                    (state, action: { payload: HTMLElement }) => {
+                        return {
+                            ...state,
+                            mainRef: action.payload
+                        }
                     },
-                    loggedIn: true
-                }
-            },
-            setToken: (
-                state,
-                action: {
-                    payload: { accessToken: string };
-                }
-            ) => {
-                return {
-                    ...state,
-                    spotiToken: {
-                        ...state.spotiToken,
-                        accessToken: action.payload.accessToken,
-                    },
-                };
-            },
-        },
-    extraReducers:
-        (builder) => {
+                setWhatsInView:
+                    (state, action: {
+                        payload: {
+                            pageName: string,
+                            pageItemName: string,
+                            uri: string
+                        }
+                    }) => {
 
-            builder.addCase(
-                fetchTokenAsync.fulfilled,
-                (
-                    state,
-                    action: {
-                        payload: TokenData;
+                        return {
+                            ...state,
+                            whatsInViewForPlay: {
+                                pageName: action.payload.pageName,
+                                pageItemName: action.payload.pageItemName,
+                                uri: action.payload.uri
+                            }
+                        }
                     }
-                ) => {
+                ,
+                setUserSavedPlaylistIDs:
+                    (state, action: { payload: Playlist[] }) => {
 
-                    const currentTime = new Date().getTime() / 1000;
-                    localStorage.setItem("issued_at", currentTime.toString());
-                    localStorage.setItem("refresh_token", action.payload?.refresh_token);
-                    localStorage.setItem("access_token", action.payload?.accessToken);
+                        return {
+                            ...state,
+                            userSaved: {
+                                ...state.userSaved,
+                                userSavedPlaylistIDs: action.payload.map(a => a.id)
+                            }
+                        }
+                    },
 
+                setUserSavedArtistIDs:
+                    (state, action: { payload: Artist[] }) => {
+
+                        return {
+                            ...state,
+                            userSaved: {
+                                ...state.userSaved,
+                                userSavedArtistIDs: action.payload.map(a => a.id)
+                            }
+                        }
+                    },
+                setUserInformation:
+                    (state, action: { payload: Me }) => {
+                        return {
+                            ...state,
+                            userInformation: action.payload
+                        }
+                    },
+                setUserSavedAlbumIDs:
+                    (state, action: { payload: Album[] }) => {
+
+                        return {
+                            ...state,
+                            userSaved: {
+                                ...state.userSaved,
+                                userSavedAlbumIDs: action.payload.map(a => a.id)
+                            }
+                        }
+                    },
+                setUsersSavedSongIDs:
+                    (state, action: { payload: Track[] }) => {
+                        return {
+                            ...state,
+                            userSaved: {
+                                ...state.userSaved,
+                                userSavedSongIDs: action.payload.map(t => t.id)
+                            }
+                        }
+                    },
+
+                updateCredentials:
+                    (state, action: {
+                        payload: {
+                            access_token: string,
+                            issued_at: number,
+                            refresh_token: string
+                        }
+                    }) => {
+
+
+                        return {
+                            ...state,
+                            spotiToken: {
+                                ...state.spotiToken,
+                                accessToken: action.payload.access_token,
+                                refresh_token: action.payload.refresh_token,
+                                issued_at: action.payload.issued_at
+                            },
+                            loggedIn: true
+                        }
+                    },
+                setToken:
+                    (
+                        state,
+                        action: {
+                            payload: { accessToken: string };
+                        }
+                    ) => {
+                        return {
+                            ...state,
+                            spotiToken: {
+                                ...state.spotiToken,
+                                accessToken: action.payload.accessToken,
+                            },
+                        };
+                    },
+            },
+        extraReducers:
+            (builder) => {
+
+                builder.addCase(
+                    fetchTokenAsync.fulfilled,
+                    (
+                        state,
+                        action: {
+                            payload: TokenData;
+                        }
+                    ) => {
+
+                        const currentTime = new Date().getTime() / 1000;
+                        localStorage.setItem("issued_at", currentTime.toString());
+                        localStorage.setItem("refresh_token", action.payload?.refresh_token);
+                        localStorage.setItem("access_token", action.payload?.accessToken);
+
+                        return {
+                            ...state,
+                            spotiToken: {
+                                accessToken: action.payload?.accessToken,
+                                token_type: "Bearer",
+                                refresh_token: action.payload?.refresh_token,
+                                expires_in: 3600,
+                                issued_at: currentTime,
+                            },
+
+                            fromLoginPage: 1
+
+                        };
+                    }
+                );
+
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                builder.addCase(fetchTokenAsync.pending, (state, _) => {
                     return {
                         ...state,
                         spotiToken: {
-                            accessToken: action.payload?.accessToken,
+                            accessToken: "pending",
                             token_type: "Bearer",
-                            refresh_token: action.payload?.refresh_token,
-                            expires_in: 3600,
-                            issued_at: currentTime,
+                            refresh_token: "pending",
+                            expires_in: 0,
+                            issued_at: 0,
+                            loggedIn: false
                         },
-                        loggedIn: true
-
                     };
-                }
-            );
-
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            builder.addCase(fetchTokenAsync.pending, (state, _) => {
-                return {
-                    ...state,
-                    spotiToken: {
-                        accessToken: "pending",
-                        token_type: "Bearer",
-                        refresh_token: "pending",
-                        expires_in: 0,
-                        issued_at: 0,
-                    },
-                };
-            })
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            builder.addCase(fetchTokenAsync.rejected, (state, _) => {
-                return {
-                    ...state,
-                    spotiToken: {
-                        accessToken: "access revoked",
-                        token_type: "Bearer",
-                        refresh_token: "access revoked",
-                        expires_in: 0,
-                        issued_at: 0,
-                        loggedIn: false
-                    },
-                };
-            });
-        },
-});
+                })
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                builder.addCase(fetchTokenAsync.rejected, (state, _) => {
+                    return {
+                        ...state,
+                        spotiToken: {
+                            accessToken: "access revoked",
+                            token_type: "Bearer",
+                            refresh_token: "access revoked",
+                            expires_in: 0,
+                            issued_at: 0,
+                            loggedIn: false
+                        },
+                    };
+                });
+            },
+    })
+;
 
 export const {
     setUserInformation,
@@ -283,7 +310,9 @@ export const {
     setUserSavedAlbumIDs,
     setUserSavedPlaylistIDs,
     setNumberOfItemsToBeShown,
-    setWhatsInView
+    setWhatsInView,
+    setWindowFullScreen,
+    setLoggedIn
 } = spotiUserSlice.actions;
 
 export default spotiUserSlice.reducer;

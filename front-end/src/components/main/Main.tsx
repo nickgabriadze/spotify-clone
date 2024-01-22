@@ -10,10 +10,10 @@ import {Me} from "../../types/me.ts";
 import getMe from "../../api/getMe.ts";
 import SearchBar from "../search/components/search-bar/searchBar.tsx";
 import Searchables from "../search/components/searchables/searchables.tsx";
-import {setUserInformation} from "../../store/features/spotiUserSlice.ts";
+import {setLoggedIn, setUserInformation} from "../../store/features/spotiUserSlice.ts";
 import AlbumPage from "./components/album/AlbumPage.tsx";
 import {Route, Routes, useNavigate, useParams, useLocation} from 'react-router-dom'
-import {setUserControlActions} from "../../store/features/navigationSlice.ts";
+import {setNavigationHistory, setUserControlActions} from "../../store/features/navigationSlice.ts";
 import ArtistPage from "./components/artist/ArtistPage.tsx";
 import PlaylistPage from "./components/playlist/PlaylistPage.tsx";
 import PlayResumeStreaming from "../../api/player/playResumeStreaming.ts";
@@ -22,7 +22,6 @@ import Pause from "../search/components/each-search-component/Playlists/icons/pa
 import Play from "../search/components/each-search-component/Playlists/icons/play.svg";
 import {useUpdateNumberOfItems} from "./hooks/useNumberOfItems.ts";
 import Category from "./components/browsingCategory/category.tsx";
-import Error from "../Errors/Error.tsx";
 import {LikedSongs} from "./components/playlist/LikedSongs.tsx";
 import ArtistLayout from "./components/artist/ArtistLayout.tsx";
 import {Discography} from "./components/artist/components/discography/Discography.tsx";
@@ -42,7 +41,6 @@ export function Main({height}: {
     useUpdateNumberOfItems();
     const navigatePages = useNavigate();
     const {pathname, state} = useLocation();
-
     const params = useParams();
 
     const weAreSearching = pathname.includes('/search')
@@ -70,6 +68,15 @@ export function Main({height}: {
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong)
     const [displayLogOut, setDisplayLogout] = useState<boolean>(false)
 
+    useEffect(() => {
+        const previousPaths = state?.previousPaths || []
+        dispatch(setNavigationHistory(previousPaths))
+    }, []);
+
+
+    const previousPaths = useAppSelector(s => s.navigationReducer.navigationHistory)
+    const pageNumber = state?.pageNumber === undefined ? 0 : state.pageNumber
+        console.log(previousPaths, pageNumber)
 
     return (
         <main
@@ -92,12 +99,14 @@ export function Main({height}: {
                         <button
 
                             onClick={() => {
-                                navigatePages(-1)
+                                if (pageNumber !== 0) {
+                                    navigatePages(-1)
+                                }
 
                             }}
                         >
                             <img
-                                style={{filter: `${state === 0 ? `brightness(50%)` : `brightness(100%)`}`}}
+                                style={{filter: `${pageNumber === 0 ? `brightness(50%)` : `brightness(100%)`}`}}
                                 alt={'Left icon'} src={Left} height={32}></img>
                         </button>
                         <button style={{marginLeft: "-3px"}}
@@ -110,7 +119,7 @@ export function Main({height}: {
 
 
                                 <img
-                                    style={{filter: `${window.history.length - 2 === state || !Boolean(state) ? `brightness(50%)` : `brightness(100%)`}`}}
+                                    style={{filter: `${previousPaths.length === pageNumber ? `brightness(50%)` : `brightness(100%)`}`}}
                                     alt={'Right icon'} src={Right} height={32}></img>
 
                             </div>
@@ -155,13 +164,13 @@ export function Main({height}: {
                                             <div>
                                                 <img
                                                     alt={"Pause image"}
-                                                    style={{padding:'10px'}}
+                                                    style={{padding: '10px'}}
                                                     src={Pause}></img>
                                             </div>
                                         ) : (
                                             <div>
 
-                                                <img alt={"Play image"} src={Play} ></img>
+                                                <img alt={"Play image"} src={Play}></img>
                                             </div>
                                         )}
                                     </button>
@@ -182,6 +191,7 @@ export function Main({height}: {
                                         dispatch(setUserControlActions({
                                             userAction: 'USER_LOGOUT'
                                         }))
+                                        dispatch(setLoggedIn(false))
                                         navigatePages('/welcome')
                                     }
 
@@ -222,13 +232,15 @@ export function Main({height}: {
                     <Route path={'/genre/:genreID'} element={<Category/>}/>
                     <Route path={'/artist'} element={<ArtistLayout/>}>
                         <Route path={':artistID'} element={<ArtistPage/>}/>
-                        <Route path={':artistID/discography'} errorElement={<Error/>} element={<Discography/>}></Route>
+                        <Route path={':artistID/discography'} element={<Discography/>}></Route>
                         <Route path={':artistID/discography/:type'} element={<Discography/>}></Route>
                     </Route>
                     <Route path={'/queue'} element={<Queue/>}/>
-                    <Route path={'/album/:albumID'} element={<AlbumPage/>}/>
+                    <Route path={'/album/:albumID'}
+                           element={<AlbumPage/>}/>
                     <Route path={'/playlist/:playlistID'} element={<PlaylistPage/>}/>
-                    <Route path={'/collection/tracks'} element={<LikedSongs/>}/>
+                    <Route path={'/collection/tracks'}
+                           element={<LikedSongs/>}/>
 
                 </Routes>
             </div>

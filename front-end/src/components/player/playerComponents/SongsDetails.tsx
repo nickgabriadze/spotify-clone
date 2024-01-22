@@ -6,12 +6,13 @@ import './animation.css';
 import SavedTrackIcon from "../icons/liked-indicator-heart.svg"
 import {useAppSelector} from "../../../store/hooks.ts";
 import {
-    addLibraryAction,
+    addLibraryAction, setNavigationHistory,
 } from "../../../store/features/navigationSlice.ts";
 import {useDispatch} from "react-redux";
 import removeTrackForCurrentUser from "../../../api/library/removeTrackForCurrentUser.ts";
 import {saveTrackForCurrentUser} from "../../../api/library/saveTrackForCurrentUser.ts";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
+import useProperNavigationState from "../../utils/useProperNavigationState.ts";
 
 export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPlaying | undefined }) {
 
@@ -22,7 +23,7 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
     const artistNameRef = useRef<HTMLDivElement>(null)
     const savedSongs = useAppSelector((state) => state.spotiUserReducer.userSaved.userSavedSongIDs);
     const [currentSaved, setCurrentSaved] = useState<boolean>(false)
-
+    const loc = useLocation();
     useEffect(() => {
         setCurrentSaved(
             savedSongs.includes(String((currentlyPlaying?.item?.id)))
@@ -33,7 +34,13 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
 
     const dispatch = useDispatch();
     return (<div className={playerStyle["currently-playing-info"]}>
-        <Link to={`/album/${currentlyPlaying?.item?.album?.id}`} className={playerStyle["currently-playing-info-album-img"]}
+        <Link to={`/album/${currentlyPlaying?.item?.album?.id}`}
+              onClick={() => {
+                  dispatch(setNavigationHistory(useProperNavigationState(loc, 'album', false, String(currentlyPlaying?.item?.album.id)).previousPaths))
+              }}
+              state={useProperNavigationState(loc, 'album', false, String(currentlyPlaying?.item?.album?.id))}
+
+              className={playerStyle["currently-playing-info-album-img"]}
         >
             {currentlyPlaying?.item?.album?.images[0]?.url ? <img
                     alt="Album picture"
@@ -56,7 +63,12 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
                          onMouseOver={() => setSongNameHover(true)}
                          onMouseOut={() => setSongNameHover(false)}
                     >
-                        {currentlyPlaying?.item?.name ? <Link to={`/album/${currentlyPlaying?.item?.album?.id}`} className={playerStyle["song-name"]}
+                        {currentlyPlaying?.item?.name ? <Link to={`/album/${currentlyPlaying?.item?.album?.id}`}
+                                                              className={playerStyle["song-name"]}
+                                                              onClick={() => {
+                                                                  dispatch(setNavigationHistory(useProperNavigationState(loc, 'album', false, String(currentlyPlaying?.item?.album.id)).previousPaths))
+                                                              }}
+                                                              state={useProperNavigationState(loc, 'album', false, String(currentlyPlaying?.item?.album?.id))}
                                                               ref={songNameRef}
                             >{currentlyPlaying?.item?.name}</Link> :
                             <div className={playerStyle['song-name-skeleton']}>
@@ -73,7 +85,12 @@ export function SongDetails({currentlyPlaying}: { currentlyPlaying: CurrentlyPla
 
                             >
                                 {currentlyPlaying?.item?.artists.map((each, i) => (
-                                    <Link to={`/artist/${each?.id}`} key={each.id} className={playerStyle["artists-name"]}
+                                    <Link to={`/artist/${each?.id}`} key={each.id}
+                                          className={playerStyle["artists-name"]}
+                                          onClick={() => {
+                                              dispatch(setNavigationHistory(useProperNavigationState(loc, 'artist', false, each?.id).previousPaths))
+                                          }}
+                                          state={useProperNavigationState(loc, 'artist', false, String(each.id))}
 
                                     >
                                         {each.name}

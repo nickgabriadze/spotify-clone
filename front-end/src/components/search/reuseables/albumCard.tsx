@@ -4,16 +4,17 @@ import albumsStyle from "../components/each-search-component/Albums/albums.modul
 import {useAppDispatch, useAppSelector} from "../../../store/hooks";
 import Play from "../components/each-search-component/Playlists/icons/play.svg";
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
-import {setUserControlActions} from "../../../store/features/navigationSlice";
+import {setNavigationHistory, setUserControlActions} from "../../../store/features/navigationSlice";
 import Pause from "../components/each-search-component/Playlists/icons/pause.svg";
 import PauseStreaming from "../../../api/player/pauseStreaming";
 import NoAlbumPicture from "../components/each-search-component/icons/no-album-pic.svg"
 import getAlbum from "../../../api/search/getAlbum.ts";
 import AlbumCardSkeleton from "../../../skeletons/albumCardSkeleton.tsx";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import artistsStyle from "../components/each-search-component/Artists/artists.module.css";
 import CloseIcon from "../../player/icons/close-icon.svg";
 import useSearchHistory from "../../main/hooks/useSearchHistory.ts";
+import useProperNavigationState from "../../utils/useProperNavigationState.ts";
 
 
 export function AlbumCardApi({albumID, forSearchHistory, searchHistorySetter}: {
@@ -54,23 +55,25 @@ export function AlbumCard({eachAlbum, fromSearch, forSearchHistory, searchHistor
     forSearchHistory?: boolean,
     searchHistorySetter?: React.Dispatch<React.SetStateAction<{ type: string, id: string }[]>>
 }) {
+    const loc = useLocation();
     const [hoveringOver, setHoveringOver] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const accessToken = useAppSelector((state) => state.spotiUserReducer.spotiToken.accessToken);
     const currentlyPlaying = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong);
-
+    const navigationState = useProperNavigationState(loc, 'album', Boolean(fromSearch), String(eachAlbum?.id))
     return (
         <div className={albumsStyle["album-card"]}
 
              onMouseOver={() => setHoveringOver(true)}
              onMouseOut={() => setHoveringOver(false)}>
             <div className={albumsStyle['album-inner-content']}>
-                <Link to={`/album/${eachAlbum?.id}`} state={fromSearch ? {type: 'album', id: eachAlbum?.id} : null}
+                <Link to={`/album/${eachAlbum?.id}`}
+                      onClick={() => {
+                          dispatch(setNavigationHistory(navigationState.previousPaths))
+                      }}
+                      state={navigationState}>
 
-                >
-                    <div className={albumsStyle["album-img"]}
-
-                    >
+                    <div className={albumsStyle["album-img"]}>
                         {eachAlbum?.images[0]?.url ? <img
                                 src={eachAlbum?.images[0]?.url}
                                 draggable={false}
@@ -136,7 +139,10 @@ export function AlbumCard({eachAlbum, fromSearch, forSearchHistory, searchHistor
                     </button>
                 )}
                 <Link to={`/album/${eachAlbum?.id}`}
-                      state={fromSearch ? {type: 'album', id: eachAlbum?.id} : null}>
+                       onClick={() => {
+                          dispatch(setNavigationHistory(navigationState.previousPaths))
+                      }}
+                      state={navigationState}>
                     <div className={albumsStyle["album-details"]}
                     >
                         <h1>

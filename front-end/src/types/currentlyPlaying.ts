@@ -55,4 +55,5 @@ export interface CurrentlyPlaying {
     },
     progress_ms: number,
     timestamp: number
+
 }

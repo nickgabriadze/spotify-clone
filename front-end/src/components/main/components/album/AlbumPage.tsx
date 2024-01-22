@@ -8,7 +8,7 @@ import getAlbumTracks from "../../../../api/main/album/getAlbumTracks.ts";
 import millisecondsToHhMmSs from "../../../player/msConverter.ts";
 import PlayResumeStreaming from "../../../../api/player/playResumeStreaming.ts";
 import {
-    addLibraryAction,
+    addLibraryAction, setNavigationError, setNavigationHistory,
     setUserControlActions
 } from "../../../../store/features/navigationSlice.ts";
 import PauseStreaming from "../../../../api/player/pauseStreaming.ts";
@@ -26,6 +26,7 @@ import {setWhatsInView} from "../../../../store/features/spotiUserSlice.ts";
 import {Link, useLocation, useParams} from "react-router-dom";
 import useIntersectionObserver from "../../../utils/useIntersectionObserver.ts";
 import useSearchHistory from "../../hooks/useSearchHistory.ts";
+import useProperNavigationState from "../../../utils/useProperNavigationState.ts";
 
 export function AlbumPage() {
     const {albumID} = useParams();
@@ -40,7 +41,7 @@ export function AlbumPage() {
     const albumPageRef = useRef<HTMLDivElement>(null)
     const numberOfItems = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown);
     const [_, setAlbumLoading] = useState<boolean>(true);
-    const {state} = useLocation();
+    const loc = useLocation();
 
     useEffect(() => {
         if (!currentlyPlaying.isPlaying && albumData?.album.id) {
@@ -50,8 +51,8 @@ export function AlbumPage() {
 
     useEffect(() => {
 
-        if (state !== null) {
-            useSearchHistory(state, "SET")
+        if (loc.state?.fromSearch) {
+            useSearchHistory(loc.state, "SET")
         }
 
     }, [])
@@ -107,7 +108,7 @@ export function AlbumPage() {
                     albumTracks: tracks
                 })
             } catch (err) {
-
+                dispatch(setNavigationError(true))
             } finally {
                 setDataLoading(false)
             }
@@ -182,6 +183,10 @@ export function AlbumPage() {
                     <div className={albumStyle['artist-information']}>
                         <h4 className={albumStyle['artist-name-ry-nos']}><Link
                             to={`/artist/${albumData?.album.artists[0].id}`}
+                            onClick={() => {
+                                dispatch(setNavigationHistory(useProperNavigationState(loc, 'artist', false, String(albumData?.album.artists[0].id)).previousPaths))
+                            }}
+                            state={useProperNavigationState(loc, 'artist', false, String(albumData?.album.artists[0].id))}
 
                         >{albumData?.album.artists[0].name}</Link> • {albumDate.getFullYear()} • {albumData?.album.total_tracks} song,
                         </h4>

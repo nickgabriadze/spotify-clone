@@ -6,12 +6,13 @@ import {Artist} from "../../../../../types/artist.ts";
 import {Album} from "../../../../../types/album.ts";
 import {Track} from "../../../../../types/track.ts";
 import PlayResumeStreaming from "../../../../../api/player/playResumeStreaming.ts";
-import {setUserControlActions} from "../../../../../store/features/navigationSlice.ts";
+import {setNavigationHistory, setUserControlActions} from "../../../../../store/features/navigationSlice.ts";
 import PauseStreaming from "../../../../../api/player/pauseStreaming.ts";
 import Pause from "../../../../search/components/each-search-component/Playlists/icons/pause.svg";
 import Play from "../../../../search/components/each-search-component/Playlists/icons/play.svg";
 import UsersTopItemSkeleton from "../../../../../skeletons/usersTopItemSkeleton.tsx";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
+import useProperNavigationState from "../../../../utils/useProperNavigationState.ts";
 
 export function TopItems() {
     const [topItemsData, setTopItemsData] = useState<(Album | Artist)[]>([]);
@@ -19,7 +20,7 @@ export function TopItems() {
     const [hoveringOverTopItem, setHoveringOverTopItem] = useState<{ itemID: string }>({itemID: ""});
     const currentlyPlaying = useAppSelector((state) => state.navigationReducer.currentlyPlayingSong);
     const [dataLoading, setDataLoading] = useState<boolean>(true)
-
+    const loc = useLocation();
     useEffect(() => {
         const fetchTops = async () => {
 
@@ -44,19 +45,23 @@ export function TopItems() {
                 setDataLoading(false)
             }
         }
-        if (localStorage.getItem('access_token')) {
 
-            fetchTops()
-        }
+        fetchTops()
 
 
     }, [access])
     const dispatch = useAppDispatch();
 
+    if (dataLoading) {
+
+        return <div className={homepageStyle['user-top-items-wrapper']}>{Array.from({length: 6}).map((_, i) =>
+            <UsersTopItemSkeleton key={i}/>)}</div>
+
+    }
+
+
     return <div className={homepageStyle['user-top-items-wrapper']}>
-        {dataLoading ?
-            Array.from({length: 6}).map((_, i) => <UsersTopItemSkeleton key={i}/>)
-            :
+        {
             topItemsData.map((eachTopItem, i) => <div key={i} className={homepageStyle['top-item']}
                                                       onMouseOver={() => setHoveringOverTopItem({itemID: eachTopItem?.id})}
                                                       onMouseOut={() => setHoveringOverTopItem({itemID: ''})}
@@ -64,7 +69,12 @@ export function TopItems() {
             >
 
 
-                <Link to={`/${eachTopItem.type}/${eachTopItem.id}`}>
+                <Link to={`/${eachTopItem.type}/${eachTopItem.id}`}
+                      onClick={() => {
+                          dispatch(setNavigationHistory(useProperNavigationState(loc, eachTopItem.type, false, eachTopItem?.id).previousPaths))
+                      }}
+                      state={useProperNavigationState(loc, eachTopItem.type, false, eachTopItem.id)}
+                >
                     <div className={homepageStyle['album-picture']}
 
                     ><img src={eachTopItem?.images[0].url} alt={'Album Image'}></img>
@@ -73,8 +83,12 @@ export function TopItems() {
 
 
                 <div className={homepageStyle['detail-play']}>
-                    <Link to={`/${eachTopItem.type}/${eachTopItem.id}`
-                    }>
+                    <Link to={`/${eachTopItem.type}/${eachTopItem.id}`}
+                          onClick={() => {
+                              dispatch(setNavigationHistory(useProperNavigationState(loc, eachTopItem.type, false, eachTopItem?.id).previousPaths))
+                          }}
+                          state={useProperNavigationState(loc, eachTopItem.type, false, eachTopItem.id)}
+                    >
                         <div className={homepageStyle['top-item-title']}
 
                         >{eachTopItem?.name}</div>
@@ -111,7 +125,8 @@ export function TopItems() {
                                     }
                                 }}
                             >{(currentlyPlaying.albumID === String(eachTopItem?.id) || currentlyPlaying.artistID === String(eachTopItem?.id)) && currentlyPlaying.isPlaying === true ?
-                                <div><img src={Pause} width={50} height={50} style={{padding:'10px'}} alt={'Pause Button Image'}></img></div>
+                                <div><img src={Pause} width={50} height={50} style={{padding: '10px'}}
+                                          alt={'Pause Button Image'}></img></div>
                                 :
                                 <div><img src={Play} width={50} height={50} alt={'Play Button Image'}></img></div>
                             }

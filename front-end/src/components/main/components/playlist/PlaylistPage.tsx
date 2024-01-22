@@ -6,7 +6,11 @@ import {FullPlayList, PlayListTrackObject} from "../../../../types/playlist.ts";
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks.ts";
 import albumStyle from "../album/albumpage.module.css";
 import PlayResumeStreaming from "../../../../api/player/playResumeStreaming.ts";
-import {addLibraryAction, setUserControlActions} from "../../../../store/features/navigationSlice.ts";
+import {
+    addLibraryAction,
+    setNavigationError,
+    setUserControlActions
+} from "../../../../store/features/navigationSlice.ts";
 import PauseStreaming from "../../../../api/player/pauseStreaming.ts";
 import Pause from "../../../search/components/each-search-component/Playlists/icons/pause.svg";
 import Play from "../../../search/components/each-search-component/Playlists/icons/play.svg";
@@ -67,7 +71,7 @@ export function PlaylistPage() {
 
     useEffect(() => {
 
-        if (state !== null) {
+        if (state?.fromSearch) {
             useSearchHistory(state, "SET")
         }
 
@@ -94,6 +98,8 @@ export function PlaylistPage() {
                     }
                 })
             } catch (_) {
+                dispatch(setNavigationError(true))
+
             } finally {
                 setPlaylistLoading(false)
                 setTracksLoading(false)
@@ -136,6 +142,7 @@ export function PlaylistPage() {
                         };
                     });
                 } catch (err) {
+                    dispatch(setNavigationError(true))
 
                 } finally {
                     setTracksLoading(false);

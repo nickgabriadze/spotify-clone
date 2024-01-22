@@ -104,6 +104,7 @@
     width: 100%;
     background-color: #121212;
     flex-direction: row;
+    align-items: center;
     justify-content: space-between;
     padding-left: 25px;
     padding-right: 25px;
@@ -114,6 +115,7 @@
         display: flex;
         gap: 20px;
         width: 50%;
+        align-items: center;
 
     }
 
@@ -127,11 +129,16 @@
     }
     & .date_added_at {
         width: 15%;
+        display: flex;
     }
     & .duration{
         width: 5%;
         display: flex;
+        align-items: end;
         justify-content: end;
+        & img {
+            width: 100%;
+        }
     }
 
     color: #b3b3b3;

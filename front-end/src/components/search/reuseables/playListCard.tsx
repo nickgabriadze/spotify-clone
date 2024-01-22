@@ -5,15 +5,16 @@ import NoPlaylistImage from "../components/each-search-component/icons/no-playli
 import Play from "../components/each-search-component/Playlists/icons/play.svg";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks";
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
-import {setUserControlActions} from "../../../store/features/navigationSlice";
+import {setNavigationHistory, setUserControlActions} from "../../../store/features/navigationSlice";
 import getPlaylist from "../../../api/search/getPlaylist.ts";
 import PlaylistCardSkeleton from "../../../skeletons/playlistCardSekeleton.tsx";
 import PauseStreaming from "../../../api/player/pauseStreaming.ts";
 import Pause from "../components/each-search-component/Playlists/icons/pause.svg";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import artistsStyle from "../components/each-search-component/Artists/artists.module.css";
 import CloseIcon from "../../player/icons/close-icon.svg";
 import useSearchHistory from "../../main/hooks/useSearchHistory.ts";
+import useProperNavigationState from "../../utils/useProperNavigationState.ts";
 
 
 export function PlaylistCardApi({playlistID, forSearchHistory, searchHistorySetter}: {
@@ -53,6 +54,7 @@ export function PlaylistCard({eachPlaylist, fromSearch, playlistDescription, for
     forSearchHistory?: boolean,
     searchHistorySetter?: React.Dispatch<React.SetStateAction<{ type: string, id: string }[]>>
 }) {
+    const loc = useLocation();
     const [hoveringOver, setHoveringOver] = useState<boolean>(false);
     const dispatch = useAppDispatch();
     const accessToken = useAppSelector(
@@ -60,6 +62,7 @@ export function PlaylistCard({eachPlaylist, fromSearch, playlistDescription, for
     );
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentlyPlayingSong);
 
+    const navigationState = useProperNavigationState(loc, 'playlist', Boolean(fromSearch), String(eachPlaylist?.id))
     return (
         <div
             className={playlistsStyle["playlist-card"]}
@@ -67,8 +70,11 @@ export function PlaylistCard({eachPlaylist, fromSearch, playlistDescription, for
             onMouseOut={() => setHoveringOver(false)}
         >
             <Link to={`/playlist/${eachPlaylist?.id}`}
-                  state={fromSearch ? {type: 'playlist', id: eachPlaylist?.id} : null}
-            >
+                  onClick={() => {
+                    dispatch(setNavigationHistory(useProperNavigationState(loc, 'playlist', Boolean(fromSearch), String(eachPlaylist?.id)).previousPaths))
+                }}
+                      state={navigationState}>
+
                 <div className={playlistsStyle["playlist-img"]}
                 >
                     <img
@@ -131,8 +137,11 @@ export function PlaylistCard({eachPlaylist, fromSearch, playlistDescription, for
             </Link>
 
             <Link to={`/playlist/${eachPlaylist?.id}`}
-                  state={fromSearch ? {type: 'playlist', id: eachPlaylist?.id} : null}
-            >
+                   onClick={() => {
+                    dispatch(setNavigationHistory(navigationState.previousPaths))
+                }}
+                      state={navigationState}>
+
                 <div className={playlistsStyle["playlist-details"]}>
                     <h1
                     >
@@ -143,7 +152,7 @@ export function PlaylistCard({eachPlaylist, fromSearch, playlistDescription, for
                     {!playlistDescription ? <p
                         >
                             By{" "}
-                            {Number(eachPlaylist?.owner.display_name.length) > 15
+                            {Number(eachPlaylist?.owner?.display_name?.length) > 15
                                 ? eachPlaylist?.owner.display_name.slice(0, 16).concat("...")
                                 : eachPlaylist?.owner.display_name}
                         </p> :
