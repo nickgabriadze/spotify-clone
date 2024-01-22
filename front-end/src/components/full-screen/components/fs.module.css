@@ -42,12 +42,3 @@
 
 }
 
-@keyframes slowlydisappear {
-    from {
-        opacity: 100%;
-    }
-
-    to{
-        opacity: 0;
-    }
-}
