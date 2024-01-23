@@ -22,18 +22,54 @@
     flex-wrap: wrap;
 }
 
+.bottom-part {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    position: absolute;
+    bottom: 25%;
+    height: fit-content;
+    padding-left: 5%;
+    padding-right: 5%;
+    justify-content: center;
+
+    .like-playback-closefs {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        color: white;
+
+        & img {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 300ms linear;
+        }
+
+        & .close-fs-btn:hover{
+            filter: brightness(150%);
+            cursor: pointer;
+        }
+    }
+
+}
+
+
 .song-info-wrapper {
     display: flex;
     gap: 20px;
-    position: absolute;
-    bottom: 30%;
-    height: fit-content;
-    left: 5%;
+
     align-items: flex-end;
 
     animation: albumInfoTransformationAnimation 1s ease-in-out;
 
     & .album-img {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         & img {
             bottom: 30%;
             animation: albumImageTransformationAnimation 1s forwards ease-in-out;
@@ -90,3 +126,4 @@
 
     }
 }
+

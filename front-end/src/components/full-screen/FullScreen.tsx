@@ -8,6 +8,8 @@ import SpotifyLOGO from './icons/spotify-icon-black.svg';
 import fullScreenStyling from './fullscreen.module.css';
 import {setWindowFullScreen} from "../../store/features/spotiUserSlice.ts";
 import UpNextInQueue from "./components/UpNext.tsx";
+import CloseFullScreen from "./icons/close-full-screen.svg";
+import LikeButton from "./components/LikeButton.tsx";
 
 export function FullScreen({currentlyPlayingSong}: { currentlyPlayingSong: CurrentlyPlaying | null }) {
     const [, setNoDataAvailable] = useState(true);
@@ -54,6 +56,11 @@ export function FullScreen({currentlyPlayingSong}: { currentlyPlayingSong: Curre
         const handleESC = async (e: KeyboardEvent) => {
             if (e.key === 'Escape') {
                 dispatch(setWindowFullScreen(false))
+               try{
+                   await document.exitFullscreen();
+               }catch(err){
+
+               }
             }
 
         };
@@ -79,13 +86,42 @@ export function FullScreen({currentlyPlayingSong}: { currentlyPlayingSong: Curre
                  height={100}></img>
             <UpNextInQueue/>
         </div>
-        <div className={fullScreenStyling['song-info-wrapper']}>
-            <div className={fullScreenStyling['album-img']}><img src={currentlyPlaying?.item.album.images[0].url}
-                                                                 width={120} height={120}
-                                                                 draggable={false}
-                                                                 alt={"Album image"}></img></div>
-            <div className={fullScreenStyling['song-details']}><h1>{currentlyPlaying?.item.name}</h1>
-                <h4>{currentlyPlaying?.item.artists.map(each => each.name).join(', ')}</h4></div>
+
+
+        <div className={fullScreenStyling['bottom-part']}>
+            <div className={fullScreenStyling['song-info-wrapper']}>
+                <div className={fullScreenStyling['album-img']}><img src={currentlyPlaying?.item.album.images[0].url}
+                                                                     width={120} height={120}
+                                                                     draggable={false}
+                                                                     alt={"Album image"}></img></div>
+                <div className={fullScreenStyling['song-details']}><h1>{currentlyPlaying?.item.name}</h1>
+                    <h4>{currentlyPlaying?.item.artists.map(each => each.name).join(', ')}</h4></div>
+            </div>
+
+            <div>
+                {/* Duration - Progress bar - Duration left */}
+            </div>
+
+            <div className={fullScreenStyling['like-playback-closefs']}>
+                <div>
+                    <LikeButton/>
+                </div>
+
+                <div>
+
+                </div>
+
+                <div onClick={async () => {
+                    dispatch(setWindowFullScreen(false))
+                    await document.exitFullscreen()
+                }}>
+                    <img
+                        title={"Exit full screen"}
+                        alt={"Close full-screen Icon"}
+                         className={fullScreenStyling['close-fs-btn']}
+                         width={30} height={30} src={CloseFullScreen}></img>
+                </div>
+            </div>
         </div>
 
     </section>
