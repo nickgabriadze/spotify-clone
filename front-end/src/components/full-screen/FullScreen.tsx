@@ -10,6 +10,7 @@ import {setWindowFullScreen} from "../../store/features/spotiUserSlice.ts";
 import UpNextInQueue from "./components/UpNext.tsx";
 import CloseFullScreen from "./icons/close-full-screen.svg";
 import LikeButton from "./components/LikeButton.tsx";
+import ProgressBar from "./components/ProgressBar.tsx";
 
 export function FullScreen({currentlyPlayingSong}: { currentlyPlayingSong: CurrentlyPlaying | null }) {
     const [, setNoDataAvailable] = useState(true);
@@ -98,28 +99,30 @@ export function FullScreen({currentlyPlayingSong}: { currentlyPlayingSong: Curre
                     <h4>{currentlyPlaying?.item.artists.map(each => each.name).join(', ')}</h4></div>
             </div>
 
-            <div>
-                {/* Duration - Progress bar - Duration left */}
-            </div>
-
-            <div className={fullScreenStyling['like-playback-closefs']}>
+            <div className={fullScreenStyling['playback-controls']}>
                 <div>
-                    <LikeButton/>
+                    <ProgressBar/>
                 </div>
 
-                <div>
+                <div className={fullScreenStyling['like-playback-closefs']}>
+                    <div>
+                        <LikeButton/>
+                    </div>
 
-                </div>
+                    <div>
 
-                <div onClick={async () => {
-                    dispatch(setWindowFullScreen(false))
-                    await document.exitFullscreen()
-                }}>
-                    <img
-                        title={"Exit full screen"}
-                        alt={"Close full-screen Icon"}
-                         className={fullScreenStyling['close-fs-btn']}
-                         width={30} height={30} src={CloseFullScreen}></img>
+                    </div>
+
+                    <div onClick={async () => {
+                        dispatch(setWindowFullScreen(false))
+                        await document.exitFullscreen()
+                    }}>
+                        <img
+                            title={"Exit full screen"}
+                            alt={"Close full-screen Icon"}
+                            className={fullScreenStyling['close-fs-btn']}
+                            width={30} height={30} src={CloseFullScreen}></img>
+                    </div>
                 </div>
             </div>
         </div>

@@ -25,10 +25,10 @@
 .bottom-part {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap:50px;
     width: 100%;
     position: absolute;
-    bottom: 25%;
+    bottom: 15%;
     height: fit-content;
     padding-left: 5%;
     padding-right: 5%;
@@ -127,3 +127,9 @@
     }
 }
 
+
+.playback-controls{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}

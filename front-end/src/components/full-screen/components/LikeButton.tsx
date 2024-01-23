@@ -8,7 +8,7 @@ import FSComponentStyle from './fs.module.css';
 
 export function LikeButton() {
     const userSavedSongs = useAppSelector(s => s.spotiUserReducer.userSaved.userSavedSongIDs);
-    const currentSongID = useAppSelector(s => s.navigationReducer.currentSongData?.item.id)
+    const currentSongID = useAppSelector(s => s.navigationReducer.currentSongData?.item?.id)
     const currentSongSaved = userSavedSongs.includes(String(currentSongID))
     const dispatch = useAppDispatch();
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentSongData)
