@@ -11,6 +11,7 @@ export function ProgressBar() {
     const [hoveringOverTrackbar, setHoveringOverTrackbar] = useState<boolean>(false)
     const trackBarProgressRef = useRef<HTMLDivElement | null>(null)
     const trackInnerProgressRef = useRef<HTMLDivElement | null>(null)
+    const [clicked, setClicked] = useState<boolean>(false)
     useEffect(() => {
 
         setTrackProgressState((prev) => [(prev[1] / Number(currentlyPlayingTrack?.item?.duration_ms)) * 100, Number(currentlyPlayingTrack?.progress_ms)])
@@ -31,26 +32,43 @@ export function ProgressBar() {
 
 
     useEffect(() => {
+
         const trackMouse = (e: MouseEvent) => {
-            if (e.target === trackBarProgressRef?.current
-                || e.target === trackInnerProgressRef?.current
-            ) {
+            console.log(clicked)
+            if (clicked) {
                 const clientClickedOnX = (e.clientX - Number(trackBarProgressRef.current?.getClientRects()[0].x) - 5) / Number(trackBarProgressRef?.current?.clientWidth)
-                console.log(clientClickedOnX)
-
                 setTrackProgressState([clientClickedOnX * 100, clientClickedOnX * Number(currentlyPlayingTrack?.item.duration_ms)])
-
-
             }
+            e.preventDefault()
+        }
+
+        const instantClickChangePos = (e:MouseEvent) => {
+            const clientClickedOnX = (e.clientX - Number(trackBarProgressRef.current?.getClientRects()[0].x) - 5) / Number(trackBarProgressRef?.current?.clientWidth)
+            setTrackProgressState([clientClickedOnX * 100, clientClickedOnX * Number(currentlyPlayingTrack?.item.duration_ms)])
+            e.preventDefault()
+        }
+        trackBarProgressRef.current?.addEventListener('mousedown', setDraggingTrue)
+        trackBarProgressRef.current?.addEventListener('mousemove',trackMouse)
+        trackBarProgressRef.current?.addEventListener('mouseup', setDraggingFalse)
+        trackBarProgressRef.current?.addEventListener('click', instantClickChangePos)
+
+        return () => {
+            trackBarProgressRef.current?.removeEventListener('mousedown', setDraggingTrue)
+            trackBarProgressRef.current?.removeEventListener('mousemove', trackMouse)
+            trackBarProgressRef.current?.removeEventListener('mouseup', setDraggingFalse)
+            trackBarProgressRef.current?.removeEventListener('click', instantClickChangePos)
 
         }
 
-        window.addEventListener('click', (e) => trackMouse(e))
+    }, [clicked, trackBarProgressRef, trackBarProgressRef.current])
 
 
-        return () => window.removeEventListener('click', (e) => trackMouse(e))
-    }, [trackBarProgressRef?.current, trackInnerProgressRef?.current])
-
+    const setDraggingTrue = () => {
+        setClicked(true)
+    }
+    const setDraggingFalse = () => {
+        setClicked(false)
+    }
 
     return currentlyPlayingTrack && <div className={FSComponentStyle['progress-bar']}>
         <div className={FSComponentStyle['time-s-e']}>{trackProgress}</div>
