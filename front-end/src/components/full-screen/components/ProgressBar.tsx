@@ -1,7 +1,9 @@
 import FSComponentStyle from './fs.module.css';
-import {useAppSelector} from "../../../store/hooks.ts";
+import {useAppDispatch, useAppSelector} from "../../../store/hooks.ts";
 import millisecondsToHhMmSs from "../../player/msConverter.ts";
 import {useEffect, useRef, useState} from "react";
+import seekToPosition from "../../../api/player/seekToPosition.ts";
+import {setUserControlActions} from "../../../store/features/navigationSlice.ts";
 
 export function ProgressBar() {
     const currentlyPlayingTrack = useAppSelector(s => s.navigationReducer.currentSongData)
@@ -12,6 +14,10 @@ export function ProgressBar() {
     const trackBarProgressRef = useRef<HTMLDivElement | null>(null)
     const trackInnerProgressRef = useRef<HTMLDivElement | null>(null)
     const [clicked, setClicked] = useState<boolean>(false)
+    const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken)
+    const [seekingPos, setSeekingPos] = useState<number | null>(null)
+    const dispatch = useAppDispatch();
+
     useEffect(() => {
 
         setTrackProgressState((prev) => [(prev[1] / Number(currentlyPlayingTrack?.item?.duration_ms)) * 100, Number(currentlyPlayingTrack?.progress_ms)])
@@ -30,25 +36,45 @@ export function ProgressBar() {
 
     }, [trackProgressState[1], currentlyPlayingTrack?.item?.duration_ms, currentlyPlayingTrack?.is_playing]);
 
+    useEffect(() => {
+            if (seekingPos !== null) {
+                const timeout = setTimeout(async () => {
+                    await seekToPosition(accessToken, Math.round(seekingPos * Number(currentlyPlayingTrack?.item.duration_ms)))
+                }, 500)
+                dispatch(setUserControlActions({
+                    userAction: 'Seek To Position'
+                }))
+
+                return () => {
+                    clearTimeout(timeout)
+                }
+            }
+
+        },
+        [seekingPos, accessToken]
+    )
 
     useEffect(() => {
-
         const trackMouse = (e: MouseEvent) => {
-            console.log(clicked)
             if (clicked) {
                 const clientClickedOnX = (e.clientX - Number(trackBarProgressRef.current?.getClientRects()[0].x) - 5) / Number(trackBarProgressRef?.current?.clientWidth)
                 setTrackProgressState([clientClickedOnX * 100, clientClickedOnX * Number(currentlyPlayingTrack?.item.duration_ms)])
+                setSeekingPos(clientClickedOnX)
+
             }
             e.preventDefault()
         }
 
-        const instantClickChangePos = (e:MouseEvent) => {
+
+        const instantClickChangePos = (e: MouseEvent) => {
             const clientClickedOnX = (e.clientX - Number(trackBarProgressRef.current?.getClientRects()[0].x) - 5) / Number(trackBarProgressRef?.current?.clientWidth)
             setTrackProgressState([clientClickedOnX * 100, clientClickedOnX * Number(currentlyPlayingTrack?.item.duration_ms)])
+            setSeekingPos(clientClickedOnX)
+
             e.preventDefault()
         }
         trackBarProgressRef.current?.addEventListener('mousedown', setDraggingTrue)
-        trackBarProgressRef.current?.addEventListener('mousemove',trackMouse)
+        trackBarProgressRef.current?.addEventListener('mousemove', trackMouse)
         trackBarProgressRef.current?.addEventListener('mouseup', setDraggingFalse)
         trackBarProgressRef.current?.addEventListener('click', instantClickChangePos)
 
@@ -57,10 +83,9 @@ export function ProgressBar() {
             trackBarProgressRef.current?.removeEventListener('mousemove', trackMouse)
             trackBarProgressRef.current?.removeEventListener('mouseup', setDraggingFalse)
             trackBarProgressRef.current?.removeEventListener('click', instantClickChangePos)
-
         }
 
-    }, [clicked, trackBarProgressRef, trackBarProgressRef.current])
+    }, [clicked, accessToken, trackBarProgressRef, trackBarProgressRef.current])
 
 
     const setDraggingTrue = () => {
