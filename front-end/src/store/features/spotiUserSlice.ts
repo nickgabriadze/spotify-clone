@@ -5,6 +5,7 @@ import {Album} from "../../types/album.ts";
 import {Artist} from "../../types/artist.ts";
 import {Playlist} from "../../types/playlist.ts";
 import axios from "axios";
+import {Devices} from "../../types/device.ts";
 
 interface TokenData {
     accessToken: string;
@@ -51,6 +52,7 @@ interface SpotiUser {
     };
     userInformation: Me | null,
     loggedIn: boolean,
+    devices: Devices | undefined,
     userSaved: {
         userSavedSongIDs: string[],
         userSavedAlbumIDs: string[],
@@ -90,6 +92,7 @@ const initialState: SpotiUser = {
         uri: 'None'
     },
     mainRef: null,
+    devices: undefined,
     windowFullScreen: false,
     numberOfItemsToBeShown: Math.floor(window.innerWidth / 250),
     fromLoginPage: 0
@@ -158,7 +161,12 @@ const spotiUserSlice = createSlice({
                             }
                         }
                     },
-
+                setDevices: (state, action: { payload: { devices: Devices } }) => {
+                    return {
+                        ...state,
+                        devices: action.payload.devices
+                    }
+                },
                 setUserSavedArtistIDs:
                     (state, action: { payload: Artist[] }) => {
 
@@ -312,7 +320,8 @@ export const {
     setNumberOfItemsToBeShown,
     setWhatsInView,
     setWindowFullScreen,
-    setLoggedIn
+    setLoggedIn,
+    setDevices
 } = spotiUserSlice.actions;
 
 export default spotiUserSlice.reducer;

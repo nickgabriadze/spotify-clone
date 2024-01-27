@@ -47,6 +47,7 @@
 }
 
 .like-btn {
+    width: 100%;
     transition: all 300ms linear;
 }
 
@@ -107,3 +108,35 @@
     }
 }
 
+
+
+.playback-controls-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    & img {
+        width: 25px;
+    }
+
+    .play-resume-icon{
+        width: 70px;
+
+    }
+    .play-resume-icon:hover, .skip-prev-next-icon:hover{
+        scale: 1.05
+    }
+    .play-resume-icon:active, .skip-prev-next-icon:active{
+        scale: 0.95
+    }
+    .skip-prev-next-icon{
+        width: 35px;
+
+
+    }
+
+
+
+
+}

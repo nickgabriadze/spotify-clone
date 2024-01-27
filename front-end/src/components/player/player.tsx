@@ -4,7 +4,6 @@ import {useAppDispatch, useAppSelector} from "../../store/hooks";
 import {getCurrentlyPlaying} from "../../api/player/getCurrentlyPlaying";
 import {CurrentlyPlaying} from "../../types/currentlyPlaying";
 import {getDevices} from "../../api/player/getDevices";
-import {Devices} from "../../types/device";
 import SongDetails from "./playerComponents/SongsDetails";
 import DeviceController from "./playerComponents/DeviceController";
 import StreamController from "./playerComponents/StreamController";
@@ -13,14 +12,15 @@ import GraphEQ from "./icons/graphicEq.svg"
 import getPlaybackState from "../../api/player/getPlaybackState.ts";
 import {PlaybackState} from "../../types/playbackState.ts";
 import {PlayerSkeleton} from "./playerComponents/player-skeleton.tsx";
+import {setDevices} from "../../store/features/spotiUserSlice.ts";
 
 export function Player() {
     const [currentlyPlaying, setCurrentlyPlaying] = useState<CurrentlyPlaying>();
     const [noDataAvailable, setNoDataAvailable] = useState(true);
-    const [devices, setDevices] = useState<Devices>();
     const access = useAppSelector((state) => state.spotiUserReducer.spotiToken);
     const dispatch = useAppDispatch();
     const userActions = useAppSelector(state => state.navigationReducer.userControlActions);
+    const devices = useAppSelector(s => s.spotiUserReducer.devices)
     const [playbackStateInformation, setPlaybackStateInformation] = useState<PlaybackState>();
     const fetchCurrentData = useCallback(async () => {
         if (access.accessToken !== 'pending' && localStorage.getItem('access_token') !== undefined) {
@@ -28,7 +28,6 @@ export function Player() {
                 const devices = await getDevices(access.accessToken);
                 const devicesData = devices.data;
 
-                setDevices(devicesData);
                 const req = await getCurrentlyPlaying(access.accessToken);
                 const data = req.data;
                 const requestPlaybackState = await getPlaybackState(access.accessToken);
@@ -59,6 +58,9 @@ export function Player() {
                     }
                 } else {
                     setCurrentlyPlaying(data);
+                    dispatch(setDevices({
+                        devices: devicesData
+                    }))
                     dispatch(setCurrentSongData(data))
                     setNoDataAvailable(false);
                     setPlaybackStateInformation(playbackStateData)
@@ -105,7 +107,6 @@ export function Player() {
                 const devices = await getDevices(access.accessToken);
                 const devicesData = devices.data;
 
-                setDevices(devicesData);
                 const req = await getCurrentlyPlaying(access.accessToken);
                 const data = req.data;
                 const requestPlaybackState = await getPlaybackState(access.accessToken);
@@ -119,7 +120,7 @@ export function Player() {
                     dispatch(setCurrentSongData(data))
                     setNoDataAvailable(false);
                     setPlaybackStateInformation(playbackStateData)
-
+                    dispatch(setDevices({devices:devicesData}))
                     dispatch(setCurrentlyPlayingSong({
                         currentlyPlayingSong: {
                             artistID: data.item.artists[0].id,

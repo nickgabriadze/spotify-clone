@@ -4,11 +4,8 @@ import playerStyle from "../player.module.css";
 import Queue from "../icons/queue.svg";
 import CastDevice from "../icons/cast-device.svg"
 import DevicesSVG from "../icons/devices.svg";
-import VolumeUp from "../icons/volume.svg";
-import VolumeOff from "../icons/volume-off.svg";
-import setPlaybackVolume from "../../../api/player/setPlaybackVolume";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks";
-import {setNavigationHistory, setUserControlActions} from "../../../store/features/navigationSlice";
+import {setNavigationHistory} from "../../../store/features/navigationSlice";
 import DeviceEqualiser from "../icons/device-picker-equaliser.webp"
 import SmartphoneDevice from "../icons/smartphone-device.svg";
 import TVDevice from "../icons/tv-device.svg";
@@ -17,6 +14,7 @@ import switchActiveDevice from "../../../api/player/switchActiveDevice.ts";
 import {Link, useLocation, useParams} from "react-router-dom";
 import OpenInFullScreen from '../icons/open-full-screen.svg';
 import useProperNavigationState from "../../utils/useProperNavigationState.ts";
+import VolumeController from "./VolumeController.tsx";
 
 
 export function DeviceController({devices,}: {
@@ -36,16 +34,8 @@ export function DeviceController({devices,}: {
     }
 
 
-    const [sliderVolume, setSliderVolume] = useState<number>(
-        Number(
-            devices?.devices?.filter((each) => each.is_active)[0]?.volume_percent
-        )
-    );
 
 
-    useEffect(() => {
-        setSliderVolume(Number(devices?.devices?.filter((each) => each.is_active)[0]?.volume_percent));
-    }, [devices?.devices?.filter((each) => each.is_active)[0]?.volume_percent]);
 
 
     const dispatch = useAppDispatch();
@@ -56,7 +46,6 @@ export function DeviceController({devices,}: {
     const devicesIconRef = useRef<HTMLImageElement>(null);
     const params = useParams();
     const isCurrentQueue = Object.values(params).includes('queue')
-    const [previousSliderVolume, setPreviousSliderVolume] = useState<number>(sliderVolume === 0 ? 30 : sliderVolume)
     useEffect(() => {
         const handleClickOutside = (e: any) => {
             if (popupRef.current && !popupRef.current.contains(e.target)
@@ -77,19 +66,7 @@ export function DeviceController({devices,}: {
         };
     }, []);
 
-    useEffect(() => {
 
-        const handleSliderVolumeTimeout = setTimeout(async () => {
-            await setPlaybackVolume(Number(previousSliderVolume), accessToken)
-            dispatch(setUserControlActions({
-                userAction: "Set Playback Volume"
-            }))
-        }, 500)
-
-        return () => {
-            clearTimeout(handleSliderVolumeTimeout)
-        }
-    }, [previousSliderVolume]);
 
     const listeningOnDevice = String(devices?.devices.filter(each => each.is_active)[0]?.type)
     return (
@@ -164,51 +141,10 @@ export function DeviceController({devices,}: {
                 </div>}
             </div>
             <div className={playerStyle['volume-controller']}>
-                <div>
-                    <button
-                        onClick={async () => {
-                            await setPlaybackVolume(Number(
-                                devices?.devices.filter((each) => each.is_active)[0]?.volume_percent
-                            ) > 0 ? 0 : previousSliderVolume, accessToken);
+                <VolumeController />
+                <img
 
-
-                            dispatch(setUserControlActions({
-                                userAction: 'Volume On/Off'
-                            }))
-                        }}
-                    ><img
-                        src={
-                            Number(
-                                devices?.devices.filter((each) => each.is_active)[0]?.volume_percent
-                            ) > 0
-                                ? VolumeUp
-                                : VolumeOff
-                        }
-                        alt="Volume icon"
-                        width={22}
-                    ></img>
-                    </button>
-                    <input
-                        className={playerStyle["volume-rocker"]}
-                        style={{
-                            background: `linear-gradient(to right, #1ed760 ${
-                                sliderVolume
-                            }%, #4d4d4d ${
-                                sliderVolume
-                            }%)`,
-                        }}
-                        onChange={async (e) => {
-                            setSliderVolume(Number(e.target.value));
-                            setPreviousSliderVolume(Number(e.target.value))
-
-                        }}
-                        type="range"
-                        value={String(sliderVolume)}
-                        max={100}
-                        min={0}
-                    />
-                </div>
-                <img alt={"Open In FullScreen icon"}
+                    alt={"Open In FullScreen icon"}
                      className={playerStyle['full-screen-icon']}
                      title={'Open in Full Screen'}
                      onClick={() => document.documentElement.requestFullscreen()} width={18}

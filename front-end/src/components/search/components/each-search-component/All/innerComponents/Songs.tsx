@@ -65,6 +65,9 @@ export function Songs({firstFour, resultsLoading}: { firstFour: Track[] | undefi
                                         src={eachTrack?.album.images[0]?.url}
                                         width={40}
                                         height={40}
+                                        style={{
+                                            borderRadius: '3px',
+                                        }}
                                         draggable={false}
                                         alt="Album Picture"
                                     ></img> :

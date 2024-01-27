@@ -5,6 +5,7 @@
     position: absolute;
     z-index: 1000;
     background: black;
+    transition: all 2s linear;
 }
 
 .spotify-logo {
@@ -25,10 +26,10 @@
 .bottom-part {
     display: flex;
     flex-direction: column;
-    gap:50px;
+    gap:30px;
     width: 100%;
     position: absolute;
-    bottom: 15%;
+    bottom: 5%;
     height: fit-content;
     padding-left: 5%;
     padding-right: 5%;
@@ -53,6 +54,8 @@
             filter: brightness(150%);
             cursor: pointer;
         }
+
+        width: 100%;
     }
 
 }
@@ -70,6 +73,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        box-shadow: 0 10px 10px rgba(0, 0, 0, .3);
+
         & img {
             bottom: 30%;
             animation: albumImageTransformationAnimation 1s forwards ease-in-out;
@@ -127,9 +132,31 @@
     }
 }
 
+.playback-volume-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 90%;
+}
+
 
 .playback-controls{
     display: flex;
     flex-direction: column;
     gap: 30px;
 }
+
+.volume-control-exit-fs{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    width: 15%;
+    & > div {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+}
+
