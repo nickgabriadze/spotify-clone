@@ -18,16 +18,33 @@ export function SearchBar() {
     const [focused, setFocused] = useState<boolean>(false);
     const loc = useLocation();
     useEffect(() => {
-        const timeOutToSetQuery = setTimeout(() => {
-            if (userSearchingQ !== '') {
-                const destructured = ['all', 'albums', 'artists', 'playlists', 'songs', 'podcastsAndShows'].includes(Object.values(params).toString().split('/')[2]) ? Object.values(params).toString().split('/')[2] : 'all'
-                navigator(`/search/${userSearchingQ === 'undefined' ? '' : userSearchingQ}/${destructured}`, {state: useProperNavigationState(loc, 'search_res', false, userSearchingQ + "-" + destructured)})
-            }
-            if (userSearchingQ.length === 0 && focused && loc.pathname !== '/search') {
-                navigator('/search')
-            }
+        setUserSearchingQ(weAreSearchingFor === undefined ? '' : String(weAreSearchingFor))
 
-        }, 500)
+
+    }, [loc.state?.previousPaths?.length]);
+
+    useEffect(() => {
+        const timeOutToSetQuery = setTimeout(() => {
+                if (userSearchingQ !== '') {
+                    const destructured = ['all', 'albums', 'artists', 'playlists', 'songs', 'podcastsAndShows'].includes(Object.values(params).toString().split('/')[2]) ? Object.values(params).toString().split('/')[2] : 'all'
+                    if (loc.state !== null) {
+                        if (userSearchingQ + "-" + destructured !== loc.state.previousPaths[loc.state.previousPaths.length - 1].split('#')[2] &&
+                            loc.state?.type !== "search_res_searchable"
+                        ) {
+                            navigator(`/search/${userSearchingQ}/${destructured}`, {state: useProperNavigationState(loc, 'search_res', false, userSearchingQ + "-" + destructured)})
+                        }
+                    } else {
+                        navigator(`/search/${userSearchingQ}/${destructured}`, {state: useProperNavigationState(loc, 'search_res', false, userSearchingQ + "-" + destructured)})
+                    }
+                }
+                if (userSearchingQ.length === 0 && focused && loc.pathname !== '/search') {
+                    navigator('/search')
+                }
+
+            }
+            ,
+            500
+        )
         return () => clearTimeout(timeOutToSetQuery)
     }, [userSearchingQ, focused, Object.values(params).toString()]);
 

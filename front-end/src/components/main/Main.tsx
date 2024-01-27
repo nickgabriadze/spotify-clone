@@ -73,11 +73,13 @@ export function Main({height}: {
         dispatch(setNavigationHistory(previousPaths))
     }, []);
 
+    useEffect(() => {
+
+    }, []);
 
     const previousPaths = useAppSelector(s => s.navigationReducer.navigationHistory)
     const pageNumber = state?.pageNumber === undefined ? 0 : state.pageNumber
-        console.log(previousPaths, pageNumber)
-
+    console.log(state?.previousPaths.length, state?.pageNumber === undefined ? 0 : state.pageNumber)
     return (
         <main
             className={mainStyle['main-container']} style={{height: `${height}px`}}>
@@ -119,7 +121,7 @@ export function Main({height}: {
 
 
                                 <img
-                                    style={{filter: `${previousPaths.length === pageNumber ? `brightness(50%)` : `brightness(100%)`}`}}
+                                    style={{filter: `${previousPaths.length === (state?.pageNumber === undefined ? 0 : state.pageNumber) ? `brightness(50%)` : `brightness(100%)`}`}}
                                     alt={'Right icon'} src={Right} height={32}></img>
 
                             </div>
