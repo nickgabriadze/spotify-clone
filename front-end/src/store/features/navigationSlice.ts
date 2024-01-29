@@ -1,5 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {CurrentlyPlaying} from "../../types/currentlyPlaying.ts";
+import {PlaybackState} from "../../types/playbackState.ts";
 
 interface Navigation {
     queueEmpty: boolean
@@ -22,7 +23,8 @@ interface Navigation {
     userControlActions: string[];
     somethingIsFullScreen: boolean,
     navigationError: boolean,
-    navigationHistory: string[]
+    navigationHistory: string[],
+    globalPlaybackStateInformation: PlaybackState | undefined
 }
 
 const initialState: Navigation = {
@@ -40,7 +42,7 @@ const initialState: Navigation = {
             uri: 'None'
         }
     },
-
+    globalPlaybackStateInformation: undefined,
     queueEmpty: false,
     libraryActions: [],
     userControlActions: [],
@@ -55,6 +57,13 @@ const navigationSlice = createSlice({
     initialState,
     reducers:
         {
+
+            setGlobalPlaybackStateInformation: (state, action:{payload: PlaybackState}) =>{
+                return {
+                    ...state,
+                    globalPlaybackStateInformation: action.payload
+                }
+            },
             setNavigationHistory:(state, action:{payload: string[]}) => {
               return {
                   ...state,
@@ -159,6 +168,7 @@ export const {
     addLibraryAction,
     setCurrentSongData,
     setNavigationError,
-    setNavigationHistory
+    setNavigationHistory,
+    setGlobalPlaybackStateInformation
 } = navigationSlice.actions;
 export default navigationSlice.reducer;

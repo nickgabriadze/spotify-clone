@@ -144,8 +144,8 @@ export function StreamController({
                     }}
                     onClick={async () => {
                         if (!(disallows?.toggling_shuffle === true)) {
-                            await toggleShuffleOnOff(accessToken, !shuffleState);
                             setShuffleState(prev => !prev)
+                            await toggleShuffleOnOff(accessToken, !shuffleState);
                         }
                     }}
                 >
@@ -191,15 +191,15 @@ export function StreamController({
                     onClick={() => {
                         const playNextSong = async () => {
                             await PlayNext(accessToken)
+                            dispatch(
+                                setUserControlActions({
+                                    userAction: "Play Next Song",
+                                })
+                            );
                         }
 
                         playNextSong()
 
-                        dispatch(
-                            setUserControlActions({
-                                userAction: "Play Next Song",
-                            })
-                        );
 
                     }}
                 >
@@ -208,21 +208,21 @@ export function StreamController({
                 <button
                     onClick={async () => {
                         if (disallows?.toggling_repeat_context === true && !disallows.toggling_repeat_track) {
-                            await setRepeatMode(accessToken, repeatState === 'track' ? 'off' : 'track');
                             setRepeatState(repeatState === 'track' ? 'off' : 'track')
+                            await setRepeatMode(accessToken, repeatState === 'track' ? 'off' : 'track');
                         } else if (disallows?.toggling_repeat_track === true && !disallows.toggling_repeat_context) {
-                            await setRepeatMode(accessToken, repeatState === 'context' ? 'off' : 'context');
                             setRepeatState(repeatState === 'context' ? 'off' : 'context')
+                            await setRepeatMode(accessToken, repeatState === 'context' ? 'off' : 'context');
                         } else if (!disallows?.toggling_repeat_track && !disallows?.toggling_repeat_context) {
                             if (repeatState === 'off') {
-                                await setRepeatMode(accessToken, 'context');
                                 setRepeatState('context')
+                                await setRepeatMode(accessToken, 'context');
                             } else if (repeatState === 'context') {
-                                await setRepeatMode(accessToken, 'track');
                                 setRepeatState('track')
+                                await setRepeatMode(accessToken, 'track');
                             } else if (repeatState === 'track') {
-                                await setRepeatMode(accessToken, 'off');
                                 setRepeatState('off')
+                                await setRepeatMode(accessToken, 'off');
                             }
                         }
                     }

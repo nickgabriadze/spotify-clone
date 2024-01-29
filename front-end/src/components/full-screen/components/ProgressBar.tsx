@@ -20,6 +20,7 @@ export function ProgressBar() {
 
     useEffect(() => {
 
+
         setTrackProgressState((prev) => [(prev[1] / Number(currentlyPlayingTrack?.item?.duration_ms)) * 100, Number(currentlyPlayingTrack?.progress_ms)])
 
     }, [currentlyPlayingTrack?.progress_ms, currentlyPlayingTrack?.item.uri]);
@@ -40,10 +41,11 @@ export function ProgressBar() {
             if (seekingPos !== null) {
                 const timeout = setTimeout(async () => {
                     await seekToPosition(accessToken, Math.round(seekingPos * Number(currentlyPlayingTrack?.item.duration_ms)))
+                    dispatch(setUserControlActions({
+                        userAction: 'Seek To Position'
+                    }))
                 }, 500)
-                dispatch(setUserControlActions({
-                    userAction: 'Seek To Position'
-                }))
+
 
                 return () => {
                     clearTimeout(timeout)

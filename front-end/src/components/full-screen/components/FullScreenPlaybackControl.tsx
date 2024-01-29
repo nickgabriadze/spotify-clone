@@ -13,22 +13,58 @@ import {setUserControlActions} from "../../../store/features/navigationSlice.ts"
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming.ts";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks.ts";
 import {useState} from "react";
+import PlayNext from "../../../api/player/playNext.ts";
+import PlayPrevious from "../../../api/player/playPrevious.ts";
+import setRepeatMode from "../../../api/player/setRepeatMode.ts";
+import toggleShuffleOnOff from "../../../api/player/toggleShuffleOnOff.ts";
 
 export function FullScreenPlaybackControl() {
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentSongData)
     const [playingOrPaused, setPlayingOrPaused] = useState<boolean>(Boolean(currentlyPlaying?.is_playing))
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken);
+    const disallows = currentlyPlaying?.actions?.disallows?.disallows;
+    const globalPlaybackStateInformation = useAppSelector(s => s.navigationReducer.globalPlaybackStateInformation)
+    const [repeatState, setRepeatState] = useState<"off" | "context" | "track" | undefined>(globalPlaybackStateInformation?.repeat_state)
+    const [shuffleState, setShuffleState] = useState<boolean>(Boolean(globalPlaybackStateInformation?.shuffle_state))
     const dispatch = useAppDispatch();
+
+    const repeats: {
+        [key: string]: string
+    } = {
+        'off': Repeat,
+        'track': RepeatOne,
+        'context': RepeatOn
+    }
     return <div className={FSStyling["playback-controls-wrapper"]}>
-        <button>
+        <button
+            style={{
+                filter: `${disallows?.toggling_shuffle ? 'brightness(70%)' : 'brightness(100%)'}`
+            }}
+            onClick={async () => {
+                if (!(disallows?.toggling_shuffle === true)) {
+                    setShuffleState(prev => !prev)
+
+                    await toggleShuffleOnOff(accessToken, !shuffleState);
+                }
+            }}
+        >
             <img alt={"Shuffle icon"}
                  className={FSStyling['shuffle-icon']}
 
-                 src={ShuffleOff}/>
+                 src={shuffleState ? ShuffleOn : ShuffleOff}/>
         </button>
 
 
-        <button>
+        <button
+            onClick={async () => {
+                await PlayPrevious(accessToken);
+                dispatch(
+                    setUserControlActions({
+                        userAction: "Play Previous Song",
+                    })
+                );
+            }}
+        >
 
             <img alt={"Skip Previous icon"}
 
@@ -59,19 +95,60 @@ export function FullScreenPlaybackControl() {
             />
         </button>
 
-        <button>
+        <button
+            onClick={() => {
+                const playNextSong = async () => {
+                    await PlayNext(accessToken)
+                    dispatch(
+                        setUserControlActions({
+                            userAction: "Play Next Song",
+                        })
+                    );
+                }
+
+                playNextSong()
+
+
+            }}
+        >
 
             <img alt={"Skip Next icon"} src={SkipNext}
                  className={FSStyling['skip-prev-next-icon']}
             />
         </button>
 
-        <button>
+        <button
+            onClick={async () => {
+                if (disallows?.toggling_repeat_context === true && !disallows.toggling_repeat_track) {
+                    setRepeatState(repeatState === 'track' ? 'off' : 'track')
+                    await setRepeatMode(accessToken, repeatState === 'track' ? 'off' : 'track');
+                } else if (disallows?.toggling_repeat_track === true && !disallows.toggling_repeat_context) {
+                    setRepeatState(repeatState === 'context' ? 'off' : 'context')
+                    await setRepeatMode(accessToken, repeatState === 'context' ? 'off' : 'context');
+                } else if (!disallows?.toggling_repeat_track && !disallows?.toggling_repeat_context) {
+                    if (repeatState === 'off') {
+                        setRepeatState('context')
+                        await setRepeatMode(accessToken, 'context');
+                    } else if (repeatState === 'context') {
+                        setRepeatState('track')
+                        await setRepeatMode(accessToken, 'track');
+                    } else if (repeatState === 'track') {
+                        setRepeatState('off')
+                        await setRepeatMode(accessToken, 'off');
+                    }
+                }
+            }
+            }
+
+            style={{
+                filter: `${disallows?.toggling_repeat_context || disallows?.toggling_repeat_track ? 'brightness(70%)' : 'brightness(100%)'}`
+            }}>
+
 
             <img alt={"Repeat State Icon"}
                  className={FSStyling['repeat-icon']}
 
-                 src={Repeat}/>
+                 src={repeats[repeatState === undefined ? 'off' : repeatState]}/>
         </button>
     </div>
 }

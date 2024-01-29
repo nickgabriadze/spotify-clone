@@ -1,8 +1,6 @@
 import {CurrentlyPlaying} from "../../types/currentlyPlaying.ts";
 import {useEffect, useState} from "react";
 import {getCurrentlyPlaying} from "../../api/player/getCurrentlyPlaying.ts";
-import getPlaybackState from "../../api/player/getPlaybackState.ts";
-import {PlaybackState} from "../../types/playbackState.ts";
 import {useAppDispatch, useAppSelector} from "../../store/hooks.ts";
 import SpotifyLOGO from './icons/spotify-icon-black.svg';
 import fullScreenStyling from './fullscreen.module.css';
@@ -17,9 +15,7 @@ import VolumeController from "../player/playerComponents/VolumeController.tsx";
 import {getDevices} from "../../api/player/getDevices.ts";
 
 export function FullScreen({currentlyPlayingSong}: { currentlyPlayingSong: CurrentlyPlaying | null }) {
-    const [, setNoDataAvailable] = useState(true);
     const [currentlyPlaying, setCurrentlyPlaying] = useState<CurrentlyPlaying | null>(currentlyPlayingSong);
-    const [, setPlaybackStateInformation] = useState<PlaybackState>();
     const access = useAppSelector(s => s.spotiUserReducer.spotiToken)
     const fullScreen = useAppSelector(s => s.spotiUserReducer.windowFullScreen);
     const dispatch = useAppDispatch();
@@ -42,20 +38,13 @@ export function FullScreen({currentlyPlayingSong}: { currentlyPlayingSong: Curre
 
                 const req = await getCurrentlyPlaying(access.accessToken);
                 const data = req.data;
-                const requestPlaybackState = await getPlaybackState(access.accessToken);
-                const playbackStateData = requestPlaybackState.data;
 
                 const devices = await getDevices(access.accessToken);
                 const devicesData = devices.data;
 
-                if (req.status === 204) {
-                    setNoDataAvailable(true);
-                } else {
+                if (req.status !== 204) {
                     setCurrentlyPlaying(data);
-                    setNoDataAvailable(false);
-                    setPlaybackStateInformation(playbackStateData)
                     dispatch(setDevices({devices: devicesData}))
-
                 }
             } catch (_) {
             }
@@ -127,7 +116,7 @@ export function FullScreen({currentlyPlayingSong}: { currentlyPlayingSong: Curre
                         <LikeButton/>
                     </div>
                     <div className={fullScreenStyling['playback-volume-wrapper']}>
-                        <FullScreenPlaybackControl/>
+                        <FullScreenPlaybackControl />
 
                         <div className={fullScreenStyling['volume-control-exit-fs']}>
                             <VolumeController/>

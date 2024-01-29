@@ -118,21 +118,24 @@
 
     & img {
         width: 25px;
+
     }
 
     .play-resume-icon{
         width: 70px;
 
     }
-    .play-resume-icon:hover, .skip-prev-next-icon:hover{
-        scale: 1.05
+    .play-resume-icon:hover, .skip-prev-next-icon:hover, .repeat-icon:hover, .shuffle-icon:hover{
+        scale: 1.05;
+        filter: brightness(100);
+
     }
-    .play-resume-icon:active, .skip-prev-next-icon:active{
+    .play-resume-icon:active, .skip-prev-next-icon:active, .repeat-icon:active, .shuffle-icon:active{
         scale: 0.95
+
     }
     .skip-prev-next-icon{
-        width: 35px;
-
+        width: 40px;
 
     }
 

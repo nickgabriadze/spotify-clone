@@ -42,7 +42,7 @@ export function Searchables() {
                         }
 
                     >
-                        {option === "podcastsAndshows" ? 'Podcasts & Shows' : option[0].toUpperCase().concat(option.slice(1,))}
+                        {option === "podcastsAndShows" ? 'Podcasts & Shows' : option[0].toUpperCase().concat(option.slice(1,))}
                     </p>
                 </div>
 

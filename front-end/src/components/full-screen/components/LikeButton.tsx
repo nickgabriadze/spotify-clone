@@ -5,11 +5,12 @@ import removeTrackForCurrentUser from "../../../api/library/removeTrackForCurren
 import {addLibraryAction} from "../../../store/features/navigationSlice.ts";
 import saveTrackForCurrentUser from "../../../api/library/saveTrackForCurrentUser.ts";
 import FSComponentStyle from './fs.module.css';
+import {useState} from "react";
 
 export function LikeButton() {
     const userSavedSongs = useAppSelector(s => s.spotiUserReducer.userSaved.userSavedSongIDs);
     const currentSongID = useAppSelector(s => s.navigationReducer.currentSongData?.item?.id)
-    const currentSongSaved = userSavedSongs.includes(String(currentSongID))
+    const [currentSongSaved, setCurrentSongSaved] = useState<boolean>(userSavedSongs.includes(String(currentSongID)))
     const dispatch = useAppDispatch();
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentSongData)
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken)
@@ -18,11 +19,13 @@ export function LikeButton() {
         className={FSComponentStyle['like-btn']}
         onClick={async () => {
             if (currentSongSaved) {
+                setCurrentSongSaved(false)
                 const req = (await removeTrackForCurrentUser(accessToken, String(currentlyPlaying?.item?.id))).status;
                 if (req === 200) {
                     dispatch(addLibraryAction('Remove Track'))
                 }
             } else {
+                setCurrentSongSaved(true)
                 const req = (await saveTrackForCurrentUser(accessToken, String(currentlyPlaying?.item?.id))).status;
                 if (req === 200) {
                     dispatch(addLibraryAction('Saved Track'))

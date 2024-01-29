@@ -7,7 +7,12 @@ import {getDevices} from "../../api/player/getDevices";
 import SongDetails from "./playerComponents/SongsDetails";
 import DeviceController from "./playerComponents/DeviceController";
 import StreamController from "./playerComponents/StreamController";
-import {setCurrentlyPlayingSong, setCurrentSongData, setUserControlActions} from "../../store/features/navigationSlice";
+import {
+    setCurrentlyPlayingSong,
+    setCurrentSongData,
+    setGlobalPlaybackStateInformation,
+    setUserControlActions
+} from "../../store/features/navigationSlice";
 import GraphEQ from "./icons/graphicEq.svg"
 import getPlaybackState from "../../api/player/getPlaybackState.ts";
 import {PlaybackState} from "../../types/playbackState.ts";
@@ -67,6 +72,7 @@ export function Player() {
                     window.localStorage.setItem('previousSong', JSON.stringify({
                         type: data.item.type, id: data.item.id
                     }))
+                    dispatch(setGlobalPlaybackStateInformation(playbackStateData))
 
 
                     dispatch(setCurrentlyPlayingSong({
@@ -121,6 +127,8 @@ export function Player() {
                     setNoDataAvailable(false);
                     setPlaybackStateInformation(playbackStateData)
                     dispatch(setDevices({devices:devicesData}))
+                    dispatch(setGlobalPlaybackStateInformation(playbackStateData))
+
                     dispatch(setCurrentlyPlayingSong({
                         currentlyPlayingSong: {
                             artistID: data.item.artists[0].id,
