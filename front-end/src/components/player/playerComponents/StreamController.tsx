@@ -43,7 +43,7 @@ export function StreamController({
     );
     const [seekingPositionTo, setSeekingPositionTo] = useState<number>(pos);
     const [changingPos, setChangingPos] = useState<boolean>(false)
-
+    const [isPlaying, setIsPlaying] = useState<boolean>(Boolean(currentlyPlaying?.is_playing))
     const repeats: {
         [key: string]: string
     } = {
@@ -168,11 +168,13 @@ export function StreamController({
                 <button
                     onClick={async () => {
                         if (currentlyPlaying?.is_playing) {
+                            setIsPlaying(false)
                             await PauseStreaming(accessToken);
                             dispatch(setUserControlActions({
                                 userAction: 'Pause Streaming'
                             }))
                         } else {
+                            setIsPlaying(true)
                             await PlayResumeStreaming(accessToken);
                             dispatch(setUserControlActions({
                                 userAction: 'Resume Streaming'
@@ -183,7 +185,7 @@ export function StreamController({
                     <img
                         className={playerStyle['play-pause-btn']}
                         alt="Play/Pause"
-                        src={currentlyPlaying?.is_playing ? Pause : Play}
+                        src={isPlaying ? Pause : Play}
                         width={40}
                     ></img>
                 </button>

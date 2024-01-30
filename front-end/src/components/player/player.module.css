@@ -172,11 +172,11 @@ button {
 }
 
 .play-pause-btn:hover {
-    scale: 1.05
+    scale: 1.04
 }
 
 .play-pause-btn:active {
-    scale: 0.97
+    scale: 0.99
 }
 
 .playback-control {
