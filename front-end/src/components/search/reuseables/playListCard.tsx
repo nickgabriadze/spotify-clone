@@ -87,7 +87,8 @@ export function PlaylistCard({eachPlaylist, fromSearch, playlistDescription, for
                         }
 
                     ></img>
-
+                </div>
+            </Link>
                     {hoveringOver && (
                         <button
                             onClick={async () => {
@@ -133,8 +134,8 @@ export function PlaylistCard({eachPlaylist, fromSearch, playlistDescription, for
                             )}
                         </button>
                     )}
-                </div>
-            </Link>
+
+
 
             <Link to={`/playlist/${eachPlaylist?.id}`}
                    onClick={() => {

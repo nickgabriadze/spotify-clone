@@ -101,7 +101,7 @@ h1 {
  & div:hover{
             scale: 1.03
         }
-    animation: pop-up-button-animation 300ms linear;
+    animation: pop-up-button-animation-album 300ms linear;
 }
 
 

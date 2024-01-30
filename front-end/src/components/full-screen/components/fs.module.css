@@ -131,8 +131,7 @@
 
     }
     .play-resume-icon:active, .skip-prev-next-icon:active, .repeat-icon:active, .shuffle-icon:active{
-        scale: 0.95
-
+        scale: 0.95;
     }
     .skip-prev-next-icon{
         width: 40px;

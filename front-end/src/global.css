@@ -63,9 +63,22 @@ body::-webkit-scrollbar{
 
 @keyframes pop-up-button-animation {
     from {
-        top: 10px;
-        opacity: 50%;
+        top: 15px;
+        opacity: 30%;
         }
+
+     to{
+        top: 0;
+        opacity: initial;
+
+    }
+}
+
+@keyframes pop-up-button-animation-album {
+    from {
+        top: 15px;
+        opacity: 50%;
+    }
 
     to{
         top: 0;
