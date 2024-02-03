@@ -87,7 +87,7 @@ export function ProgressBar() {
             trackBarProgressRef.current?.removeEventListener('click', instantClickChangePos)
         }
 
-    }, [clicked, accessToken, trackBarProgressRef, trackBarProgressRef.current])
+    }, [clicked, trackBarProgressRef, trackBarProgressRef.current])
 
 
     const setDraggingTrue = () => {

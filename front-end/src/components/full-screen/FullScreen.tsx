@@ -112,30 +112,30 @@ export function FullScreen({currentlyPlayingSong}: { currentlyPlayingSong: Curre
                 </div>
 
                 <div className={fullScreenStyling['like-playback-closefs']}>
-                    <div style={{width: '11.7%'}}>
+                    <div style={{width: '5%'}}>
                         <LikeButton/>
                     </div>
-                    <div className={fullScreenStyling['playback-volume-wrapper']}>
-                        <FullScreenPlaybackControl />
 
-                        <div className={fullScreenStyling['volume-control-exit-fs']}>
-                            <VolumeController/>
-                            <div
-                                style={{width: 'fit-content'}}
-                                onClick={async () => {
-                                    dispatch(setWindowFullScreen(false))
-                                    await document.exitFullscreen()
+                    <FullScreenPlaybackControl/>
 
-                                }}>
-                                <img
-                                    title={"Exit full screen"}
-                                    alt={"Close full-screen Icon"}
-                                    className={fullScreenStyling['close-fs-btn']}
-                                    width={30} height={30} src={CloseFullScreen}></img>
-                            </div>
+                    <div className={fullScreenStyling['volume-control-exit-fs']}>
+                        <VolumeController/>
+                        <div
+                            style={{width: 'fit-content'}}
+                            onClick={async () => {
+                                dispatch(setWindowFullScreen(false))
+                                await document.exitFullscreen()
+
+                            }}>
+                            <img
+                                title={"Exit full screen"}
+                                alt={"Close full-screen Icon"}
+                                className={fullScreenStyling['close-fs-btn']}
+                                width={30} height={30} src={CloseFullScreen}></img>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
 

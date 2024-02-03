@@ -135,18 +135,21 @@
 .playback-volume-wrapper{
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 90%;
+    justify-content: flex-end;
+    width: 95%;
 }
 
 
 .playback-controls{
     display: flex;
+
     flex-direction: column;
     gap: 30px;
 }
 
 .volume-control-exit-fs{
+    position: relative;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -155,6 +158,7 @@
     & > div {
         width: 100%;
         display: flex;
+        max-width: 100%;
         align-items: center;
         justify-content: flex-start;
     }
