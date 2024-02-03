@@ -62,8 +62,8 @@ export function VolumeController() {
                     Math.round(((e.clientX - Number(volumeTrackerWrapperRef.current?.getClientRects()[0].x) - 5)
                     /
                     Number(volumeTrackerWrapperRef.current?.clientWidth)) * 100)
-                setSliderVolume(percentage)
-             }
+                setPreviousSliderVolume(sliderVolume)
+                setSliderVolume(percentage)             }
             e.preventDefault()
         }
 
@@ -73,7 +73,10 @@ export function VolumeController() {
                     Math.round(((e.clientX - Number(volumeTrackerWrapperRef.current?.getClientRects()[0].x) - 5)
                         /
                         Number(volumeTrackerWrapperRef.current?.clientWidth)) * 100)
+                    console.log(percentage)
+                setPreviousSliderVolume(sliderVolume)
                 setSliderVolume(percentage)
+
             }
             e.preventDefault()
         }
@@ -95,7 +98,7 @@ export function VolumeController() {
     const changeMouseDragTrue = () => setMouseDrag(true)
     const changeMouseDragFalse = () => setMouseDrag(false)
 
-    return <div style={{width: '100%'}}>
+    return <div style={{width: '100%', minWidth: '10px'}}>
         <button
             onClick={async () => {
                 await setPlaybackVolume(Number(
@@ -128,15 +131,15 @@ export function VolumeController() {
         >
             <div className={playerStyle['volume-tracker-progress-bar']}
                  ref={volumeProgressBarTrackerRef}
-                 style={{backgroundColor: trackerHover ? '#1ed760': 'white', width: sliderVolume}}
+                 style={{backgroundColor: trackerHover ? '#1ed760' : 'white', width: `${sliderVolume}%`}}
             >
+                <button className={playerStyle['volume-tracker-btn']}
+                     style={trackerHover ? {display: 'block'} : {display: 'none'}}
+                >
 
+                </button>
             </div>
-            <div className={playerStyle['volume-tracker-btn']}
-                 style={trackerHover ? {display: 'initial'} : {display: 'none'}}
-            >
 
-            </div>
         </div>
     </div>
 }
