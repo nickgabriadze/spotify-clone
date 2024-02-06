@@ -12,7 +12,6 @@ export function UpNextInQueue() {
     const [showUpNext, setShowUpNext] = useState<boolean>(true);
     useEffect(() => {
 
-        const abortController = new AbortController();
         const getQueueSongs = async () => {
             try {
                 const req = await getSongQueue(accessToken);
@@ -36,7 +35,6 @@ export function UpNextInQueue() {
 
 
         return () => {
-            abortController.abort()
             clearTimeout(timeOut)
         }
 

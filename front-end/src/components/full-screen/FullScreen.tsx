@@ -19,6 +19,8 @@ export function FullScreen({currentlyPlayingSong}: { currentlyPlayingSong: Curre
     const access = useAppSelector(s => s.spotiUserReducer.spotiToken)
     const fullScreen = useAppSelector(s => s.spotiUserReducer.windowFullScreen);
     const dispatch = useAppDispatch();
+    const [showControls, setShowControls] = useState<boolean>(true)
+    const [mouseMoving, setMouseMoving] = useState<number>(0)
     const [backgroundColorHex, setBackgroundColorHex] = useState<String>("#000000")
     useEffect(() => {
         const getBackgroundAVGColor = async () => {
@@ -31,6 +33,27 @@ export function FullScreen({currentlyPlayingSong}: { currentlyPlayingSong: Curre
         }
         getBackgroundAVGColor()
     }, [currentlyPlaying?.item?.album?.images[0].url]);
+
+
+    useEffect(() => {
+        const changeBehaviorOnMouseMove = (e:MouseEvent) => {
+
+            if(!showControls){
+                setShowControls(true)
+            }
+            setMouseMoving(e.timeStamp)
+        }
+
+        const timeOut = setTimeout(() => {
+            setShowControls(false)
+        }, 5000)
+        window.addEventListener('mousemove', changeBehaviorOnMouseMove)
+
+        return () => {
+            window.removeEventListener('mousemove', changeBehaviorOnMouseMove)
+            clearTimeout(timeOut)
+        }
+    }, [showControls, mouseMoving]);
 
     useEffect(() => {
         const fetchCurrent = async () => {
@@ -97,7 +120,9 @@ export function FullScreen({currentlyPlayingSong}: { currentlyPlayingSong: Curre
 
 
         <div className={fullScreenStyling['bottom-part']}>
-            <div className={fullScreenStyling['song-info-wrapper']}>
+            <div className={fullScreenStyling['song-info-wrapper']}
+                 style={{transform: showControls ? 'translateY(0)' : 'translateY(50%)'}}
+            >
                 <div className={fullScreenStyling['album-img']}><img src={currentlyPlaying?.item.album.images[0].url}
                                                                      width={120} height={120}
                                                                      draggable={false}
@@ -106,7 +131,11 @@ export function FullScreen({currentlyPlayingSong}: { currentlyPlayingSong: Curre
                     <h4>{currentlyPlaying?.item.artists.map(each => each.name).join(', ')}</h4></div>
             </div>
 
-            <div className={fullScreenStyling['playback-controls']}>
+            <div className={fullScreenStyling['playback-controls']}
+                 style={{
+                     opacity: showControls ? '100%' : '0%'
+                 }}
+            >
                 <div>
                     <ProgressBar/>
                 </div>
@@ -137,6 +166,7 @@ export function FullScreen({currentlyPlayingSong}: { currentlyPlayingSong: Curre
                 </div>
 
             </div>
+
         </div>
 
     </section>
