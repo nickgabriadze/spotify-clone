@@ -12,7 +12,7 @@ import PauseStreaming from "../../../api/player/pauseStreaming.ts";
 import {setUserControlActions} from "../../../store/features/navigationSlice.ts";
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming.ts";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks.ts";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import PlayNext from "../../../api/player/playNext.ts";
 import PlayPrevious from "../../../api/player/playPrevious.ts";
 import setRepeatMode from "../../../api/player/setRepeatMode.ts";
@@ -34,6 +34,10 @@ export function FullScreenPlaybackControl() {
         'track': RepeatOne,
         'context': RepeatOn
     }
+    useEffect(() => {
+        setPlayingOrPaused(Boolean(currentlyPlaying?.is_playing))
+    }, [currentlyPlaying?.is_playing]);
+
     return <div className={FSStyling["playback-controls-wrapper"]}>
         <button
             style={{
