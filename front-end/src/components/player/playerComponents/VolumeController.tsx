@@ -16,6 +16,9 @@ export function VolumeController() {
             devices?.devices?.filter((each) => each.is_active)[0]?.volume_percent
         )
     );
+    const [volumeOn, setVolumeOn] = useState<boolean>(
+        Number(devices?.devices.filter((each) => each.is_active)[0]?.volume_percent) > 0)
+
     const [previousSliderVolume, setPreviousSliderVolume] = useState<number>(sliderVolume === 0 ? 30 : sliderVolume)
     const [mouseDrag, setMouseDrag] = useState<boolean>(false)
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken)
@@ -101,6 +104,7 @@ export function VolumeController() {
     return <div style={{width: '100%', minWidth: '10px'}}>
         <button
             onClick={async () => {
+                setVolumeOn((prev) => !prev)
                 await setPlaybackVolume(Number(
                     (devices?.devices.filter((each) => each.is_active)[0])?.volume_percent
                 ) > 0 ? 0 : previousSliderVolume, accessToken);
@@ -112,9 +116,7 @@ export function VolumeController() {
             }}
         ><img
             src={
-                Number(
-                    devices && devices?.devices.filter((each) => each.is_active)[0]?.volume_percent
-                ) > 0
+                volumeOn
                     ? VolumeUp
                     : VolumeOff
             }
