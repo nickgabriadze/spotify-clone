@@ -279,7 +279,7 @@ export function AlbumPage() {
                                 width={20}
                                 height={20}
                                 alt="Duration"
-                                style={{marginBottom: "-5px"}}
+                                style={{marginBottom: "-5px", marginRight: '-5px'}}
                             ></img>
                         </div>
                     </nav>

@@ -119,18 +119,16 @@ button {
     font-family: "Gotham Light", sans-serif;
     cursor: pointer;
 
-
 }
 
 .song-name-box {
     overflow: hidden;
-    width: 100%;
+
 }
 
 .song-name {
     white-space: nowrap;
     position: relative;
-
 }
 
 
@@ -250,7 +248,7 @@ button {
 
 }
 
-.volume-tracker-wrapper{
+.volume-tracker-wrapper {
     width: 100%;
     height: 4px;
 
@@ -260,7 +258,7 @@ button {
     cursor: pointer;
     align-items: center;
 
-    .volume-tracker-progress-bar{
+    .volume-tracker-progress-bar {
         display: flex;
         align-items: center;
         height: 4px;
@@ -268,7 +266,7 @@ button {
         border-radius: 6px;
     }
 
-    .volume-tracker-btn{
+    .volume-tracker-btn {
         position: relative;
         width: 12px;
         height: 12px;
@@ -280,9 +278,8 @@ button {
     }
 }
 
-.volume-tracker-progress-bar:hover{
+.volume-tracker-progress-bar:hover {
 }
-
 
 
 .duration > input[type="range"] {
@@ -381,17 +378,18 @@ button {
 
 }
 
-.volume-controller, .volume-controller > button{
+.volume-controller, .volume-controller > button {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 10px;
 }
 
-.volume-controller{
+.volume-controller {
     width: 100%;
     justify-content: space-between;
 }
+
 .volume-controller > div {
     display: flex;
     flex-direction: row;
@@ -499,7 +497,6 @@ button {
     }
 }
 
-
 /* player skeleton */
 
 .skeleton-wrapper {
@@ -548,8 +545,8 @@ button {
     }
 }
 
-@media only screen and (max-width: 800px){
-    .full-screen-icon{
+@media only screen and (max-width: 800px) {
+    .full-screen-icon {
         display: none;
     }
 }

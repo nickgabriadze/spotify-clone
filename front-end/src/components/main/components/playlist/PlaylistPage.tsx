@@ -276,7 +276,6 @@ export function PlaylistPage() {
                     width={20}
                     height={20}
                     alt="Duration"
-                    style={{marginBottom: "-5px"}}
                 ></img>
             </div>
         </nav>
