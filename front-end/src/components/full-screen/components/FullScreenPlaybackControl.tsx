@@ -22,12 +22,11 @@ export function FullScreenPlaybackControl() {
     const currentlyPlaying = useAppSelector(s => s.navigationReducer.currentSongData)
     const [playingOrPaused, setPlayingOrPaused] = useState<boolean>(Boolean(currentlyPlaying?.is_playing))
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken);
-    const disallows = currentlyPlaying?.actions?.disallows?.disallows;
+    const disallows = currentlyPlaying?.actions?.disallows;
     const globalPlaybackStateInformation = useAppSelector(s => s.navigationReducer.globalPlaybackStateInformation)
     const [repeatState, setRepeatState] = useState<"off" | "context" | "track" | undefined>(globalPlaybackStateInformation?.repeat_state)
     const [shuffleState, setShuffleState] = useState<boolean>(Boolean(globalPlaybackStateInformation?.shuffle_state))
     const dispatch = useAppDispatch();
-
     const repeats: {
         [key: string]: string
     } = {

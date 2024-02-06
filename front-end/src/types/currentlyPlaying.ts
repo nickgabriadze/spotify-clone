@@ -16,9 +16,8 @@ export interface Disallows {
 
 export interface CurrentlyPlaying {
     actions: {
-        disallows: {
-            disallows: Disallows
-        }
+        disallows: Disallows
+
     },
     context: null | {
         type: string,
