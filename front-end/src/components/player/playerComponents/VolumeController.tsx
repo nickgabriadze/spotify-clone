@@ -28,6 +28,9 @@ export function VolumeController() {
         setSliderVolume(Number(devices?.devices?.filter((each) => each.is_active)[0]?.volume_percent));
     }, [devices?.devices?.filter((each) => each.is_active)[0]?.volume_percent]);
 
+    useEffect(() => {
+        setVolumeOn(Number(devices?.devices.filter((each) => each.is_active)[0]?.volume_percent) > 0)
+    }, [Number(devices?.devices.filter((each) => each.is_active)[0]?.volume_percent)]);
 
     useEffect(() => {
         const changeSliderVolume = setTimeout(async () => {
@@ -63,10 +66,11 @@ export function VolumeController() {
             if (mouseDrag) {
                 const percentage =
                     Math.round(((e.clientX - Number(volumeTrackerWrapperRef.current?.getClientRects()[0].x) - 5)
-                    /
-                    Number(volumeTrackerWrapperRef.current?.clientWidth)) * 100)
+                        /
+                        Number(volumeTrackerWrapperRef.current?.clientWidth)) * 100)
                 setPreviousSliderVolume(sliderVolume)
-                setSliderVolume(percentage)             }
+                setSliderVolume(percentage)
+            }
             e.preventDefault()
         }
 
@@ -76,7 +80,7 @@ export function VolumeController() {
                     Math.round(((e.clientX - Number(volumeTrackerWrapperRef.current?.getClientRects()[0].x) - 5)
                         /
                         Number(volumeTrackerWrapperRef.current?.clientWidth)) * 100)
-                    console.log(percentage)
+                console.log(percentage)
                 setPreviousSliderVolume(sliderVolume)
                 setSliderVolume(percentage)
 
@@ -92,7 +96,7 @@ export function VolumeController() {
         return () => {
             volumeTrackerWrapperRef.current?.removeEventListener('mousedown', changeMouseDragTrue)
             volumeTrackerWrapperRef.current?.removeEventListener("mouseup", changeMouseDragFalse)
-            volumeTrackerWrapperRef.current?.removeEventListener("mousemove",changeVolumeInstant)
+            volumeTrackerWrapperRef.current?.removeEventListener("mousemove", changeVolumeInstant)
             volumeTrackerWrapperRef.current?.removeEventListener("click", changeVolumeOnClick)
         }
 
@@ -136,7 +140,7 @@ export function VolumeController() {
                  style={{backgroundColor: trackerHover ? '#1ed760' : 'white', width: `${sliderVolume}%`}}
             >
                 <button className={playerStyle['volume-tracker-btn']}
-                     style={trackerHover ? {display: 'block'} : {display: 'none'}}
+                        style={trackerHover ? {display: 'block'} : {display: 'none'}}
                 >
 
                 </button>
