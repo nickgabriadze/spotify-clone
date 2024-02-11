@@ -19,14 +19,10 @@ export function ProgressBar() {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-
-
         setTrackProgressState((prev) => [(prev[1] / Number(currentlyPlayingTrack?.item?.duration_ms)) * 100, Number(currentlyPlayingTrack?.progress_ms)])
-
     }, [currentlyPlayingTrack?.progress_ms, currentlyPlayingTrack?.item.uri]);
 
     useEffect(() => {
-
         const interval = setInterval(() => {
             if (currentlyPlayingTrack?.is_playing && currentlyPlayingTrack?.progress_ms <= currentlyPlayingTrack?.item.duration_ms) {
                 setTrackProgressState((prev) => [(prev[1] / Number(currentlyPlayingTrack?.item?.duration_ms)) * 100, prev[1] + 1000])
@@ -40,6 +36,7 @@ export function ProgressBar() {
     useEffect(() => {
             if (seekingPos !== null) {
                 const timeout = setTimeout(async () => {
+                    setTrackProgressState([seekingPos * 100, seekingPos * Number(currentlyPlayingTrack?.item.duration_ms)])
                     await seekToPosition(accessToken, Math.round(seekingPos * Number(currentlyPlayingTrack?.item.duration_ms)))
                     dispatch(setUserControlActions({
                         userAction: 'Seek To Position'

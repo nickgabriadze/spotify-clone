@@ -47,6 +47,9 @@ export function StreamController({
     const dispatch = useAppDispatch();
 
 
+    useEffect(() => {
+        setIsPlaying(Boolean(currentlyPlaying?.is_playing))
+    }, [currentlyPlaying?.is_playing]);
 
 
     useEffect(() => {
