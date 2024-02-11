@@ -15,10 +15,10 @@ export function VolumeController() {
         Number(
             devices?.devices?.filter((each) => each.is_active)[0]?.volume_percent
         )
+        | 30
     );
     const [volumeOn, setVolumeOn] = useState<boolean>(
         Number(devices?.devices.filter((each) => each.is_active)[0]?.volume_percent) > 0)
-
     const [previousSliderVolume, setPreviousSliderVolume] = useState<number>(sliderVolume === 0 ? 30 : sliderVolume)
     const [mouseDrag, setMouseDrag] = useState<boolean>(false)
     const accessToken = useAppSelector(s => s.spotiUserReducer.spotiToken.accessToken)
