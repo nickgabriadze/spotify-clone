@@ -71,14 +71,13 @@
     justify-content: space-between;
     color: white;
     align-items: center;
-    gap: 5px;
+    gap: 10px;
 
     .time-s-e {
         font-family: 'Gotham Light', sans-serif;
         font-weight: bold;
-        width: 5%;
         text-align: center;
-
+        width: 5%;
     }
 
     .outer-progress-tracker {

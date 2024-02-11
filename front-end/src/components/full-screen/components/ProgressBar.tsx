@@ -98,7 +98,8 @@ export function ProgressBar() {
     }
 
     return currentlyPlayingTrack && <div className={FSComponentStyle['progress-bar']}>
-        <div className={FSComponentStyle['time-s-e']}>{trackProgress}</div>
+        <div className={FSComponentStyle['time-s-e']}
+        >{trackProgress}</div>
 
         <div className={FSComponentStyle['outer-progress-tracker']}
              ref={trackBarProgressRef}
@@ -130,7 +131,8 @@ export function ProgressBar() {
 
         </div>
 
-        <div className={FSComponentStyle['time-s-e']}> -{totalDuration}</div>
+        <div className={FSComponentStyle['time-s-e']}
+        > -{totalDuration}</div>
     </div>
 }
 

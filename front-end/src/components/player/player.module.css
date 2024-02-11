@@ -156,6 +156,34 @@ button {
 
 /* playback */
 
+
+.player-progress-wrapper{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+
+    .progress-outer-tracker{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 4px;
+        background-color: #a7a7a7;
+    }
+
+    .progress-time{
+        color: #a7a7a7;
+        font-family: 'Gotham Light', sans-serif;
+        font-weight: bold;
+        text-align: center;
+        font-size: 12px;
+        width: 50px;
+    }
+}
+
 .play-buttons {
 
     filter: brightness(50%);
@@ -277,10 +305,6 @@ button {
 
     }
 }
-
-.volume-tracker-progress-bar:hover {
-}
-
 
 .duration > input[type="range"] {
     -webkit-appearance: none;

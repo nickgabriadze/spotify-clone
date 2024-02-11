@@ -1,5 +1,4 @@
 import playerStyle from "../player.module.css";
-import millisecondsToMmSs from "../msConverter";
 import Play from "../icons/play.svg";
 import Pause from "../icons/pause.svg";
 import Shuffle from "../icons/shuffle.svg";
@@ -14,12 +13,12 @@ import {useAppDispatch} from "../../../store/hooks";
 import {setUserControlActions} from "../../../store/features/navigationSlice";
 import PauseStreaming from "../../../api/player/pauseStreaming";
 import PlayResumeStreaming from "../../../api/player/playResumeStreaming";
-import SeekToPosition from "../../../api/player/seekToPosition";
 import ShuffleOn from "../icons/shuffle_on.svg";
 import toggleShuffleOnOff from "../../../api/player/toggleShuffleOnOff.ts";
 import RepeatOne from "../icons/repeat_one.svg";
 import RepeatOn from "../icons/repeat_on.svg"
 import setRepeatMode from "../../../api/player/setRepeatMode.ts";
+import PlayerProgressBar from "./PlayerProgressBar.tsx";
 
 export function StreamController({
                                      currentlyPlaying,
@@ -36,13 +35,7 @@ export function StreamController({
 }) {
     const [repeatState, setRepeatState] = useState<string>(String(playbackRepeat))
     const [shuffleState, setShuffleState] = useState<boolean>(Boolean(playbackShuffle))
-    const [pos, setPos] = useState<number>(
-        (Number(currentlyPlaying?.progress_ms) /
-            Number(currentlyPlaying?.item?.duration_ms)) *
-        100
-    );
-    const [seekingPositionTo, setSeekingPositionTo] = useState<number>(pos);
-    const [changingPos, setChangingPos] = useState<boolean>(false)
+
     const [isPlaying, setIsPlaying] = useState<boolean>(Boolean(currentlyPlaying?.is_playing))
     const repeats: {
         [key: string]: string
@@ -53,74 +46,8 @@ export function StreamController({
     }
     const dispatch = useAppDispatch();
 
-    const [duration, setDuration] = useState<number>(
-        Number(currentlyPlaying?.progress_ms)
-    );
-
-    useEffect(() => {
-        setPos(
-            (Number(currentlyPlaying?.progress_ms) /
-                Number(currentlyPlaying?.item?.duration_ms)) *
-            100
-        );
 
 
-        setDuration(Number(currentlyPlaying?.progress_ms));
-
-
-    }, [currentlyPlaying?.progress_ms, currentlyPlaying?.item?.duration_ms]);
-
-
-    useEffect(() => {
-        if (changingPos) {
-            const setSeekTimeout = setTimeout(async () => {
-
-                await SeekToPosition(accessToken, Math.round(Number(currentlyPlaying?.item?.duration_ms) * Number(seekingPositionTo) / 100));
-                dispatch(setUserControlActions({
-                    userAction: 'Seek To Position'
-                }))
-
-            }, 500)
-
-
-            if (changingPos) {
-                setPos(seekingPositionTo)
-                setDuration((Number(currentlyPlaying?.item?.duration_ms) * seekingPositionTo) / 100)
-            }
-            return () => {
-                clearTimeout(setSeekTimeout)
-                setChangingPos(false)
-            }
-        }
-
-    }, [seekingPositionTo]);
-
-    useEffect(() => {
-        if (!changingPos) {
-            if (currentlyPlaying?.is_playing) {
-                const timerInterval = setInterval(() => {
-                    setPos((duration / Number(currentlyPlaying?.item?.duration_ms)) * 100);
-                    setDuration((prev) => prev + 1000);
-
-                }, 1000);
-
-                if (duration >= Number(currentlyPlaying?.item?.duration_ms)) {
-                    dispatch(setUserControlActions({
-                        userAction: 'Retrieve New One'
-                    }))
-                }
-                return () => {
-                    clearInterval(timerInterval);
-                }
-            }
-        }
-    }, [
-        duration,
-        changingPos,
-        currentlyPlaying?.item?.duration_ms,
-        currentlyPlaying?.progress_ms,
-        currentlyPlaying?.is_playing,
-    ]);
 
     useEffect(() => {
 
@@ -238,35 +165,8 @@ export function StreamController({
                 </button>
             </div>
 
-            <div className={playerStyle["duration"]}>
-                <p>{millisecondsToMmSs(Number(duration))}</p>
+            <PlayerProgressBar />
 
-                <input
-                    style={
-                        changingPos ?
-                            {
-                                background: `linear-gradient(to right, #1ed760 ${seekingPositionTo}%, #4d4d4d ${seekingPositionTo}%)`,
-                            }
-                            :
-                            {
-                                background: `linear-gradient(to right, #1ed760 ${pos}%, #4d4d4d ${pos}%)`,
-                            }}
-
-                    onChange={(e) => {
-                        setSeekingPositionTo(Number(e.target.value))
-                        if (!changingPos) {
-                            setChangingPos(true);
-                        }
-                    }
-                    }
-                    type="range"
-                    value={String(pos)}
-                    max={100}
-                    min={0}
-                />
-                <p>{currentlyPlaying?.item?.duration_ms ? millisecondsToMmSs(Number(currentlyPlaying?.item?.duration_ms)) : '--:--'}
-                </p>
-            </div>
         </div>
     )
         ;
