@@ -26,6 +26,7 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
     const [episodeDataLoading, setEpisodeDataLoading] = useState<boolean>(true)
     const itemQuantity = useAppSelector(s => s.spotiUserReducer.numberOfItemsToBeShown)
     const [error, setError] = useState<boolean>(false);
+    const [episodesError, setEpisodesError] = useState<boolean>(false);
     useEffect
     (() => {
         const fetchAll = async () => {
@@ -56,7 +57,7 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
 
             } catch (e) {
                 console.log(e)
-                setError(true)
+                setEpisodesError(true)
             } finally {
                 setEpisodeDataLoading(false)
             }
@@ -123,7 +124,7 @@ export function AllResults({searchQuery}: { searchQuery: string }) {
             </div>}
 
         {
-            Number(episodesData.length) > 0 &&
+            Number(episodesData.length) > 0 && !episodesError &&
             <div className={allResultsStyle['top-episodes-wrapper']}>
                 <h2>Episodes</h2>
                 <div className={allResultsStyle['top-episodes']}>
